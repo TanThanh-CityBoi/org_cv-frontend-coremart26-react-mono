@@ -1,0 +1,3 @@
+[submodule "nikkierp"]
+	path = nikkierp
+	url = git@github.com:sky-as-code/nikki-erp-frontend-react.git

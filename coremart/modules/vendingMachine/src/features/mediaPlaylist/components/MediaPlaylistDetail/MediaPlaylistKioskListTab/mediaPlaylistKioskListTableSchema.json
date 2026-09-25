@@ -1,0 +1,17 @@
+{
+	"name": "mediaPlaylistKioskList",
+	"fields": {
+		"name": {
+			"type": "string",
+			"label": "{ \"$ref\": 'kiosk.fields.name' }"
+		},
+		"code": {
+			"type": "string",
+			"label": "{ \"$ref\": 'kiosk.fields.code' }"
+		},
+		"screenAssignment": {
+			"type": "string",
+			"label": "{ \"$ref\": 'media_playlist.kiosk_list.column_usage' }"
+		}
+	}
+}

@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "vscode-lsp": {
+      "type": "http",
+      "url": "http://localhost:37140"
+    }
+  }
+}

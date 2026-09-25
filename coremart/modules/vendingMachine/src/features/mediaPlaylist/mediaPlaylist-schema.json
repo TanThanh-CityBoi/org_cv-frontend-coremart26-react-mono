@@ -1,0 +1,22 @@
+{
+	"name": "mediaPlaylist",
+	"fields": {
+		"id": {
+			"type": "string",
+			"label": "{ \"$ref\": 'media_playlist.fields.id' }",
+			"hidden": true
+		},
+		"name": {
+			"type": "string",
+			"label": "{ \"$ref\": 'media_playlist.fields.name' }"
+		},
+		"isArchived": {
+			"type": "boolean",
+			"label": "{ \"$ref\": 'media_playlist.fields.status' }"
+		},
+		"mediaItems": {
+			"type": "string",
+			"label": "{ \"$ref\": 'media_playlist.fields.media_items' }"
+		}
+	}
+}

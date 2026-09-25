@@ -1,0 +1,122 @@
+import {
+	Avatar, Box, Button, Divider, Drawer, Flex, Stack, Text,
+} from '@mantine/core';
+import { useSignOut } from '@nikkierp/shell/authenticate';
+import { IconUserFilled, IconX } from '@tabler/icons-react';
+import React, { useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import { handleMenuItemClick } from './helpers';
+import { PROFILE_MENU_CONFIG } from './menuConfig';
+import { LangSwitchModal } from '../../components/LangSwitch';
+import { ThemeSwitchModal } from '../../components/ThemeSwitch';
+
+
+
+export const ProfileMenuDrawer: React.FC = () => {
+	const [drawerOpened, setDrawerOpened] = useState(false);
+	const themeModeModalRef = useRef<any>(null);
+	const langSwitchModalRef = useRef<any>(null);
+
+	return (
+		<>
+			<Avatar
+				size={35}
+				onClick={() => setDrawerOpened(!drawerOpened)}
+			>
+				<IconUserFilled color={'var(--mantine-color-gray-6)'} />
+			</Avatar>
+
+			<Drawer.Root
+				opened={drawerOpened}
+				onClose={() => setDrawerOpened(false)}
+				position='right'
+				size={'md'}
+				offset={8} radius='md'
+			>
+				<Drawer.Overlay opacity={0.6} blur={4}/>
+				<Drawer.Content>
+					<Flex justify='flex-end' p={4}>
+						<Button variant='transparent'
+							color='var(--mantine-color-gray-6)'
+							h={24} w={24} p={2}
+							onClick={() => setDrawerOpened(false)}
+						>
+							<IconX size={20} />
+						</Button>
+					</Flex>
+					<Drawer.Body>
+						<ProfileMenuDrawerContent
+							onClose={() => setDrawerOpened(false)}
+							themeModeModalRef={themeModeModalRef}
+							langSwitchModalRef={langSwitchModalRef}
+						/>
+					</Drawer.Body>
+				</Drawer.Content>
+			</Drawer.Root>
+
+			<ThemeSwitchModal ref={themeModeModalRef} />
+			<LangSwitchModal ref={langSwitchModalRef} />
+		</>
+	);
+};
+
+
+
+
+type ProfileMenuDrawerContentProps = {
+	onClose: () => void,
+	themeModeModalRef: React.RefObject<any>,
+	langSwitchModalRef: React.RefObject<any>,
+};
+
+const ProfileMenuDrawerContent: React.FC<ProfileMenuDrawerContentProps> = ({
+	onClose, themeModeModalRef, langSwitchModalRef,
+}) => {
+	const { dispatchMethod: signOut } = useSignOut();
+	const { t: translate } = useTranslation();
+
+	return (
+		<Stack gap={0}>
+			<Flex gap={'sm'} p={'sm'} mb={'sm'} align='center'
+				bg={'var(--mantine-color-gray-1)'}
+				style={{ borderRadius: '3px' }}
+			>
+				<Avatar size={60}>
+					<IconUserFilled color={'var(--mantine-color-gray-6)'} />
+				</Avatar>
+				<Box>
+					<Text size='md' fw={600}>Display name</Text>
+					<Text size='sm' c='dimmed'>username@example.com</Text>
+				</Box>
+			</Flex>
+
+			{PROFILE_MENU_CONFIG.map((item) => {
+				if (item.type === 'divider') {
+					return <Divider key={item.id} my={4} />;
+				}
+
+				return (
+					<Button
+						key={item.id}
+						variant='subtle' justify='flex-start' fullWidth
+						leftSection={item.icon}
+						c='var(--mantine-color-gray-7)'
+						fw={500} fz={15}
+						styles={{ inner: { justifyContent: 'flex-start' } }}
+						onClick={() => handleMenuItemClick(
+							item.action,
+							signOut,
+							themeModeModalRef,
+							langSwitchModalRef,
+							onClose,
+						)}
+					>
+						{translate(item.translationKey)}
+					</Button>
+				);
+			})}
+		</Stack>
+	);
+};
+

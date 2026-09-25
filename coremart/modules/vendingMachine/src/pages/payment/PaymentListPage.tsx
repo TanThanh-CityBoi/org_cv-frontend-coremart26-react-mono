@@ -1,0 +1,182 @@
+import { ConfirmModal } from '@nikkierp/ui/components';
+import React from 'react';
+import { Trans, useTranslation } from 'react-i18next';
+
+import { asLegacyModelSchema } from '../../common/helpers';
+import { ControlPanel } from '../../components';
+import { ControlPanelViewModeProps } from '../../components/ControlPanel/ControlPanelViewMode';
+import { PageContainer } from '../../components/PageContainer';
+import {
+	PaymentDetailDrawer,
+	PaymentGridView,
+	PaymentListPageProvider,
+	PaymentTable,
+	PaymentTableActions,
+	type PaymentMethod,
+	paymentSchema,
+	usePaymentListPageActions,
+	usePaymentListPageConfig,
+	usePaymentListPageContext,
+} from '../../features/payment';
+
+
+export const PaymentListPage: React.FC = () => {
+	return (
+		<PaymentListPageProvider>
+			<PaymentListPageContent />
+		</PaymentListPageProvider>
+	);
+};
+
+const PAYMENT_TABLE_COLUMNS = ['name', 'method', 'isArchived', 'transactionRange', 'actions'];
+
+export const PaymentListPageContent: React.FC = () => {
+	const { t: translate } = useTranslation('vending_machine');
+
+	const { filter: { filters }, list: { payments, isLoading, isEmpty } } = usePaymentListPageContext();
+	const { breadcrumbs, actions, viewModeConfig } = usePaymentListPageConfig();
+	const { preview, delete: deletePayment, archive } = usePaymentListPageActions();
+
+	const paymentTableActions: PaymentTableActions = {
+		view: preview.handlePreview,
+		archive: archive.handleOpenArchiveModal,
+		restore: archive.handleOpenRestoreModal,
+		delete: deletePayment.handleOpenDeleteModal,
+	};
+
+	return (
+		<>
+			<PageContainer
+				documentTitle={translate('menu.payment')}
+				breadcrumbs={breadcrumbs}
+				sections={[
+					<ControlPanel
+						key='payment-list-control'
+						actions={actions}
+						filters={filters}
+						viewMode={viewModeConfig as ControlPanelViewModeProps}
+					/>,
+				]}
+				isLoading={isLoading}
+				isEmpty={isEmpty}
+			>
+				<PaymentList
+					payments={payments}
+					viewMode={viewModeConfig.value}
+					isLoading={isLoading}
+					actions={paymentTableActions}
+				/>
+			</PageContainer>
+
+			<ArchivePaymentModal />
+			<DeletePaymentModal />
+			<PaymentPreviewDrawer />
+		</>
+	);
+};
+
+const PaymentPreviewDrawer: React.FC = () => {
+	const { preview } = usePaymentListPageActions();
+
+	return (
+		<PaymentDetailDrawer
+			opened={preview.isOpenPreview}
+			onClose={preview.handleClosePreview}
+			payment={preview.selectedPayment}
+			isLoading={preview.isLoadingPreview}
+		/>
+	);
+};
+
+const ArchivePaymentModal: React.FC = () => {
+	const { t: translate } = useTranslation('vending_machine');
+	const {
+		pendingArchive,
+		isOpenArchiveModal,
+		handleCloseModal,
+		handleConfirmArchive,
+	} = usePaymentListPageActions().archive;
+
+	return (
+		<ConfirmModal
+			opened={!!pendingArchive && isOpenArchiveModal}
+			onClose={handleCloseModal}
+			onConfirm={handleConfirmArchive}
+			title={pendingArchive?.targetArchived
+				? translate('payment.messages.archive_modal_title')
+				: translate('payment.messages.restore_modal_title')}
+			message={
+				<Trans
+					i18nKey={pendingArchive?.targetArchived
+						? 'payment.messages.archive_confirm'
+						: 'payment.messages.restore_confirm'}
+					values={{ name: pendingArchive?.payment?.name || '' }}
+					components={{ strong: <strong /> }}
+				/>
+			}
+			confirmLabel={pendingArchive?.targetArchived
+				? translate('action.archive')
+				: translate('action.restore')}
+			confirmColor={pendingArchive?.targetArchived ? 'orange' : 'blue'}
+		/>
+	);
+};
+
+const DeletePaymentModal: React.FC = () => {
+	const { t: translate } = useTranslation('vending_machine');
+	const {
+		paymentToDelete,
+		isOpenDeleteModal,
+		handleCloseDeleteModal,
+		handleDelete,
+	} = usePaymentListPageActions().delete;
+
+	return (
+		<ConfirmModal
+			title={translate('messages.delete.confirm')}
+			opened={!!paymentToDelete && isOpenDeleteModal}
+			onClose={handleCloseDeleteModal}
+			onConfirm={() => handleDelete(paymentToDelete?.id || '')}
+			message={
+				<Trans
+					i18nKey='payment.messages.delete_confirm'
+					values={{ name: paymentToDelete?.name || '' }}
+					components={{ strong: <strong /> }}
+				/>
+			}
+			confirmLabel={translate('action.delete')}
+			confirmColor='red'
+		/>
+	);
+};
+
+type PaymentListProps = {
+	payments: PaymentMethod[],
+	viewMode: 'list' | 'grid',
+	isLoading: boolean,
+	actions: PaymentTableActions,
+};
+
+function PaymentList({ payments, viewMode, isLoading, actions }: PaymentListProps) {
+	switch (viewMode) {
+		case 'grid':
+			return (
+				<PaymentGridView
+					payments={payments}
+					isLoading={isLoading}
+					actions={actions}
+				/>
+			);
+		case 'list':
+		default:
+			return (
+				<PaymentTable
+					columns={PAYMENT_TABLE_COLUMNS}
+					data={payments as unknown as Record<string, unknown>[]}
+					schema={asLegacyModelSchema(paymentSchema)}
+					isLoading={isLoading}
+					actions={actions}
+				/>
+			);
+	}
+}

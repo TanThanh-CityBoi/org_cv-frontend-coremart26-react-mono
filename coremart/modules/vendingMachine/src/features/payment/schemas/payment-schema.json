@@ -1,0 +1,43 @@
+{
+	"name": "payment",
+	"fields": {
+		"id": {
+			"type": "string",
+			"label": "{ \"$ref\": 'payment.fields.id' }",
+			"hidden": true
+		},
+		"method": {
+			"type": "string",
+			"label": "{ \"$ref\": 'payment.fields.code' }"
+		},
+		"name": {
+			"type": "string",
+			"label": "{ \"$ref\": 'payment.fields.name' }"
+		},
+		"image": {
+			"type": "string",
+			"label": "{ \"$ref\": 'payment.fields.image' }"
+		},
+		"isArchived": {
+			"type": "boolean",
+			"label": "{ \"$ref\": 'payment.fields.status' }"
+		},
+		"minTransactionValue": {
+			"type": "number",
+			"label": "{ \"$ref\": 'payment.fields.min_transaction_value' }"
+		},
+		"maxTransactionValue": {
+			"type": "number",
+			"label": "{ \"$ref\": 'payment.fields.max_transaction_value' }"
+		},
+		"transactionRange": {
+			"type": "string",
+			"label": "{ \"$ref\": 'payment.fields.transaction_range' }"
+		},
+		"createdAt": {
+			"type": "date",
+			"label": "{ \"$ref\": 'payment.fields.created_at' }",
+			"hidden": true
+		}
+	}
+}

@@ -1,0 +1,223 @@
+import authorizeIcon from '@nikkierp/ui/assets/images/modules/authorize.png';
+import fileDriveIcon from '@nikkierp/ui/assets/images/modules/drive.png';
+import essentialIcon from '@nikkierp/ui/assets/images/modules/essential.png';
+import identityIcon from '@nikkierp/ui/assets/images/modules/identity.png';
+import inventoryIcon from '@nikkierp/ui/assets/images/modules/inventory.png';
+import salesIcon from '@nikkierp/ui/assets/images/modules/sales.png';
+import vendingMachineIcon from '@nikkierp/ui/assets/images/modules/vending-machine.png';
+
+
+export const mockModules = [
+	{
+		key: 'favouritesAndRecentlyUsed',
+		label: 'Favourites and Recently Used',
+		modules: [
+			{
+				name: 'Essential',
+				slug: 'essential',
+				category: 'Essential',
+				icon: essentialIcon,
+				isDisabled: false,
+				isOrphaned: false,
+				isFavourite: true,
+				lastUsed: '2025-01-01',
+			},
+			{
+				name: 'IAM',
+				slug: 'iam',
+				category: 'IAM',
+				icon: identityIcon,
+				isDisabled: false,
+				isOrphaned: false,
+				isFavourite: false,
+				lastUsed: '2025-01-01',
+			},
+			{
+				name: 'Authorize',
+				slug: 'authorize',
+				category: 'Authorize',
+				icon: authorizeIcon,
+				isDisabled: false,
+				isOrphaned: false,
+				isFavourite: true,
+				lastUsed: '2025-01-01',
+			},
+			{
+				name: 'Drive',
+				slug: 'drive',
+				category: 'Drive',
+				icon: fileDriveIcon,
+				isDisabled: false,
+				isOrphaned: false,
+				isFavourite: false,
+				lastUsed: '2025-01-01',
+			},
+			{
+				name: 'Inventory',
+				slug: 'inventory',
+				category: 'Inventory',
+				icon: inventoryIcon,
+				isDisabled: false,
+				isOrphaned: false,
+				isFavourite: false,
+				lastUsed: '2025-01-01',
+			},
+			{
+				name: 'Sales',
+				slug: 'sales',
+				category: 'Sales',
+				icon: salesIcon,
+				isDisabled: false,
+				isOrphaned: false,
+				isFavourite: false,
+				lastUsed: '2025-01-01',
+			},
+			{
+				name: 'Purchase',
+				slug: 'purchase',
+				category: 'Purchase',
+				icon: 'icon-purchase',
+				isDisabled: false,
+				isOrphaned: false,
+				isFavourite: false,
+				lastUsed: '2025-01-01',
+			},
+			{
+				name: 'Vending Machine',
+				slug: 'vending_machine',
+				category: 'Vending Machine',
+				icon: vendingMachineIcon,
+				isDisabled: false,
+				isOrphaned: false,
+				isFavourite: false,
+				lastUsed: '2025-01-01',
+			},
+		],
+	},
+	{
+		key: 'coreBusiness',
+		label: 'Core Business Operations (2)',
+		modules: [
+			{
+				name: 'File Drive',
+				slug: 'file_drive',
+				category: 'File Drive',
+				icon: fileDriveIcon,
+				isDisabled: true,
+				isFavourite: false,
+				lastUsed: '2025-01-01',
+			},
+			{
+				name: 'HR Management',
+				slug: 'hr_management',
+				category: 'HR Management',
+				icon: 'icon-hr-management',
+				isDisabled: false,
+				isFavourite: false,
+				lastUsed: '2025-01-01',
+			},
+			{
+				name: 'Asset Management',
+				slug: 'asset_management',
+				category: 'Asset Management',
+				icon: 'icon-asset-management',
+				isDisabled: false,
+				isFavourite: false,
+				lastUsed: '2025-01-01',
+			},
+		],
+	},
+	{
+		key: 'communication',
+		label: 'Communication (3)',
+		modules: [
+			{
+				name: 'Chat',
+				slug: 'chat',
+				category: 'communication',
+				icon: 'icon-chat',
+				isDisabled: false,
+				isFavourite: false,
+				lastUsed: '2025-01-01',
+			},
+			{
+				name: 'Email',
+				slug: 'email',
+				category: 'communication',
+				icon: 'icon-email',
+				isDisabled: false,
+				isFavourite: false,
+				lastUsed: '2025-01-01',
+			},
+		],
+	},
+	{
+		key: 'identityAndAccessManagement',
+		label: 'Identity & Access Management (1)',
+		modules: [
+			{
+				name: 'Identity',
+				slug: 'identity',
+				category: 'identityAndAccessManagement',
+				icon: 'icon-identity',
+				isDisabled: false,
+				isFavourite: false,
+				lastUsed: '2025-01-01',
+			},
+		],
+	},
+	{
+		key: 'infomationTechnology',
+		label: 'Information Technology (1)',
+		modules: [
+			{
+				name: 'Vending Machine',
+				slug: 'vending_machine',
+				category: 'infomationTechnology',
+				icon: 'icon-vending-machine',
+				isDisabled: false,
+				isFavourite: false,
+				lastUsed: '2025-01-01',
+			},
+		],
+	},
+	{
+		key: 'inventoryAndLogistics',
+		label: 'Inventory & Logistics (1)',
+		modules: [
+			{
+				name: 'Inventory',
+				slug: 'inventory',
+				category: 'inventoryAndLogistics',
+				icon: 'icon-inventory',
+				isDisabled: false,
+				isFavourite: false,
+				lastUsed: '2025-01-01',
+			},
+			{
+				name: 'Purchase',
+				slug: 'purchase',
+				category: 'inventoryAndLogistics',
+				icon: 'icon-purchase',
+				isDisabled: false,
+				isFavourite: false,
+				lastUsed: '2025-01-01',
+			},
+		],
+	},
+	{
+		key: 'financialManagement',
+		label: 'Financial Management (1)',
+		modules: [
+			{
+				name: 'Accounting',
+				slug: 'accounting',
+				category: 'financialManagement',
+				icon: 'icon-accounting',
+				isDisabled: false,
+				isFavourite: false,
+				lastUsed: '2025-01-01',
+			},
+		],
+	},
+];

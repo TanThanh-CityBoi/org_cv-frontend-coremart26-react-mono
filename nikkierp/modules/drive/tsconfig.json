@@ -1,0 +1,16 @@
+{
+	"extends": "../../tsconfig-react.base.json",
+	"compilerOptions": {
+		"outDir": "dist",
+	},
+	"include": [
+		"src/**/*",
+		"types/*",
+		"node_modules/vite/types/*",
+		"../../libs/shell/src/global.d.ts",
+	],
+	"exclude": [
+		"node_modules",
+		"dist",
+	]
+}

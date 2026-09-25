@@ -1,0 +1,71 @@
+{
+	"name": "kioskDevice",
+	"fields": {
+		"id": {
+			"type": "string",
+			"label": "{ \"$ref\": 'device.fields.id' }",
+			"hidden": true
+		},
+		"code": {
+			"type": "string",
+			"label": "{ \"$ref\": 'device.fields.code' }"
+		},
+		"name": {
+			"type": "string",
+			"label": "{ \"$ref\": 'device.fields.name' }"
+		},
+		"status": {
+			"type": "enum",
+			"label": "{ \"$ref\": 'device.fields.status' }",
+			"enum": [
+				{
+					"value": "active",
+					"label": "{ \"$ref\": 'status.active' }"
+				},
+				{
+					"value": "inactive",
+					"label": "{ \"$ref\": 'status.inactive' }"
+				}
+			]
+		},
+		"deviceType": {
+			"type": "enum",
+			"label": "{ \"$ref\": 'device.fields.device_type' }",
+			"enum": [
+				{
+					"value": "motor",
+					"label": "{ \"$ref\": 'device.device_type.motor' }"
+				},
+				{
+					"value": "pos",
+					"label": "{ \"$ref\": 'device.device_type.pos' }"
+				},
+				{
+					"value": "screen",
+					"label": "{ \"$ref\": 'device.device_type.screen' }"
+				},
+				{
+					"value": "cpu",
+					"label": "{ \"$ref\": 'device.device_type.cpu' }"
+				},
+				{
+					"value": "router",
+					"label": "{ \"$ref\": 'device.device_type.router' }"
+				}
+			]
+		},
+		"description": {
+			"type": "string",
+			"label": "{ \"$ref\": 'device.fields.description' }"
+		},
+		"specifications": {
+			"type": "array",
+			"label": "{ \"$ref\": 'device.fields.specifications' }"
+		},
+		"createdAt": {
+			"type": "date",
+			"label": "{ \"$ref\": 'device.fields.created_at' }",
+			"hidden": true
+		}
+	}
+}

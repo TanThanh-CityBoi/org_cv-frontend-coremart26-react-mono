@@ -1,0 +1,31 @@
+{
+	"name": "kioskMedia",
+	"fields": {
+		"id": {
+			"type": "string",
+			"label": "{ \"$ref\": 'kiosk_media.fields.id' }",
+			"hidden": true
+		},
+		"name": {
+			"type": "string",
+			"label": "{ \"$ref\": 'kiosk_media.fields.name' }"
+		},
+		"mediaType": {
+			"type": "string",
+			"label": "{ \"$ref\": 'kiosk_media.fields.media_type' }"
+		},
+		"isArchived": {
+			"type": "boolean",
+			"label": "{ \"$ref\": 'kiosk_media.fields.status' }"
+		},
+		"createdAt": {
+			"type": "string",
+			"label": "{ \"$ref\": 'kiosk_media.fields.created_at' }"
+		},
+		"actions": {
+			"type": "string",
+			"label": "{ \"$ref\": 'action.title' }",
+			"hidden": true
+		}
+	}
+}

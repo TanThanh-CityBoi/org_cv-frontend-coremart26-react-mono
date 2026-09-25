@@ -1,0 +1,34 @@
+.avatar {
+	border: 1px solid transparent;
+}
+
+.avatar:hover {
+	border: 1px solid #a0a0a0;
+}
+
+.activeAvatar {
+	border: 1px solid #a0a0a0;
+}
+
+.menuDropdown {
+	overflow-x: hidden;
+	max-width: 300px;
+}
+
+.menuDropdown :global([data-menu-item]) {
+	max-width: 100%;
+	overflow: hidden;
+}
+
+.menuDropdown :global([data-menu-item] > div[data-position]) {
+	flex-shrink: 0;
+}
+
+.menuDropdown :global([data-menu-item] > div:not([data-position])) {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	max-width: 100%;
+	min-width: 0;
+	flex: 1;
+}

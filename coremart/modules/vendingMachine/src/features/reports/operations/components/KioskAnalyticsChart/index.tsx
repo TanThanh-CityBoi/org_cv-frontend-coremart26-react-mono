@@ -1,0 +1,1 @@
+export { KioskAnalyticsChart } from './KioskAnalyticsChart';

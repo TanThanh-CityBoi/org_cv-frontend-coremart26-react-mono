@@ -1,0 +1,58 @@
+{
+	"name": "event",
+	"fields": {
+		"id": {
+			"type": "string",
+			"label": "{ \"$ref\": 'events.fields.id' }"
+		},
+		"etag": {
+			"type": "string",
+			"label": "etag"
+		},
+		"code": {
+			"type": "string",
+			"label": "{ \"$ref\": 'events.fields.code' }"
+		},
+		"name": {
+			"type": "string",
+			"label": "{ \"$ref\": 'events.fields.name' }"
+		},
+		"description": {
+			"type": "string",
+			"label": "{ \"$ref\": 'events.fields.description' }"
+		},
+		"isArchived": {
+			"type": "boolean",
+			"label": "{ \"$ref\": 'events.fields.archived_state' }"
+		},
+		"runPhase": {
+			"type": "string",
+			"label": "{ \"$ref\": 'events.fields.run_phase' }"
+		},
+		"startTime": {
+			"type": "date",
+			"label": "{ \"$ref\": 'events.fields.start_date' }"
+		},
+		"endTime": {
+			"type": "date",
+			"label": "{ \"$ref\": 'events.fields.end_date' }"
+		},
+		"dailyStartTime": {
+			"type": "string",
+			"label": "{ \"$ref\": 'events.fields.daily_start_time' }"
+		},
+		"dailyEndTime": {
+			"type": "string",
+			"label": "{ \"$ref\": 'events.fields.daily_end_time' }"
+		},
+		"isAllDay": {
+			"type": "boolean",
+			"label": "{ \"$ref\": 'events.fields.is_all_day' }"
+		},
+		"createdAt": {
+			"type": "date",
+			"label": "{ \"$ref\": 'events.fields.created_at' }",
+			"hidden": true
+		}
+	}
+}

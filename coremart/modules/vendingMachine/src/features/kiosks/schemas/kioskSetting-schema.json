@@ -1,0 +1,29 @@
+{
+	"name": "kioskSetting",
+	"fields": {
+		"interfaceMode": {
+			"type": "enum",
+			"label": "{ \"$ref\": 'kiosk_models.fields.interface_mode' }",
+			"enum": [
+				{ "value": "normal", "label": "{ \"$ref\": 'kiosk_models.interface_mode.normal' }" },
+				{ "value": "focus", "label": "{ \"$ref\": 'kiosk_models.interface_mode.focus' }" }
+			]
+		},
+		"waitingPlaylistId": {
+			"type": "string",
+			"label": "{ \"$ref\": 'events.fields.waiting_playlist' }"
+		},
+		"shoppingPlaylistId": {
+			"type": "string",
+			"label": "{ \"$ref\": 'events.fields.waiting_playlist' }"
+		},
+		"themeId": {
+			"type": "string",
+			"label": "{ \"$ref\": 'events.fields.theme' }"
+		},
+		"gameId": {
+			"type": "string",
+			"label": "{ \"$ref\": 'events.fields.game' }"
+		}
+	}
+}

@@ -1,0 +1,107 @@
+{
+	"name": "event",
+	"fields": {
+		"id": {
+			"type": "string",
+			"label": "{ \"$ref\": 'events.fields.id' }"
+		},
+		"etag": {
+			"type": "string",
+			"label": "etag"
+		},
+		"code": {
+			"type": "string",
+			"label": "{ \"$ref\": 'events.fields.code' }",
+			"required": {
+				"create": true,
+				"update": true
+			},
+			"constraints": [
+				{
+					"type": "required",
+					"message": "{ \"$ref\": 'errors.required' }"
+				},
+				{
+					"type": "length",
+					"min": 1,
+					"max": 128,
+					"message": "{ \"$ref\": 'errors.length' }"
+				}
+			]
+		},
+		"name": {
+			"type": "string",
+			"label": "{ \"$ref\": 'events.fields.name' }",
+			"required": {
+				"create": true,
+				"update": true
+			},
+			"constraints": [
+				{
+					"type": "required",
+					"message": "{ \"$ref\": 'errors.required' }"
+				}
+			]
+		},
+		"description": {
+			"type": "string",
+			"label": "{ \"$ref\": 'events.fields.description' }"
+		},
+		"startTime": {
+			"type": "date",
+			"label": "{ \"$ref\": 'events.fields.start_date' }",
+			"required": {
+				"create": true,
+				"update": true
+			}
+		},
+		"endTime": {
+			"type": "date",
+			"label": "{ \"$ref\": 'events.fields.end_date' }",
+			"required": {
+				"create": true,
+				"update": true
+			}
+		},
+		"dailyStartTime": {
+			"type": "string",
+			"label": "{ \"$ref\": 'events.fields.daily_start_time' }",
+			"required": {
+				"create": true,
+				"update": true
+			}
+		},
+		"dailyEndTime": {
+			"type": "string",
+			"label": "{ \"$ref\": 'events.fields.daily_end_time' }",
+			"required": {
+				"create": true,
+				"update": true
+			}
+		},
+		"isAllDay": {
+			"type": "boolean",
+			"label": "{ \"$ref\": 'events.fields.is_all_day' }",
+			"required": {
+				"create": true,
+				"update": false
+			}
+		},
+		"shoppingScreenPlaylistRef": {
+			"type": "string",
+			"label": "{ \"$ref\": 'events.fields.shopping_screen_playlist_ref' }"
+		},
+		"waitingScreenPlaylistRef": {
+			"type": "string",
+			"label": "{ \"$ref\": 'events.fields.waiting_screen_playlist_ref' }"
+		},
+		"themeRef": {
+			"type": "string",
+			"label": "{ \"$ref\": 'events.fields.theme_ref' }"
+		},
+		"gameRef": {
+			"type": "string",
+			"label": "{ \"$ref\": 'events.fields.game_ref' }"
+		}
+	}
+}

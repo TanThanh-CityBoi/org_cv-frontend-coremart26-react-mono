@@ -1,0 +1,26 @@
+.headerRow {
+	gap: var(--mantine-spacing-md);
+	/* box-shadow: 1px 1px 3px 0px light-dark(rgba(0, 0, 0, 0.12), var(--mantine-color-dark-2));
+	border-bottom: 1px solid light-dark(rgba(0, 0, 0, 0.12), var(--mantine-color-dark-2)); */
+}
+
+.goHomeButton {
+	transition: transform 0.2s ease-out;
+}
+
+.goHomeButton:active {
+	transform: scale(0.9);
+}
+
+.goHomeButtonClick {
+	animation: clickPulse 0.5s ease-out;
+}
+
+@keyframes clickPulse {
+	from {
+		transform: rotateY(0deg);
+	}
+	to {
+		transform: rotateY(180deg);
+	}
+}

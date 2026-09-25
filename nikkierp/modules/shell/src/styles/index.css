@@ -1,0 +1,73 @@
+@import '@mantine/core/styles.layer.css';
+@import '@mantine/notifications/styles.layer.css';
+@import '@mantine/dates/styles.layer.css';
+
+/* @import "tailwindcss/preflight.css" layer(base); */
+@import "tailwindcss/theme.css" layer(twtheme);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+/* @import 'mantine-react-table/styles.css' layer(mantine-table); */
+/* @import 'react-data-grid/lib/styles.css' layer(data-grid); */
+
+
+@import './nikki.css';
+
+
+@layer base, twtheme, mantine, data-grid, nikki, components, utilities;
+
+html {
+	font-size: 16px;
+}
+
+/* Custom scrollbar for entire page */
+/* html::-webkit-scrollbar {
+	width: 5px;
+	height: 5px;
+}
+
+html::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+html::-webkit-scrollbar-thumb {
+	background-color: var(--mantine-color-gray-7);
+	border-radius: 3px;
+}
+
+html::-webkit-scrollbar-thumb:hover {
+	background-color: var(--mantine-color-gray-8);
+} */
+
+/* Firefox */
+/* html {
+	scrollbar-width: thin;
+	scrollbar-color: var(--mantine-color-gray-5) transparent;
+} */
+
+#root {
+	position: relative;
+}
+
+@layer mantine {
+	.mantine-Grid-inner {
+		height: 100%;
+	}
+
+	html {
+		--input-label-size: var(--mantine-font-size-md);
+		--input-error-size: var(--mantine-font-size-md);
+		--input-description-size: var(--mantine-font-size-md);
+		--input-fz: var(--mantine-font-size-md);
+	}
+
+	html[data-mantine-color-scheme='light'] {
+		:where(.mantine-Table-table, .mantine-Table-root table) {
+			--table-hover-color: var(--mantine-color-gray-2);
+			--table-striped-color: var(--mantine-color-gray-1);
+		}
+
+		th {
+			background-color: var(--mantine-color-gray-2);
+		}
+	}
+}

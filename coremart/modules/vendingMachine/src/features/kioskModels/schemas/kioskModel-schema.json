@@ -1,0 +1,41 @@
+{
+	"name": "kioskModel",
+	"fields": {
+		"id": {
+			"type": "string",
+			"label": "{ \"$ref\": 'kiosk_models.fields.id' }",
+			"hidden": true
+		},
+		"referenceCode": {
+			"type": "string",
+			"label": "{ \"$ref\": 'kiosk_models.fields.reference_code' }"
+		},
+		"name": {
+			"type": "string",
+			"label": "{ \"$ref\": 'kiosk_models.fields.name' }"
+		},
+		"description": {
+			"type": "string",
+			"label": "{ \"$ref\": 'kiosk_models.fields.description' }"
+		},
+		"status": {
+			"type": "enum",
+			"label": "{ \"$ref\": 'kiosk_models.fields.status' }",
+			"enum": [
+				{
+					"value": "active",
+					"label": "{ \"$ref\": 'status.active' }"
+				},
+				{
+					"value": "inactive",
+					"label": "{ \"$ref\": 'status.inactive' }"
+				}
+			]
+		},
+		"createdAt": {
+			"type": "date",
+			"label": "{ \"$ref\": 'kiosk_models.fields.created_at' }",
+			"hidden": true
+		}
+	}
+}

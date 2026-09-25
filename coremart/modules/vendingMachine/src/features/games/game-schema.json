@@ -1,0 +1,49 @@
+{
+	"name": "game",
+	"fields": {
+		"id": {
+			"type": "string",
+			"label": "{ \"$ref\": 'games.fields.id' }",
+			"hidden": true
+		},
+		"code": {
+			"type": "string",
+			"label": "{ \"$ref\": 'games.fields.code' }"
+		},
+		"name": {
+			"type": "string",
+			"label": "{ \"$ref\": 'games.fields.name' }"
+		},
+		"description": {
+			"type": "string",
+			"label": "{ \"$ref\": 'games.fields.description' }"
+		},
+		"status": {
+			"type": "enum",
+			"label": "{ \"$ref\": 'games.fields.status' }",
+			"enum": [
+				{
+					"value": "active",
+					"label": "{ \"$ref\": 'status.active' }"
+				},
+				{
+					"value": "inactive",
+					"label": "{ \"$ref\": 'status.inactive' }"
+				}
+			]
+		},
+		"latestVersion": {
+			"type": "string",
+			"label": "{ \"$ref\": 'games.fields.latest_version' }"
+		},
+		"minAppVersion": {
+			"type": "string",
+			"label": "{ \"$ref\": 'games.fields.min_app_version' }"
+		},
+		"createdAt": {
+			"type": "date",
+			"label": "{ \"$ref\": 'games.fields.created_at' }",
+			"hidden": true
+		}
+	}
+}

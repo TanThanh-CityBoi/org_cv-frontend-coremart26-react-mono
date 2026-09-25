@@ -1,0 +1,29 @@
+---
+alwaysApply: true
+---
+Applies to `/ai-prompts/{feature}/`.
+
+**00-progress.md** — Status: ⚪ not started | 🟡 in progress | 🟢 completed. Read first.
+
+**01-plans.md** — Contains all planned tasks, a task size must consume tokens fitting one context window. Plan → **approval** → implement.
+
+Task block:
+```
+### [{requirement ID}] {task title}
+{task description} {build guidance} {edge cases to handle} {important notes to take care}
+Hints: (optional; grep/code findings for the next session)
+```
+
+Requirement (reformat if needed):
+```
+**[{Requirement ID}]** {description}
+{optional elaboration}
+```
+ID = folder abbreviation + sequence (e.g. AUTHN-001). Title must read alone. One requirement → multiple tasks OK.
+
+Examples: **[AUTHN-001]** username login · **[AUTHN-002]** OTP login
+
+1. After approval: prepend tasks to `00-progress.md` as ⚪ (titles only).
+2. Code only when user says so; mark 🟡 when starting; **process list bottom → top**.
+3. Done: 🟢 + append `(DD/MM/YYYY hh:mm)` to the task title.
+4. Near context limit: wrap up current code to avoid build errors but guarantee correctness, then append a **continuation note** to `01-plans.md`.

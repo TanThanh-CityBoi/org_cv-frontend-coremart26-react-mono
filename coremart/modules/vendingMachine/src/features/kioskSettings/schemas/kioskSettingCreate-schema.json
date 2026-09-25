@@ -1,0 +1,17 @@
+{
+	"name": "kioskSettingCreate",
+	"fields": {
+		"code": {
+			"type": "string",
+			"label": "{ \"$ref\": 'kiosk_settings.fields.code' }"
+		},
+		"name": {
+			"type": "string",
+			"label": "{ \"$ref\": 'kiosk_settings.fields.name' }"
+		},
+		"description": {
+			"type": "string",
+			"label": "{ \"$ref\": 'kiosk_settings.fields.description' }"
+		}
+	}
+}

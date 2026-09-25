@@ -1,0 +1,57 @@
+{
+	"name": "vdOrder",
+	"fields": {
+		"id": {
+			"type": "string",
+			"label": "{ \"$ref\": 'orders.fields.id' }"
+		},
+		"chainKey": {
+			"type": "string",
+			"label": "{ \"$ref\": 'orders.fields.root_order_ref' }"
+		},
+		"orderCode": {
+			"type": "string",
+			"label": "{ \"$ref\": 'orders.fields.order_code' }"
+		},
+		"parentOrderCode": {
+			"type": "string",
+			"label": "{ \"$ref\": 'orders.fields.parent_order_ref' }"
+		},
+		"createdAt": {
+			"type": "date",
+			"label": "{ \"$ref\": 'orders.fields.created_at' }"
+		},
+		"kioskRef": {
+			"type": "string",
+			"label": "{ \"$ref\": 'orders.fields.kiosk' }"
+		},
+		"paymentMethod": {
+			"type": "string",
+			"label": "{ \"$ref\": 'orders.fields.payment_method' }"
+		},
+		"amount": {
+			"type": "string",
+			"label": "{ \"$ref\": 'orders.fields.amount' }"
+		},
+		"status": {
+			"type": "string",
+			"label": "{ \"$ref\": 'orders.fields.order_status' }"
+		},
+		"paymentStatus": {
+			"type": "string",
+			"label": "{ \"$ref\": 'orders.fields.payment_status' }"
+		},
+		"refundAmount": {
+			"type": "string",
+			"label": "{ \"$ref\": 'orders.fields.refund_amount' }"
+		},
+		"refundStatus": {
+			"type": "string",
+			"label": "{ \"$ref\": 'orders.fields.refund_status' }"
+		},
+		"actions": {
+			"type": "string",
+			"label": "{ \"$ref\": 'action.title' }"
+		}
+	}
+}

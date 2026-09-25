@@ -1,0 +1,32 @@
+{
+	"name": "kioskSetting",
+	"fields": {
+		"id": {
+			"type": "string",
+			"label": "{ \"$ref\": 'kiosk_settings.fields.id' }",
+			"hidden": true
+		},
+		"code": {
+			"type": "string",
+			"label": "{ \"$ref\": 'kiosk_settings.fields.code' }"
+		},
+		"name": {
+			"type": "string",
+			"label": "{ \"$ref\": 'kiosk_settings.fields.name' }"
+		},
+		"description": {
+			"type": "string",
+			"label": "{ \"$ref\": 'kiosk_settings.fields.description' }"
+		},
+		"isArchived": {
+			"type": "boolean",
+			"label": "{ \"$ref\": 'kiosk_settings.fields.is_archived' }",
+			"optional": true
+		},
+		"createdAt": {
+			"type": "date",
+			"label": "{ \"$ref\": 'kiosk_settings.fields.created_at' }",
+			"hidden": true
+		}
+	}
+}

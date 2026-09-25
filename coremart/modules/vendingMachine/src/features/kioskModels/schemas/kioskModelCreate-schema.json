@@ -1,0 +1,69 @@
+{
+	"name": "kioskModel",
+	"fields": {
+		"id": {
+			"type": "string",
+			"label": "{ \"$ref\": 'kiosk_models.fields.id' }"
+		},
+		"etag": {
+			"type": "string",
+			"label": "{ \"$ref\": 'kiosk_models.fields.etag' }"
+		},
+		"referenceCode": {
+			"type": "string",
+			"label": "{ \"$ref\": 'kiosk_models.fields.model_id' }",
+			"required": {
+				"create": true,
+				"update": true
+			},
+			"constraints": [
+				{
+					"type": "required",
+					"message": "{ \"$ref\": 'errors.required' }"
+				},
+				{
+					"type": "length",
+					"min": 1,
+					"max": 128,
+					"message": "{ \"$ref\": 'errors.length' }"
+				}
+			]
+		},
+		"name": {
+			"type": "string",
+			"label": "{ \"$ref\": 'kiosk_models.fields.name' }",
+			"required": {
+				"create": true,
+				"update": true
+			},
+			"constraints": [
+				{
+					"type": "required",
+					"message": "{ \"$ref\": 'errors.required' }"
+				},
+				{
+					"type": "length",
+					"min": 1,
+					"max": 128,
+					"message": "{ \"$ref\": 'errors.length' }"
+				}
+			]
+		},
+		"description": {
+			"type": "string",
+			"label": "{ \"$ref\": 'kiosk_models.fields.description' }"
+		},
+		"goodsCollectorType": {
+			"type": "enum",
+			"label": "{ \"$ref\": 'kiosk_models.fields.kiosk_type' }",
+			"enum": [
+				{ "value": "elevator", "label": "{ \"$ref\": 'kiosk_models.kiosk_type.elevator' }" },
+				{ "value": "non-elevator", "label": "{ \"$ref\": 'kiosk_models.kiosk_type.non_elevator' }" }
+			]
+		},
+		"shelvesNumber": {
+			"type": "integer",
+			"label": "{ \"$ref\": 'kiosk_models.fields.shelves_number' }"
+		}
+	}
+}

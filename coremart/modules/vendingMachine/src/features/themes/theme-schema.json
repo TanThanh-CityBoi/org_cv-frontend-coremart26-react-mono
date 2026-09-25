@@ -1,0 +1,135 @@
+{
+	"name": "theme",
+	"fields": {
+		"id": {
+			"type": "string",
+			"label": "{ \"$ref\": 'themes.fields.id' }",
+			"hidden": true
+		},
+		"code": {
+			"type": "string",
+			"label": "{ \"$ref\": 'themes.fields.code' }"
+		},
+		"name": {
+			"type": "string",
+			"label": "{ \"$ref\": 'themes.fields.name' }"
+		},
+		"description": {
+			"type": "string",
+			"label": "{ \"$ref\": 'themes.fields.description' }"
+		},
+		"status": {
+			"type": "enum",
+			"label": "{ \"$ref\": 'themes.fields.status' }",
+			"enum": [
+				{
+					"value": "active",
+					"label": "{ \"$ref\": 'status.active' }"
+				},
+				{
+					"value": "inactive",
+					"label": "{ \"$ref\": 'status.inactive' }"
+				}
+			]
+		},
+		"primaryColor": {
+			"type": "string",
+			"label": "{ \"$ref\": 'themes.fields.primary_color' }"
+		},
+		"productCardStyle": {
+			"type": "enum",
+			"label": "{ \"$ref\": 'themes.fields.product_card_style' }",
+			"enum": [
+				{
+					"value": "default",
+					"label": "{ \"$ref\": 'themes.product_card_style.default' }"
+				},
+				{
+					"value": "rounded",
+					"label": "{ \"$ref\": 'themes.product_card_style.rounded' }"
+				},
+				{
+					"value": "minimal",
+					"label": "{ \"$ref\": 'themes.product_card_style.minimal' }"
+				},
+				{
+					"value": "elegant",
+					"label": "{ \"$ref\": 'themes.product_card_style.elegant' }"
+				},
+				{
+					"value": "modern",
+					"label": "{ \"$ref\": 'themes.product_card_style.modern' }"
+				}
+			]
+		},
+		"appBackground": {
+			"type": "enum",
+			"label": "{ \"$ref\": 'themes.fields.app_background' }",
+			"enum": [
+				{
+					"value": "none",
+					"label": "{ \"$ref\": 'themes.app_background.none' }"
+				},
+				{
+					"value": "snow",
+					"label": "{ \"$ref\": 'themes.app_background.snow' }"
+				},
+				{
+					"value": "fireworks",
+					"label": "{ \"$ref\": 'themes.app_background.fireworks' }"
+				},
+				{
+					"value": "particles",
+					"label": "{ \"$ref\": 'themes.app_background.particles' }"
+				},
+				{
+					"value": "gradient",
+					"label": "{ \"$ref\": 'themes.app_background.gradient' }"
+				},
+				{
+					"value": "custom",
+					"label": "{ \"$ref\": 'themes.app_background.custom' }"
+				}
+			]
+		},
+		"fontStyle": {
+			"type": "enum",
+			"label": "{ \"$ref\": 'themes.fields.font_style' }",
+			"enum": [
+				{
+					"value": "default",
+					"label": "{ \"$ref\": 'themes.font_style.default' }"
+				},
+				{
+					"value": "roboto",
+					"label": "{ \"$ref\": 'themes.font_style.roboto' }"
+				},
+				{
+					"value": "inter",
+					"label": "{ \"$ref\": 'themes.font_style.inter' }"
+				},
+				{
+					"value": "poppins",
+					"label": "{ \"$ref\": 'themes.font_style.poppins' }"
+				},
+				{
+					"value": "montserrat",
+					"label": "{ \"$ref\": 'themes.font_style.montserrat' }"
+				},
+				{
+					"value": "custom",
+					"label": "{ \"$ref\": 'themes.font_style.custom' }"
+				}
+			]
+		},
+		"mascotImage": {
+			"type": "string",
+			"label": "{ \"$ref\": 'themes.fields.mascot_image' }"
+		},
+		"createdAt": {
+			"type": "date",
+			"label": "{ \"$ref\": 'themes.fields.created_at' }",
+			"hidden": true
+		}
+	}
+}

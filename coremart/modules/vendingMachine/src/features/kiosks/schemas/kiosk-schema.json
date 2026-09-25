@@ -1,0 +1,103 @@
+{
+	"name": "kiosk",
+	"fields": {
+		"id": {
+			"type": "string",
+			"label": "{ \"$ref\": 'kiosk.fields.id' }",
+			"hidden": true
+		},
+		"code": {
+			"type": "string",
+			"label": "{ \"$ref\": 'kiosk.fields.code' }"
+		},
+		"name": {
+			"type": "string",
+			"label": "{ \"$ref\": 'kiosk.fields.name' }"
+		},
+		"displayName": {
+			"type": "string",
+			"label": "{ \"$ref\": 'kiosk.fields.display_name' }"
+		},
+		"connectionStatus": {
+			"type": "enum",
+			"label": "{ \"$ref\": 'kiosk.fields.connection_status' }",
+			"enum": [
+				{
+					"value": "fast",
+					"label": "{ \"$ref\": 'kiosk.connection_status.fast' }"
+				},
+				{
+					"value": "slow",
+					"label": "{ \"$ref\": 'kiosk.connection_status.slow' }"
+				},
+				{
+					"value": "lost",
+					"label": "{ \"$ref\": 'kiosk.connection_status.lost' }"
+				}
+			]
+		},
+		"locationAddress": {
+			"type": "string",
+			"label": "{ \"$ref\": 'kiosk.fields.address' }"
+		},
+		"isArchived": {
+			"type": "boolean",
+			"label": "{ \"$ref\": 'kiosk.fields.status' }"
+		},
+		"mode": {
+			"type": "enum",
+			"label": "{ \"$ref\": 'kiosk.fields.mode' }",
+			"enum": [
+				{
+					"value": "pending",
+					"label": "{ \"$ref\": 'kiosk.mode.pending' }"
+				},
+				{
+					"value": "selling",
+					"label": "{ \"$ref\": 'kiosk.mode.selling' }"
+				},
+				{
+					"value": "slideshow-only",
+					"label": "{ \"$ref\": 'kiosk.mode.slideshow_only' }"
+				}
+			]
+		},
+		"warnings": {
+			"type": "array",
+			"label": "{ \"$ref\": 'kiosk.fields.warnings' }"
+		},
+		"stateTemperature": {
+			"type": "string",
+			"label": "{ \"$ref\": 'kiosk.state.temperature' }"
+		},
+		"stateHumidity": {
+			"type": "string",
+			"label": "{ \"$ref\": 'kiosk.state.humidity' }"
+		},
+		"stateCurrent": {
+			"type": "string",
+			"label": "{ \"$ref\": 'kiosk.state.current' }"
+		},
+		"stateEnergy": {
+			"type": "string",
+			"label": "{ \"$ref\": 'kiosk.state.energy' }"
+		},
+		"statePower": {
+			"type": "string",
+			"label": "{ \"$ref\": 'kiosk.state.power' }"
+		},
+		"stateOutputDoorSwitch": {
+			"type": "string",
+			"label": "{ \"$ref\": 'kiosk.state.output_door_switch' }"
+		},
+		"stateOutputSwitch": {
+			"type": "string",
+			"label": "{ \"$ref\": 'kiosk.state.output_switch' }"
+		},
+		"createdAt": {
+			"type": "date",
+			"label": "{ \"$ref\": 'kiosk.fields.created_at' }",
+			"hidden": true
+		}
+	}
+}

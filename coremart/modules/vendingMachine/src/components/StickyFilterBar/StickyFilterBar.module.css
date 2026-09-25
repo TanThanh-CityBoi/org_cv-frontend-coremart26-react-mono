@@ -1,0 +1,19 @@
+/**
+ * Horizontal overflow: scroll without visible scrollbar (still scrollable via wheel / drag).
+ */
+.scrollWrap {
+	overflow-x: auto;
+	overflow-y: hidden;
+	max-width: 100%;
+	/* width: 100%; */
+	min-width: 0;
+	-webkit-overflow-scrolling: touch;
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+}
+
+.scrollWrap::-webkit-scrollbar {
+	display: none;
+	height: 0;
+	width: 0;
+}

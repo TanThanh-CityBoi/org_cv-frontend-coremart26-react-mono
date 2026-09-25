@@ -1,0 +1,17 @@
+/* target bằng attribute thôi, không dùng class */
+nikkiapp-drive [data-combobox-option][data-combobox-selected] {
+  background-color: #f0f0f0 !important;
+}
+
+
+nikkiapp-drive .mantine-MultiSelect-pillsList {
+  max-width: 220px;
+  overflow-x: auto;
+  flex-wrap: nowrap;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+nikkiapp-drive .mantine-MultiSelect-pillsList::-webkit-scrollbar {
+  display: none;
+}

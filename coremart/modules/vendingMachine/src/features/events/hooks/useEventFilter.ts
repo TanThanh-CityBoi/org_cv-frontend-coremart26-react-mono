@@ -1,0 +1,42 @@
+import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import { controlPanelToSearchGraph, type ControlPanelFilterConfig } from '../../../components';
+import { ArchivedStatus } from '../../../types';
+
+
+export function useEventFilter() {
+	const { t: translate } = useTranslation('vending_machine');
+	const [searchValue, setSearchValue] = useState('');
+	const [statusFilter, setStatusFilter] = useState<string[]>([]);
+
+	const filters: ControlPanelFilterConfig[] = useMemo(() => [
+		{
+			key: 'search',
+			searchFields: ['code', 'name'],
+			type: 'search' as const,
+			value: searchValue,
+			onChange: setSearchValue,
+			placeholder: translate('events.search.placeholder'),
+		},
+		{
+			key: 'isArchived',
+			type: 'multiSelect' as const,
+			value: statusFilter,
+			onChange: setStatusFilter,
+			options: [
+				{ value: ArchivedStatus.ACTIVE, label: translate('status.active') },
+				{ value: ArchivedStatus.ARCHIVED, label: translate('status.archived') },
+			],
+			placeholder: translate('events.filter.status'),
+			getGraphValue: (value: ArchivedStatus[]) => value.map((v) => v === ArchivedStatus.ARCHIVED),
+		},
+	], [searchValue, statusFilter, translate]);
+
+	const graph = useMemo(
+		() => controlPanelToSearchGraph(filters),
+		[filters],
+	);
+
+	return { filters, graph };
+}

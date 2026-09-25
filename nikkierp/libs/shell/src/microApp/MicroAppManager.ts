@@ -1,0 +1,228 @@
+import {
+	HostServices, MicroAppBundle, MicroAppBundleInitFn, MicroAppBundleInitResult, MicroAppConfig,
+	MicroAppMetadata, MicroAppSlug,
+} from '@nikkierp/ui/microApp';
+import { ImportResult } from '@nikkierp/ui/types';
+
+import { registerReducerFactory } from '../appState/store';
+
+
+export type RetryOptions = {
+	maxAttempts?: number;
+	baseDelayMs?: number;
+	maxDelayMs?: number;
+};
+
+export type MicroAppPack = {
+	init: MicroAppBundleInitFn;
+	config: MicroAppConfig | undefined;
+	htmlTag: string;
+	metadata: MicroAppMetadata;
+};
+
+export class MicroAppManager {
+	private readonly registeredApps: Map<MicroAppSlug, MicroAppMetadata> = new Map();
+	private readonly downloadedPacks: Map<MicroAppSlug, MicroAppPack | Promise<MicroAppPack>> = new Map();
+	private readonly initResults: Map<MicroAppSlug, MicroAppBundleInitResult> = new Map();
+	private readonly retryOptions: RetryOptions;
+	private hostServices?: HostServices;
+
+	constructor(
+		apps: MicroAppMetadata[],
+		retryOptions: RetryOptions = {},
+	) {
+		this.registeredApps = new Map(apps.map(app => [app.slug, app]));
+		this.retryOptions = {
+			maxAttempts: 3,
+			baseDelayMs: 1_000,
+			maxDelayMs: 10_000,
+			...retryOptions,
+		};
+	}
+
+	/**
+	 * Supplies the host-owned services handed to every micro-app's `init`.
+	 * Set once by the Shell right after construction -- it cannot be a
+	 * constructor argument because the command bus is built from this manager.
+	 */
+	public setHostServices(host: HostServices): void {
+		this.hostServices = host;
+	}
+
+	public getMicroApp(slug: string): MicroAppPack | undefined {
+		const packOrPromise = this.downloadedPacks.get(slug);
+		if (packOrPromise && !isPromise(packOrPromise)) {
+			return packOrPromise;
+		}
+		return undefined;
+	}
+
+	public isRegistered(slug: string): boolean {
+		return this.registeredApps.has(slug);
+	}
+
+	/**
+	 * Initializes a downloaded pack exactly once, caching the result so repeated
+	 * calls (e.g. lazy command loading then mounting) don't re-run `init`.
+	 */
+	public initPack(slug: string, pack: MicroAppPack): MicroAppBundleInitResult {
+		const cached = this.initResults.get(slug);
+		if (cached) {
+			return cached;
+		}
+		const host = this.requireHostServices();
+		const result = pack.init({
+			htmlTag: pack.metadata.htmlTag,
+			slug,
+			config: pack.config,
+			registerReducer: registerReducerFactory(slug),
+			commandBus: host.commandBus,
+			host,
+		});
+		this.initResults.set(slug, result);
+		return result;
+	}
+
+	/**
+	 * Downloads (if needed) and initializes a micro-app so its command handlers
+	 * are subscribed. Used by the command bus for lazy module loading.
+	 */
+	public async ensureLoaded(slug: string): Promise<void> {
+		const pack = await this.fetchMicroApp(slug);
+		this.initPack(slug, pack);
+	}
+
+	private requireHostServices(): HostServices {
+		if (!this.hostServices) {
+			throw new Error('MicroAppManager.setHostServices() must be called before initializing a micro-app.');
+		}
+		return this.hostServices;
+	}
+
+	/**
+	 * Attempts to fetch the bundle and config from the registered micro-app with specified slug.
+	 * If the bundle is already downloaded, returns the downloaded bundle,
+	 * otherwise, downloads and returns it with retry logic.
+	 */
+	public async fetchMicroApp(slug: string): Promise<MicroAppPack> {
+		const app = this.registeredApps.get(slug);
+		if (!app) {
+			throw new Error(`Bundle ${slug} is not registered`);
+		}
+
+		let fetchPackPromise: Promise<MicroAppPack>;
+		let dependenciesPromise: Promise<MicroAppPack>[] = [];
+		let pack = this.getMicroApp(slug);
+		if (pack && isPromise(pack)) {
+			fetchPackPromise = pack;
+		}
+		else {
+			fetchPackPromise = this.fetchPack(app);
+			if (app.dependsOn && app.dependsOn.length) {
+				dependenciesPromise = app.dependsOn.map(slug => this.fetchMicroApp(slug));
+			}
+		}
+		[pack] = await Promise.all([fetchPackPromise, ...dependenciesPromise]);
+		this.downloadedPacks.set(slug, pack);
+
+		return pack;
+	}
+
+	private async fetchPack(app: MicroAppMetadata): Promise<MicroAppPack> {
+		const [bundle, config] = await Promise.all([
+			this.importBundle(app),
+			this.fetchConfig(app),
+		]);
+
+		const pack: MicroAppPack = {
+			init: bundle.default.init,
+			config,
+			htmlTag: app.htmlTag,
+			metadata: app,
+		};
+		return pack;
+	}
+
+	private async importBundle(app: MicroAppMetadata): Promise<ImportResult<MicroAppBundle>> {
+		return this.invokeWithRetry<ImportResult<MicroAppBundle>>(
+			() => {
+				return typeof app.bundleUrl === 'string'
+					? import(/* @vite-ignore */ app.bundleUrl)
+					: app.bundleUrl();
+			},
+			`Bundle import for ${app.slug}`,
+		);
+	}
+
+	private async fetchConfig(app: MicroAppMetadata): Promise<MicroAppConfig | undefined> {
+		if (!app.configUrl) {
+			return undefined;
+		}
+
+		const config = await this.invokeWithRetry<MicroAppConfig>(
+			async () => {
+				const response = await fetch(app.configUrl!, {
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				});
+				if (!response.ok) {
+					throw new Error(response.statusText);
+				}
+				return response.json();
+			},
+			`Config fetch for ${app.slug}`,
+		);
+		return config;
+	}
+
+	private async invokeWithRetry<T>(
+		operation: () => Promise<T>,
+		action: string,
+	): Promise<T> {
+		const { maxAttempts, baseDelayMs: baseDelay, maxDelayMs: maxDelay } = this.retryOptions;
+		let lastError: Error;
+
+		for (let attempt = 1; attempt <= maxAttempts!; attempt++) {
+			try {
+				return await operation();
+			}
+			catch (error) {
+				lastError = error as Error;
+
+				if (attempt === maxAttempts) {
+					break;
+				}
+
+				const delayMs = calculateExponentialBackoffDelay(attempt, baseDelay!, maxDelay!);
+
+				console.warn(
+					`${action} attempt ${attempt} failed. Retrying in ${delayMs}ms...`,
+					error,
+				);
+
+				await delay(delayMs);
+			}
+		}
+
+		throw new Error(
+			`${action} failed after ${maxAttempts} attempts. Last error: ${lastError!.message}`,
+		);
+	}
+}
+
+function calculateExponentialBackoffDelay(attempt: number, baseDelay: number, maxDelay: number): number {
+	return Math.min(
+		baseDelay * Math.pow(2, attempt - 1),
+		maxDelay,
+	);
+}
+
+function delay(ms: number): Promise<void> {
+	return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function isPromise<T = any>(value: T | Promise<T>): value is Promise<T> {
+	return value instanceof Promise;
+}
