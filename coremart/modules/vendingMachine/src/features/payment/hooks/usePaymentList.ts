@@ -1,36 +1,38 @@
-import { snakeToCamelObject } from '@nikkierp/common/utils';
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
 import React from 'react';
 
-import { SearchGraph } from '../../../types';
-import { paymentService } from '../paymentService';
-import { PaymentMethod } from '../types';
-
-
-type SearchResponse = { items: PaymentMethod[], total: number };
+import { VendingMachineDispatch, paymentActions, selectPaymentList } from '@/appState';
+import { SearchGraph } from '@/types';
 
 
 export function usePaymentList(graph?: SearchGraph) {
-	const { dispatchMethod, result } = useServiceLayer<SearchResponse>(paymentService.search);
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
+	const list = useMicroAppSelector(selectPaymentList);
 
 	React.useEffect(() => {
-		dispatchMethod(graph ? { graph } : {});
-	}, [dispatchMethod, graph]);
+		if (list.status === 'idle') {
+			dispatch(paymentActions.listPayments());
+		}
+	}, [dispatch, list.status]);
+
+	React.useEffect(() => {
+		if (graph) {
+			dispatch(paymentActions.listPayments({ graph }));
+		}
+	}, [dispatch, graph]);
 
 	const handleRefresh = React.useCallback(() => {
-		dispatchMethod(graph ? { graph } : {});
-	}, [dispatchMethod, graph]);
+		dispatch(paymentActions.listPayments({ graph }));
+	}, [dispatch, graph]);
 
-	const payments = React.useMemo(
-		() => (result.data?.items ?? []).map((item) => snakeToCamelObject(item) as PaymentMethod),
-		[result.data?.items],
-	);
-	const isLoading = !payments.length && result.isPending;
-	const isEmpty = !payments.length && !result.isPending && result.doneAt != null;
+	const payments = list.items ?? [];
+	const status = list.status;
+	const isLoading = !payments.length && (status === 'pending' || status === 'idle');
+	const isEmpty = !payments.length && status !== 'idle' && status !== 'pending';
 
 	return {
 		payments,
-		status: result.isPending ? 'pending' : 'success',
+		status,
 		isLoading,
 		isEmpty,
 		handleRefresh,

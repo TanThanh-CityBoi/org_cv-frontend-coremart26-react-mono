@@ -4,8 +4,9 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
-import { ArchivedStatusBadge } from '../../../../components/ArchivedStatusBadge';
-import { PreviewDrawer } from '../../../../components/PreviewDrawer';
+import { ArchivedStatusBadge } from '@/components/ArchivedStatusBadge';
+import { PreviewDrawer } from '@/components/PreviewDrawer';
+
 import { Kiosk, KioskMode } from '../../types';
 
 
@@ -23,15 +24,15 @@ export const KioskDetailDrawer: React.FC<KioskDetailDrawerProps> = ({
 	kiosk,
 	isLoading = false,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const navigate = useNavigate();
 
 	const getModeBadge = (mode?: KioskMode | null) => {
 		if (!mode) return null;
-		const modeMap: Partial<Record<KioskMode, { color: string, label: string }>> = {
-			[KioskMode.PENDING]: { color: 'yellow', label: translate('kiosk.mode.pending') },
-			[KioskMode.SELLING]: { color: 'blue', label: translate('kiosk.mode.selling') },
-			[KioskMode.SLIDESHOW_ONLY]: { color: 'purple', label: translate('kiosk.mode.slideshow_only') },
+		const modeMap: Partial<Record<KioskMode, { color: string; label: string }>> = {
+			[KioskMode.PENDING]: { color: 'yellow', label: translate('coremart.vendingMachine.kiosk.mode.pending') },
+			[KioskMode.SELLING]: { color: 'blue', label: translate('coremart.vendingMachine.kiosk.mode.selling') },
+			[KioskMode.SLIDESHOW_ONLY]: { color: 'purple', label: translate('coremart.vendingMachine.kiosk.mode.slideshowOnly') },
 		};
 		const modeInfo = modeMap[mode];
 		if (!modeInfo) return null;
@@ -60,7 +61,7 @@ export const KioskDetailDrawer: React.FC<KioskDetailDrawerProps> = ({
 			<Stack gap='md'>
 				<Box>
 					<Text size='sm' c='dimmed' mb='xs'>
-						{translate('kiosk.fields.code')}
+						{translate('coremart.vendingMachine.kiosk.fields.code')}
 					</Text>
 					<Text size='sm' fw={500}>{kiosk?.code}</Text>
 				</Box>
@@ -69,7 +70,7 @@ export const KioskDetailDrawer: React.FC<KioskDetailDrawerProps> = ({
 
 				<Box>
 					<Text size='sm' c='dimmed' mb='xs'>
-						{translate('kiosk.fields.name')}
+						{translate('coremart.vendingMachine.kiosk.fields.name')}
 					</Text>
 					<Text size='sm'>{kiosk?.name}</Text>
 				</Box>
@@ -78,7 +79,7 @@ export const KioskDetailDrawer: React.FC<KioskDetailDrawerProps> = ({
 
 				<Box>
 					<Text size='sm' c='dimmed' mb='xs'>
-						{translate('kiosk.fields.address')}
+						{translate('coremart.vendingMachine.kiosk.fields.address')}
 					</Text>
 					<Group gap='xs'>
 						<IconMapPin size={16} />
@@ -90,7 +91,7 @@ export const KioskDetailDrawer: React.FC<KioskDetailDrawerProps> = ({
 
 				<Box>
 					<Text size='sm' c='dimmed' mb='xs'>
-						{translate('kiosk.fields.coordinates')}
+						{translate('coremart.vendingMachine.kiosk.fields.coordinates')}
 					</Text>
 					<Text size='sm'>
 						{kiosk?.latitude != null && kiosk?.longitude != null
@@ -103,7 +104,7 @@ export const KioskDetailDrawer: React.FC<KioskDetailDrawerProps> = ({
 
 				<Box>
 					<Text size='sm' c='dimmed' mb='xs'>
-						{translate('kiosk.fields.status')}
+						{translate('coremart.vendingMachine.kiosk.fields.status')}
 					</Text>
 					{kiosk ? <ArchivedStatusBadge isArchived={Boolean(kiosk.isArchived)} /> : null}
 				</Box>
@@ -112,7 +113,7 @@ export const KioskDetailDrawer: React.FC<KioskDetailDrawerProps> = ({
 
 				<Box>
 					<Text size='sm' c='dimmed' mb='xs'>
-						{translate('kiosk.fields.mode')}
+						{translate('coremart.vendingMachine.kiosk.fields.mode')}
 					</Text>
 					{getModeBadge(kiosk?.mode)}
 				</Box>
@@ -121,7 +122,7 @@ export const KioskDetailDrawer: React.FC<KioskDetailDrawerProps> = ({
 
 				<Box>
 					<Text size='sm' c='dimmed' mb='xs'>
-						{translate('kiosk.fields.created_at')}
+						{translate('coremart.vendingMachine.kiosk.fields.createdAt')}
 					</Text>
 					<Text size='sm'>{kiosk?.createdAt ? new Date(kiosk.createdAt).toLocaleString() : '—'}</Text>
 				</Box>

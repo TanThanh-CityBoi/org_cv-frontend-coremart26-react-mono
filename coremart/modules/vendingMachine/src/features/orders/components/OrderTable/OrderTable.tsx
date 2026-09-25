@@ -12,8 +12,9 @@ import { TFunction } from 'i18next';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { TablePagination, TablePaginationProps } from '../../../../components/Table';
-import { NameCell, TableAction, TableContainer, type TableActionItem } from '../../../../components/Table';
+import { TablePagination, TablePaginationProps } from '@/components/Table';
+import { NameCell, TableAction, TableContainer, type TableActionItem } from '@/components/Table';
+
 import { formatOrderMoney } from '../../formatters';
 import { VdOrder, VdOrderCurrency, VdOrderStatus, VdPaymentMethod, VdTxLineStatus } from '../../types';
 
@@ -86,7 +87,7 @@ export function getOrderTableActions(
 	const defaults: (TableActionItem & { active?: boolean })[] = [
 		{
 			key: ORDER_ACTIONS.VIEW_DETAIL,
-			label: translate('action.viewDetails'),
+			label: translate('nikki.general.actions.viewDetail'),
 			icon: <IconEye size={16} />,
 			onClick: () => actions[ORDER_ACTIONS.VIEW_DETAIL]?.(order),
 			color: 'blue',
@@ -94,7 +95,7 @@ export function getOrderTableActions(
 		},
 		{
 			key: ORDER_ACTIONS.REFUND,
-			label: translate('orders.actions.refund'),
+			label: translate('coremart.vendingMachine.orders.actions.refund'),
 			icon: <IconReceiptRefund size={16} />,
 			onClick: () => actions[ORDER_ACTIONS.REFUND]?.(order),
 			color: 'orange',
@@ -102,7 +103,7 @@ export function getOrderTableActions(
 		},
 		{
 			key: ORDER_ACTIONS.INVOICE,
-			label: translate('orders.actions.invoice'),
+			label: translate('coremart.vendingMachine.orders.actions.invoice'),
 			icon: <IconFileInvoice size={16} />,
 			onClick: () => actions[ORDER_ACTIONS.INVOICE]?.(order),
 			color: 'teal',
@@ -110,7 +111,7 @@ export function getOrderTableActions(
 		},
 		{
 			key: ORDER_ACTIONS.HISTORY,
-			label: translate('orders.actions.history'),
+			label: translate('coremart.vendingMachine.orders.actions.history'),
 			icon: <IconHistory size={16} />,
 			onClick: () => actions[ORDER_ACTIONS.HISTORY]?.(order),
 			color: 'indigo',
@@ -121,7 +122,7 @@ export function getOrderTableActions(
 }
 
 function renderActionsHeader(translate: (key: string) => string) {
-	return <Text fw={600} fz='sm' ta='end'>{translate('action.title')}</Text>;
+	return <Text fw={600} fz='sm' ta='end'>{translate('nikki.general.actions.title')}</Text>;
 }
 
 export interface OrderTableProps extends AutoTableProps {
@@ -143,7 +144,7 @@ export const OrderTable: React.FC<OrderTableProps> = ({
 	tableTitle,
 	containerProps,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const colRenderers: Record<string, (row: VdOrder) => React.ReactNode> = {
 		createdAt: (row) => (
@@ -173,13 +174,13 @@ export const OrderTable: React.FC<OrderTableProps> = ({
 		</Text>,
 		paymentMethod: (row) => {
 			const p = String(row.paymentMethod || '') as VdPaymentMethod;
-			return <Text size='sm' miw={100}>{translate(`orders.payment_method.${p}`)}</Text>;
+			return <Text size='sm' miw={100}>{translate(`coremart.vendingMachine.orders.paymentMethod.${p}`)}</Text>;
 		},
 		status: (row) => {
 			const s = String(row.status || '') as VdOrderStatus;
 			return (
 				<Badge color={orderStatusColor(s)} variant='filled' miw={110}>
-					{translate(`orders.order_status.${s}`)}
+					{translate(`coremart.vendingMachine.orders.orderStatus.${s}`)}
 				</Badge>
 			);
 		},
@@ -187,7 +188,7 @@ export const OrderTable: React.FC<OrderTableProps> = ({
 			const s = String(row.paymentStatus || '') as VdTxLineStatus;
 			return (
 				<Badge color={s ? txStatusColor(s) : 'gray'} variant='outline' miw={120}>
-					{s ? translate(`orders.tx_status.${s}`) : '—'}
+					{s ? translate(`coremart.vendingMachine.orders.txStatus.${s}`) : '—'}
 				</Badge>
 			);
 		},
@@ -195,7 +196,7 @@ export const OrderTable: React.FC<OrderTableProps> = ({
 			const s = (row.refundStatus ? String(row.refundStatus) : '') as VdTxLineStatus | '';
 			return (
 				<Badge color={s ? txStatusColor(s) : 'gray'} variant='dot' miw={120}>
-					{s ? translate(`orders.tx_status.${s}`) : '—'}
+					{s ? translate(`coremart.vendingMachine.orders.txStatus.${s}`) : '—'}
 				</Badge>
 			);
 		},
@@ -210,17 +211,17 @@ export const OrderTable: React.FC<OrderTableProps> = ({
 		actions: (row) => (
 			<TableAction
 				actions={getOrderTableActions(row as unknown as VdOrder, actions, translate)}
-				overflowMenuLabel={translate('action.title')}
+				overflowMenuLabel={translate('nikki.general.actions.title')}
 			/>
 		),
 	};
 
 	const headerRenderers: React.ComponentProps<typeof AutoTable>['headerRenderers'] = {
 		refundAmount: () => {
-			return <Text fw={600} fz='sm' ta='end'>{translate('orders.fields.refund_amount')}</Text>;
+			return <Text fw={600} fz='sm' ta='end'>{translate('coremart.vendingMachine.orders.fields.refundAmount')}</Text>;
 		},
 		amount: () => {
-			return <Text fw={600} fz='sm' ta='end'>{translate('orders.fields.amount')}</Text>;
+			return <Text fw={600} fz='sm' ta='end'>{translate('coremart.vendingMachine.orders.fields.amount')}</Text>;
 		},
 		actions: (_columnName) => renderActionsHeader(translate as (k: string) => string),
 	};
@@ -239,7 +240,7 @@ export const OrderTable: React.FC<OrderTableProps> = ({
 					disabled={isLoading || !pagination.totalItems}
 					onClick={handleExport}
 				>
-					{translate('reports.revenue_report.export')}
+					{translate('coremart.vendingMachine.reports.revenueReport.export')}
 				</Button>
 			)}
 		</Group>
@@ -252,7 +253,6 @@ export const OrderTable: React.FC<OrderTableProps> = ({
 			footer={<TablePagination {...pagination} />}
 		>
 			<AutoTable
-				translationNs='vending_machine'
 				columns={columns}
 				data={data}
 				schema={schema}

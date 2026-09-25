@@ -15,8 +15,8 @@ export type RevenueReportTypeKey = (typeof REVENUE_REPORT_TYPE)[keyof typeof REV
  * Accepts optional quotes, any casing, and `byPaymentMethod` as an alias of `byPayment`.
  */
 export function parseRevenueReportTypeFromUrl(value: string | null | undefined): {
-	rawParam: string | null | undefined,
-	urlReportType: RevenueReportTypeKey,
+	rawParam: string | null | undefined;
+	urlReportType: RevenueReportTypeKey;
 } {
 	if (value == null || value === '') {
 		return {
@@ -39,8 +39,8 @@ export function parseRevenueReportTypeFromUrl(value: string | null | undefined):
 }
 
 export type RevenueReportFilters = {
-	reportType?: RevenueReportTypeKey | null,
-	dateRange: DatesRangeValue<DateValue> | undefined,
-	timeSlot: { from: string | null, to: string | null },
-	kioskIds: string[],
+	reportType?: RevenueReportTypeKey | null;
+	dateRange: DatesRangeValue<DateValue> | undefined;
+	timeSlot: { from: string | null; to: string | null };
+	kioskIds: string[];
 };

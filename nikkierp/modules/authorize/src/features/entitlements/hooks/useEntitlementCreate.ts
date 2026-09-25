@@ -6,22 +6,21 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { resolvePath, useLocation, useNavigate } from 'react-router';
 
+import type { Action } from '@/features/actions';
+import type { Entitlement } from '@/features/entitlements';
+import type { Resource } from '@/features/resources';
+
 import {
 	AuthorizeDispatch,
 	entitlementActions,
 	resourceActions,
 	selectResourceList,
 	selectCreateEntitlement,
-} from '../../../appState';
+} from '@/appState';
 import {
 	buildActionExpr,
 	validateEntitlementForm,
-} from '../helpers/entitlementFormValidation';
-
-import type { Entitlement } from '..';
-import type { Action } from '../../actions';
-import type { Resource } from '../../resources';
-
+} from '@/features/entitlements/helpers/entitlementFormValidation';
 
 
 type FormType = Parameters<typeof validateEntitlementForm>[2];

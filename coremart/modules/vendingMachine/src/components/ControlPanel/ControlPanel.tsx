@@ -18,9 +18,9 @@ export interface ControlPanelProps {
 	filters?: ControlPanelFilterConfig[];
 	filterClearable?: boolean;
 	search?: {
-		value?: string,
-		onChange?: (value: string) => void,
-		placeholder?: string,
+		value?: string;
+		onChange?: (value: string) => void;
+		placeholder?: string;
 	};
 }
 

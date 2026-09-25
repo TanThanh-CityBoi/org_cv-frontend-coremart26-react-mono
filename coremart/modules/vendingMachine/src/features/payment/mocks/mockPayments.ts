@@ -5,7 +5,7 @@ import zalopayIcon from '@nikkierp/ui/assets/icons/zalopay.png';
 
 import { PaymentMethod } from '../types';
 
-import type { RestArchiveResponse } from '../../../types';
+import type { RestArchiveResponse } from '@/types';
 
 
 // Mock data for payment methods (extends DTO with legacy mock fields)
@@ -152,7 +152,7 @@ export const mockPayments = {
 
 	async setArchivedPayment(
 		id: string,
-		body: { etag: string, isArchived: boolean },
+		body: { etag: string; isArchived: boolean },
 	): Promise<RestArchiveResponse> {
 		await delay(400);
 		const index = mockPaymentsData.findIndex((p) => p.id === id);

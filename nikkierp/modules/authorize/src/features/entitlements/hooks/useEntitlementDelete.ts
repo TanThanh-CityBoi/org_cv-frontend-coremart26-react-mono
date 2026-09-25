@@ -1,13 +1,12 @@
+import { AuthorizeDispatch, entitlementActions, selectDeleteEntitlement } from '@/appState';
 import { useUIState } from '@nikkierp/shell/contexts';
 import { useMicroAppSelector } from '@nikkierp/ui/microApp';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { AuthorizeDispatch, entitlementActions, selectDeleteEntitlement } from '../../../appState';
 
 
-
-import type { Entitlement } from '..';
+import type { Entitlement } from '@/features/entitlements';
 
 
 function useConfirmDelete(

@@ -1,39 +1,38 @@
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+import { useMicroAppDispatch } from '@nikkierp/ui/microApp';
 import { IconDeviceFloppy, IconEdit, IconX } from '@tabler/icons-react';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-
 import { KioskDetailTabs } from './types';
-import { ControlPanelProps } from '../../../../../components/ControlPanel';
-import { buildShelvesConfigWire, parseShelvesConfigRows } from '../../../../kioskModels/components/ShelvesConfig';
-import { KioskType, ShelvesConfigRow } from '../../../../kioskModels/types';
-import { useKioskEdit } from '../../../hooks/useKioskEdit';
-import { kioskCrudService } from '../../../kioskService';
-import { Kiosk } from '../../../types';
-import { useRegisterKioskDetailTab } from '../kioskDetailTabControl';
 
+import { kioskActions, VendingMachineDispatch } from '@/appState';
+import { ControlPanelProps } from '@/components/ControlPanel';
+import { buildShelvesConfigWire, parseShelvesConfigRows } from '@/features/kioskModels/components/ShelvesConfig';
+import { KioskType, ShelvesConfigRow } from '@/features/kioskModels/types';
+import { useRegisterKioskDetailTab } from '@/features/kiosks/components/KioskDetail/kioskDetailTabControl';
+import { useKioskEdit } from '@/features/kiosks/hooks/useKioskEdit';
+import { Kiosk } from '@/features/kiosks/types';
 
 
 export type useKioskOperationalSettingTabArgs = {
-	kiosk: Kiosk,
+	kiosk: Kiosk;
 };
 
 export type useKioskOperationalSettingTabReturn = {
-	isEditing: boolean,
-	isSubmitting: boolean,
-	goodsCollectorType?: KioskType | null,
-	setGoodsCollectorType: (v: KioskType | null) => void,
-	shelvesNumber: number,
-	setShelvesNumber: (n: number) => void,
-	shelvesConfigRows: ShelvesConfigRow[],
-	setShelvesConfigRows: (rows: ShelvesConfigRow[]) => void,
+	isEditing: boolean;
+	isSubmitting: boolean;
+	goodsCollectorType?: KioskType | null;
+	setGoodsCollectorType: (v: KioskType | null) => void;
+	shelvesNumber: number;
+	setShelvesNumber: (n: number) => void;
+	shelvesConfigRows: ShelvesConfigRow[];
+	setShelvesConfigRows: (rows: ShelvesConfigRow[]) => void;
 };
 
 export function useKioskOperationalSettingTab({ kiosk }:
 useKioskOperationalSettingTabArgs): useKioskOperationalSettingTabReturn {
-	const { t: translate } = useTranslation('vending_machine');
-	const { dispatchMethod: reloadKiosk } = useServiceLayer(kioskCrudService.getById);
+	const { t: translate } = useTranslation();
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
 	const [isEditing, setIsEditing] = useState(false);
 	const [goodsCollectorType, setGoodsCollectorType] =
 		useState<KioskType | null | undefined>(kiosk.goodsCollectorType);
@@ -52,9 +51,9 @@ useKioskOperationalSettingTabArgs): useKioskOperationalSettingTabReturn {
 	const onUpdateSuccess = useCallback(() => {
 		setIsEditing(false);
 		if (kiosk.id) {
-			reloadKiosk({ id: kiosk.id });
+			dispatch(kioskActions.getKiosk(kiosk.id));
 		}
-	}, [kiosk.id, reloadKiosk]);
+	}, [kiosk.id, dispatch]);
 
 	const { isSubmitting, handleSubmit } = useKioskEdit({ onUpdateSuccess });
 
@@ -78,14 +77,14 @@ useKioskOperationalSettingTabArgs): useKioskOperationalSettingTabReturn {
 	const actions = useMemo<ControlPanelProps['actions']>(() => [
 		...(!isEditing
 			? [{
-				label: translate('action.edit'),
+				label: translate('nikki.general.actions.edit'),
 				leftSection: <IconEdit size={16} />,
 				onClick: handleEdit,
 				type: 'button' as const,
 				variant: 'filled' as const,
 			}]
 			: [{
-				label: translate('action.save'),
+				label: translate('nikki.general.actions.save'),
 				leftSection: <IconDeviceFloppy size={16} />,
 				onClick: handleSave,
 				type: 'button' as const,
@@ -93,7 +92,7 @@ useKioskOperationalSettingTabArgs): useKioskOperationalSettingTabReturn {
 				disabled: isSubmitting,
 				loading: isSubmitting,
 			}, {
-				label: translate('action.cancel'),
+				label: translate('nikki.general.actions.cancel'),
 				leftSection: <IconX size={16} />,
 				onClick: handleCancel,
 				type: 'button' as const,

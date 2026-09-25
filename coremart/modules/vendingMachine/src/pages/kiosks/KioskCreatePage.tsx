@@ -1,17 +1,17 @@
 import { Stack } from '@mantine/core';
-import { AdhocFormProvider, FormStyleProvider } from '@nikkierp/ui/components';
-import { useLocalize } from '@nikkierp/ui/i18n';
+import { FormFieldProvider, FormStyleProvider } from '@nikkierp/ui/components';
+import { ModelSchema } from '@nikkierp/ui/model';
 import { IconArrowLeft, IconDeviceFloppy, IconX } from '@tabler/icons-react';
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
-import { ControlPanel } from '../../components';
-import { BreadcrumbItem } from '../../components/BreadCrumbs';
-import { ControlPanelProps } from '../../components/ControlPanel/ControlPanel';
-import { PageContainer } from '../../components/PageContainer';
-import { KioskFormFields, kioskCreateSchema, useKioskCreate } from '../../features/kiosks';
-import { KioskMode, UIMode } from '../../features/kiosks/types';
+import { ControlPanel } from '@/components';
+import { BreadcrumbItem } from '@/components/BreadCrumbs';
+import { ControlPanelProps } from '@/components/ControlPanel/ControlPanel';
+import { PageContainer } from '@/components/PageContainer';
+import { KioskFormFields, kioskCreateSchema, useKioskCreate } from '@/features/kiosks';
+import { KioskMode, UIMode } from '@/features/kiosks/types';
 
 
 const FORM_ID = 'kiosk-create-form';
@@ -34,24 +34,24 @@ interface UseKioskCreatePageConfigReturn {
 
 function useKioskCreatePageConfig({ handleCancel, isSubmitting }:
 UseKioskCreatePageConfigProps): UseKioskCreatePageConfigReturn {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const navigate = useNavigate();
 
 	const breadcrumbs = useMemo(() => [
-		{ title: translate('title'), href: '../overview' },
-		{ title: translate('kiosk.title'), href: '../kiosks' },
-		{ title: translate('kiosk.title_create'), href: '#' },
+		{ title: translate('coremart.vendingMachine.title'), href: '../overview' },
+		{ title: translate('coremart.vendingMachine.kiosk.title'), href: '../kiosks' },
+		{ title: translate('coremart.vendingMachine.kiosk.title_create'), href: '#' },
 	], [translate]);
 
 	const actions = useMemo<ControlPanelProps['actions']>(() => [
 		{
-			label: translate('action.back'),
+			label: translate('nikki.general.actions.back'),
 			onClick: () => navigate('../kiosks'),
 			leftSection: <IconArrowLeft size={16} />,
 			variant: 'outline' as const,
 		},
 		{
-			label: translate('action.create'),
+			label: translate('nikki.general.actions.create'),
 			leftSection: <IconDeviceFloppy size={16} />,
 			variant: 'filled' as const,
 			type: 'submit' as const,
@@ -59,7 +59,7 @@ UseKioskCreatePageConfigProps): UseKioskCreatePageConfigReturn {
 			loading: isSubmitting,
 		},
 		{
-			label: translate('action.cancel'),
+			label: translate('nikki.general.actions.cancel'),
 			leftSection: <IconX size={16} />,
 			onClick: handleCancel,
 			variant: 'outline' as const,
@@ -71,27 +71,21 @@ UseKioskCreatePageConfigProps): UseKioskCreatePageConfigReturn {
 }
 
 export const KioskCreatePage: React.FC = () => {
-	const { t: translate } = useTranslation('vending_machine');
-	const localize = useLocalize('vending_machine');
+	const { t: translate } = useTranslation();
+	const schema = kioskCreateSchema as ModelSchema;
 
 	const { isSubmitting, handleCancel, handleSubmit } = useKioskCreate();
 	const { breadcrumbs, actions } = useKioskCreatePageConfig({ handleCancel, isSubmitting });
 
 	return (
 		<PageContainer
-			documentTitle={translate('kiosk.title_create')}
+			documentTitle={translate('coremart.vendingMachine.kiosk.title_create')}
 			breadcrumbs={breadcrumbs}
 			sections={[<ControlPanel key='control-panel' actions={actions} />]}
 		>
 			<Stack gap='xs' p={6}>
 				<FormStyleProvider layout='onecol'>
-					<AdhocFormProvider
-						formVariant='create'
-						modelSchema={kioskCreateSchema}
-						localize={localize}
-						modelValue={defaultFormValues}
-						modelLoading={isSubmitting}
-					>
+					<FormFieldProvider formVariant='create' modelSchema={schema} modelValue={defaultFormValues} modelLoading={isSubmitting}>
 						{({ handleSubmit: formHandleSubmit }) => (
 							<form
 								id={FORM_ID}
@@ -102,7 +96,7 @@ export const KioskCreatePage: React.FC = () => {
 								<KioskFormFields key='kiosk-form-fields' mode='create' />
 							</form>
 						)}
-					</AdhocFormProvider>
+					</FormFieldProvider>
 				</FormStyleProvider>
 			</Stack>
 		</PageContainer>

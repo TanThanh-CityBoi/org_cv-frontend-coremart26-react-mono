@@ -1,59 +1,59 @@
 import { Badge, Box, Divider, Group, Stack, Text } from '@mantine/core';
 import { IconPalette } from '@tabler/icons-react';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
+import { useTranslation } from 'react-i18next';
 
-import { DetailControlPanel } from '../../components/ControlPanel';
-import { PageContainer } from '../../components/PageContainer';
-import { useThemeDetail } from '../../features/themes';
-import { ThemePreview } from '../../features/themes/components/ThemePreview';
+import { DetailControlPanel } from '@/components/ControlPanel';
+import { PageContainer } from '@/components/PageContainer';
+import { useThemeDetail } from '@/features/themes';
+import { ThemePreview } from '@/features/themes/components/ThemePreview';
 
 
 export const ThemeDetailPage: React.FC = () => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const { id } = useParams<{ id: string }>();
 	const { theme, isLoading } = useThemeDetail(id);
 
 	const getStatusBadge = (status: string) => {
-		const statusMap: Record<string, { color: string, label: string }> = {
-			active: { color: 'green', label: translate('status.active') },
-			inactive: { color: 'gray', label: translate('status.inactive') },
+		const statusMap: Record<string, { color: string; label: string }> = {
+			active: { color: 'green', label: translate('nikki.general.status.active') },
+			inactive: { color: 'gray', label: translate('nikki.general.status.inactive') },
 		};
 		const statusInfo = statusMap[status] || { color: 'gray', label: status };
 		return <Badge color={statusInfo.color}>{statusInfo.label}</Badge>;
 	};
 
 	const productCardStyleOptions = [
-		{ value: 'default', label: translate('themes.product_card_style.default') },
-		{ value: 'rounded', label: translate('themes.product_card_style.rounded') },
-		{ value: 'minimal', label: translate('themes.product_card_style.minimal') },
-		{ value: 'elegant', label: translate('themes.product_card_style.elegant') },
-		{ value: 'modern', label: translate('themes.product_card_style.modern') },
+		{ value: 'default', label: translate('coremart.vendingMachine.themes.productCardStyle.default') },
+		{ value: 'rounded', label: translate('coremart.vendingMachine.themes.productCardStyle.rounded') },
+		{ value: 'minimal', label: translate('coremart.vendingMachine.themes.productCardStyle.minimal') },
+		{ value: 'elegant', label: translate('coremart.vendingMachine.themes.productCardStyle.elegant') },
+		{ value: 'modern', label: translate('coremart.vendingMachine.themes.productCardStyle.modern') },
 	];
 
 	const appBackgroundOptions = [
-		{ value: 'none', label: translate('themes.app_background.none') },
-		{ value: 'snow', label: translate('themes.app_background.snow') },
-		{ value: 'fireworks', label: translate('themes.app_background.fireworks') },
-		{ value: 'particles', label: translate('themes.app_background.particles') },
-		{ value: 'gradient', label: translate('themes.app_background.gradient') },
-		{ value: 'custom', label: translate('themes.app_background.custom') },
+		{ value: 'none', label: translate('coremart.vendingMachine.themes.appBackground.none') },
+		{ value: 'snow', label: translate('coremart.vendingMachine.themes.appBackground.snow') },
+		{ value: 'fireworks', label: translate('coremart.vendingMachine.themes.appBackground.fireworks') },
+		{ value: 'particles', label: translate('coremart.vendingMachine.themes.appBackground.particles') },
+		{ value: 'gradient', label: translate('coremart.vendingMachine.themes.appBackground.gradient') },
+		{ value: 'custom', label: translate('coremart.vendingMachine.themes.appBackground.custom') },
 	];
 
 	const fontStyleOptions = [
-		{ value: 'default', label: translate('themes.font_style.default') },
-		{ value: 'roboto', label: translate('themes.font_style.roboto') },
-		{ value: 'inter', label: translate('themes.font_style.inter') },
-		{ value: 'poppins', label: translate('themes.font_style.poppins') },
-		{ value: 'montserrat', label: translate('themes.font_style.montserrat') },
-		{ value: 'custom', label: translate('themes.font_style.custom') },
+		{ value: 'default', label: translate('coremart.vendingMachine.themes.fontStyle.default') },
+		{ value: 'roboto', label: translate('coremart.vendingMachine.themes.fontStyle.roboto') },
+		{ value: 'inter', label: translate('coremart.vendingMachine.themes.fontStyle.inter') },
+		{ value: 'poppins', label: translate('coremart.vendingMachine.themes.fontStyle.poppins') },
+		{ value: 'montserrat', label: translate('coremart.vendingMachine.themes.fontStyle.montserrat') },
+		{ value: 'custom', label: translate('coremart.vendingMachine.themes.fontStyle.custom') },
 	];
 
 	const breadcrumbs = [
-		{ title: translate('title'), href: '../overview' },
-		{ title: translate('menu.themes'), href: '../themes' },
-		{ title: theme?.name || translate('themes.detail.title'), href: '#' },
+		{ title: translate('coremart.vendingMachine.title'), href: '../overview' },
+		{ title: translate('coremart.vendingMachine.menu.themes'), href: '../themes' },
+		{ title: theme?.name || translate('coremart.vendingMachine.themes.detail.title'), href: '#' },
 	];
 
 	if (isLoading || !theme) {
@@ -62,7 +62,7 @@ export const ThemeDetailPage: React.FC = () => {
 				breadcrumbs={breadcrumbs}
 				actionBar={<div />}
 			>
-				<Text c='dimmed'>{translate('messages.loading')}</Text>
+				<Text c='dimmed'>{translate('nikki.general.messages.loading')}</Text>
 			</PageContainer>
 		);
 	}
@@ -85,7 +85,7 @@ export const ThemeDetailPage: React.FC = () => {
 				{/* Basic Info */}
 				<div>
 					<Text size='sm' c='dimmed' mb='xs'>
-						{translate('themes.fields.code')}
+						{translate('coremart.vendingMachine.themes.fields.code')}
 					</Text>
 					<Text size='sm' fw={500}>{theme.code}</Text>
 				</div>
@@ -94,7 +94,7 @@ export const ThemeDetailPage: React.FC = () => {
 
 				<div>
 					<Text size='sm' c='dimmed' mb='xs'>
-						{translate('themes.fields.name')}
+						{translate('coremart.vendingMachine.themes.fields.name')}
 					</Text>
 					<Text size='sm'>{theme.name}</Text>
 				</div>
@@ -104,7 +104,7 @@ export const ThemeDetailPage: React.FC = () => {
 						<Divider />
 						<div>
 							<Text size='sm' c='dimmed' mb='xs'>
-								{translate('themes.fields.description')}
+								{translate('coremart.vendingMachine.themes.fields.description')}
 							</Text>
 							<Text size='sm'>{theme.description}</Text>
 						</div>
@@ -115,7 +115,7 @@ export const ThemeDetailPage: React.FC = () => {
 
 				<div>
 					<Text size='sm' c='dimmed' mb='xs'>
-						{translate('themes.fields.status')}
+						{translate('coremart.vendingMachine.themes.fields.status')}
 					</Text>
 					{getStatusBadge(theme.status)}
 				</div>
@@ -125,7 +125,7 @@ export const ThemeDetailPage: React.FC = () => {
 				{/* Theme Configuration */}
 				<div>
 					<Text size='sm' c='dimmed' mb='xs'>
-						{translate('themes.fields.primary_color')}
+						{translate('coremart.vendingMachine.themes.fields.primaryColor')}
 					</Text>
 					<Group gap='xs'>
 						<Box
@@ -145,7 +145,7 @@ export const ThemeDetailPage: React.FC = () => {
 
 				<div>
 					<Text size='sm' c='dimmed' mb='xs'>
-						{translate('themes.fields.product_card_style')}
+						{translate('coremart.vendingMachine.themes.fields.productCardStyle')}
 					</Text>
 					<Text size='sm'>
 						{productCardStyleOptions.find(
@@ -157,7 +157,7 @@ export const ThemeDetailPage: React.FC = () => {
 
 				<div>
 					<Text size='sm' c='dimmed' mb='xs'>
-						{translate('themes.fields.app_background')}
+						{translate('coremart.vendingMachine.themes.fields.appBackground')}
 					</Text>
 					<Text size='sm'>
 						{appBackgroundOptions.find(
@@ -169,7 +169,7 @@ export const ThemeDetailPage: React.FC = () => {
 
 				<div>
 					<Text size='sm' c='dimmed' mb='xs'>
-						{translate('themes.fields.font_style')}
+						{translate('coremart.vendingMachine.themes.fields.fontStyle')}
 					</Text>
 					<Text size='sm'>
 						{fontStyleOptions.find((opt) => opt.value === theme.fontStyle)?.label || theme.fontStyle}
@@ -181,7 +181,7 @@ export const ThemeDetailPage: React.FC = () => {
 						<Divider />
 						<div>
 							<Text size='sm' c='dimmed' mb='xs'>
-								{translate('themes.fields.mascot_image')}
+								{translate('coremart.vendingMachine.themes.fields.mascotImage')}
 							</Text>
 							<Box
 								style={{
@@ -211,7 +211,7 @@ export const ThemeDetailPage: React.FC = () => {
 
 				<div>
 					<Text size='sm' c='dimmed' mb='xs'>
-						{translate('themes.fields.created_at')}
+						{translate('coremart.vendingMachine.themes.fields.createdAt')}
 					</Text>
 					<Text size='sm'>{new Date(theme.createdAt).toLocaleString()}</Text>
 				</div>
@@ -221,7 +221,7 @@ export const ThemeDetailPage: React.FC = () => {
 				{/* Preview */}
 				<Stack bg='var(--nikki-color-white)' p={16} justify='center' align='center'>
 					<Text size='xs' c='dimmed'>
-						{translate('themes.preview.title')}
+						{translate('coremart.vendingMachine.themes.preview.title')}
 					</Text>
 					<ThemePreview theme={theme} />
 				</Stack>

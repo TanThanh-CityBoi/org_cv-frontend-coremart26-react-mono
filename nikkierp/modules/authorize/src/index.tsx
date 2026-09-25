@@ -1,15 +1,16 @@
 import { MantineProvider } from '@mantine/core';
 import { ACTIONS, RESOURCES } from '@nikkierp/shell/userContext';
+import { useSetMenuBarItems } from '@nikkierp/ui/appState';
 import { PermissionGuard } from '@nikkierp/ui/components';
 import {
 	AppRoute, AppRoutes, defineWebComponent, MicroAppBundle, MicroAppDomType, MicroAppProps,
-	MicroAppProvider, initMicroAppStateContext,
+	MicroAppProvider, initMicroAppStateContext, useMicroAppDispatch,
 	MicroAppRouter, WidgetRoutes,
 } from '@nikkierp/ui/microApp';
 import { Navigate } from 'react-router';
 
 import { reducer } from './appState';
-import { buildAuthorizeMenu } from './menu';
+import { useMenuBarItems } from './hooks';
 import { ActionCreatePage } from './pages/actions/ActionCreatePage';
 import { ActionDetailPage } from './pages/actions/ActionDetailPage';
 import { ActionListPage } from './pages/actions/ActionListPage';
@@ -37,6 +38,10 @@ import { RoleSuiteListPage } from './pages/roleSuites/RoleSuiteListPage';
 
 
 function Main(props: MicroAppProps) {
+	const dispatch = useMicroAppDispatch();
+	const menuBarItems = useMenuBarItems();
+	useSetMenuBarItems(menuBarItems, dispatch);
+
 	return (
 		<MicroAppProvider {...props}>
 			<MantineProvider>
@@ -89,7 +94,7 @@ function Main(props: MicroAppProps) {
 }
 
 const bundle: MicroAppBundle = {
-	init({ htmlTag, slug, registerReducer, host }) {
+	init({ htmlTag, registerReducer }) {
 		const domType = MicroAppDomType.SHARED;
 		defineWebComponent(Main, {
 			htmlTag,
@@ -98,7 +103,6 @@ const bundle: MicroAppBundle = {
 
 		const result = registerReducer(reducer);
 		initMicroAppStateContext(result);
-		host.menuRegistry.register(buildAuthorizeMenu(slug));
 		return {
 			domType,
 		};

@@ -6,26 +6,26 @@ import blankPicture from '@nikkierp/ui/assets/images/blank-picture.png';
 import { useCallback, useEffect, useState, type FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { getLocalizedName } from '../../../../../common/helpers';
+import { getLocalizedName } from '@/common/helpers';
 
 import type { CellStockItem } from './kioskStock.types';
 
 
 export type EditStockPositionModalProps = {
-	opened: boolean,
-	onClose: () => void,
+	opened: boolean;
+	onClose: () => void;
 	/** Renders form when true; when false, position fields are read-only. */
-	canEditPosition: boolean,
-	row: string,
-	col: string,
-	cell: CellStockItem | null,
-	onSave: (cell: CellStockItem) => void,
+	canEditPosition: boolean;
+	row: string;
+	col: string;
+	cell: CellStockItem | null;
+	onSave: (cell: CellStockItem) => void;
 };
 
 // eslint-disable-next-line max-lines-per-function
 export const EditStockPositionModal: FC<EditStockPositionModalProps> = (props) => {
 	const {opened, onClose, canEditPosition, cell, row, col, onSave} = props;
-	const { t, i18n } = useTranslation('vending_machine');
+	const { t, i18n } = useTranslation();
 
 	const [quantity, setQuantity] = useState(0);
 	const [maxQuantity, setMaxQuantity] = useState(0);
@@ -75,10 +75,10 @@ export const EditStockPositionModal: FC<EditStockPositionModalProps> = (props) =
 		>
 			{!cell ? (
 				<Stack gap='md'>
-					<Text c='dimmed'>{t('kiosk_stock.cell_detail.empty', { defaultValue: 'No stock in this cell.' })}</Text>
+					<Text c='dimmed'>{t('coremart.vendingMachine.kioskStock.cellDetail.empty', { defaultValue: 'No stock in this cell.' })}</Text>
 					<Text size='sm'>{row}{col}</Text>
 					<Group justify='flex-end'>
-						<Button variant='default' onClick={onClose}>{t('action.close')}</Button>
+						<Button variant='default' onClick={onClose}>{t('nikki.general.actions.close')}</Button>
 					</Group>
 				</Stack>
 			) : (
@@ -103,14 +103,14 @@ export const EditStockPositionModal: FC<EditStockPositionModalProps> = (props) =
 								<Text lineClamp={2} size='sm' c='dimmed'>SKU: {cell.sku || '—'}</Text>
 							</Box>
 							<Switch
-								label={t('kiosk.stocks.fields.is_enabled', { defaultValue: 'Enabled' })}
+								label={t('coremart.vendingMachine.kiosk.stocks.fields.isEnabled', { defaultValue: 'Enabled' })}
 								checked={isEnabled}
 								onChange={(e) => setIsEnabled(e.currentTarget.checked)}
 								disabled={!canEditPosition}
 							/>
 
 							<NumberInput
-								label={t('kiosk.stocks.fields.quantity', { defaultValue: 'Quantity' })}
+								label={t('coremart.vendingMachine.kiosk.stocks.fields.quantity', { defaultValue: 'Quantity' })}
 								min={0}
 								max={maxQuantity}
 								value={quantity}
@@ -118,7 +118,7 @@ export const EditStockPositionModal: FC<EditStockPositionModalProps> = (props) =
 								readOnly={!canEditPosition}
 							/>
 							<NumberInput
-								label={t('kiosk.stocks.fields.max_quantity', { defaultValue: 'Max quantity' })}
+								label={t('coremart.vendingMachine.kiosk.stocks.fields.maxQuantity', { defaultValue: 'Max quantity' })}
 								min={0}
 								value={maxQuantity}
 								onChange={(v) => setMaxQuantity(typeof v === 'number' ? v : 0)}
@@ -129,10 +129,10 @@ export const EditStockPositionModal: FC<EditStockPositionModalProps> = (props) =
 
 					<Group justify='flex-end' gap='sm' mt='md'>
 						<Button variant='default' onClick={onClose}>
-							{t('action.cancel', { defaultValue: 'Cancel' })}
+							{t('nikki.general.actions.cancel', { defaultValue: 'Cancel' })}
 						</Button>
 						<Button onClick={handleSave} disabled={!canEditPosition}>
-							{t('action.save', { defaultValue: 'Save' })}
+							{t('nikki.general.actions.save', { defaultValue: 'Save' })}
 						</Button>
 					</Group>
 				</Stack>

@@ -6,18 +6,18 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 
 
-import { getOutermostVerticalScrollParent } from '../../common/helpers';
-import { StickyFilterBar, type ControlPanelFilterConfig } from '../../components';
-import { PageContainer } from '../../components/PageContainer';
+import { getOutermostVerticalScrollParent } from '@/common/helpers';
+import { StickyFilterBar, type ControlPanelFilterConfig } from '@/components';
+import { PageContainer } from '@/components/PageContainer';
 import {
 	PnlManualWorksheet,
 	PnlReportDashboard,
-} from '../../features/reports/business/components/PnlReport';
-import { useRevenueReportKioskOptions } from '../../features/reports/business/hooks/useRevenueReportKioskOptions';
+} from '@/features/reports/business/components/PnlReport';
+import { useRevenueReportKioskOptions } from '@/features/reports/business/hooks/useRevenueReportKioskOptions';
 
 
 export const PnlReportPage: React.FC = () => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const reportSectionRef = useRef<HTMLDivElement>(null);
 	const scrollAfterApplyRef = useRef(false);
 
@@ -32,7 +32,7 @@ export const PnlReportPage: React.FC = () => {
 
 	const [draftDateRange, setDraftDateRange] = useState<DatesRangeValue<DateValue> | undefined>(defaultRange);
 	const [draftKioskId, setDraftKioskId] = useState<string | null>(null);
-	const [draftTimeSlot, setDraftTimeSlot] = useState<{ from: string | null, to: string | null }>({
+	const [draftTimeSlot, setDraftTimeSlot] = useState<{ from: string | null; to: string | null }>({
 		from: null,
 		to: null,
 	});
@@ -49,7 +49,7 @@ export const PnlReportPage: React.FC = () => {
 			searchValue: kioskSearch,
 			onSearchChange: setKioskSearch,
 			options: kioskOptions,
-			placeholder: translate('reports.filter_bar.kiosk_placeholder'),
+			placeholder: translate('coremart.vendingMachine.reports.filterBar.kioskPlaceholder'),
 			clearable: true,
 			minWidth: 240,
 		},
@@ -58,7 +58,7 @@ export const PnlReportPage: React.FC = () => {
 			type: 'dateRange',
 			value: draftDateRange,
 			onChange: setDraftDateRange,
-			placeholder: translate('common.date_picker.select_date_range'),
+			placeholder: translate('coremart.vendingMachine.common.datePicker.selectDateRange'),
 			clearable: true,
 		},
 		{
@@ -92,10 +92,10 @@ export const PnlReportPage: React.FC = () => {
 
 	return (
 		<PageContainer
-			documentTitle={translate('reports.pnl_report.document_title')}
+			documentTitle={translate('coremart.vendingMachine.reports.pnlReport.documentTitle')}
 			actionBar={
 				<StickyFilterBar
-					title={translate('menu.pnl_report')}
+					title={translate('coremart.vendingMachine.menu.pnl_report')}
 					filters={filters}
 					handleApply={handleApply}
 				/>

@@ -1,4 +1,4 @@
-import { ConnectionHistory, ConnectionStatus } from '../../features/kiosks';
+import { ConnectionHistory, ConnectionStatus } from '@/features/kiosks';
 
 
 export const CONNECTION_STATUS_THRESHOLD = 5;

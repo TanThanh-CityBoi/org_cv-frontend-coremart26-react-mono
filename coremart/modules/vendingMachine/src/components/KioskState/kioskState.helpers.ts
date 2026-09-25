@@ -1,4 +1,4 @@
-import type { Kiosk, KioskState } from '../../features/kiosks/types';
+import type { Kiosk, KioskState } from '@/features/kiosks/types';
 
 
 export function getKioskState(kiosk?: Kiosk | null): KioskState | null | undefined {
@@ -13,7 +13,7 @@ export function parseKioskStateNumber(value: string | undefined | null): number 
 
 export function formatKioskStateNumber(
 	value: string | undefined | null,
-	options?: { unit?: string, decimals?: number },
+	options?: { unit?: string; decimals?: number },
 ): string | null {
 	const parsed = parseKioskStateNumber(value);
 	if (parsed == null) return null;

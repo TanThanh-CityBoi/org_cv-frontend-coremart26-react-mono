@@ -1,2 +1,1 @@
-
-export const MODULE_SCHEMA_NAME = 'essential_module_metadata';
+export const GLOBAL_CONTEXT_SLUG = 'global';

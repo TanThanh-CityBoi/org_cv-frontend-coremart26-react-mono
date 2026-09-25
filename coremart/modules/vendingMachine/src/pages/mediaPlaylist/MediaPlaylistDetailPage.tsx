@@ -3,16 +3,16 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
 
-import { ControlPanel } from '../../components';
-import { ArchivedStatusBadge } from '../../components/ArchivedStatusBadge';
-import { DetailLayout } from '../../components/DetailLayout';
-import { PageContainer } from '../../components/PageContainer';
+import { ControlPanel } from '@/components';
+import { ArchivedStatusBadge } from '@/components/ArchivedStatusBadge';
+import { DetailLayout } from '@/components/DetailLayout';
+import { PageContainer } from '@/components/PageContainer';
 import {
 	MediaPlaylistDetailTabControlProvider,
 	type MediaPlaylistDetailTabId,
 	useMediaPlaylistDetailPageConfig,
-} from '../../features/mediaPlaylist/components/MediaPlaylistDetail';
-import { useMediaPlaylistDetail } from '../../features/mediaPlaylist/hooks';
+} from '@/features/mediaPlaylist/components/MediaPlaylistDetail';
+import { useMediaPlaylistDetail } from '@/features/mediaPlaylist/hooks';
 
 
 export const MediaPlaylistDetailPage: React.FC = () => {
@@ -25,13 +25,13 @@ export const MediaPlaylistDetailPage: React.FC = () => {
 
 const MediaPlaylistDetailPageContent: React.FC = () => {
 	const { id } = useParams<{ id: string }>();
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const { playlist, isLoading } = useMediaPlaylistDetail(id);
 	const { breadcrumbs, actions, tabs, activeTab, onTabChange } = useMediaPlaylistDetailPageConfig({ playlist });
 
 	return (
 		<PageContainer
-			documentTitle={playlist?.name ?? translate('media_playlist.detail.title')}
+			documentTitle={playlist?.name ?? translate('coremart.vendingMachine.mediaPlaylist.detail.title')}
 			breadcrumbs={breadcrumbs}
 			sections={[<ControlPanel key='media-playlist-detail-actions' actions={actions} />]}
 			isLoading={isLoading && !playlist}

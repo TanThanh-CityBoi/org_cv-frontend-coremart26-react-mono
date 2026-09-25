@@ -2,9 +2,10 @@ import { SimpleGrid, Stack, Text } from '@mantine/core';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { TablePagination } from '@/components/Table';
+import { type TablePaginationProps } from '@/components/Table';
+
 import { EventCard } from './EventCard';
-import { TablePagination } from '../../../../components/Table';
-import { type TablePaginationProps } from '../../../../components/Table';
 import { Event } from '../../types';
 
 import type { EventTableActions } from '../EventTable';
@@ -23,15 +24,15 @@ export const EventGridView: React.FC<EventGridViewProps> = ({
 	actions = {},
 	pagination,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const { preview: onPreview, ...cardActions } = actions;
 
 	if (isLoading) {
-		return <Text c='dimmed'>{translate('messages.loading')}</Text>;
+		return <Text c='dimmed'>{translate('nikki.general.messages.loading')}</Text>;
 	}
 
 	if (events.length === 0) {
-		return <Text c='dimmed'>{translate('events.messages.no_events')}</Text>;
+		return <Text c='dimmed'>{translate('coremart.vendingMachine.events.messages.no_events')}</Text>;
 	}
 
 	return (

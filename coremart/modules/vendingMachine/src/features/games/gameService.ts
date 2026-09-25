@@ -1,25 +1,49 @@
-import { storeService } from '@nikkierp/ui/appState/store';
-
-import { OrgScopedCrudService } from '../../common/service';
-import { GAME_SCHEMA_NAME, VENDING_MACHINE_MODULE } from '../../constants';
-import { vendingMachineStore } from '../../store';
+import { mockGames } from './mockGames';
+import { Game, GameVersion } from './types';
 
 
-/**
- * CRUD over `vending_machine_game`.
- *
- * Replaces the mock-backed `gameService`. The backend serves the full flat resource at
- * `/v1/vending_machine/games`.
- *
- * **Game versions are not a resource.** `versions` is an array field on the game record, so
- * `addGameVersion` / `deleteGameVersion` become ordinary `update` calls that rewrite the whole
- * array — see `useGameVersions`. There is no `games/:id/versions` route.
- */
-@storeService('GameService', vendingMachineStore)
-export class GameService extends OrgScopedCrudService {
-	public constructor() {
-		super({ moduleName: VENDING_MACHINE_MODULE, schemaName: GAME_SCHEMA_NAME });
-	}
+function configFields(dto: Game): Game {
+	return {
+		...dto,
+	};
 }
 
-export const gameCrudService = new GameService();
+export const gameService = {
+	async listGames(): Promise<Game[]> {
+		const result = await mockGames.listGames();
+		return result.map(configFields);
+	},
+
+	async getGame(id: string): Promise<Game | undefined> {
+		const result = await mockGames.getGame(id);
+		return result ? configFields(result) : undefined;
+	},
+
+	async createGame(game: Omit<Game, 'id' | 'createdAt' | 'etag'>): Promise<Game> {
+		const result = await mockGames.createGame(game);
+		return configFields(result);
+	},
+
+	async updateGame(
+		id: string,
+		etag: string,
+		updates: Partial<Omit<Game, 'id' | 'createdAt' | 'etag'>>,
+	): Promise<Game> {
+		const result = await mockGames.updateGame(id, etag, updates);
+		return configFields(result);
+	},
+
+	async deleteGame(id: string): Promise<void> {
+		await mockGames.deleteGame(id);
+	},
+
+	async addGameVersion(gameId: string, version: GameVersion): Promise<Game> {
+		const result = await mockGames.addGameVersion(gameId, version);
+		return configFields(result);
+	},
+
+	async deleteGameVersion(gameId: string, versionCode: string): Promise<Game> {
+		const result = await mockGames.deleteGameVersion(gameId, versionCode);
+		return configFields(result);
+	},
+};

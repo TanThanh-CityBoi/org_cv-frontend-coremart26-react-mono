@@ -12,7 +12,7 @@ export interface TagsSectionProps {
 }
 
 export const TagsSection: React.FC<TagsSectionProps> = ({ tags, onClearAll }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	if (tags.length === 0) return null;
 
@@ -27,7 +27,7 @@ export const TagsSection: React.FC<TagsSectionProps> = ({ tags, onClearAll }) =>
 		<Box>
 			<Group justify='space-between' mb='xs' align='center'>
 				<Text size='sm' fw={500}>
-					{translate('search.activeFilter') || 'Active Filters'}
+					{translate('nikki.general.filter.active_filters') || 'Active Filters'}
 				</Text>
 				<Button
 					variant='subtle'
@@ -38,7 +38,7 @@ export const TagsSection: React.FC<TagsSectionProps> = ({ tags, onClearAll }) =>
 						onClearAll();
 					}}
 				>
-					{translate('action.clearFilters')}
+					{translate('nikki.general.actions.clear_filters')}
 				</Button>
 			</Group>
 			<Box

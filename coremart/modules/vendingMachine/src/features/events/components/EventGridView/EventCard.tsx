@@ -3,7 +3,8 @@ import { IconCalendarEvent } from '@tabler/icons-react';
 import { TFunction } from 'i18next';
 import React, { useRef } from 'react';
 
-import { CardActionMenu } from '../../../../components';
+import { CardActionMenu } from '@/components';
+
 import { Event } from '../../types';
 import { EventArchiveAndScheduleBadges } from '../EventScheduleBadges';
 import { getEventTableActions, type EventTableActions } from '../EventTable';
@@ -12,12 +13,12 @@ import { getEventTableActions, type EventTableActions } from '../EventTable';
 export type EventCardDensity = 'comfortable' | 'compact';
 
 export type EventCardProps = {
-	event: Event,
-	cardActions: EventTableActions,
-	onPreview?: (event: Event) => void,
-	translate: TFunction,
+	event: Event;
+	cardActions: EventTableActions;
+	onPreview?: (event: Event) => void;
+	translate: TFunction;
 	/** Comfortable = grid; compact = kanban columns */
-	density?: EventCardDensity,
+	density?: EventCardDensity;
 };
 
 export function EventCard({
@@ -72,12 +73,12 @@ export function EventCard({
 
 				<Stack gap={compact ? 2 : 4}>
 					<Text size='xs' c='dimmed'>
-						{translate('events.fields.start_date')}: {
+						{translate('coremart.vendingMachine.events.fields.startDate')}: {
 							new Date(event.startTime).toLocaleDateString()
 						}
 					</Text>
 					<Text size='xs' c='dimmed'>
-						{translate('events.fields.end_date')}: {
+						{translate('coremart.vendingMachine.events.fields.endDate')}: {
 							new Date(event.endTime).toLocaleDateString()
 						}
 					</Text>
@@ -85,7 +86,7 @@ export function EventCard({
 
 				{!compact && (
 					<Text size='xs' c='dimmed'>
-						{translate('events.fields.created_at')}: {
+						{translate('coremart.vendingMachine.events.fields.createdAt')}: {
 							new Date(event.createdAt).toLocaleDateString()
 						}
 					</Text>

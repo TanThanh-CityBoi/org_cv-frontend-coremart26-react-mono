@@ -9,28 +9,29 @@ import 'dayjs/locale/vi';
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { fmtCurrency, fmtNumber } from '@/common/helpers';
+import { TableContainer, TablePagination } from '@/components/Table';
+
 import { PaymentMethodMetricBarChart } from './PaymentMethodMetricBarChart';
 import { PaymentMethodRevenueDoughnutChart } from './PaymentMethodRevenueDoughnutChart';
-import { asLegacyModelSchema, fmtCurrency, fmtNumber } from '../../../../../common/helpers';
-import { TableContainer, TablePagination } from '../../../../../components/Table';
 import { useRevenueReportByPaymentMethod, useRevenueReportByPaymentMethodChart } from '../../hooks';
 
 import type { PaymentMethodMetricRow } from './PaymentMethodMetricBarChart';
-import type { RevenueReportByPaymentMethod } from '../../type';
 import type { RevenueReportFilters } from '../RevenueReportSwitcher/type';
+import type { RevenueReportByPaymentMethod } from '@/features/reports/business/type';
 
 
 const BY_PAYMENT_COLUMNS = ['method', 'orders', 'revenue'] as const;
 
-const byPaymentSchema = asLegacyModelSchema({
+const byPaymentSchema: ModelSchema = {
 	name: 'RevenueByPayment',
 	fields: {
-		method: { type: 'string', label: 'reports.revenue_report.columns.payment_method' },
-		orders: { type: 'string', label: 'reports.revenue_report.columns.orders' },
-		refund: { type: 'string', label: 'reports.revenue_report.columns.refund' },
-		revenue: { type: 'string', label: 'reports.revenue_report.columns.revenue' },
+		method: { type: 'string', label: 'coremart.vendingMachine.reports.revenueReport.columns.paymentMethod' },
+		orders: { type: 'string', label: 'coremart.vendingMachine.reports.revenueReport.columns.orders' },
+		refund: { type: 'string', label: 'coremart.vendingMachine.reports.revenueReport.columns.refund' },
+		revenue: { type: 'string', label: 'coremart.vendingMachine.reports.revenueReport.columns.revenue' },
 	},
-});
+};
 
 function mapPaymentRowsToTableData(rows: RevenueReportByPaymentMethod[]): Record<string, unknown>[] {
 	return rows.map((row) => ({
@@ -50,7 +51,7 @@ function mapPaymentRowsToChartData(rows: RevenueReportByPaymentMethod[]): Paymen
 }
 
 export function RevenueReportByPayment({ filters }: { filters: RevenueReportFilters }): React.ReactElement {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const {
 		items: tableItems,
@@ -76,29 +77,29 @@ export function RevenueReportByPayment({ filters }: { filters: RevenueReportFilt
 	};
 
 	const headerRenderers: React.ComponentProps<typeof AutoTable>['headerRenderers'] = {
-		orders: () => <Text fw={600} fz='sm' ta='end'>{translate('reports.revenue_report.columns.orders')}</Text>,
-		revenue: () => <Text fw={600} fz='sm' ta='end'>{translate('reports.revenue_report.columns.revenue')}</Text>,
+		orders: () => <Text fw={600} fz='sm' ta='end'>{translate('coremart.vendingMachine.reports.revenueReport.columns.orders')}</Text>,
+		revenue: () => <Text fw={600} fz='sm' ta='end'>{translate('coremart.vendingMachine.reports.revenueReport.columns.revenue')}</Text>,
 	};
 
 	const chartSection = chartIsLoading ? (
 		<Skeleton height={320} radius='md' />
 	) : chartError ? (
 		<Alert color='red.4' bg='red.0' mih={200}
-			title={translate('reports.revenue_report.chart.by_payment')}>
+			title={translate('coremart.vendingMachine.reports.revenueReport.chart.byPayment')}>
 			{chartError}
 		</Alert>
 	) : (
-		<Grid gap='md'>
+		<Grid gutter='md'>
 			<Grid.Col span={{ base: 12, lg: 6 }}>
 				<PaymentMethodMetricBarChart
 					data={chartData}
-					title={translate('reports.revenue_report.chart.by_payment')}
+					title={translate('coremart.vendingMachine.reports.revenueReport.chart.byPayment')}
 				/>
 			</Grid.Col>
 			<Grid.Col span={{ base: 12, lg: 6 }}>
 				<PaymentMethodRevenueDoughnutChart
 					data={chartData}
-					title={translate('reports.revenue_report.chart.revenue_share_by_payment')}
+					title={translate('coremart.vendingMachine.reports.revenueReport.chart.revenueShareByPayment')}
 				/>
 			</Grid.Col>
 		</Grid>
@@ -115,14 +116,14 @@ export function RevenueReportByPayment({ filters }: { filters: RevenueReportFilt
 				header={
 					<Group justify='space-between' align='flex-start' wrap='nowrap' mb={6}>
 						<Title order={4} fw={600}>
-							{translate('reports.revenue_report.detail_table')}
+							{translate('coremart.vendingMachine.reports.revenueReport.detailTable')}
 						</Title>
 						<Button
 							size='sm'
 							leftSection={<IconDownload size={16} />}
 							onClick={handleExport}
 						>
-							{translate('reports.revenue_report.export')}
+							{translate('coremart.vendingMachine.reports.revenueReport.export')}
 						</Button>
 					</Group>
 				}
@@ -136,7 +137,6 @@ export function RevenueReportByPayment({ filters }: { filters: RevenueReportFilt
 					) : (
 
 						<AutoTable
-							translationNs='vending_machine'
 							columns={[...BY_PAYMENT_COLUMNS]}
 							data={tableData}
 							schema={byPaymentSchema}

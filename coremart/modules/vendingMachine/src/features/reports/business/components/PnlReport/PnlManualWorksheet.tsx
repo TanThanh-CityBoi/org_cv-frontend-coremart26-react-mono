@@ -28,11 +28,11 @@ import type { PnlLineInputs } from './type';
 
 type PnlManualWorksheetProps = {
 	/** Increment when filters are applied so COGS “snapshot” matches last apply. */
-	applyNonce: number,
+	applyNonce: number;
 };
 
 export function PnlManualWorksheet({ applyNonce }: PnlManualWorksheetProps): React.ReactElement {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const [lines, setLines] = useState<PnlLineInputs>(() => ({ ...PNL_LINE_INPUTS_ZERO }));
 	const [cogsAtLastApply, setCogsAtLastApply] = useState<number | null>(null);
@@ -69,7 +69,7 @@ export function PnlManualWorksheet({ applyNonce }: PnlManualWorksheetProps): Rea
 		</Flex>
 	);
 
-	const rowTotal = (label: string, value: number, opts?: { uppercase?: boolean, strong?: boolean }) => (
+	const rowTotal = (label: string, value: number, opts?: { uppercase?: boolean; strong?: boolean }) => (
 		<Flex justify='space-between' align='center' gap='md' wrap='wrap'>
 			<Text
 				size='sm'
@@ -87,48 +87,48 @@ export function PnlManualWorksheet({ applyNonce }: PnlManualWorksheetProps): Rea
 		<Paper p='lg' radius='sm' withBorder shadow='xs'>
 			<Box mb='lg'>
 				<Title order={5} fz='md' fw={700} mb='xs'>
-					{translate('reports.pnl_report.manual_worksheet_title')}
+					{translate('coremart.vendingMachine.reports.pnlReport.manualWorksheetTitle')}
 				</Title>
 				<Text size='xs' c='dimmed'>
-					{translate('reports.pnl_report.hint_manual_entry')}
+					{translate('coremart.vendingMachine.reports.pnlReport.hintManualEntry')}
 				</Text>
 			</Box>
 			<Divider my='md' />
 			<Stack gap='sm'>
-				{rowInput('salesRevenue', translate('reports.pnl_report.sales_revenue'))}
+				{rowInput('salesRevenue', translate('coremart.vendingMachine.reports.pnlReport.salesRevenue'))}
 				<Text size='sm' fw={600} mt='xs'>
-					{translate('reports.pnl_report.revenue_deductions')}
+					{translate('coremart.vendingMachine.reports.pnlReport.revenueDeductions')}
 				</Text>
-				{rowInput('refunds', translate('reports.pnl_report.refunds'), true)}
-				{rowInput('promotions', translate('reports.pnl_report.promotions'), true)}
+				{rowInput('refunds', translate('coremart.vendingMachine.reports.pnlReport.refunds'), true)}
+				{rowInput('promotions', translate('coremart.vendingMachine.reports.pnlReport.promotions'), true)}
 				<Divider my='xs' />
 				{rowTotal(
-					translate('reports.pnl_report.net_revenue'),
+					translate('coremart.vendingMachine.reports.pnlReport.netRevenue'),
 					computed.netRevenue,
 					{ uppercase: true, strong: true },
 				)}
 				<Text size='xs' c='dimmed' pl={0}>
-					{translate('reports.pnl_report.formula_net_revenue')}
+					{translate('coremart.vendingMachine.reports.pnlReport.formulaNetRevenue')}
 				</Text>
 
 				<Divider my='md' />
 
-				<Text size='sm' fw={600}>{translate('reports.pnl_report.cogs')}</Text>
-				{rowInput('cogs', translate('reports.pnl_report.cogs_amount'))}
+				<Text size='sm' fw={600}>{translate('coremart.vendingMachine.reports.pnlReport.cogs')}</Text>
+				{rowInput('cogs', translate('coremart.vendingMachine.reports.pnlReport.cogsAmount'))}
 				{cogsWarning && (
 					<Alert
 						color='yellow'
 						icon={<IconAlertTriangle size={18} />}
-						title={translate('reports.pnl_report.cogs_changed_title')}
+						title={translate('coremart.vendingMachine.reports.pnlReport.cogsChangedTitle')}
 					>
 						<Stack gap='xs'>
-							<Text size='sm'>{translate('reports.pnl_report.cogs_changed_body')}</Text>
+							<Text size='sm'>{translate('coremart.vendingMachine.reports.pnlReport.cogsChangedBody')}</Text>
 							<Flex gap='md' wrap='wrap'>
 								<Anchor component={Link} to='/reports/revenue' size='sm'>
-									{translate('reports.pnl_report.link_revenue_report')}
+									{translate('coremart.vendingMachine.reports.pnlReport.linkRevenueReport')}
 								</Anchor>
 								<Anchor component={Link} to='/reports/inventory' size='sm'>
-									{translate('reports.pnl_report.link_inventory_report')}
+									{translate('coremart.vendingMachine.reports.pnlReport.linkInventoryReport')}
 								</Anchor>
 							</Flex>
 						</Stack>
@@ -137,80 +137,80 @@ export function PnlManualWorksheet({ applyNonce }: PnlManualWorksheetProps): Rea
 
 				<Divider my='md' />
 				{rowTotal(
-					translate('reports.pnl_report.gross_profit'),
+					translate('coremart.vendingMachine.reports.pnlReport.grossProfit'),
 					computed.grossProfit,
 					{ uppercase: true, strong: true },
 				)}
 				<Text size='xs' c='dimmed'>
-					{translate('reports.pnl_report.formula_gross_profit')}
+					{translate('coremart.vendingMachine.reports.pnlReport.formulaGrossProfit')}
 				</Text>
 
 				<Divider my='md' />
-				{rowInput('financialRevenue', translate('reports.pnl_report.financial_revenue'))}
-				{rowInput('financialExpense', translate('reports.pnl_report.financial_expense'))}
+				{rowInput('financialRevenue', translate('coremart.vendingMachine.reports.pnlReport.financialRevenue'))}
+				{rowInput('financialExpense', translate('coremart.vendingMachine.reports.pnlReport.financialExpense'))}
 
 				<Text size='sm' fw={600} mt='sm'>
-					{translate('reports.pnl_report.selling_expenses')}
+					{translate('coremart.vendingMachine.reports.pnlReport.sellingExpenses')}
 				</Text>
 				<Text size='xs' c='dimmed' tt='uppercase'>
-					{translate('reports.pnl_report.fixed_costs')}
+					{translate('coremart.vendingMachine.reports.pnlReport.fixedCosts')}
 				</Text>
-				{rowInput('electricity', translate('reports.pnl_report.electricity'), true)}
-				{rowInput('internet', translate('reports.pnl_report.internet'), true)}
-				{rowInput('rent', translate('reports.pnl_report.rent'), true)}
-				{rowInput('fixedOther', translate('reports.pnl_report.fixed_other'), true)}
+				{rowInput('electricity', translate('coremart.vendingMachine.reports.pnlReport.electricity'), true)}
+				{rowInput('internet', translate('coremart.vendingMachine.reports.pnlReport.internet'), true)}
+				{rowInput('rent', translate('coremart.vendingMachine.reports.pnlReport.rent'), true)}
+				{rowInput('fixedOther', translate('coremart.vendingMachine.reports.pnlReport.fixedOther'), true)}
 
 				<Text size='xs' c='dimmed' tt='uppercase' mt='xs'>
-					{translate('reports.pnl_report.variable_costs')}
+					{translate('coremart.vendingMachine.reports.pnlReport.variableCosts')}
 				</Text>
-				{rowInput('partnerDiscount', translate('reports.pnl_report.partner_discount'), true)}
-				<Text size='sm' c='dark.5' pl='md'>{translate('reports.pnl_report.gateway_fees')}</Text>
-				{rowInput('gatewayMomo', translate('reports.pnl_report.gateway_momo'), true)}
-				{rowInput('gatewayVietqr', translate('reports.pnl_report.gateway_vietqr'), true)}
-				{rowInput('gatewayMpos', translate('reports.pnl_report.gateway_mpos'), true)}
-				{rowInput('expiredGoodsCost', translate('reports.pnl_report.expired_goods'), true)}
-				{rowInput('variableOther', translate('reports.pnl_report.variable_other'), true)}
+				{rowInput('partnerDiscount', translate('coremart.vendingMachine.reports.pnlReport.partnerDiscount'), true)}
+				<Text size='sm' c='dark.5' pl='md'>{translate('coremart.vendingMachine.reports.pnlReport.gatewayFees')}</Text>
+				{rowInput('gatewayMomo', translate('coremart.vendingMachine.reports.pnlReport.gatewayMomo'), true)}
+				{rowInput('gatewayVietqr', translate('coremart.vendingMachine.reports.pnlReport.gatewayVietqr'), true)}
+				{rowInput('gatewayMpos', translate('coremart.vendingMachine.reports.pnlReport.gatewayMpos'), true)}
+				{rowInput('expiredGoodsCost', translate('coremart.vendingMachine.reports.pnlReport.expiredGoods'), true)}
+				{rowInput('variableOther', translate('coremart.vendingMachine.reports.pnlReport.variableOther'), true)}
 				{rowTotal(
-					translate('reports.pnl_report.selling_expense_subtotal'),
+					translate('coremart.vendingMachine.reports.pnlReport.sellingExpenseSubtotal'),
 					computed.sellingExpenseTotal,
 				)}
 
-				{rowInput('adminExpense', translate('reports.pnl_report.admin_expense'))}
+				{rowInput('adminExpense', translate('coremart.vendingMachine.reports.pnlReport.adminExpense'))}
 
 				<Divider my='md' />
 				{rowTotal(
-					translate('reports.pnl_report.net_operating_profit'),
+					translate('coremart.vendingMachine.reports.pnlReport.netOperatingProfit'),
 					computed.netOperatingProfit,
 					{ uppercase: true, strong: true },
 				)}
 				<Text size='xs' c='dimmed'>
-					{translate('reports.pnl_report.formula_net_operating')}
+					{translate('coremart.vendingMachine.reports.pnlReport.formulaNetOperating')}
 				</Text>
 
 				<Divider my='md' />
-				{rowInput('otherIncome', translate('reports.pnl_report.other_income'))}
-				{rowInput('otherExpense', translate('reports.pnl_report.other_expense'))}
-				{rowTotal(translate('reports.pnl_report.other_profit'), computed.otherProfit)}
+				{rowInput('otherIncome', translate('coremart.vendingMachine.reports.pnlReport.otherIncome'))}
+				{rowInput('otherExpense', translate('coremart.vendingMachine.reports.pnlReport.otherExpense'))}
+				{rowTotal(translate('coremart.vendingMachine.reports.pnlReport.otherProfit'), computed.otherProfit)}
 				<Text size='xs' c='dimmed'>
-					{translate('reports.pnl_report.formula_other_profit')}
+					{translate('coremart.vendingMachine.reports.pnlReport.formulaOtherProfit')}
 				</Text>
 
 				<Divider my='md' />
 				{rowTotal(
-					translate('reports.pnl_report.profit_before_tax'),
+					translate('coremart.vendingMachine.reports.pnlReport.profitBeforeTax'),
 					computed.profitBeforeTax,
 					{ uppercase: true, strong: true },
 				)}
 				<Text size='xs' c='dimmed'>
-					{translate('reports.pnl_report.formula_before_tax')}
+					{translate('coremart.vendingMachine.reports.pnlReport.formulaBeforeTax')}
 				</Text>
 
 				<Divider my='md' />
-				<Text size='sm' fw={600}>{translate('reports.pnl_report.taxes')}</Text>
+				<Text size='sm' fw={600}>{translate('coremart.vendingMachine.reports.pnlReport.taxes')}</Text>
 				<Flex justify='space-between' align='center' gap='md' wrap='wrap'>
 					<Stack gap={4} style={{ flex: '1 1 220px' }}>
-						<Text size='sm' c='dark.6'>{translate('reports.pnl_report.vat_rate_label')}</Text>
-						<Text size='xs' c='dimmed'>{translate('reports.pnl_report.vat_formula_hint')}</Text>
+						<Text size='sm' c='dark.6'>{translate('coremart.vendingMachine.reports.pnlReport.vatRateLabel')}</Text>
+						<Text size='xs' c='dimmed'>{translate('coremart.vendingMachine.reports.pnlReport.vatFormulaHint')}</Text>
 					</Stack>
 					<NumberInput
 						size='xs'
@@ -223,11 +223,11 @@ export function PnlManualWorksheet({ applyNonce }: PnlManualWorksheetProps): Rea
 						onChange={(v) => setLine('vatRateOnDiff', typeof v === 'number' ? v : 0)}
 					/>
 				</Flex>
-				{rowTotal(translate('reports.pnl_report.vat_amount'), computed.vatAmount)}
+				{rowTotal(translate('coremart.vendingMachine.reports.pnlReport.vatAmount'), computed.vatAmount)}
 				<Flex justify='space-between' align='center' gap='md' wrap='wrap' mt='xs'>
 					<Stack gap={4} style={{ flex: '1 1 220px' }}>
-						<Text size='sm' c='dark.6'>{translate('reports.pnl_report.cit_rate_label')}</Text>
-						<Text size='xs' c='dimmed'>{translate('reports.pnl_report.cit_formula_hint')}</Text>
+						<Text size='sm' c='dark.6'>{translate('coremart.vendingMachine.reports.pnlReport.citRateLabel')}</Text>
+						<Text size='xs' c='dimmed'>{translate('coremart.vendingMachine.reports.pnlReport.citFormulaHint')}</Text>
 					</Stack>
 					<NumberInput
 						size='xs'
@@ -240,17 +240,17 @@ export function PnlManualWorksheet({ applyNonce }: PnlManualWorksheetProps): Rea
 						onChange={(v) => setLine('corporateIncomeTaxRate', typeof v === 'number' ? v : 0)}
 					/>
 				</Flex>
-				{rowTotal(translate('reports.pnl_report.cit_amount'), computed.citAmount)}
-				{rowTotal(translate('reports.pnl_report.total_tax'), computed.totalTax)}
+				{rowTotal(translate('coremart.vendingMachine.reports.pnlReport.citAmount'), computed.citAmount)}
+				{rowTotal(translate('coremart.vendingMachine.reports.pnlReport.totalTax'), computed.totalTax)}
 
 				<Divider my='md' />
 				{rowTotal(
-					translate('reports.pnl_report.profit_after_tax'),
+					translate('coremart.vendingMachine.reports.pnlReport.profitAfterTax'),
 					computed.profitAfterTax,
 					{ uppercase: true, strong: true },
 				)}
 				<Text size='xs' c='dimmed'>
-					{translate('reports.pnl_report.formula_after_tax')}
+					{translate('coremart.vendingMachine.reports.pnlReport.formulaAfterTax')}
 				</Text>
 			</Stack>
 		</Paper>

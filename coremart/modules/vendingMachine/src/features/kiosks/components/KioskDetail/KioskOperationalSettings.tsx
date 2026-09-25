@@ -3,11 +3,11 @@ import { Box, Input, Select, Stack, Text } from '@mantine/core';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { useKioskOperationalSettingTab } from './hooks';
-import { KioskType } from '../../../kioskModels';
-import { getKioskTypeLabel } from '../../../kioskModels/components/KioskModelDetail';
-import { ShelvesConfig } from '../../../kioskModels/components/ShelvesConfig';
+import { KioskType } from '@/features/kioskModels';
+import { getKioskTypeLabel } from '@/features/kioskModels/components/KioskModelDetail';
+import { ShelvesConfig } from '@/features/kioskModels/components/ShelvesConfig';
 
+import { useKioskOperationalSettingTab } from './hooks';
 
 import type { Kiosk } from '../../types';
 
@@ -19,7 +19,7 @@ export interface KioskOperationalSettingsProps {
 }
 
 export const KioskOperationalSettings: React.FC<KioskOperationalSettingsProps> = ({ kiosk }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const {
 		isEditing, goodsCollectorType, setGoodsCollectorType,
 		shelvesNumber, setShelvesNumber, shelvesConfigRows, setShelvesConfigRows,
@@ -29,16 +29,16 @@ export const KioskOperationalSettings: React.FC<KioskOperationalSettingsProps> =
 		<Stack gap='lg'>
 			<Box>
 				<Text size='sm' c='dimmed' mb={2} fw={500}>
-					{translate('kiosk_models.fields.kiosk_type')}
+					{translate('coremart.vendingMachine.kioskModels.fields.kioskType')}
 				</Text>
 				{isEditing ? (
 					<Select
 						value={goodsCollectorType || null}
 						onChange={(value) => setGoodsCollectorType(value as KioskType | null)}
-						placeholder={translate('kiosk_models.fields.kiosk_type')}
+						placeholder={translate('coremart.vendingMachine.kioskModels.fields.kioskType')}
 						data={[
-							{ value: 'non-elevator', label: translate('kiosk_models.kiosk_type.non_elevator') },
-							{ value: 'elevator', label: translate('kiosk_models.kiosk_type.elevator') },
+							{ value: 'non-elevator', label: translate('coremart.vendingMachine.kioskModels.kioskType.nonElevator') },
+							{ value: 'elevator', label: translate('coremart.vendingMachine.kioskModels.kioskType.elevator') },
 						]}
 						clearable
 					/>
@@ -61,45 +61,45 @@ export const KioskOperationalSettings: React.FC<KioskOperationalSettingsProps> =
 
 			<Box>
 				<Text size='sm' c='dimmed' mb={2} fw={500}>
-					{translate('kiosk_models.fields.max_cart_item', {defaultValue: 'Thời gian chuyển sang màn hình chờ'})}
+					{translate('coremart.vendingMachine.kioskModels.fields.maxCartItem', {defaultValue: 'Thời gian chuyển sang màn hình chờ'})}
 				</Text>
 				<Input type='number' />
 			</Box>
 			<Box>
 				<Text size='sm' c='dimmed' mb={2} fw={500}>
-					{translate('kiosk_models.fields.max_cart_item', {defaultValue: 'Thời gian chờ khách lấy hàng'})}
+					{translate('coremart.vendingMachine.kioskModels.fields.maxCartItem', {defaultValue: 'Thời gian chờ khách lấy hàng'})}
 				</Text>
 				<Input type='number' />
 			</Box>
 			<Box>
 				<Text size='sm' c='dimmed' mb={2} fw={500}>
-					{translate('kiosk_models.fields.max_cart_item', {defaultValue: 'Thời gian chờ chuyển về màn hình chính sau khi lấy hàng xong'})}
-				</Text>
-				<Input type='number' />
-			</Box>
-
-			<Box>
-				<Text size='sm' c='dimmed' mb={2} fw={500}>
-					{translate('kiosk_models.fields.max_cart_item', {defaultValue: 'Số sản phẩm mua tối đa / lần'})}
+					{translate('coremart.vendingMachine.kioskModels.fields.maxCartItem', {defaultValue: 'Thời gian chờ chuyển về màn hình chính sau khi lấy hàng xong'})}
 				</Text>
 				<Input type='number' />
 			</Box>
 
 			<Box>
 				<Text size='sm' c='dimmed' mb={2} fw={500}>
-					{translate('kiosk_models.fields.max_cart_item', {defaultValue: 'Số lần thử lại tối đa trên một vị trí ( đối với lò xo)'})}
+					{translate('coremart.vendingMachine.kioskModels.fields.maxCartItem', {defaultValue: 'Số sản phẩm mua tối đa / lần'})}
+				</Text>
+				<Input type='number' />
+			</Box>
+
+			<Box>
+				<Text size='sm' c='dimmed' mb={2} fw={500}>
+					{translate('coremart.vendingMachine.kioskModels.fields.maxCartItem', {defaultValue: 'Số lần thử lại tối đa trên một vị trí ( đối với lò xo)'})}
 				</Text>
 				<Input type='number' />
 			</Box>
 			<Box>
 				<Text size='sm' c='dimmed' mb={2} fw={500}>
-					{translate('kiosk_models.fields.max_cart_item', {defaultValue: 'Số vị trí lấy hàng thất bại tối đa'})}
+					{translate('coremart.vendingMachine.kioskModels.fields.maxCartItem', {defaultValue: 'Số vị trí lấy hàng thất bại tối đa'})}
 				</Text>
 				<Input type='number' />
 			</Box>
 			<Box>
 				<Text size='sm' c='dimmed' mb={2} fw={500}>
-					{translate('kiosk_models.fields.max_cart_item', {defaultValue: 'Số vị trí lấy hàng thất bại tối đa do cảm biến rơi'})}
+					{translate('coremart.vendingMachine.kioskModels.fields.maxCartItem', {defaultValue: 'Số vị trí lấy hàng thất bại tối đa do cảm biến rơi'})}
 				</Text>
 				<Input type='number' />
 			</Box>

@@ -1,11 +1,8 @@
 import * as request from '@nikkierp/common/request';
 import { ky } from '@nikkierp/common/request';
 import { snakeToCamelObject } from '@nikkierp/common/utils';
-import { storeAsyncMethod, storeService } from '@nikkierp/ui/appState/store';
 
 import { RefundReport } from './type';
-import { vendingMachineStore } from '../../../store';
-
 
 import type {
 	KioskRefundReport,
@@ -20,17 +17,17 @@ import type {
 	RefundReportByProductQuery,
 	RefundReportOrdersQuery,
 	RefundReportOverviewQuery,
-} from '../../../types';
+} from '@/types';
 
 
 const BASE_PATH = 'report/refund';
 export const REFUND_REPORT_DEFAULT_PAGE_SIZE = 10;
 
 export type RefundListResponse<R> = {
-	items: R[],
-	total: number,
-	page: number,
-	size: number,
+	items: R[];
+	total: number;
+	page: number;
+	size: number;
 };
 
 function baseTuples(q: RefundReportOverviewQuery): string[][] {
@@ -55,53 +52,39 @@ async function fetchList<R>(endpoint: string, params: string[][]): Promise<Refun
 	return snakeToCamelObject(result) as RefundReport<R>;
 }
 
-/**
- * Refund report.
- *
- * Read-only, and **not** a `StoreCrudServiceBase` — reports have no dynamic-model schema. See
- * `InventoryReportService` for the reasoning.
- */
-@storeService('RefundReportService', vendingMachineStore)
-export class RefundReportService {
-	@storeAsyncMethod
-	public async getOverview(query: RefundReportOverviewQuery): Promise<RefundOverview> {
-		const result = await request.get<RefundOverview>(`${BASE_PATH}/overview`, {
-			searchParams: baseTuples(query),
-		});
+export const refundReportService = {
+	async getOverview(q: RefundReportOverviewQuery): Promise<RefundOverview> {
+		const result = await request.get<RefundOverview>(`${BASE_PATH}/overview`, { searchParams: baseTuples(q) });
 		return snakeToCamelObject(result) as RefundOverview;
-	}
+	},
 
-	@storeAsyncMethod
-	public async getByKiosk(query: RefundReportByKioskQuery): Promise<RefundReport<KioskRefundReport>> {
-		return fetchList<KioskRefundReport>('by-kiosk', baseTuples(query));
-	}
+	async getByKiosk(q: RefundReportByKioskQuery): Promise<RefundReport<KioskRefundReport>> {
+		const res = await fetchList<KioskRefundReport>('by-kiosk', baseTuples(q));
+		return res;
+	},
 
-	@storeAsyncMethod
-	public async getByPaymentMethod(
-		query: RefundReportByPaymentMethodQuery,
-	): Promise<RefundReport<PaymentMethodRefundReport>> {
-		return fetchList<PaymentMethodRefundReport>('by-payment-method', baseTuples(query));
-	}
+	async getByPaymentMethod(q: RefundReportByPaymentMethodQuery):
+	Promise<RefundReport<PaymentMethodRefundReport>> {
+		const res = await fetchList<PaymentMethodRefundReport>('by-payment-method', baseTuples(q));
+		return res;
+	},
 
-	@storeAsyncMethod
-	public async getByProduct(query: RefundReportByProductQuery): Promise<RefundReport<ProductRefundReport>> {
-		return fetchList<ProductRefundReport>('by-product', baseTuples(query));
-	}
+	async getByProduct(q: RefundReportByProductQuery): Promise<RefundReport<ProductRefundReport>> {
+		const res = await fetchList<ProductRefundReport>('by-product', baseTuples(q));
+		return res;
+	},
 
-	@storeAsyncMethod
-	public async getOrders(query: RefundReportOrdersQuery): Promise<RefundReport<OrderRefundReport>> {
-		const tuples = baseTuples(query);
-		tuples.push(
-			['page', String(query.page ?? 0)],
-			['size', String(query.size ?? REFUND_REPORT_DEFAULT_PAGE_SIZE)],
+	async getOrders(q: RefundReportOrdersQuery): Promise<RefundReport<OrderRefundReport>> {
+		const t = baseTuples(q);
+		t.push(
+			['page', String(q.page ?? 0)],
+			['size', String(q.size ?? REFUND_REPORT_DEFAULT_PAGE_SIZE)],
 		);
-		return fetchList<OrderRefundReport>('by-order', tuples);
-	}
+		const res = await fetchList<OrderRefundReport>('by-order', t);
+		return res;
+	},
 
-	/** Not annotated: a Blob download is not state, so it must not be cached in the store. */
-	public async exportOrders(query: RefundReportOrdersQuery): Promise<Blob> {
-		return getBlob('by-order/export', baseTuples(query));
-	}
-}
-
-export const refundReportService = new RefundReportService();
+	async exportOrders(q: RefundReportOrdersQuery): Promise<Blob> {
+		return getBlob('by-order/export', baseTuples(q));
+	},
+};

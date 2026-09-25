@@ -1,32 +1,32 @@
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
 import React from 'react';
 
-import { orderCrudService } from '../orderService';
+import { VendingMachineDispatch, selectVendingOrderDetail, vendingOrderActions } from '@/appState';
+
 import { VdOrder } from '../types';
 
 
 type UseOrderDetailProps = {
-	id?: string,
-	orderCode?: string,
+	id?: string;
+	orderCode?: string;
 };
-
 export function useOrderDetail({ id, orderCode }: UseOrderDetailProps): {
-	order: VdOrder | undefined, isLoading: boolean,
+	order: VdOrder | undefined; isLoading: boolean
 } {
-	const { dispatchMethod, result } = useServiceLayer<VdOrder>(orderCrudService.getDetail);
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
+	const detail = useMicroAppSelector(selectVendingOrderDetail);
 
 	React.useEffect(() => {
 		if (id) {
-			dispatchMethod({ id });
+			dispatch(vendingOrderActions.getOrder({ id }));
 		}
 		else if (orderCode) {
-			dispatchMethod({ orderCode });
+			dispatch(vendingOrderActions.getOrder({ orderCode }));
 		}
-	}, [id, orderCode, dispatchMethod]);
+	}, [id, orderCode, dispatch]);
 
 	return {
-		// `useServiceLayer` yields `null` before the first call; consumers expect `undefined`.
-		order: result.data ?? undefined,
-		isLoading: result.isPending || result.doneAt == null,
+		order: detail.data,
+		isLoading: detail.status === 'pending' || detail.status === 'idle',
 	};
 }

@@ -12,7 +12,7 @@ import 'dayjs/locale/en';
 export type RangePickerProps = DatePickerInputProps<'range'>;
 
 export const RangePicker: React.FC<RangePickerProps> = ({ value, onChange, ...rest }) => {
-	const { t: translate, i18n } = useTranslation('vending_machine');
+	const { t: translate, i18n } = useTranslation();
 	const today = dayjs().locale(i18n.language);
 
 	const valueFormat = i18n.language === 'vi' ? 'D MMMM, YYYY' : 'MMMM D, YYYY';
@@ -20,41 +20,41 @@ export const RangePicker: React.FC<RangePickerProps> = ({ value, onChange, ...re
 	const presets: DatePickerPreset<'range'>[] = [
 		{
 			value: [today.format('YYYY-MM-DD'), today.format('YYYY-MM-DD')],
-			label: translate('common.date_picker.today'),
+			label: translate('coremart.vendingMachine.common.datePicker.today'),
 		},
 		{
 			value: [today.subtract(2, 'day').format('YYYY-MM-DD'), today.format('YYYY-MM-DD')],
-			label: translate('common.date_picker.last_two_days'),
+			label: translate('coremart.vendingMachine.common.datePicker.lastTwoDays'),
 		},
 		{
 			value: [today.subtract(7, 'day').format('YYYY-MM-DD'), today.format('YYYY-MM-DD')],
-			label: translate('common.date_picker.last_seven_days'),
+			label: translate('coremart.vendingMachine.common.datePicker.lastSevenDays'),
 		},
 		{
 			value: [today.startOf('week').format('YYYY-MM-DD'), today.format('YYYY-MM-DD')],
-			label: translate('common.date_picker.this_week'),
+			label: translate('coremart.vendingMachine.common.datePicker.thisWeek'),
 		},
 		{
 			value: [today.startOf('month').format('YYYY-MM-DD'), today.format('YYYY-MM-DD')],
-			label: translate('common.date_picker.this_month'),
+			label: translate('coremart.vendingMachine.common.datePicker.thisMonth'),
 		},
 		{
 			value: [
 				today.subtract(1, 'month').startOf('month').format('YYYY-MM-DD'),
 				today.subtract(1, 'month').endOf('month').format('YYYY-MM-DD'),
 			],
-			label: translate('common.date_picker.last_month'),
+			label: translate('coremart.vendingMachine.common.datePicker.lastMonth'),
 		},
 		{
 			value: [
 				today.subtract(1, 'year').startOf('year').format('YYYY-MM-DD'),
 				today.subtract(1, 'year').endOf('year').format('YYYY-MM-DD'),
 			],
-			label: translate('common.date_picker.last_year'),
+			label: translate('coremart.vendingMachine.common.datePicker.lastYear'),
 		},
 		{
 			value: [today.startOf('year').format('YYYY-MM-DD'), today.format('YYYY-MM-DD')],
-			label: translate('common.date_picker.this_year'),
+			label: translate('coremart.vendingMachine.common.datePicker.thisYear'),
 		},
 	];
 

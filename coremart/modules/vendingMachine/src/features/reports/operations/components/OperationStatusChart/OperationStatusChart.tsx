@@ -4,7 +4,7 @@ import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import { useTranslation } from 'react-i18next';
 
-import { KioskMode } from '../../../../kiosks/types';
+import { KioskMode } from '@/features/kiosks/types';
 import { KioskStats } from '../../type';
 
 
@@ -16,7 +16,7 @@ interface OperationStatusChartProps {
 }
 
 export function OperationStatusChart({ data, h = '100%' }: OperationStatusChartProps): React.ReactElement {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const sellingCount = data?.find((status) => status.value === KioskMode.SELLING)?.count ?? 0;
 	const slideshowOnlyCount = data?.find((status) => status.value === KioskMode.SLIDESHOW_ONLY)?.count ?? 0;
@@ -24,13 +24,13 @@ export function OperationStatusChart({ data, h = '100%' }: OperationStatusChartP
 
 	const chartData = {
 		labels: [
-			translate('overview.operation.selling'),
-			translate('overview.operation.slideshow_only'),
-			translate('overview.operation.pending'),
+			translate('coremart.vendingMachine.overview.operation.selling'),
+			translate('coremart.vendingMachine.overview.operation.slideshowOnly'),
+			translate('coremart.vendingMachine.overview.operation.pending'),
 		],
 		datasets: [
 			{
-				label: translate('overview.operation.status'),
+				label: translate('coremart.vendingMachine.overview.operation.status'),
 				data: [sellingCount, slideshowOnlyCount, pendingCount],
 				backgroundColor: [
 					'rgba(59, 130, 246, 0.8)', // blue
@@ -81,7 +81,7 @@ export function OperationStatusChart({ data, h = '100%' }: OperationStatusChartP
 	return (
 		<Card shadow='sm' padding='sm' radius='md' withBorder h={h}>
 			<Title order={4} mb='xs' fz='sm'>
-				{translate('overview.operation.status')}
+				{translate('coremart.vendingMachine.overview.operation.status')}
 			</Title>
 			<Box h={h} pos='relative'>
 				<Doughnut data={chartData} options={options} />

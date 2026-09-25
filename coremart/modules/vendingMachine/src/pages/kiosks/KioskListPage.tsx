@@ -1,12 +1,12 @@
 import { TablePaginationProps } from '@nikkierp/ui/components';
+import { ModelSchema } from '@nikkierp/ui/model';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
-import { asLegacyModelSchema } from '../../common/helpers';
-import { ControlPanel } from '../../components';
-import { ControlPanelViewModeProps } from '../../components/ControlPanel/ControlPanelViewMode';
-import { PageContainer } from '../../components/PageContainer';
+import { ControlPanel } from '@/components';
+import { ControlPanelViewModeProps } from '@/components/ControlPanel/ControlPanelViewMode';
+import { PageContainer } from '@/components/PageContainer';
 import {
 	ArchiveKioskModal,
 	DeleteKioskModal,
@@ -14,13 +14,13 @@ import {
 	KioskListViewMode, kioskSchema, KioskTable,
 	KioskGridView, KioskMapView, Kiosk,
 	KioskTableActions,
-} from '../../features/kiosks';
+} from '@/features/kiosks';
 import {
 	KioskListPageProvider,
 	useKioskListPageActions,
 	useKioskListPageContext,
 	useKioskListPageConfig,
-} from '../../features/kiosks/contexts/KioskListPageProvider';
+} from '@/features/kiosks/contexts/KioskListPageProvider';
 
 
 export const KioskListPage: React.FC = () => {
@@ -32,7 +32,7 @@ export const KioskListPage: React.FC = () => {
 };
 
 export const KioskListPageContent: React.FC = () => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const { filter, list: { kiosks, pagination, isLoading, isEmpty } } = useKioskListPageContext();
 	const { breadcrumbs, actions, viewModeConfig } = useKioskListPageConfig();
 	const { preview, delete: deleteKiosk, archive } = useKioskListPageActions();
@@ -62,7 +62,7 @@ export const KioskListPageContent: React.FC = () => {
 				viewMode={viewModeConfig as ControlPanelViewModeProps}
 			/>,
 		]}
-		documentTitle={translate('kiosk.title')}
+		documentTitle={translate('coremart.vendingMachine.kiosk.title')}
 	>
 		<KioskList
 			isLoading={isLoading}
@@ -139,7 +139,7 @@ const KioskList: React.FC<KioskListPageContentProps> = ({ isLoading, kiosks, pag
 					isLoading={isLoading}
 					columns={tableColumns}
 					data={kiosks as unknown as Record<string, unknown>[]}
-					schema={asLegacyModelSchema(kioskSchema)}
+					schema={kioskSchema as ModelSchema}
 					actions={actions}
 					pagination={pagination}
 				/>

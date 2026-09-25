@@ -3,29 +3,29 @@ import { FormFieldProvider, FormStyleProvider } from '@nikkierp/ui/components';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { ArchivedStatusBadge } from '@/components/ArchivedStatusBadge';
 
 
 import { PaymentDetailAuditDates } from './PaymentDetailAuditDates';
 import { PaymentDetailConfigSection } from './PaymentDetailConfigSection';
 import { PaymentDetailFormFields } from './PaymentDetailFormFields';
 import { PaymentDetailHeader } from './PaymentDetailHeader';
-import { ArchivedStatusBadge } from '../../../../components/ArchivedStatusBadge';
 
-import type { PaymentMethod } from '../../types';
-import type { PaymentConfigRow } from '../../utils/paymentConfigRows';
-import type { ModelSchema } from '@nikkierp/common/dynamicModel';
+import type { PaymentMethod } from '@/features/payment/types';
+import type { PaymentConfigRow } from '@/features/payment/utils/paymentConfigRows';
+import type { ModelSchema } from '@nikkierp/ui/model';
 
 
 export type PaymentDetailInnerProps = {
-	payment: PaymentMethod,
-	formId: string,
-	formResetNonce: number,
-	isEditing: boolean,
-	isSubmitting: boolean,
-	modelSchema: ModelSchema,
-	handleMergedSubmit: (data: Record<string, unknown>) => void,
-	configRows: PaymentConfigRow[],
-	onConfigRowsChange: (rows: PaymentConfigRow[]) => void,
+	payment: PaymentMethod;
+	formId: string;
+	formResetNonce: number;
+	isEditing: boolean;
+	isSubmitting: boolean;
+	modelSchema: ModelSchema;
+	handleMergedSubmit: (data: Record<string, unknown>) => void;
+	configRows: PaymentConfigRow[];
+	onConfigRowsChange: (rows: PaymentConfigRow[]) => void;
 };
 
 export const PaymentDetailInner: React.FC<PaymentDetailInnerProps> = ({
@@ -39,7 +39,7 @@ export const PaymentDetailInner: React.FC<PaymentDetailInnerProps> = ({
 	configRows,
 	onConfigRowsChange,
 }) => {
-	const { t } = useTranslation('vending_machine');
+	const { t } = useTranslation();
 
 	return (
 		<Stack gap='md'>
@@ -73,7 +73,7 @@ export const PaymentDetailInner: React.FC<PaymentDetailInnerProps> = ({
 
 			<Box>
 				<Text size='sm' c='dimmed' mb={3} fw={500}>
-					{t('payment.fields.status')}
+					{t('coremart.vendingMachine.payment.fields.status')}
 				</Text>
 				<ArchivedStatusBadge isArchived={payment.isArchived} />
 			</Box>

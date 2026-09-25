@@ -1,18 +1,18 @@
 import { Stack } from '@mantine/core';
 import { FormFieldProvider, FormStyleProvider } from '@nikkierp/ui/components';
+import { ModelSchema } from '@nikkierp/ui/model';
 import { IconArrowLeft, IconDeviceFloppy, IconX } from '@tabler/icons-react';
 import dayjs from 'dayjs';
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
-import { asLegacyModelSchema } from '../../common/helpers';
-import { ControlPanel } from '../../components';
-import { BreadcrumbItem } from '../../components/BreadCrumbs';
-import { ControlPanelProps } from '../../components/ControlPanel/ControlPanel';
-import { PageContainer } from '../../components/PageContainer';
-import { EventFormFields, useEventCreate } from '../../features/events';
-import { eventCrudSchema } from '../../features/events/schemas';
+import { ControlPanel } from '@/components';
+import { BreadcrumbItem } from '@/components/BreadCrumbs';
+import { ControlPanelProps } from '@/components/ControlPanel/ControlPanel';
+import { PageContainer } from '@/components/PageContainer';
+import { EventFormFields, useEventCreate } from '@/features/events';
+import { eventCrudSchema } from '@/features/events/schemas';
 
 
 const FORM_ID = 'event-create-form';
@@ -30,27 +30,27 @@ const defaultFormValues = {
 };
 
 function useEventCreatePageConfig({ handleCancel, isSubmitting }: {
-	handleCancel: () => void,
-	isSubmitting: boolean,
-}): { breadcrumbs: BreadcrumbItem[], actions: ControlPanelProps['actions'] } {
-	const { t: translate } = useTranslation('vending_machine');
+	handleCancel: () => void;
+	isSubmitting: boolean;
+}): { breadcrumbs: BreadcrumbItem[]; actions: ControlPanelProps['actions'] } {
+	const { t: translate } = useTranslation();
 	const navigate = useNavigate();
 
 	const breadcrumbs = useMemo(() => [
-		{ title: translate('title'), href: '../overview' },
-		{ title: translate('menu.events'), href: '../events' },
-		{ title: translate('events.title_create'), href: '#' },
+		{ title: translate('coremart.vendingMachine.title'), href: '../overview' },
+		{ title: translate('coremart.vendingMachine.menu.events'), href: '../events' },
+		{ title: translate('coremart.vendingMachine.events.title_create'), href: '#' },
 	], [translate]);
 
 	const actions = useMemo<ControlPanelProps['actions']>(() => [
 		{
-			label: translate('action.back'),
+			label: translate('nikki.general.actions.back'),
 			onClick: () => navigate('../events'),
 			leftSection: <IconArrowLeft size={16} />,
 			variant: 'outline' as const,
 		},
 		{
-			label: translate('action.create'),
+			label: translate('nikki.general.actions.create'),
 			leftSection: <IconDeviceFloppy size={16} />,
 			variant: 'filled' as const,
 			type: 'submit' as const,
@@ -58,7 +58,7 @@ function useEventCreatePageConfig({ handleCancel, isSubmitting }: {
 			loading: isSubmitting,
 		},
 		{
-			label: translate('action.cancel'),
+			label: translate('nikki.general.actions.cancel'),
 			leftSection: <IconX size={16} />,
 			onClick: handleCancel,
 			variant: 'outline' as const,
@@ -70,15 +70,15 @@ function useEventCreatePageConfig({ handleCancel, isSubmitting }: {
 }
 
 export const EventCreatePage: React.FC = () => {
-	const { t: translate } = useTranslation('vending_machine');
-	const schema = asLegacyModelSchema(eventCrudSchema);
+	const { t: translate } = useTranslation();
+	const schema = eventCrudSchema as ModelSchema;
 
 	const { isSubmitting, handleCancel, handleSubmit } = useEventCreate();
 	const { breadcrumbs, actions } = useEventCreatePageConfig({ handleCancel, isSubmitting });
 
 	return (
 		<PageContainer
-			documentTitle={translate('events.title_create')}
+			documentTitle={translate('coremart.vendingMachine.events.title_create')}
 			breadcrumbs={breadcrumbs}
 			sections={[<ControlPanel key='event-create-actions' actions={actions} />]}
 		>

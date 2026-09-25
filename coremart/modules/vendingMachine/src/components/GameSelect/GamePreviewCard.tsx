@@ -4,7 +4,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 
-import { Game } from '../../features/games/types';
+import { Game } from '@/features/games/types';
 
 
 export interface GamePreviewCardProps {
@@ -14,8 +14,8 @@ export interface GamePreviewCardProps {
 }
 
 export const GamePreviewCard: React.FC<GamePreviewCardProps> = ({ game, isEditing = false, onRemove }) => {
-	const { t: translate } = useTranslation('vending_machine');
-	const detailLabel = translate('action.viewDetails');
+	const { t: translate } = useTranslation();
+	const detailLabel = translate('nikki.general.actions.viewDetail');
 
 	return (
 		<Card withBorder p='md' radius='md'>
@@ -44,7 +44,7 @@ export const GamePreviewCard: React.FC<GamePreviewCardProps> = ({ game, isEditin
 							</Tooltip>
 						) : null}
 						{isEditing && onRemove ? (
-							<Tooltip label={translate('action.delete')}>
+							<Tooltip label={translate('nikki.general.actions.delete')}>
 								<ActionIcon variant='subtle' color='red' size='sm' onClick={onRemove}>
 									<IconTrash size={16} />
 								</ActionIcon>
@@ -64,7 +64,7 @@ export const GamePreviewCard: React.FC<GamePreviewCardProps> = ({ game, isEditin
 						{game.status}
 					</Badge>
 					<Text size='xs' c='dimmed'>
-						{translate('games.fields.latest_version')}: {game.latestVersion}
+						{translate('coremart.vendingMachine.games.fields.latestVersion')}: {game.latestVersion}
 					</Text>
 				</Group>
 			</Stack>

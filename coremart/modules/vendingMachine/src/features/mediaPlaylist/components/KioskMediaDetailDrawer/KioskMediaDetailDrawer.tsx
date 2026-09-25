@@ -3,9 +3,10 @@ import { IconPhoto, IconVideo } from '@tabler/icons-react';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { formatDateTime } from '../../../../common/helpers/format-time';
-import { ArchivedStatusBadge } from '../../../../components/ArchivedStatusBadge';
-import { PreviewDrawer } from '../../../../components/PreviewDrawer';
+import { formatDateTime } from '@/common/helpers/format-time';
+import { ArchivedStatusBadge } from '@/components/ArchivedStatusBadge';
+import { PreviewDrawer } from '@/components/PreviewDrawer';
+
 import { inferKioskGalleryMediaType, mapKioskMediaToGalleryMedia } from '../../kioskMediaService';
 import { MediaPreview } from '../MediaPreview';
 import { KioskMediaMutationFooter } from './KioskMediaMutationFooter';
@@ -26,7 +27,7 @@ export interface KioskMediaDetailDrawerProps {
 	onRequestRestore?: () => void;
 }
 
-function DetailField({ label, value }: { label: string, value: React.ReactNode }) {
+function DetailField({ label, value }: { label: string; value: React.ReactNode }) {
 	return (
 		<Box>
 			<Text size='sm' c='dimmed' mb={3}>
@@ -61,7 +62,7 @@ export const KioskMediaDetailDrawer: React.FC<KioskMediaDetailDrawerProps> = ({
 	onRequestArchive,
 	onRequestRestore,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const [previewModalOpen, setPreviewModalOpen] = useState(false);
 	const previewRow = media && baseApiUrl ? toPlaylistMediaRow(media, baseApiUrl) : null;
 
@@ -103,21 +104,21 @@ export const KioskMediaDetailDrawer: React.FC<KioskMediaDetailDrawerProps> = ({
 						media={previewRow}
 					/>
 					<Divider />
-					<DetailField label={translate('kiosk_media.fields.id')} value={media.id} />
+					<DetailField label={translate('coremart.vendingMachine.kioskMedia.fields.id')} value={media.id} />
 					<DetailField
-						label={translate('kiosk_media.fields.media_type')}
+						label={translate('coremart.vendingMachine.kioskMedia.fields.mediaType')}
 						value={String(media.mediaType ?? '—')}
 					/>
 					<DetailField
-						label={translate('kiosk_media.fields.storage_key')}
+						label={translate('coremart.vendingMachine.kioskMedia.fields.storageKey')}
 						value={String(media.storageKey ?? '—')}
 					/>
 					<DetailField
-						label={translate('kiosk_media.fields.created_at')}
+						label={translate('coremart.vendingMachine.kioskMedia.fields.createdAt')}
 						value={formatDateTime(media.createdAt)}
 					/>
 					<DetailField
-						label={translate('kiosk_media.fields.updated_at')}
+						label={translate('coremart.vendingMachine.kioskMedia.fields.updatedAt')}
 						value={media.updatedAt ? formatDateTime(media.updatedAt) : '—'}
 					/>
 					<KioskMediaMutationFooter
@@ -131,7 +132,7 @@ export const KioskMediaDetailDrawer: React.FC<KioskMediaDetailDrawerProps> = ({
 			) : media && !baseApiUrl ? (
 				<Stack gap='sm'>
 					<Text size='sm' c='dimmed'>
-						{translate('media_playlist.media.gallery.config_missing')}
+						{translate('coremart.vendingMachine.mediaPlaylist.media.gallery.config_missing')}
 					</Text>
 					<KioskMediaMutationFooter
 						media={media}

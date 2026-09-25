@@ -8,11 +8,11 @@ import { deriveEventRunPhase, Event, type EventRunPhase } from '../../types';
 
 
 export type EventGanttViewProps = {
-	events: Event[],
-	isLoading?: boolean,
-	onViewDetail: (eventId: string) => void,
-	onEdit?: (eventId: string) => void,
-	onDelete?: (eventId: string) => void,
+	events: Event[];
+	isLoading?: boolean;
+	onViewDetail: (eventId: string) => void;
+	onEdit?: (eventId: string) => void;
+	onDelete?: (eventId: string) => void;
 };
 
 /** 0–100: share of [start, end] already elapsed at `nowMs` (bar length still comes from start/end). */
@@ -62,7 +62,7 @@ export const EventGanttView: React.FC<EventGanttViewProps> = ({
 	onEdit: _onEdit,
 	onDelete: _onDelete,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const tasks: Task[] = useMemo(() => {
 		const nowMs = Date.now();
@@ -94,13 +94,13 @@ export const EventGanttView: React.FC<EventGanttViewProps> = ({
 	};
 
 	if (isLoading) {
-		return <Text c='dimmed'>{translate('messages.loading')}</Text>;
+		return <Text c='dimmed'>{translate('nikki.general.messages.loading')}</Text>;
 	}
 
 	if (tasks.length === 0) {
 		return (
 			<Text c='dimmed' ta='center' p='md'>
-				{translate('events.messages.no_events')}
+				{translate('coremart.vendingMachine.events.messages.no_events')}
 			</Text>
 		);
 	}

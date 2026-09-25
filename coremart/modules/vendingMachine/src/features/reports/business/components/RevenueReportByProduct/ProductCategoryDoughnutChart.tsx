@@ -5,10 +5,10 @@ import { useMemo } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import { useTranslation } from 'react-i18next';
 
-import { fmtCurrency, getLocalizedName } from '../../../../../common/helpers';
-import { REPORT_PALETTE_FILLS, reportPaletteKeyAt } from '../../../../../components/reportChartTheme';
+import { fmtCurrency, getLocalizedName } from '@/common/helpers';
+import { REPORT_PALETTE_FILLS, reportPaletteKeyAt } from '@/components/reportChartTheme';
 
-import type { RevenueReportByCategory } from '../../type';
+import type { RevenueReportByCategory } from '@/features/reports/business/type';
 
 
 
@@ -72,7 +72,7 @@ export function ProductCategoryDoughnutChart({
 	items,
 	timeRange,
 }: ProductCategoryRevenueProps) {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	// Group items if there are more than MAX_DISPLAY_ITEMS
 	const processedItems = useMemo(() => {
 		if (items.length <= MAX_DISPLAY_ITEMS) {
@@ -147,10 +147,10 @@ export function ProductCategoryDoughnutChart({
 				<Group justify='space-between' align='flex-start'>
 					<Stack gap={4}>
 						<Title order={4} fw={600}>
-							{translate('reports.revenue_report.chart.category_doughnut_title')}
+							{translate('coremart.vendingMachine.reports.revenueReport.chart.categoryDoughnutTitle')}
 						</Title>
 						<Text size='xs' c='dimmed'>
-							{translate('reports.revenue_report.chart.category_doughnut_description')}
+							{translate('coremart.vendingMachine.reports.revenueReport.chart.categoryDoughnutDescription')}
 						</Text>
 					</Stack>
 					{timeRange && <Group gap='xs'>
@@ -166,7 +166,7 @@ export function ProductCategoryDoughnutChart({
 				<div style={{ height: '250px', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
 					<Doughnut data={data} options={options} />
 					<div style={{ position: 'absolute', textAlign: 'center' }}>
-						<Text size='xs' c='dimmed'>{translate('reports.revenue_report.chart.total_revenue')}</Text>
+						<Text size='xs' c='dimmed'>{translate('coremart.vendingMachine.reports.revenueReport.chart.totalRevenue')}</Text>
 						<Title order={3} fw={600}>{fmtCurrency(Number(totalRevenue ?? 0))}</Title>
 					</div>
 				</div>

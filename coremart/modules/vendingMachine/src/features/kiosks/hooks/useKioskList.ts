@@ -1,22 +1,31 @@
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
 import React from 'react';
 
-import { usePaginationWithTotal } from '../../../common/hooks';
-import { SearchGraph } from '../../../types';
-import { kioskCrudService } from '../kioskService';
+import {
+	VendingMachineDispatch,
+	kioskActions,
+	selectKioskList,
+} from '@/appState';
+import { usePagination } from '@/common/hooks';
+import { SearchGraph, SearchParams } from '@/types';
+
 import { Kiosk } from '../types';
 
 
-type SearchResponse = { items: Kiosk[], total: number };
-
 export function useKioskList({ graph }: { graph?: SearchGraph } = {}) {
-	const { dispatchMethod, result } = useServiceLayer<SearchResponse>(kioskCrudService.search);
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
+	const list = useMicroAppSelector(selectKioskList);
 
 	const fetchList = React.useCallback((targetPage: number, size: number, searchGraph?: SearchGraph) => {
-		dispatchMethod({ page: targetPage - 1, size, graph: searchGraph });
-	}, [dispatchMethod]);
+		const params: SearchParams<Kiosk> = {
+			page: targetPage - 1,
+			size,
+			graph: searchGraph,
+		};
+		dispatch(kioskActions.listKiosks(params));
+	}, [dispatch]);
 
-	const pagination = usePaginationWithTotal(fetchList, result.data?.total ?? 0, { graph });
+	const pagination = usePagination(fetchList, selectKioskList, { graph });
 	const { page, pageSize } = pagination;
 
 	React.useEffect(() => {
@@ -27,14 +36,14 @@ export function useKioskList({ graph }: { graph?: SearchGraph } = {}) {
 		fetchList(page, pageSize, graph);
 	}, [fetchList, page, pageSize, graph]);
 
-	// Default to `[]`: the slice this replaced always exposed an array.
-	const kiosks = result.data?.items ?? [];
-	const isLoading = !kiosks?.length && (result.isPending || result.doneAt == null);
-	const isEmpty = !kiosks?.length && !result.isPending && result.doneAt != null;
+	const kiosks = list.items;
+	const status = list.status;
+	const isLoading = !kiosks?.length && (status === 'pending' || status === 'idle');
+	const isEmpty = !kiosks?.length && status !== 'idle' && status !== 'pending';
 
 	return {
 		kiosks,
-		status: result.isPending ? 'pending' : 'success',
+		status,
 		isLoading,
 		isEmpty,
 		handleRefresh,

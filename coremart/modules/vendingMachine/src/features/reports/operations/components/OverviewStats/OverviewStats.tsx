@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next';
 
 import { CustomerVisitChart } from '../CustomerVisitChart';
 import { KioskCountCard } from './KioskCountCard';
-import { OperationStatsCard } from './OperationStatsCard';
 import { OverviewCharts } from './OverviewCharts';
+import { OperationStatsCard } from './OperationStatsCard';
 import { useKioskCountStats, useKioskVisitors, useOperationStats } from '../../hooks';
 
 

@@ -1,4 +1,4 @@
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+import { ModelSchema } from '@nikkierp/ui/model';
 import {
 	IconArchive, IconArrowLeft, IconDeviceFloppy, IconEdit, IconRefresh, IconTrash, IconX,
 } from '@tabler/icons-react';
@@ -6,19 +6,19 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
-import { settingSchema } from '../../..';
-import { asLegacyModelSchema } from '../../../../../common/helpers';
-import { BreadcrumbItem } from '../../../../../components/BreadCrumbs';
-import { ControlPanelActionItem } from '../../../../../components/ControlPanel';
+import { settingActions, selectSetArchivedSetting, VendingMachineDispatch } from '@/appState';
+import { BreadcrumbItem } from '@/components/BreadCrumbs';
+import { ControlPanelActionItem } from '@/components/ControlPanel';
 import {
 	SettingCreateFormData,
 	settingToCreateFormValues,
 	formDataToSettingUpdateBody,
-} from '../../../hooks/useSettingCreate';
-import { useSettingDelete } from '../../../hooks/useSettingDelete';
-import { useSettingEdit } from '../../../hooks/useSettingEdit';
-import { settingStoreService } from '../../../settingStoreService';
-import { Setting } from '../../../types';
+} from '@/features/settings/hooks/useSettingCreate';
+import { useSettingDelete } from '@/features/settings/hooks/useSettingDelete';
+import { useSettingEdit } from '@/features/settings/hooks/useSettingEdit';
+import { settingSchema } from '@/features/settings';
+import { Setting } from '@/features/settings/types';
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
 
 import type {
 	UseSettingDetailPageConfigProps,
@@ -29,12 +29,12 @@ import type {
 export const SETTING_BASIC_INFO_FORM_ID = 'setting-basic-info-form';
 
 export const useSettingDetailBreadcrumbs = ({ setting }: { setting?: Setting }): BreadcrumbItem[] => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	return useMemo(() => [
-		{ title: translate('title'), href: '../overview' },
-		{ title: translate('settings.title'), href: '../settings' },
-		{ title: setting?.name || translate('settings.detail.title'), href: '#' },
+		{ title: translate('coremart.vendingMachine.title'), href: '../overview' },
+		{ title: translate('coremart.vendingMachine.settings.title'), href: '../settings' },
+		{ title: setting?.name || translate('coremart.vendingMachine.settings.detail.title'), href: '#' },
 	], [setting?.name, translate]);
 };
 
@@ -50,11 +50,11 @@ function useSettingDetailActions(
 	onArchiveClick: () => void,
 ): ControlPanelActionItem[] {
 	const navigate = useNavigate();
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	return useMemo<ControlPanelActionItem[]>(() => {
 		const backAction: ControlPanelActionItem = {
-			label: translate('action.back'),
+			label: translate('nikki.general.actions.back'),
 			onClick: () => navigate('../settings'),
 			leftSection: <IconArrowLeft size={16} />,
 			variant: 'outline',
@@ -62,14 +62,14 @@ function useSettingDetailActions(
 
 		const editActions: ControlPanelActionItem[] = !isEditing
 			? [{
-				label: translate('action.edit'),
+				label: translate('nikki.general.actions.edit'),
 				leftSection: <IconEdit size={16} />,
 				onClick: onEditClick,
 				type: 'button',
 				variant: 'filled',
 			}]
 			: [{
-				label: translate('action.save'),
+				label: translate('nikki.general.actions.save'),
 				leftSection: <IconDeviceFloppy size={16} />,
 				onClick: onSaveClick,
 				type: 'button',
@@ -77,7 +77,7 @@ function useSettingDetailActions(
 				disabled: isSubmitting,
 				loading: isSubmitting,
 			}, {
-				label: translate('action.cancel'),
+				label: translate('nikki.general.actions.cancel'),
 				leftSection: <IconX size={16} />,
 				onClick: onCancelClick,
 				type: 'button',
@@ -87,8 +87,8 @@ function useSettingDetailActions(
 
 		const archiveAction: ControlPanelActionItem = {
 			label: isArchived
-				? translate('action.restore')
-				: translate('action.archive'),
+				? translate('nikki.general.actions.restore')
+				: translate('nikki.general.actions.archive'),
 			leftSection: isArchived ? <IconRefresh size={16} /> : <IconArchive size={16} />,
 			onClick: onArchiveClick,
 			type: 'button',
@@ -98,7 +98,7 @@ function useSettingDetailActions(
 		};
 
 		const deleteAction: ControlPanelActionItem = {
-			label: translate('action.delete'),
+			label: translate('nikki.general.actions.delete'),
 			leftSection: <IconTrash size={16} />,
 			onClick: onDeleteClick,
 			type: 'button',
@@ -113,26 +113,40 @@ function useSettingDetailActions(
 }
 
 function useArchiveHandler(setting: UseSettingDetailPageConfigProps['setting']) {
-	const { dispatchMethod: setArchived, result } = useServiceLayer(settingStoreService.setIsArchived);
-	const { dispatchMethod: reloadSetting } = useServiceLayer(settingStoreService.getById);
-	const settingId = setting?.id;
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
+	const { t: translate } = useTranslation();
+	const archiveState = useMicroAppSelector(selectSetArchivedSetting);
+	const archiveRequestIdRef = React.useRef<string | null>(null);
 
 	const handleArchive = useCallback(() => {
 		if (!setting) return;
-		setArchived({ id: setting.id, etag: setting.etag, isArchived: !setting.isArchived });
-	}, [setArchived, setting]);
+		const action = dispatch(settingActions.setArchivedSetting({
+			id: setting.id,
+			etag: setting.etag,
+			isArchived: !setting.isArchived,
+		}));
+		archiveRequestIdRef.current = action.requestId;
+	}, [dispatch, setting]);
 
-	// Archive and detail hold separate service-layer results, so refresh the detail explicitly.
-	// This hook shows no notification of its own, matching the slice version it replaces.
-	const doneAt = result.doneAt;
 	React.useEffect(() => {
-		if (doneAt == null || !result.isSuccess || !settingId) return;
-		reloadSetting({ id: settingId });
-	}, [doneAt, result.isSuccess, settingId, reloadSetting]);
+		const requestId = archiveState.requestId;
+		const matchesDispatch = requestId != null && requestId === archiveRequestIdRef.current;
+		if (!matchesDispatch) return;
+
+		if (archiveState.status === 'success') {
+			archiveRequestIdRef.current = null;
+			dispatch(settingActions.resetSetArchivedSetting());
+			dispatch(settingActions.getSetting(setting!.id));
+		}
+		if (archiveState.status === 'error') {
+			archiveRequestIdRef.current = null;
+			dispatch(settingActions.resetSetArchivedSetting());
+		}
+	}, [archiveState, dispatch, setting, translate]);
 
 	return {
 		handleArchive,
-		isArchiving: result.isPending,
+		isArchiving: archiveState.status === 'pending',
 	};
 }
 
@@ -186,7 +200,7 @@ export function useSettingDetailPageConfig(
 		onEditClick, onSaveClick, onCancelClick, onDeleteClick, handleArchive,
 	);
 
-	const modelSchema = asLegacyModelSchema(settingSchema);
+	const modelSchema = settingSchema as ModelSchema;
 
 	const modelValue = useMemo(
 		() => setting ? settingToCreateFormValues(setting) : undefined,

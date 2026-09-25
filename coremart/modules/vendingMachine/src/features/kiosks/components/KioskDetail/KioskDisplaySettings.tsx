@@ -2,14 +2,14 @@ import { Stack } from '@mantine/core';
 import React from 'react';
 
 
-import { useKioskSettingTab } from './hooks';
-import { GameSelect } from '../../../../components/GameSelect';
-import { KioskSettingSelect } from '../../../../components/KioskSettingSelect';
-import { MediaPlaylistSelect } from '../../../../components/MediaPlaylistSelect';
-import { ThemeSelect } from '../../../../components/ThemeSelect';
-import { UIModeSelect } from '../../../../components/UIModeSelect';
-import { Kiosk } from '../../types';
+import { GameSelect } from '@/components/GameSelect';
+import { KioskSettingSelect } from '@/components/KioskSettingSelect';
+import { MediaPlaylistSelect } from '@/components/MediaPlaylistSelect';
+import { ThemeSelect } from '@/components/ThemeSelect';
+import { UIModeSelect } from '@/components/UIModeSelect';
+import { Kiosk } from '@/features/kiosks/types';
 
+import { useKioskSettingTab } from './hooks';
 
 
 interface KioskDisplaySettingsProps {

@@ -5,16 +5,17 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
-import { ArchivedStatusBadge } from '../../../../components/ArchivedStatusBadge';
-import { AssignedKioskList } from '../../../../components/AssignKiosks';
-import { GameSelect } from '../../../../components/GameSelect';
-import { MediaPlaylistSelect } from '../../../../components/MediaPlaylistSelect';
-import { PreviewDrawer } from '../../../../components/PreviewDrawer';
-import { ThemeSelect } from '../../../../components/ThemeSelect';
-import { Game } from '../../../games/types';
-import { Kiosk } from '../../../kiosks/types';
-import { Playlist } from '../../../mediaPlaylist/types';
-import { Theme } from '../../../themes/types';
+import { ArchivedStatusBadge } from '@/components/ArchivedStatusBadge';
+import { AssignedKioskList } from '@/components/AssignKiosks';
+import { GameSelect } from '@/components/GameSelect';
+import { MediaPlaylistSelect } from '@/components/MediaPlaylistSelect';
+import { PreviewDrawer } from '@/components/PreviewDrawer';
+import { ThemeSelect } from '@/components/ThemeSelect';
+import { Game } from '@/features/games/types';
+import { Kiosk } from '@/features/kiosks/types';
+import { Playlist } from '@/features/mediaPlaylist/types';
+import { Theme } from '@/features/themes/types';
+
 import { KioskSetting } from '../../types';
 
 
@@ -31,7 +32,7 @@ export const KioskSettingDetailDrawer: React.FC<KioskSettingDetailDrawerProps> =
 	setting,
 	isLoading = false,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const navigate = useNavigate();
 	const [settingKiosks, setSettingKiosks] = useState<Kiosk[]>(setting?.kiosks || []);
 	const [settingTheme, setSettingTheme] = useState<Theme | undefined>(() => setting?.themeSetting ?? undefined);
@@ -113,14 +114,14 @@ export const KioskSettingDetailDrawer: React.FC<KioskSettingDetailDrawerProps> =
 		>
 			<Stack gap='md'>
 				<Box>
-					<Text size='sm' c='dimmed' mb='xs'>{translate('kiosk_settings.fields.code')}</Text>
+					<Text size='sm' c='dimmed' mb='xs'>{translate('coremart.vendingMachine.kioskSettings.fields.code')}</Text>
 					<Text size='sm' fw={500}>{setting?.code}</Text>
 				</Box>
 
 				<Divider />
 
 				<Box>
-					<Text size='sm' c='dimmed' mb='xs'>{translate('kiosk_settings.fields.name')}</Text>
+					<Text size='sm' c='dimmed' mb='xs'>{translate('coremart.vendingMachine.kioskSettings.fields.name')}</Text>
 					<Text size='sm'>{setting?.name}</Text>
 				</Box>
 
@@ -128,7 +129,7 @@ export const KioskSettingDetailDrawer: React.FC<KioskSettingDetailDrawerProps> =
 					<>
 						<Divider />
 						<Box>
-							<Text size='sm' c='dimmed' mb='xs'>{translate('kiosk_settings.fields.description')}</Text>
+							<Text size='sm' c='dimmed' mb='xs'>{translate('coremart.vendingMachine.kioskSettings.fields.description')}</Text>
 							<Text size='sm'>{setting.description}</Text>
 						</Box>
 					</>
@@ -137,14 +138,14 @@ export const KioskSettingDetailDrawer: React.FC<KioskSettingDetailDrawerProps> =
 				<Divider />
 
 				<Box>
-					<Text size='sm' c='dimmed' mb='xs'>{translate('kiosk_settings.fields.status')}</Text>
+					<Text size='sm' c='dimmed' mb='xs'>{translate('coremart.vendingMachine.kioskSettings.fields.status')}</Text>
 					<ArchivedStatusBadge isArchived={!!setting?.isArchived} />
 				</Box>
 
 				<Divider />
 
 				<Box>
-					<Text size='sm' c='dimmed' mb='xs'>{translate('kiosk_settings.fields.created_at')}</Text>
+					<Text size='sm' c='dimmed' mb='xs'>{translate('coremart.vendingMachine.kioskSettings.fields.createdAt')}</Text>
 					<Text size='sm'>{setting?.createdAt ? new Date(setting.createdAt).toLocaleString() : '—'}</Text>
 				</Box>
 
@@ -152,7 +153,7 @@ export const KioskSettingDetailDrawer: React.FC<KioskSettingDetailDrawerProps> =
 				<Divider />
 				<Box>
 					<Text size='sm' c='dimmed' mb='md' fw={500}>
-						{translate('kiosk_settings.fields.kiosks')}
+						{translate('coremart.vendingMachine.kioskSettings.fields.kiosks')}
 					</Text>
 					<AssignedKioskList
 						kiosks={settingKiosks}

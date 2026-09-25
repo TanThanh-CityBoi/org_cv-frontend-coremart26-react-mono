@@ -2,14 +2,13 @@ import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp'
 import React from 'react';
 import { useNavigate } from 'react-router';
 
+import type { Action } from '@/features/actions';
+
 import {
 	AuthorizeDispatch,
 	actionActions,
 	selectActionState,
-} from '../../../appState';
-
-import type { Action } from '..';
-
+} from '@/appState';
 
 
 function useActionListData() {

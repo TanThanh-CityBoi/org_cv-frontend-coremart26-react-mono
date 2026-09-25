@@ -4,7 +4,8 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { resolvePath, useLocation, useNavigate, useParams } from 'react-router';
 
-import { Role } from '..';
+import type { Entitlement } from '@/features/entitlements/types';
+
 import {
 	AuthorizeDispatch,
 	entitlementActions,
@@ -14,10 +15,8 @@ import {
 	selectEntitlementState,
 	selectResourceList,
 	selectRoleState,
-} from '../../../appState';
-
-import type { Entitlement } from '../../entitlements/types';
-
+} from '@/appState';
+import { Role } from '@/features/roles';
 
 
 // ============ Helper Functions ============

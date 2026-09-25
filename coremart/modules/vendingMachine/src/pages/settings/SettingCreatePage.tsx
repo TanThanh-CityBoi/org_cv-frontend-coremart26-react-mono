@@ -1,26 +1,26 @@
 import { Divider, Stack } from '@mantine/core';
 import { FormFieldProvider, FormStyleProvider } from '@nikkierp/ui/components';
+import { ModelSchema } from '@nikkierp/ui/model';
 import { IconArrowLeft, IconDeviceFloppy, IconX } from '@tabler/icons-react';
 import React, { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
-import { asLegacyModelSchema } from '../../common/helpers';
-import { ControlPanel } from '../../components';
-import { BreadcrumbItem } from '../../components/BreadCrumbs';
-import { ControlPanelProps } from '../../components/ControlPanel/ControlPanel';
-import { PageContainer } from '../../components/PageContainer';
+import { ControlPanel } from '@/components';
+import { BreadcrumbItem } from '@/components/BreadCrumbs';
+import { ControlPanelProps } from '@/components/ControlPanel/ControlPanel';
+import { PageContainer } from '@/components/PageContainer';
 import {
 	SettingCreateFormData,
 	SettingFormFields,
 	settingSchema,
 	useSettingCreate,
-} from '../../features/settings';
-import { SettingConfigSection } from '../../features/settings/components/SettingDetail/SettingConfigSection';
+} from '@/features/settings';
+import { SettingConfigSection } from '@/features/settings/components/SettingDetail/SettingConfigSection';
 import {
 	settingRowsToConfig,
 	type SettingConfigRow,
-} from '../../features/settings/utils/settingConfigRows';
+} from '@/features/settings/utils/settingConfigRows';
 
 
 const FORM_ID = 'setting-create-form';
@@ -41,24 +41,24 @@ function useSettingCreatePageConfig({
 	handleCancel,
 	isSubmitting,
 }: UseSettingCreatePageConfigProps): UseSettingCreatePageConfigReturn {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const navigate = useNavigate();
 
 	const breadcrumbs = useMemo<BreadcrumbItem[]>(() => [
-		{ title: translate('title'), href: '../overview' },
-		{ title: translate('settings.title'), href: '../settings' },
-		{ title: translate('settings.title_create'), href: '#' },
+		{ title: translate('coremart.vendingMachine.title'), href: '../overview' },
+		{ title: translate('coremart.vendingMachine.settings.title'), href: '../settings' },
+		{ title: translate('coremart.vendingMachine.settings.title_create'), href: '#' },
 	], [translate]);
 
 	const actions = useMemo<ControlPanelProps['actions']>(() => [
 		{
-			label: translate('action.back'),
+			label: translate('nikki.general.actions.back'),
 			onClick: () => navigate('../settings'),
 			leftSection: <IconArrowLeft size={16} />,
 			variant: 'outline' as const,
 		},
 		{
-			label: translate('action.create'),
+			label: translate('nikki.general.actions.create'),
 			leftSection: <IconDeviceFloppy size={16} />,
 			variant: 'filled' as const,
 			type: 'submit' as const,
@@ -67,7 +67,7 @@ function useSettingCreatePageConfig({
 			disabled: isSubmitting,
 		},
 		{
-			label: translate('action.cancel'),
+			label: translate('nikki.general.actions.cancel'),
 			leftSection: <IconX size={16} />,
 			onClick: handleCancel,
 			variant: 'outline' as const,
@@ -79,8 +79,8 @@ function useSettingCreatePageConfig({
 }
 
 export const SettingCreatePage: React.FC = () => {
-	const { t: translate } = useTranslation('vending_machine');
-	const schema = asLegacyModelSchema(settingSchema);
+	const { t: translate } = useTranslation();
+	const schema = settingSchema as ModelSchema;
 	const { isSubmitting, handleCancel, handleSubmit } = useSettingCreate();
 	const { breadcrumbs, actions } = useSettingCreatePageConfig({ handleCancel, isSubmitting });
 
@@ -95,7 +95,7 @@ export const SettingCreatePage: React.FC = () => {
 
 	return (
 		<PageContainer
-			documentTitle={translate('settings.title_create')}
+			documentTitle={translate('coremart.vendingMachine.settings.title_create')}
 			breadcrumbs={breadcrumbs}
 			sections={[<ControlPanel key='control-panel' actions={actions} />]}
 		>

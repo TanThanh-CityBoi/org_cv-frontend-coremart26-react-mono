@@ -1,22 +1,41 @@
 /* eslint-disable max-lines-per-function */
 import { notifications } from '@mantine/notifications';
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
 import dayjs from 'dayjs';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { triggerBlobDownload } from '../../../../common/helpers';
-import { usePaginationWithTotal, UsePaginationOptions } from '../../../../common/hooks';
+import {
+	type VendingMachineDispatch,
+	reducer,
+	revenueReportActions,
+	selectRevenueByCategory,
+	selectRevenueByCategoryChart,
+	selectRevenueByHour,
+	selectRevenueByKiosk,
+	selectRevenueByKioskChart,
+	selectRevenueByOrderTime,
+	selectRevenueByPaymentMethod,
+	selectRevenueByPaymentMethodChart,
+	selectRevenueByProduct,
+	selectRevenueByProductChart,
+	selectRevenueOverview,
+	selectRevenueTimeSeriesChart,
+} from '@/appState';
+import { triggerBlobDownload } from '@/common/helpers';
+import { type ListPaginationSelector, usePagination, UsePaginationOptions } from '@/common/hooks';
 import {
 	appliedFiltersStableKey,
 	revenueFiltersToBaseQuery,
 	revenueReportByOrderTimeQuery,
 	revenueReportListQuery,
 	timeRangeToGroupTime,
-} from '../../helpers';
+} from '@/features/reports/helpers';
+
 import { RevenueReportFilters } from '../components';
 import { revenueReportService, REVENUE_REPORT_DEFAULT_PAGE_SIZE } from '../revenueReportService';
 
+import type { PagedReportState } from '../revenueReportSlice';
 import type {
 	ReportOverview,
 	RevenueOverview,
@@ -27,12 +46,10 @@ import type {
 	RevenueReportByPaymentMethod,
 	RevenueReportByProduct,
 } from '../type';
-import type { ServiceLayerResult } from '@nikkierp/ui/appState/store';
+import type { ReduxActionState } from '@nikkierp/ui/appState';
 
 
-
-/** What a paged revenue endpoint returns. */
-type RevenuePage<R> = { items: R[], total: number, overview?: ReportOverview<R> | null };
+type VmState = ReturnType<typeof reducer>;
 
 
 /** Khóa ổn định khi filter thay đổi — `usePagination` reset về trang 1. */
@@ -41,11 +58,12 @@ export function revenueReportFiltersKey(filters: RevenueReportFilters): string {
 }
 
 function useRevenueReportList<R>(
-	result: ServiceLayerResult<RevenuePage<R>>,
+	slice: PagedReportState<R>,
+	selector: ListPaginationSelector<VmState>,
 	fetchList: (targetPage: number, pageSize: number) => void,
 	paginationOptions?: UsePaginationOptions,
 ) {
-	const pagination = usePaginationWithTotal(fetchList, result.data?.total ?? 0, {
+	const pagination = usePagination(fetchList, selector, {
 		fallbackPageSize: REVENUE_REPORT_DEFAULT_PAGE_SIZE,
 		...paginationOptions,
 	});
@@ -59,17 +77,19 @@ function useRevenueReportList<R>(
 		fetchList(page, pageSize);
 	}, [fetchList, page, pageSize]);
 
-	const items: R[] = result.data?.items ?? [];
-	const overview: ReportOverview<R> | null = result.data?.overview ?? null;
-	const isLoading = !items.length && (result.isPending || result.doneAt == null);
-	const isEmpty = !items.length && !result.isPending && result.doneAt != null;
+	const items: R[] = slice.items ?? [];
+	const overview: ReportOverview<R> | null = slice.overview ?? null;
+	const status = slice.status;
+	const isLoading = !items.length && (status === 'pending' || status === 'idle');
+	const isEmpty = !items.length && status !== 'idle' && status !== 'pending';
 
 	return {
 		overview,
 		items,
 		pagination,
-		status: result.isPending ? 'pending' : 'success',
-		error: result.error,
+		//* Redux state
+		status,
+		error: slice.error,
 		isLoading,
 		isEmpty,
 		//* Actions
@@ -79,18 +99,18 @@ function useRevenueReportList<R>(
 
 
 export function useRevenueReportByHour(filters: RevenueReportFilters) {
-	const { dispatchMethod, result } = useServiceLayer<RevenuePage<RevenueReportByHour>>(
-		revenueReportService.getByHour,
-	);
+	const dispatch = useMicroAppDispatch() as VendingMachineDispatch;
+	const slice = useMicroAppSelector(selectRevenueByHour);
 
 	const fetchList = useCallback((targetPage: number, pageSize: number) => {
 		const q = revenueReportListQuery({ filters, pageQuery: { page: targetPage ?? 1, size: pageSize ?? 10 } });
 		if (!q) return;
-		dispatchMethod(q);
-	}, [dispatchMethod, filters]);
+		dispatch(revenueReportActions.fetchRevenueByHour(q));
+	}, [dispatch, filters]);
 
 	return useRevenueReportList<RevenueReportByHour>(
-		result,
+		slice,
+		selectRevenueByHour,
 		fetchList,
 		{ resetPageKey: revenueReportFiltersKey(filters) },
 	);
@@ -101,22 +121,23 @@ export function useRevenueReportByHour(filters: RevenueReportFilters) {
  * Nên bọc `query` trong `useMemo` ở nơi gọi để đỡ fetch lặp không cần thiết.
  */
 export function useRevenueReportOverview( filters: RevenueReportFilters ) {
-	const { dispatchMethod, result } = useServiceLayer<RevenueOverview>(revenueReportService.getOverview);
+	const dispatch = useMicroAppDispatch() as VendingMachineDispatch;
+	const overview: ReduxActionState<RevenueOverview> = useMicroAppSelector(selectRevenueOverview);
 	const query = useMemo(() => revenueFiltersToBaseQuery(filters), [filters]);
 
 	const refresh = useCallback(() => {
 		if (!query) return;
-		dispatchMethod(query);
-	}, [dispatchMethod, query]);
+		dispatch(revenueReportActions.fetchRevenueOverview(query));
+	}, [dispatch, query]);
 
 	useEffect(() => {
 		refresh();
 	}, [refresh]);
 
-	const status = result.isPending ? 'pending' : 'success';
-	const data = result.data ?? undefined;
-	const error = result.error;
-	const isLoading = (result.isPending || result.doneAt == null) && !data;
+	const status = overview.status;
+	const data = overview.data;
+	const error = overview.error;
+	const isLoading = (status === 'pending' || status === 'idle') && !data;
 
 	return {
 		data,
@@ -128,10 +149,9 @@ export function useRevenueReportOverview( filters: RevenueReportFilters ) {
 }
 
 export function useRevenueReportByOrderTime(filters: RevenueReportFilters) {
-	const { t: translate } = useTranslation('vending_machine');
-	const { dispatchMethod, result } = useServiceLayer<RevenuePage<RevenueReportByOrderTime>>(
-		revenueReportService.getByOrderTime,
-	);
+	const { t: translate } = useTranslation();
+	const dispatch = useMicroAppDispatch() as VendingMachineDispatch;
+	const slice = useMicroAppSelector(selectRevenueByOrderTime);
 	const groupTime = useMemo(() => timeRangeToGroupTime(filters.dateRange), [filters.dateRange]);
 
 	const fetchList = useCallback((targetPage: number, pageSize: number) => {
@@ -142,16 +162,16 @@ export function useRevenueReportByOrderTime(filters: RevenueReportFilters) {
 			sortBy: { orderTime: 'desc' },
 		});
 		if (!q) return;
-		dispatchMethod(q);
-	}, [dispatchMethod, filters]);
+		dispatch(revenueReportActions.fetchRevenueByOrderTime(q));
+	}, [dispatch, filters]);
 
 	const handleExport = useCallback(async () => {
 		const query = revenueReportListQuery({ filters, pageQuery: { page: 1, size: 500 }, download: true });
 		if (!query) {
 			notifications.show({
 				color: 'yellow',
-				title: translate('reports.revenue_report.export'),
-				message: translate('reports.revenue_report.missing_date_range'),
+				title: translate('coremart.vendingMachine.reports.revenueReport.export'),
+				message: translate('coremart.vendingMachine.reports.revenueReport.missingDateRange'),
 			});
 			return;
 		}
@@ -163,16 +183,16 @@ export function useRevenueReportByOrderTime(filters: RevenueReportFilters) {
 			triggerBlobDownload(blob, `Revenue-by-order-time-${dayjs().format('YYYYMMDD-HHmm')}.xlsx`);
 			notifications.show({
 				color: 'green',
-				title: translate('reports.revenue_report.export'),
-				message: translate('reports.revenue_report.export_success'),
+				title: translate('coremart.vendingMachine.reports.revenueReport.export'),
+				message: translate('coremart.vendingMachine.reports.revenueReport.exportSuccess'),
 			});
 		}
 		catch (error) {
 			const message = error instanceof Error ? error.message : String(error);
 			notifications.show({
 				color: 'red',
-				title: translate('reports.revenue_report.export'),
-				message: translate('reports.revenue_report.export_failed', { message }),
+				title: translate('coremart.vendingMachine.reports.revenueReport.export'),
+				message: translate('coremart.vendingMachine.reports.revenueReport.exportFailed', { message }),
 			});
 		}
 	}, [filters, translate]);
@@ -180,7 +200,8 @@ export function useRevenueReportByOrderTime(filters: RevenueReportFilters) {
 	const resetPageKey = useMemo(() => revenueReportFiltersKey(filters), [filters]);
 
 	const list = useRevenueReportList<RevenueReportByOrderTime>(
-		result,
+		slice,
+		selectRevenueByOrderTime,
 		fetchList,
 		{ resetPageKey },
 	);
@@ -190,9 +211,8 @@ export function useRevenueReportByOrderTime(filters: RevenueReportFilters) {
 
 
 export function useRevenueTimeSeriesChart(filters: RevenueReportFilters) {
-	const { dispatchMethod, result } = useServiceLayer<RevenuePage<RevenueReportByOrderTime>>(
-		revenueReportService.getTimeSeriesChart,
-	);
+	const dispatch = useMicroAppDispatch() as VendingMachineDispatch;
+	const slice = useMicroAppSelector(selectRevenueTimeSeriesChart);
 	const groupTime = useMemo(() => timeRangeToGroupTime(filters.dateRange), [filters.dateRange]);
 
 	const fetchList = useCallback((targetPage: number, pageSize: number) => {
@@ -202,13 +222,14 @@ export function useRevenueTimeSeriesChart(filters: RevenueReportFilters) {
 			pageQuery: { page: targetPage, size: pageSize },
 		});
 		if (!q) return;
-		dispatchMethod(q);
-	}, [dispatchMethod, filters]);
+		dispatch(revenueReportActions.fetchRevenueTimeSeriesChart(q));
+	}, [dispatch, filters]);
 
 	const resetPageKey = useMemo(() => revenueReportFiltersKey(filters), [filters]);
 
 	const list = useRevenueReportList<RevenueReportByOrderTime>(
-		result,
+		slice,
+		selectRevenueTimeSeriesChart,
 		fetchList,
 		{ resetPageKey, fallbackPageSize: 60 },
 	);
@@ -218,10 +239,9 @@ export function useRevenueTimeSeriesChart(filters: RevenueReportFilters) {
 
 
 export function useRevenueReportByKiosk(filters: RevenueReportFilters) {
-	const { t: translate } = useTranslation('vending_machine');
-	const { dispatchMethod, result } = useServiceLayer<RevenuePage<RevenueReportByKiosk>>(
-		revenueReportService.getByKiosk,
-	);
+	const { t: translate } = useTranslation();
+	const dispatch = useMicroAppDispatch() as VendingMachineDispatch;
+	const slice = useMicroAppSelector(selectRevenueByKiosk);
 
 	const fetchList = useCallback((targetPage: number, pageSize: number) => {
 		const q = revenueReportListQuery({
@@ -230,16 +250,16 @@ export function useRevenueReportByKiosk(filters: RevenueReportFilters) {
 			sortBy: { totalRevenue: 'desc' },
 		});
 		if (!q) return;
-		dispatchMethod(q);
-	}, [dispatchMethod, filters]);
+		dispatch(revenueReportActions.fetchRevenueByKiosk(q));
+	}, [dispatch, filters]);
 
 	const handleExport = useCallback(async () => {
 		const query = revenueReportListQuery({ filters, pageQuery: { page: 1, size: 1000 }, download: true });
 		if (!query) {
 			notifications.show({
 				color: 'yellow',
-				title: translate('reports.revenue_report.export'),
-				message: translate('reports.revenue_report.missing_date_range'),
+				title: translate('coremart.vendingMachine.reports.revenueReport.export'),
+				message: translate('coremart.vendingMachine.reports.revenueReport.missingDateRange'),
 			});
 			return;
 		}
@@ -248,22 +268,23 @@ export function useRevenueReportByKiosk(filters: RevenueReportFilters) {
 			triggerBlobDownload(blob, `Revenue-by-kiosk-${dayjs().format('YYYYMMDD-HHmm')}.xlsx`);
 			notifications.show({
 				color: 'green',
-				title: translate('reports.revenue_report.export'),
-				message: translate('reports.revenue_report.export_success'),
+				title: translate('coremart.vendingMachine.reports.revenueReport.export'),
+				message: translate('coremart.vendingMachine.reports.revenueReport.exportSuccess'),
 			});
 		}
 		catch (error) {
 			const message = error instanceof Error ? error.message : String(error);
 			notifications.show({
 				color: 'red',
-				title: translate('reports.revenue_report.export'),
-				message: translate('reports.revenue_report.export_failed', { message }),
+				title: translate('coremart.vendingMachine.reports.revenueReport.export'),
+				message: translate('coremart.vendingMachine.reports.revenueReport.exportFailed', { message }),
 			});
 		}
 	}, [filters, translate]);
 
 	const list = useRevenueReportList<RevenueReportByKiosk>(
-		result,
+		slice,
+		selectRevenueByKiosk,
 		fetchList,
 		{ resetPageKey: revenueReportFiltersKey(filters) },
 	);
@@ -272,9 +293,8 @@ export function useRevenueReportByKiosk(filters: RevenueReportFilters) {
 }
 
 export function useRevenueReportByKioskChart(filters: RevenueReportFilters) {
-	const { dispatchMethod, result } = useServiceLayer<RevenuePage<RevenueReportByKiosk>>(
-		revenueReportService.getByKioskChart,
-	);
+	const dispatch = useMicroAppDispatch() as VendingMachineDispatch;
+	const slice = useMicroAppSelector(selectRevenueByKioskChart);
 	const filtersKey = useMemo(() => revenueReportFiltersKey(filters), [filters]);
 
 	const fetchChart = useCallback(() => {
@@ -284,26 +304,25 @@ export function useRevenueReportByKioskChart(filters: RevenueReportFilters) {
 			sortBy: { totalRevenue: 'desc' },
 		});
 		if (!q) return;
-		dispatchMethod(q);
-	}, [dispatchMethod, filters]);
+		dispatch(revenueReportActions.fetchRevenueByKioskChart(q));
+	}, [dispatch, filters]);
 
 	useEffect(() => {
 		fetchChart();
 	}, [fetchChart, filtersKey]);
 
-	const items: RevenueReportByKiosk[] = result.data?.items ?? [];
-	const status = result.isPending ? 'pending' : 'success';
-	const isLoading = !items.length && (result.isPending || result.doneAt == null);
+	const items: RevenueReportByKiosk[] = slice.items ?? [];
+	const status = slice.status;
+	const isLoading = !items.length && (status === 'pending' || status === 'idle');
 
-	return { items, isLoading, error: result.error, status };
+	return { items, isLoading, error: slice.error, status };
 }
 
 
 export function useRevenueReportByProduct(filters: RevenueReportFilters) {
-	const { t: translate } = useTranslation('vending_machine');
-	const { dispatchMethod, result } = useServiceLayer<RevenuePage<RevenueReportByProduct>>(
-		revenueReportService.getByProduct,
-	);
+	const { t: translate } = useTranslation();
+	const dispatch = useMicroAppDispatch() as VendingMachineDispatch;
+	const slice = useMicroAppSelector(selectRevenueByProduct);
 
 	const fetchList = useCallback((targetPage: number, pageSize: number) => {
 		const q = revenueReportListQuery({
@@ -312,16 +331,16 @@ export function useRevenueReportByProduct(filters: RevenueReportFilters) {
 			sortBy: { totalRevenue: 'desc' },
 		});
 		if (!q) return;
-		dispatchMethod(q);
-	}, [dispatchMethod, filters]);
+		dispatch(revenueReportActions.fetchRevenueByProduct(q));
+	}, [dispatch, filters]);
 
 	const handleExport = useCallback(async () => {
 		const query = revenueReportListQuery({ filters, pageQuery: { page: 1, size: 1000 }, download: true });
 		if (!query) {
 			notifications.show({
 				color: 'yellow',
-				title: translate('reports.revenue_report.export'),
-				message: translate('reports.revenue_report.missing_date_range'),
+				title: translate('coremart.vendingMachine.reports.revenueReport.export'),
+				message: translate('coremart.vendingMachine.reports.revenueReport.missingDateRange'),
 			});
 			return;
 		}
@@ -330,22 +349,23 @@ export function useRevenueReportByProduct(filters: RevenueReportFilters) {
 			triggerBlobDownload(blob, `Revenue-by-product-${dayjs().format('YYYYMMDD-HHmm')}.xlsx`);
 			notifications.show({
 				color: 'green',
-				title: translate('reports.revenue_report.export'),
-				message: translate('reports.revenue_report.export_success'),
+				title: translate('coremart.vendingMachine.reports.revenueReport.export'),
+				message: translate('coremart.vendingMachine.reports.revenueReport.exportSuccess'),
 			});
 		}
 		catch (error) {
 			const message = error instanceof Error ? error.message : String(error);
 			notifications.show({
 				color: 'red',
-				title: translate('reports.revenue_report.export'),
-				message: translate('reports.revenue_report.export_failed', { message }),
+				title: translate('coremart.vendingMachine.reports.revenueReport.export'),
+				message: translate('coremart.vendingMachine.reports.revenueReport.exportFailed', { message }),
 			});
 		}
 	}, [filters, translate]);
 
 	const list = useRevenueReportList<RevenueReportByProduct>(
-		result,
+		slice,
+		selectRevenueByProduct,
 		fetchList,
 		{ resetPageKey: revenueReportFiltersKey(filters) },
 	);
@@ -354,9 +374,8 @@ export function useRevenueReportByProduct(filters: RevenueReportFilters) {
 }
 
 export function useRevenueReportByProductChart(filters: RevenueReportFilters) {
-	const { dispatchMethod, result } = useServiceLayer<RevenuePage<RevenueReportByProduct>>(
-		revenueReportService.getByProductChart,
-	);
+	const dispatch = useMicroAppDispatch() as VendingMachineDispatch;
+	const slice = useMicroAppSelector(selectRevenueByProductChart);
 	const filtersKey = useMemo(() => revenueReportFiltersKey(filters), [filters]);
 
 	const fetchChart = useCallback(() => {
@@ -366,24 +385,23 @@ export function useRevenueReportByProductChart(filters: RevenueReportFilters) {
 			sortBy: { totalRevenue: 'desc' },
 		});
 		if (!q) return;
-		dispatchMethod(q);
-	}, [dispatchMethod, filters]);
+		dispatch(revenueReportActions.fetchRevenueByProductChart(q));
+	}, [dispatch, filters]);
 
 	useEffect(() => {
 		fetchChart();
 	}, [fetchChart, filtersKey]);
 
-	const items: RevenueReportByProduct[] = result.data?.items ?? [];
-	const status = result.isPending ? 'pending' : 'success';
-	const isLoading = !items.length && (result.isPending || result.doneAt == null);
+	const items: RevenueReportByProduct[] = slice.items ?? [];
+	const status = slice.status;
+	const isLoading = !items.length && (status === 'pending' || status === 'idle');
 
-	return { items, isLoading, error: result.error, status };
+	return { items, isLoading, error: slice.error, status };
 }
 
 export function useRevenueReportByCategoryChart(filters: RevenueReportFilters) {
-	const { dispatchMethod, result } = useServiceLayer<RevenuePage<RevenueReportByCategory>>(
-		revenueReportService.getByCategoryChart,
-	);
+	const dispatch = useMicroAppDispatch() as VendingMachineDispatch;
+	const slice = useMicroAppSelector(selectRevenueByCategoryChart);
 	const filtersKey = useMemo(() => revenueReportFiltersKey(filters), [filters]);
 
 	const fetchChart = useCallback(() => {
@@ -393,43 +411,42 @@ export function useRevenueReportByCategoryChart(filters: RevenueReportFilters) {
 			sortBy: { totalRevenue: 'desc' },
 		});
 		if (!q) return;
-		dispatchMethod(q);
-	}, [dispatchMethod, filters]);
+		dispatch(revenueReportActions.fetchRevenueByCategoryChart(q));
+	}, [dispatch, filters]);
 
 	useEffect(() => {
 		fetchChart();
 	}, [fetchChart, filtersKey]);
 
-	const items: RevenueReportByCategory[] = result.data?.items ?? [];
-	const status = result.isPending ? 'pending' : 'success';
-	const isLoading = !items.length && (result.isPending || result.doneAt == null);
+	const items: RevenueReportByCategory[] = slice.items ?? [];
+	const status = slice.status;
+	const isLoading = !items.length && (status === 'pending' || status === 'idle');
 
-	return { items, isLoading, error: result.error, status, overview: result.data?.overview ?? null };
+	return { items, isLoading, error: slice.error, status, overview: slice.overview };
 }
 
 
 export function useRevenueReportByCategory(filters: RevenueReportFilters) {
-	const { dispatchMethod, result } = useServiceLayer<RevenuePage<RevenueReportByCategory>>(
-		revenueReportService.getByCategory,
-	);
+	const dispatch = useMicroAppDispatch() as VendingMachineDispatch;
+	const slice = useMicroAppSelector(selectRevenueByCategory);
 
 	const fetchList = useCallback((targetPage: number, pageSize: number) => {
 		const q = revenueReportListQuery({ filters, pageQuery: { page: targetPage, size: pageSize } });
 		if (!q) return;
-		dispatchMethod(q);
-	}, [dispatchMethod, filters]);
+		dispatch(revenueReportActions.fetchRevenueByCategory(q));
+	}, [dispatch, filters]);
 
 	return useRevenueReportList<RevenueReportByCategory>(
-		result,
+		slice,
+		selectRevenueByCategory,
 		fetchList,
 		{ resetPageKey: revenueReportFiltersKey(filters) },
 	);
 }
 
 export function useRevenueReportByPaymentMethodChart(filters: RevenueReportFilters) {
-	const { dispatchMethod, result } = useServiceLayer<RevenuePage<RevenueReportByPaymentMethod>>(
-		revenueReportService.getByPaymentMethodChart,
-	);
+	const dispatch = useMicroAppDispatch() as VendingMachineDispatch;
+	const slice = useMicroAppSelector(selectRevenueByPaymentMethodChart);
 	const filtersKey = useMemo(() => revenueReportFiltersKey(filters), [filters]);
 
 	const fetchChart = useCallback(() => {
@@ -439,26 +456,25 @@ export function useRevenueReportByPaymentMethodChart(filters: RevenueReportFilte
 			sortBy: { totalRevenue: 'desc' },
 		});
 		if (!q) return;
-		dispatchMethod(q);
-	}, [dispatchMethod, filters]);
+		dispatch(revenueReportActions.fetchRevenueByPaymentMethodChart(q));
+	}, [dispatch, filters]);
 
 	useEffect(() => {
 		fetchChart();
 	}, [fetchChart, filtersKey]);
 
-	const items: RevenueReportByPaymentMethod[] = result.data?.items ?? [];
-	const status = result.isPending ? 'pending' : 'success';
-	const isLoading = !items.length && (result.isPending || result.doneAt == null);
+	const items: RevenueReportByPaymentMethod[] = slice.items ?? [];
+	const status = slice.status;
+	const isLoading = !items.length && (status === 'pending' || status === 'idle');
 
-	return { items, isLoading, error: result.error, status };
+	return { items, isLoading, error: slice.error, status };
 }
 
 
 export function useRevenueReportByPaymentMethod(filters: RevenueReportFilters) {
-	const { t: translate } = useTranslation('vending_machine');
-	const { dispatchMethod, result } = useServiceLayer<RevenuePage<RevenueReportByPaymentMethod>>(
-		revenueReportService.getByPaymentMethod,
-	);
+	const { t: translate } = useTranslation();
+	const dispatch = useMicroAppDispatch() as VendingMachineDispatch;
+	const slice = useMicroAppSelector(selectRevenueByPaymentMethod);
 
 	const fetchList = useCallback((targetPage: number, pageSize: number) => {
 		const q = revenueReportListQuery({
@@ -467,16 +483,16 @@ export function useRevenueReportByPaymentMethod(filters: RevenueReportFilters) {
 			sortBy: { totalRevenue: 'desc' },
 		});
 		if (!q) return;
-		dispatchMethod(q);
-	}, [dispatchMethod, filters]);
+		dispatch(revenueReportActions.fetchRevenueByPaymentMethod(q));
+	}, [dispatch, filters]);
 
 	const handleExport = useCallback(async () => {
 		const query = revenueReportListQuery({ filters, pageQuery: { page: 1, size: 50 }, download: true });
 		if (!query) {
 			notifications.show({
 				color: 'yellow',
-				title: translate('reports.revenue_report.export'),
-				message: translate('reports.revenue_report.missing_date_range'),
+				title: translate('coremart.vendingMachine.reports.revenueReport.export'),
+				message: translate('coremart.vendingMachine.reports.revenueReport.missingDateRange'),
 			});
 			return;
 		}
@@ -485,22 +501,23 @@ export function useRevenueReportByPaymentMethod(filters: RevenueReportFilters) {
 			triggerBlobDownload(blob, `Revenue-by-payment-method-${dayjs().format('YYYYMMDD-HHmm')}.xlsx`);
 			notifications.show({
 				color: 'green',
-				title: translate('reports.revenue_report.export'),
-				message: translate('reports.revenue_report.export_success'),
+				title: translate('coremart.vendingMachine.reports.revenueReport.export'),
+				message: translate('coremart.vendingMachine.reports.revenueReport.exportSuccess'),
 			});
 		}
 		catch (error) {
 			const message = error instanceof Error ? error.message : String(error);
 			notifications.show({
 				color: 'red',
-				title: translate('reports.revenue_report.export'),
-				message: translate('reports.revenue_report.export_failed', { message }),
+				title: translate('coremart.vendingMachine.reports.revenueReport.export'),
+				message: translate('coremart.vendingMachine.reports.revenueReport.exportFailed', { message }),
 			});
 		}
 	}, [filters, translate]);
 
 	const list = useRevenueReportList<RevenueReportByPaymentMethod>(
-		result,
+		slice,
+		selectRevenueByPaymentMethod,
 		fetchList,
 		{ resetPageKey: revenueReportFiltersKey(filters) },
 	);

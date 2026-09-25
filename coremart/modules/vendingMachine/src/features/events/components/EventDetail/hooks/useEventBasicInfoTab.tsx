@@ -1,5 +1,6 @@
 /* eslint-disable max-lines-per-function */
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+import { useMicroAppDispatch } from '@nikkierp/ui/microApp';
+import { ModelSchema } from '@nikkierp/ui/model';
 import {
 	IconArchive,
 	IconDeviceFloppy,
@@ -12,17 +13,16 @@ import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
-import { asLegacyModelSchema } from '../../../../../common/helpers';
-import { ControlPanelProps } from '../../../../../components/ControlPanel';
-import { eventCrudService } from '../../../eventService';
-import { useEventArchive } from '../../../hooks/useEventArchive';
-import { useEventDelete } from '../../../hooks/useEventDelete';
-import { EventUpdateFormData, useEventEdit } from '../../../hooks/useEventEdit';
-import { eventCrudSchema } from '../../../schemas';
-import { Event } from '../../../types';
+import { eventActions, VendingMachineDispatch } from '@/appState';
+import { ControlPanelProps } from '@/components/ControlPanel';
 import {
 	useRegisterEventDetailTab,
-} from '../eventDetailTabControl';
+} from '@/features/events/components/EventDetail/eventDetailTabControl';
+import { useEventArchive } from '@/features/events/hooks/useEventArchive';
+import { useEventDelete } from '@/features/events/hooks/useEventDelete';
+import { EventUpdateFormData, useEventEdit } from '@/features/events/hooks/useEventEdit';
+import { eventCrudSchema } from '@/features/events/schemas';
+import { Event } from '@/features/events/types';
 
 
 export const BASIC_EVENT_INFO_FORM_ID = 'event-basic-info-form';
@@ -59,14 +59,14 @@ function buildBasicInfoActions(
 ): ControlPanelProps['actions'] {
 	const primary = !isEditing
 		? [{
-			label: translate('action.edit'),
+			label: translate('nikki.general.actions.edit'),
 			leftSection: <IconEdit size={16} />,
 			onClick: handleEdit,
 			type: 'button' as const,
 			variant: 'filled' as const,
 		}]
 		: [{
-			label: translate('action.save'),
+			label: translate('nikki.general.actions.save'),
 			leftSection: <IconDeviceFloppy size={16} />,
 			onClick: handleSave,
 			type: 'button' as const,
@@ -74,7 +74,7 @@ function buildBasicInfoActions(
 			disabled: isSubmitting,
 			loading: isSubmitting,
 		}, {
-			label: translate('action.cancel'),
+			label: translate('nikki.general.actions.cancel'),
 			leftSection: <IconX size={16} />,
 			onClick: handleCancel,
 			type: 'button' as const,
@@ -85,7 +85,7 @@ function buildBasicInfoActions(
 	const archived = Boolean(ev.isArchived);
 	const archiveAction = archived
 		? {
-			label: translate('action.restore'),
+			label: translate('nikki.general.actions.restore'),
 			leftSection: <IconRestore size={16} />,
 			onClick: onRestore,
 			type: 'button' as const,
@@ -93,7 +93,7 @@ function buildBasicInfoActions(
 			disabled: isSubmitting || isEditing,
 		}
 		: {
-			label: translate('action.archive'),
+			label: translate('nikki.general.actions.archive'),
 			leftSection: <IconArchive size={16} />,
 			onClick: onArchive,
 			type: 'button' as const,
@@ -106,7 +106,7 @@ function buildBasicInfoActions(
 		...primary,
 		archiveAction,
 		{
-			label: translate('action.delete'),
+			label: translate('nikki.general.actions.delete'),
 			leftSection: <IconTrash size={16} />,
 			onClick: handleDelete,
 			type: 'button' as const,
@@ -118,23 +118,23 @@ function buildBasicInfoActions(
 }
 
 export function useEventBasicInfoTab({ event }: { event: Event }) {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const [isEditing, setIsEditing] = useState(false);
 	const [formResetNonce, setFormResetNonce] = useState(0);
-	const { dispatchMethod: refetchEvent } = useServiceLayer(eventCrudService.getById);
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
 	const navigate = useNavigate();
 
 	const onArchiveSuccess = useCallback(() => {
 		if (event.id) {
-			refetchEvent({ id: event.id });
+			dispatch(eventActions.getEvent(event.id));
 		}
-	}, [event.id, refetchEvent]);
+	}, [event.id, dispatch]);
 
 	const { isSubmitting, handleSubmit } = useEventEdit({
 		onUpdateSuccess: () => {
 			setIsEditing(false);
 			if (event.id) {
-				refetchEvent({ id: event.id });
+				dispatch(eventActions.getEvent(event.id));
 			}
 		},
 	});
@@ -148,7 +148,7 @@ export function useEventBasicInfoTab({ event }: { event: Event }) {
 		pendingArchive,
 	} = useEventArchive({ onSuccess: onArchiveSuccess });
 
-	const modelSchema = asLegacyModelSchema(eventCrudSchema);
+	const modelSchema = eventCrudSchema as ModelSchema;
 
 	const onFormSubmit = useCallback((data: EventBasicInfoFormData) => {
 		handleSubmit(data as EventUpdateFormData);

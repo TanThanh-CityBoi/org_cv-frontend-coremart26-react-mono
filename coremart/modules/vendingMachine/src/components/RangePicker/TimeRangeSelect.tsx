@@ -15,7 +15,7 @@ export type TimeRangePreset =
 
 export type TimeRangePresetRange = [Date, Date];
 
-const DATE_PICKER_I18N = 'common.date_picker';
+const DATE_PICKER_I18N = 'coremart.vendingMachine.common.datePicker';
 
 export function presetToRange(preset: TimeRangePreset): TimeRangePresetRange {
 	const today = dayjs();
@@ -93,7 +93,7 @@ export const TimeRangeSelect: React.FC<TimeRangePresetPickerProps> = ({
 	w = 130,
 	presets = DEFAULT_PRESETS,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const data = useMemo(
 		() => presets.map((preset) => ({

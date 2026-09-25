@@ -1,20 +1,23 @@
 import { notifications } from '@mantine/notifications';
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
-import React, { useCallback } from 'react';
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
+import { useCallback, useEffect, useRef } from 'react';
 
-import { kioskStockService } from '../kioskStockService';
+import { kioskActions, selectKioskPositionsUpdate, VendingMachineDispatch } from '@/appState';
+import { updateKioskPositions } from '@/features/kiosks/kioskSlice';
 
-import type { KioskPositionUpdateItem } from '../types';
+import type { KioskPositionUpdateItem } from '../kioskService';
 
 
 export type UseKioskPositionEditParams = {
-	kioskId: string,
-	onUpdateSuccess?: () => void,
-	onUpdateFailure?: () => void,
+	kioskId: string;
+	onUpdateSuccess?: () => void;
+	onUpdateFailure?: () => void;
 };
 
 export function useKioskPositionEdit({ kioskId, onUpdateSuccess, onUpdateFailure }: UseKioskPositionEditParams) {
-	const { dispatchMethod, result } = useServiceLayer(kioskStockService.upsertPositions);
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
+	const { status: updateStatus, requestId } = useMicroAppSelector(selectKioskPositionsUpdate);
+	const reduxRequestIdRef = useRef<string | null>(null);
 
 	const handleSubmitPositions = useCallback(
 		(positions: KioskPositionUpdateItem[]) => {
@@ -22,27 +25,32 @@ export function useKioskPositionEdit({ kioskId, onUpdateSuccess, onUpdateFailure
 				notifications.show({ title: 'Error', message: 'No Position to Update', color: 'red' });
 				return;
 			}
-			dispatchMethod({ kioskId, positions });
+			const pendingAction = dispatch(updateKioskPositions({ kioskId, positions }));
+			reduxRequestIdRef.current = pendingAction.requestId;
 		},
-		[kioskId, dispatchMethod],
+		[kioskId, dispatch],
 	);
 
-	// Not `useMutationOutcome`: this hook shows no notification of its own, matching the slice
-	// version it replaces — the caller decides what to say.
-	const doneAt = result.doneAt;
-	const handledAtRef = React.useRef<number | null>(null);
-	React.useEffect(() => {
-		if (doneAt == null || doneAt === handledAtRef.current) return;
-		handledAtRef.current = doneAt;
-		if (result.isSuccess) {
+	useEffect(() => {
+		const matchesDispatch = requestId != null && reduxRequestIdRef.current === requestId;
+		if (!matchesDispatch) return;
+
+		if (updateStatus === 'success') {
+			dispatch(kioskActions.resetKioskPositionsUpdate());
+			reduxRequestIdRef.current = null;
 			onUpdateSuccess?.();
 			return;
 		}
-		onUpdateFailure?.();
-	}, [doneAt, result.isSuccess, onUpdateSuccess, onUpdateFailure]);
+
+		if (updateStatus === 'error') {
+			dispatch(kioskActions.resetKioskPositionsUpdate());
+			reduxRequestIdRef.current = null;
+			onUpdateFailure?.();
+		}
+	}, [updateStatus, onUpdateFailure, onUpdateSuccess, reduxRequestIdRef, requestId]);
 
 	return {
 		handleSubmitPositions,
-		isSubmitting: result.isPending,
+		isSubmitting: updateStatus === 'pending',
 	};
 }

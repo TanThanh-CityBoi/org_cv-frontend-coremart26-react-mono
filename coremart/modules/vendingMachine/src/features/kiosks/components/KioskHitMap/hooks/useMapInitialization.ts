@@ -4,11 +4,10 @@ import maplibregl from 'maplibre-gl';
 import { useEffect, useRef, useMemo } from 'react';
 
 
+import { Kiosk } from '@/features/kiosks/types';
 
 import { useMapAttribution } from './useMapAttribution';
 import { useMapBounds } from './useMapBounds';
-import { getMaplibreGlApiKey } from '../../../../../common/helpers';
-import { Kiosk } from '../../../types';
 import { calculateCenter, calculateZoom, filterKiosksWithCoordinates } from '../helper';
 
 
@@ -31,7 +30,7 @@ export function useMapInitialization({
 }: UseMapInitializationProps) {
 	const mapRef = useRef<maplibregl.Map | null>(null);
 	const envVars = useShellEnvVars();
-	const maplibreGlApiKey = getMaplibreGlApiKey(envVars);
+	const maplibreGlApiKey = envVars.MAPLIBRE_GL_API_KEY || 'get_your_own_OpIi9ZULNHzrESv6T2vL';
 
 	// Filter kiosks with valid coordinates
 	const kiosksWithCoordinates = useMemo(() => {

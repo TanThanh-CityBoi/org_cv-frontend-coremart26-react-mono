@@ -1,15 +1,14 @@
 import { useMemo, useState } from 'react';
 
+import { buildSimpleSearchGraph } from '@/common/helpers';
+import { useKioskModelList } from '@/features/kioskModels';
+import { KioskModel } from '@/features/kioskModels/types';
+
 import { SearchableSelectField, SearchableSelectFieldProps } from './SearchableSelectField';
-import { buildSimpleSearchGraph } from '../../common/helpers';
-import { useKioskModelList } from '../../features/kioskModels';
-import { KioskModel } from '../../features/kioskModels/types';
-
-
 
 export type KioskModelSelectFieldProps = Omit<SearchableSelectFieldProps, 'name' | 'options' | 'searchValue' | 'onSearchChange'> & {
-	isView: boolean,
-	isSubmitting: boolean,
+	isView: boolean;
+	isSubmitting: boolean;
 };
 
 export function KioskModelSelectField({ isView, isSubmitting, ...restProps }: KioskModelSelectFieldProps) {
@@ -32,7 +31,7 @@ export function KioskModelSelectField({ isView, isSubmitting, ...restProps }: Ki
 		() => (models ?? []).map((item: KioskModel) => ({ value: item.id, label: item.name })),
 		[models],
 	);
-
+	
 	return (
 		<SearchableSelectField
 			name='modelRef'

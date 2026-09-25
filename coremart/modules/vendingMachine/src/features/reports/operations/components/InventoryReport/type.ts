@@ -1,22 +1,22 @@
-import { LocalizedName } from '../../../../../common/helpers';
+import { LocalizedName } from '@/common/helpers';
 
 
 export type InventoryReportAppliedFilters = {
-	kioskIds: string[] | null,
+	kioskIds: string[] | null;
 	/** Substring match on demo kiosk name until inventory API is wired */
-	kioskLabel: string | null,
+	kioskLabel: string | null;
 };
 
 export type InventorySourceRow = {
-	productId: string,
-	productName: string,
-	categoryKey: string,
-	kioskId: string,
-	kioskName: string,
-	totalQty: number,
-	sellingQty: number,
-	warningQty: number,
-	maxQty: number,
+	productId: string;
+	productName: string;
+	categoryKey: string;
+	kioskId: string;
+	kioskName: string;
+	totalQty: number;
+	sellingQty: number;
+	warningQty: number;
+	maxQty: number;
 };
 
 
@@ -39,13 +39,13 @@ export type InventoryTableColumnKey =
 // "active_remaining_quantity": 80
 
 export type ProductInventoryReport = {
-	productId: string,
-	sku: string,
-	barcode?: string,
-	name: LocalizedName,
-	imageUrl?: string | null,
-	warningQuantity: number,
-	remainingQuantity: number,
-	capacityQuantity: number,
-	activeRemainingQuantity: number,
+	productId: string;
+	sku: string;
+	barcode?: string;
+	name: LocalizedName;
+	imageUrl?: string | null;
+	warningQuantity: number;
+	remainingQuantity: number;
+	capacityQuantity: number;
+	activeRemainingQuantity: number;
 };

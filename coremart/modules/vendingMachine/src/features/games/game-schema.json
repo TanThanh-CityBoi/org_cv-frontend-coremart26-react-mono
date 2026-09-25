@@ -3,46 +3,46 @@
 	"fields": {
 		"id": {
 			"type": "string",
-			"label": "{ \"$ref\": 'games.fields.id' }",
+			"label": "{ \"$ref\": 'coremart.vendingMachine.games.fields.id' }",
 			"hidden": true
 		},
 		"code": {
 			"type": "string",
-			"label": "{ \"$ref\": 'games.fields.code' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.games.fields.code' }"
 		},
 		"name": {
 			"type": "string",
-			"label": "{ \"$ref\": 'games.fields.name' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.games.fields.name' }"
 		},
 		"description": {
 			"type": "string",
-			"label": "{ \"$ref\": 'games.fields.description' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.games.fields.description' }"
 		},
 		"status": {
 			"type": "enum",
-			"label": "{ \"$ref\": 'games.fields.status' }",
+			"label": "{ \"$ref\": 'coremart.vendingMachine.games.fields.status' }",
 			"enum": [
 				{
 					"value": "active",
-					"label": "{ \"$ref\": 'status.active' }"
+					"label": "{ \"$ref\": 'nikki.general.status.active' }"
 				},
 				{
 					"value": "inactive",
-					"label": "{ \"$ref\": 'status.inactive' }"
+					"label": "{ \"$ref\": 'nikki.general.status.inactive' }"
 				}
 			]
 		},
 		"latestVersion": {
 			"type": "string",
-			"label": "{ \"$ref\": 'games.fields.latest_version' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.games.fields.latestVersion' }"
 		},
 		"minAppVersion": {
 			"type": "string",
-			"label": "{ \"$ref\": 'games.fields.min_app_version' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.games.fields.minAppVersion' }"
 		},
 		"createdAt": {
 			"type": "date",
-			"label": "{ \"$ref\": 'games.fields.created_at' }",
+			"label": "{ \"$ref\": 'coremart.vendingMachine.games.fields.createdAt' }",
 			"hidden": true
 		}
 	}

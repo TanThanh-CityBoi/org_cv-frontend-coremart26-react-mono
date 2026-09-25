@@ -3,7 +3,7 @@ import React from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 
 import type { UsePaymentDetailPageConfigReturn } from './hooks/types';
-import type { PaymentMethod } from '../../types';
+import type { PaymentMethod } from '@/features/payment/types';
 
 
 
@@ -28,23 +28,23 @@ export const PaymentDetailModals: React.FC<ModalProps> = ({
 	handleConfirmArchive,
 	handleCloseArchiveModal,
 }) => {
-	const { t } = useTranslation('vending_machine');
+	const { t } = useTranslation();
 
 	return (
 		<>
 			<ConfirmModal
-				title={t('messages.delete.confirm')}
+				title={t('nikki.general.messages.delete_confirm')}
 				opened={isOpenDeleteModal}
 				onClose={closeDeleteModal}
 				onConfirm={confirmDelete}
 				message={
 					<Trans
-						i18nKey='payment.messages.delete_confirm'
+						i18nKey='coremart.vendingMachine.payment.messages.delete_confirm'
 						values={{ name: payment.name }}
 						components={{ strong: <strong /> }}
 					/>
 				}
-				confirmLabel={t('action.delete')}
+				confirmLabel={t('nikki.general.actions.delete')}
 				confirmColor='red'
 			/>
 
@@ -53,20 +53,20 @@ export const PaymentDetailModals: React.FC<ModalProps> = ({
 				onClose={handleCloseArchiveModal}
 				onConfirm={handleConfirmArchive}
 				title={pendingArchive?.targetArchived
-					? t('payment.messages.archive_modal_title')
-					: t('payment.messages.restore_modal_title')}
+					? t('coremart.vendingMachine.payment.messages.archive_modal_title')
+					: t('coremart.vendingMachine.payment.messages.restore_modal_title')}
 				message={
 					<Trans
 						i18nKey={pendingArchive?.targetArchived
-							? 'payment.messages.archive_confirm'
-							: 'payment.messages.restore_confirm'}
+							? 'coremart.vendingMachine.payment.messages.archive_confirm'
+							: 'coremart.vendingMachine.payment.messages.restore_confirm'}
 						values={{ name: pendingArchive?.payment?.name || '' }}
 						components={{ strong: <strong /> }}
 					/>
 				}
 				confirmLabel={pendingArchive?.targetArchived
-					? t('action.archive')
-					: t('action.restore')}
+					? t('nikki.general.actions.archive')
+					: t('nikki.general.actions.restore')}
 				confirmColor={pendingArchive?.targetArchived ? 'orange' : 'blue'}
 			/>
 		</>

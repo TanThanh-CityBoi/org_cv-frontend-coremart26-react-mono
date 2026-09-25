@@ -1,23 +1,39 @@
-import { storeService } from '@nikkierp/ui/appState/store';
-
-import { OrgScopedCrudService } from '../../common/service';
-import { THEME_SCHEMA_NAME, VENDING_MACHINE_MODULE } from '../../constants';
-import { vendingMachineStore } from '../../store';
+import { mockThemes } from './mockThemes';
+import { Theme } from './types';
 
 
-/**
- * CRUD over `vending_machine_theme`.
- *
- * Replaces the mock-backed `themeService`, which read from the `mockThemes` fixture and never
- * reached the network. The backend serves the full flat resource at
- * `/v1/vending_machine/themes` (including `meta/schema` and `PATCH`), so nothing bespoke is
- * needed here.
- */
-@storeService('ThemeService', vendingMachineStore)
-export class ThemeService extends OrgScopedCrudService {
-	public constructor() {
-		super({ moduleName: VENDING_MACHINE_MODULE, schemaName: THEME_SCHEMA_NAME });
-	}
+function configFields(dto: Theme): Theme {
+	return {
+		...dto,
+	};
 }
 
-export const themeCrudService = new ThemeService();
+export const themeService = {
+	async listThemes(): Promise<Theme[]> {
+		const result = await mockThemes.listThemes();
+		return result.map(configFields);
+	},
+
+	async getTheme(id: string): Promise<Theme | undefined> {
+		const result = await mockThemes.getTheme(id);
+		return result ? configFields(result) : undefined;
+	},
+
+	async createTheme(theme: Omit<Theme, 'id' | 'createdAt' | 'etag'>): Promise<Theme> {
+		const result = await mockThemes.createTheme(theme);
+		return configFields(result);
+	},
+
+	async updateTheme(
+		id: string,
+		etag: string,
+		updates: Partial<Omit<Theme, 'id' | 'createdAt' | 'etag'>>,
+	): Promise<Theme> {
+		const result = await mockThemes.updateTheme(id, etag, updates);
+		return configFields(result);
+	},
+
+	async deleteTheme(id: string): Promise<void> {
+		await mockThemes.deleteTheme(id);
+	},
+};

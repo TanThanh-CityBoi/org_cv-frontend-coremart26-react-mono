@@ -138,7 +138,7 @@ export interface FavoritesConfig {
 	onSave?: (name: string, graph: SearchGraph) => void;
 	onLoad?: (name: string) => SearchGraph | null;
 	onDelete?: (name: string) => void;
-	savedFilters?: Array<{ name: string, graph: SearchGraph }>;
+	savedFilters?: Array<{ name: string; graph: SearchGraph }>;
 }
 
 export interface FilterGroupConfig {

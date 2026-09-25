@@ -18,8 +18,8 @@ export type KioskSettingCreatePayload = Pick<KioskSetting, 'code' | 'name'> & Pa
 
 /** PUT …/kiosk-settings/:id — domain scalars + `etag` (no expanded edges). */
 export type KioskSettingUpdateFormData = {
-	id: string,
-	etag: string,
+	id: string;
+	etag: string;
 } & Partial<
 	Omit<
 		KioskSetting,
@@ -32,4 +32,4 @@ export type KioskSettingUpdateFormData = {
 	>
 >;
 
-export type KioskSettingUpdatePayload = { id: string, body: KioskSettingUpdateFormData };
+export type KioskSettingUpdatePayload = { id: string; body: KioskSettingUpdateFormData };

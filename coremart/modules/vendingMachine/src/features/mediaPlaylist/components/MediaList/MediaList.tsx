@@ -62,9 +62,9 @@ function MediaModalPreviewPane({
 	fit,
 	aspectRatio,
 }: {
-	media: PlaylistMediaRow,
-	fit: ObjectFit,
-	aspectRatio: ModalPreviewAspect,
+	media: PlaylistMediaRow;
+	fit: ObjectFit;
+	aspectRatio: ModalPreviewAspect;
 }) {
 	const frameStyle: React.CSSProperties =
 		aspectRatio === '16:9'
@@ -124,13 +124,13 @@ interface MediaItemPreviewModalProps {
 	listLength: number;
 	onSave: (id: string, durationSec: number, playOrder: number, objectFit: ObjectFit) => void;
 	labels: {
-		title: string,
-		previewTitle: string,
-		duration: string,
-		playOrder: string,
-		objectFit: string,
-		save: string,
-		cancel: string,
+		title: string;
+		previewTitle: string;
+		duration: string;
+		playOrder: string;
+		objectFit: string;
+		save: string;
+		cancel: string;
 	};
 }
 
@@ -146,7 +146,7 @@ interface MediaItemPreviewModalBodyProps {
 	previewViewMode: ModalPreviewAspect;
 	setPreviewViewMode: React.Dispatch<React.SetStateAction<ModalPreviewAspect>>;
 	listLength: number;
-	objectFitOptions: { value: ObjectFit, label: string }[];
+	objectFitOptions: { value: ObjectFit; label: string }[];
 	labels: MediaItemPreviewModalProps['labels'];
 	onClose: () => void;
 	handleSubmit: () => void;
@@ -169,7 +169,7 @@ function MediaItemPreviewModalBody({
 	onClose,
 	handleSubmit,
 }: MediaItemPreviewModalBodyProps) {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	return (
 		<Stack gap='xs'>
@@ -183,7 +183,7 @@ function MediaItemPreviewModalBody({
 						{ label: '16:9', value: '16:9' },
 						{ label: '9:16', value: '9:16' },
 					]}
-					aria-label={translate('media_playlist.media.preview_aspect_ratio')}
+					aria-label={translate('coremart.vendingMachine.mediaPlaylist.media.preview_aspect_ratio')}
 				/>
 			</Group>
 			<Divider />
@@ -230,7 +230,7 @@ function MediaItemPreviewModal({
 	onSave,
 	labels,
 }: MediaItemPreviewModalProps) {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const [duration, setDuration] = useState<number | string>(0);
 	const [playOrder, setPlayOrder] = useState<number | string>(1);
 	const [objectFit, setObjectFit] = useState<ObjectFit>(normalizePlaylistObjectFit(media?.objectFit));
@@ -240,7 +240,7 @@ function MediaItemPreviewModal({
 		() =>
 			Object.values(ObjectFit).map((v) => ({
 				value: v,
-				label: translate(`media_playlist.media.object_fit_option.${v}`),
+				label: translate(`coremart.vendingMachine.mediaPlaylist.media.object_fit_option.${v}`),
 			})),
 		[translate],
 	);
@@ -302,7 +302,7 @@ export const MediaList: React.FC<MediaListProps> = ({
 	onPreviewMediaSelect,
 	activePreviewMediaId,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const [detailRow, setDetailRow] = useState<PlaylistMediaRow | null>(null);
 
 	const sortedMedia = useMemo(() => sortByPlayOrder(media), [media]);
@@ -335,13 +335,13 @@ export const MediaList: React.FC<MediaListProps> = ({
 	};
 
 	const editLabels = {
-		title: translate('media_playlist.media.edit_modal_title'),
-		previewTitle: translate('media_playlist.media.preview_modal_title'),
-		duration: translate('media_playlist.media.fields.duration'),
-		playOrder: translate('media_playlist.media.play_order'),
-		objectFit: translate('media_playlist.media.fields.object_fit'),
-		save: translate('action.save'),
-		cancel: translate('action.cancel'),
+		title: translate('coremart.vendingMachine.mediaPlaylist.media.edit_modal_title'),
+		previewTitle: translate('coremart.vendingMachine.mediaPlaylist.media.preview_modal_title'),
+		duration: translate('coremart.vendingMachine.mediaPlaylist.media.fields.duration'),
+		playOrder: translate('coremart.vendingMachine.mediaPlaylist.media.play_order'),
+		objectFit: translate('coremart.vendingMachine.mediaPlaylist.media.fields.object_fit'),
+		save: translate('nikki.general.actions.save'),
+		cancel: translate('nikki.general.actions.cancel'),
 	};
 
 
@@ -350,16 +350,16 @@ export const MediaList: React.FC<MediaListProps> = ({
 			<Stack gap='md'>
 				<Group justify='space-between' align='top' h={30}>
 					<Text size='sm' fw={500}>
-						{translate('media_playlist.media.title')}
+						{translate('coremart.vendingMachine.mediaPlaylist.media.title')}
 					</Text>
 					{!readOnly ? (
 						<Button size='xs' leftSection={<IconPlus size={16} />} onClick={onAddMedia}>
-							{translate('media_playlist.media.add')}
+							{translate('coremart.vendingMachine.mediaPlaylist.media.add')}
 						</Button>
 					) : null}
 				</Group>
 				<Text size='sm' c='dimmed' ta='center' py='xl'>
-					{translate('media_playlist.media.empty')}
+					{translate('coremart.vendingMachine.mediaPlaylist.media.empty')}
 				</Text>
 			</Stack>
 		);
@@ -388,11 +388,11 @@ export const MediaList: React.FC<MediaListProps> = ({
 			<Stack gap='sm'>
 				<Group justify='space-between' h={30}>
 					<Text size='sm' fw={500}>
-						{translate('media_playlist.media.title')} ({media.length})
+						{translate('coremart.vendingMachine.mediaPlaylist.media.title')} ({media.length})
 					</Text>
 					{!readOnly ? (
 						<Button size='xs' leftSection={<IconPlus size={16} />} onClick={onAddMedia}>
-							{translate('media_playlist.media.add')}
+							{translate('coremart.vendingMachine.mediaPlaylist.media.add')}
 						</Button>
 					) : null}
 				</Group>

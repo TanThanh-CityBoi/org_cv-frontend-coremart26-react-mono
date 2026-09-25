@@ -4,8 +4,9 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
-import { ArchivedStatusBadge } from '../../../../components/ArchivedStatusBadge';
-import { PreviewDrawer } from '../../../../components/PreviewDrawer';
+import { ArchivedStatusBadge } from '@/components/ArchivedStatusBadge';
+import { PreviewDrawer } from '@/components/PreviewDrawer';
+
 import { useKioskModelDetail } from '../../hooks/useKioskModelDetail';
 import { KioskModel, ShelvesConfigRow } from '../../types';
 import { parseShelvesConfigRows, ShelvesConfig } from '../ShelvesConfig';
@@ -50,7 +51,7 @@ export const KioskModelDetailDrawer: React.FC<KioskModelDetailDrawerProps> = ({
 
 
 const KioskModelDrawerContent: React.FC<{ model: KioskModel | undefined }> = ({ model }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const [shelvesConfigRows, _] = useState<ShelvesConfigRow[]>(
 		() => parseShelvesConfigRows(model?.shelvesConfig || {}),
 	);
@@ -61,35 +62,35 @@ const KioskModelDrawerContent: React.FC<{ model: KioskModel | undefined }> = ({ 
 		<Stack gap='md'>
 			<Box>
 				<Text size='sm' c='dimmed' mb={'xs'}>
-					{translate('kiosk_models.fields.reference_code')}
+					{translate('coremart.vendingMachine.kioskModels.fields.referenceCode')}
 				</Text>
 				<Text size='sm' fw={500}>{model.referenceCode}</Text>
 			</Box>
 			<Divider />
 			<Box>
 				<Text size='sm' c='dimmed' mb={'xs'}>
-					{translate('kiosk_models.fields.name')}
+					{translate('coremart.vendingMachine.kioskModels.fields.name')}
 				</Text>
 				<Text size='sm'>{model.name}</Text>
 			</Box>
 			<Divider />
 			<Box>
 				<Text size='sm' c='dimmed' mb={'xs'}>
-					{translate('kiosk_models.fields.description')}
+					{translate('coremart.vendingMachine.kioskModels.fields.description')}
 				</Text>
 				<Text size='sm'>{model.description}</Text>
 			</Box>
 			<Divider />
 			<Box>
 				<Text size='sm' c='dimmed' mb={'xs'}>
-					{translate('kiosk_models.fields.status')}
+					{translate('coremart.vendingMachine.kioskModels.fields.status')}
 				</Text>
 				<ArchivedStatusBadge isArchived={Boolean(model.isArchived)} />
 			</Box>
 			<Divider />
 			<Box>
 				<Text size='sm' c='dimmed' mb={'xs'}>
-					{translate('kiosk_models.fields.kiosk_type')}
+					{translate('coremart.vendingMachine.kioskModels.fields.kioskType')}
 				</Text>
 				<Text size='sm'>{model.goodsCollectorType}</Text>
 			</Box>
@@ -102,7 +103,7 @@ const KioskModelDrawerContent: React.FC<{ model: KioskModel | undefined }> = ({ 
 			<Divider my={'xs'}/>
 			<Box>
 				<Text size='sm' c='dimmed' mb={'xs'}>
-					{translate('kiosk_models.fields.created_at')}
+					{translate('coremart.vendingMachine.kioskModels.fields.createdAt')}
 				</Text>
 				<Text size='sm'>{new Date(model.createdAt).toLocaleString()}</Text>
 			</Box>

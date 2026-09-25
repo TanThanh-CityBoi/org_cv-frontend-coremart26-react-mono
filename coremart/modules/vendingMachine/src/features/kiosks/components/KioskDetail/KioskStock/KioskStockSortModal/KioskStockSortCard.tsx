@@ -1,12 +1,12 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { ActionIcon, Avatar, Badge, Box, Menu, Text } from '@mantine/core';
 import blankPicture from '@nikkierp/ui/assets/images/blank-picture.png';
+import { ActionIcon, Avatar, Badge, Box, Menu, Text } from '@mantine/core';
 import { IconArrowsMove, IconHash } from '@tabler/icons-react';
 import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { getLocalizedName } from '../../../../../../common/helpers';
+import { getLocalizedName } from '@/common/helpers';
 
 import type { SortableStock } from './useKioskStockSort';
 
@@ -14,23 +14,23 @@ import type { SortableStock } from './useKioskStockSort';
 const PAGE_SIZE = 8;
 
 type CardProps = {
-	stock: SortableStock,
-	globalIndex: number,
-	totalItems: number,
-	onMoveToPosition: (stockId: string, targetIndex: number) => void,
+	stock: SortableStock;
+	globalIndex: number;
+	totalItems: number;
+	onMoveToPosition: (stockId: string, targetIndex: number) => void;
 };
 
 type ContextMenuProps = {
-	opened: boolean,
-	onClose: () => void,
-	stock: SortableStock,
-	globalIndex: number,
-	totalItems: number,
-	onMoveToPosition: (stockId: string, targetIndex: number) => void,
+	opened: boolean;
+	onClose: () => void;
+	stock: SortableStock;
+	globalIndex: number;
+	totalItems: number;
+	onMoveToPosition: (stockId: string, targetIndex: number) => void;
 };
 
 function PositionMenuItems({ stock, globalIndex, totalItems, onMoveToPosition }: Omit<ContextMenuProps, 'opened' | 'onClose'>) {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const pages = Math.ceil(totalItems / PAGE_SIZE);
 
 	return (
@@ -42,7 +42,7 @@ function PositionMenuItems({ stock, globalIndex, totalItems, onMoveToPosition }:
 				return (
 					<React.Fragment key={pageIdx}>
 						<Menu.Label>
-							{translate('kiosk_stock.sort.page', {
+							{translate('coremart.vendingMachine.kioskStock.sort.page', {
 								defaultValue: 'Trang {{n}}',
 								n: pageIdx + 1,
 							})}
@@ -54,7 +54,7 @@ function PositionMenuItems({ stock, globalIndex, totalItems, onMoveToPosition }:
 								disabled={targetIdx === globalIndex}
 								onClick={() => onMoveToPosition(stock.id, targetIdx)}
 							>
-								{translate('kiosk_stock.sort.slot', {
+								{translate('coremart.vendingMachine.kioskStock.sort.slot', {
 									defaultValue: 'Vị trí {{n}}',
 									n: targetIdx + 1,
 								})}
@@ -73,7 +73,7 @@ export function KioskStockSortCard({
 	totalItems,
 	onMoveToPosition,
 }: CardProps) {
-	const { i18n } = useTranslation('vending_machine');
+	const { i18n } = useTranslation();
 	const [menuOpened, setMenuOpened] = useState(false);
 
 	const {

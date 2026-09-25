@@ -12,8 +12,8 @@ import React, { useMemo, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { useTranslation } from 'react-i18next';
 
-import { fmtCurrency, fmtNumber, fmtShortNumber } from '../../../../../common/helpers/formartNumber';
-import { usePaymentList, type PaymentMethod } from '../../../../payment';
+import { fmtCurrency, fmtNumber, fmtShortNumber } from '@/common/helpers/formartNumber';
+import { usePaymentList, type PaymentMethod } from '@/features/payment';
 
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
@@ -32,11 +32,11 @@ interface PaymentMethodMetricBarProps {
 }
 
 export function PaymentMethodMetricBarChart({ data, title }: PaymentMethodMetricBarProps): React.ReactElement {
-	const { t: translate } = useTranslation('vending_machine');
-	const revenueAxisLabel = translate('reports.revenue_report.chart.revenue_axis_label');
-	const ordersAxisLabel = translate('reports.revenue_report.chart.orders_axis_label');
-	const revenueLabel = translate('reports.revenue_report.chart.radio_revenue');
-	const ordersLabel = translate('reports.revenue_report.chart.radio_orders');
+	const { t: translate } = useTranslation();
+	const revenueAxisLabel = translate('coremart.vendingMachine.reports.revenueReport.chart.revenueAxisLabel');
+	const ordersAxisLabel = translate('coremart.vendingMachine.reports.revenueReport.chart.ordersAxisLabel');
+	const revenueLabel = translate('coremart.vendingMachine.reports.revenueReport.chart.radioRevenue');
+	const ordersLabel = translate('coremart.vendingMachine.reports.revenueReport.chart.radioOrders');
 
 	const { payments } = usePaymentList();
 	const [activeTab, setActiveTab] = useState<string | null>('revenue');
@@ -96,9 +96,9 @@ export function PaymentMethodMetricBarChart({ data, title }: PaymentMethodMetric
 					label: (context: any) => {
 						const value = context.parsed?.x ?? 0;
 						if (activeTab === 'revenue') {
-							return translate('reports.revenue_report.chart.tooltip_revenue_value', { value: fmtCurrency(value) });
+							return translate('coremart.vendingMachine.reports.revenueReport.chart.tooltipRevenueValue', { value: fmtCurrency(value) });
 						}
-						return translate('reports.revenue_report.chart.tooltip_orders_value', { value: fmtNumber(value) });
+						return translate('coremart.vendingMachine.reports.revenueReport.chart.tooltipOrdersValue', { value: fmtNumber(value) });
 					},
 				},
 			},

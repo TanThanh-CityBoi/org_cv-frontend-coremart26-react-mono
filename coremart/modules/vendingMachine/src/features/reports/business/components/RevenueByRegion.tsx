@@ -8,7 +8,7 @@ import React, { useEffect, useRef, useMemo } from 'react';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { Bar } from 'react-chartjs-2';
 
-import { fmtShortNumber, getMaplibreGlApiKey } from '../../../../common/helpers';
+import { fmtShortNumber } from '@/common/helpers';
 
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip);
@@ -51,7 +51,7 @@ export function RevenueByRegion({ data }: RevenueByRegionProps): React.ReactElem
 	const mapRef = useRef<maplibregl.Map | null>(null);
 	const markersRef = useRef<maplibregl.Marker[]>([]);
 	const envVars = useShellEnvVars();
-	const maplibreGlApiKey = getMaplibreGlApiKey(envVars);
+	const maplibreGlApiKey = envVars.MAPLIBRE_GL_API_KEY || 'get_your_own_OpIi9ZULNHzrESv6T2vL';
 
 	// Sort data by revenue descending for bar chart
 	const sortedData = useMemo(() => {

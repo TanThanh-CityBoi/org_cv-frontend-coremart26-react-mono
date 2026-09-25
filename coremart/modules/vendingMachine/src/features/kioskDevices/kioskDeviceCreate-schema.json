@@ -3,33 +3,33 @@
 	"fields": {
 		"code": {
 			"type": "string",
-			"label": "{ \"$ref\": 'device.fields.code' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.device.fields.code' }"
 		},
 		"name": {
 			"type": "string",
-			"label": "{ \"$ref\": 'device.fields.name' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.device.fields.name' }"
 		},
 		"description": {
 			"type": "string",
-			"label": "{ \"$ref\": 'device.fields.description' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.device.fields.description' }"
 		},
 		"status": {
 			"type": "enum",
-			"label": "{ \"$ref\": 'device.fields.status' }",
+			"label": "{ \"$ref\": 'coremart.vendingMachine.device.fields.status' }",
 			"enum": [
-				{ "value": "active", "label": "{ \"$ref\": 'status.active' }" },
-				{ "value": "inactive", "label": "{ \"$ref\": 'status.inactive' }" }
+				{ "value": "active", "label": "{ \"$ref\": 'nikki.general.status.active' }" },
+				{ "value": "inactive", "label": "{ \"$ref\": 'nikki.general.status.inactive' }" }
 			]
 		},
 		"deviceType": {
 			"type": "enum",
-			"label": "{ \"$ref\": 'device.fields.device_type' }",
+			"label": "{ \"$ref\": 'coremart.vendingMachine.device.fields.deviceType' }",
 			"enum": [
-				{ "value": "motor", "label": "{ \"$ref\": 'device.device_type.motor' }" },
-				{ "value": "pos", "label": "{ \"$ref\": 'device.device_type.pos' }" },
-				{ "value": "screen", "label": "{ \"$ref\": 'device.device_type.screen' }" },
-				{ "value": "cpu", "label": "{ \"$ref\": 'device.device_type.cpu' }" },
-				{ "value": "router", "label": "{ \"$ref\": 'device.device_type.router' }" }
+				{ "value": "motor", "label": "{ \"$ref\": 'coremart.vendingMachine.device.deviceType.motor' }" },
+				{ "value": "pos", "label": "{ \"$ref\": 'coremart.vendingMachine.device.deviceType.pos' }" },
+				{ "value": "screen", "label": "{ \"$ref\": 'coremart.vendingMachine.device.deviceType.screen' }" },
+				{ "value": "cpu", "label": "{ \"$ref\": 'coremart.vendingMachine.device.deviceType.cpu' }" },
+				{ "value": "router", "label": "{ \"$ref\": 'coremart.vendingMachine.device.deviceType.router' }" }
 			]
 		}
 	}

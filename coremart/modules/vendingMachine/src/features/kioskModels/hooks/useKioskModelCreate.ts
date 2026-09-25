@@ -1,11 +1,13 @@
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
-import { useCallback } from 'react';
+import { useUIState } from '@nikkierp/shell/contexts';
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
+import React, { useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { resolvePath, useLocation, useNavigate } from 'react-router';
 
-import { useMutationOutcome } from '../../../common/hooks/useMutationOutcome';
-import { kioskModelCrudService } from '../kioskModelService';
+import { VendingMachineDispatch, kioskModelActions, selectCreateKioskModel } from '@/appState';
 
-import type { KioskModel } from '../types';
+import type { KioskModel } from '@/features/kioskModels/types';
+
 
 
 export type KioskModelCreateFormData = Pick<
@@ -19,33 +21,55 @@ export type KioskModelCreateFormData = Pick<
 
 export type KioskModelCreatePayload = KioskModelCreateFormData;
 
-type CreateResponse = { id: string };
-
-
 export function useKioskModelCreate() {
 	const navigate = useNavigate();
 	const location = useLocation();
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
+	const { notification } = useUIState();
+	const { t: translate } = useTranslation();
 
-	const { dispatchMethod, result } = useServiceLayer<CreateResponse>(kioskModelCrudService.create);
+	const createKioskModel = useMicroAppSelector(selectCreateKioskModel);
+	const createRequestIdRef = React.useRef<string | null>(null);
 
 	const handleCancel = useCallback(() => {
 		navigate(resolvePath('..', location.pathname).pathname);
 	}, [navigate, location.pathname]);
 
-	const handleSubmit = useCallback((data: KioskModelCreateFormData) => {
-		dispatchMethod(data);
-	}, [dispatchMethod]);
+	const handleSubmit = useCallback((data: KioskModelCreatePayload) => {
+		const action = dispatch(kioskModelActions.createKioskModel(data));
+		createRequestIdRef.current = action.requestId;
+	}, [dispatch]);
 
-	useMutationOutcome(result, {
-		successKey: () => 'kiosk_models.messages.create_success',
-		errorKey: 'errors.createFailed',
-		onSuccess: () => {
-			const createdId = result.data?.id;
+	const isSubmitting = createKioskModel.status === 'pending';
+
+	React.useEffect(() => {
+		const requestId = createKioskModel.requestId;
+		const matchesDispatch = requestId != null && requestId === createRequestIdRef.current;
+		if (!matchesDispatch) return;
+
+		if (createKioskModel.status === 'success') {
+			createRequestIdRef.current = null;
+			notification.showInfo(
+				translate('coremart.vendingMachine.kioskModels.messages.create_success'),
+				translate('nikki.general.messages.success'),
+			);
+			dispatch(kioskModelActions.resetCreateKioskModel());
+			dispatch(kioskModelActions.listKioskModels());
+			const createdId = createKioskModel.data?.id;
 			if (createdId) {
 				navigate(resolvePath(`../${createdId}`, location.pathname).pathname);
 			}
-		},
-	});
+		}
 
-	return { isSubmitting: result.isPending, handleSubmit, handleCancel };
+		if (createKioskModel.status === 'error') {
+			createRequestIdRef.current = null;
+			notification.showError(
+				createKioskModel.error ?? translate('nikki.general.errors.create_failed'),
+				translate('nikki.general.messages.error'),
+			);
+			dispatch(kioskModelActions.resetCreateKioskModel());
+		}
+	}, [createKioskModel, dispatch, notification, translate, navigate, location.pathname]);
+
+	return { isSubmitting, handleSubmit, handleCancel };
 }

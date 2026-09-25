@@ -2,12 +2,12 @@ import { Alert, Grid, Skeleton, Stack } from '@mantine/core';
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { getLocalizedName } from '@/common/helpers';
 
 import { RefundMethodRateChart } from './RefundMethodRateChart';
 import { RefundReportSummary } from './RefundReportSummary';
 import { RefundTopKiosksBarChart } from './RefundTopKiosksBarChart';
 import { RefundTopProductsBarChart } from './RefundTopProductsBarChart';
-import { getLocalizedName } from '../../../../../common/helpers';
 import {
 	useRefundByKiosk,
 	useRefundByPaymentMethod,
@@ -19,11 +19,11 @@ import type { MethodRefundRateRow, ProductRefundBreakdown, KioskRefundBreakdown,
 
 
 type RefundReportInsightsProps = {
-	applied: RefundReportAppliedFilters,
+	applied: RefundReportAppliedFilters;
 };
 
 export function RefundReportInsights({ applied }: RefundReportInsightsProps): React.ReactElement {
-	const { t: translate, i18n } = useTranslation('vending_machine');
+	const { t: translate, i18n } = useTranslation();
 
 	const { data: overview, isLoading: overviewLoading, error: overviewError } = useRefundOverview(applied);
 	const { items: kioskItems, isLoading: kioskLoading, error: kioskError } = useRefundByKiosk(applied);
@@ -56,7 +56,7 @@ export function RefundReportInsights({ applied }: RefundReportInsightsProps): Re
 				</Alert>
 			)}
 
-			<Grid gap='md'>
+			<Grid gutter='md'>
 				<Grid.Col span={{ base: 12, lg: 6 }}>
 					{kioskLoading ? (
 						<Skeleton height={340} radius='md' />
@@ -67,7 +67,7 @@ export function RefundReportInsights({ applied }: RefundReportInsightsProps): Re
 					) : (
 						<RefundTopKiosksBarChart
 							data={kioskRows}
-							title={translate('reports.refund_report.charts.top_kiosks')}
+							title={translate('coremart.vendingMachine.reports.refundReport.charts.topKiosks')}
 						/>
 					)}
 				</Grid.Col>
@@ -81,7 +81,7 @@ export function RefundReportInsights({ applied }: RefundReportInsightsProps): Re
 					) : (
 						<RefundMethodRateChart
 							rows={methodRows}
-							title={translate('reports.refund_report.charts.refund_rate_by_method')}
+							title={translate('coremart.vendingMachine.reports.refundReport.charts.refundRateByMethod')}
 						/>
 					)}
 				</Grid.Col>
@@ -95,7 +95,7 @@ export function RefundReportInsights({ applied }: RefundReportInsightsProps): Re
 					) : (
 						<RefundTopProductsBarChart
 							data={productRows}
-							title={translate('reports.refund_report.charts.top_products')}
+							title={translate('coremart.vendingMachine.reports.refundReport.charts.topProducts')}
 						/>
 					)}
 				</Grid.Col>

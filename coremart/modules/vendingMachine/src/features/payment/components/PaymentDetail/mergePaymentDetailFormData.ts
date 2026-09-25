@@ -1,10 +1,10 @@
 import {
 	paymentRowsToConfig,
 	type PaymentConfigRow,
-} from '../../utils/paymentConfigRows';
+} from '@/features/payment/utils/paymentConfigRows';
 
-import type { PaymentUpdateFormData } from '../../hooks/usePaymentEdit';
-import type { PaymentMethod } from '../../types';
+import type { PaymentUpdateFormData } from '@/features/payment/hooks/usePaymentEdit';
+import type { PaymentMethod } from '@/features/payment/types';
 
 
 

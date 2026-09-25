@@ -4,8 +4,9 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
 
-import { BreadcrumbItem } from '../../../components/BreadCrumbs';
-import { ControlPanelActionItem } from '../../../components/ControlPanel';
+import { BreadcrumbItem } from '@/components/BreadCrumbs';
+import { ControlPanelActionItem } from '@/components/ControlPanel';
+
 import { useKioskModelArchive } from '../hooks/useKioskModelArchive';
 import { useKioskModelDelete } from '../hooks/useKioskModelDelete';
 import { useKioskModelFilter, useKioskModelList } from '../hooks/useKioskModelList';
@@ -15,11 +16,11 @@ import { KioskModelViewMode } from '../types';
 
 
 type KioskModelPageContextValue = {
-	filter: ReturnType<typeof useKioskModelFilter>,
-	list: ReturnType<typeof useKioskModelList>,
-	deleteModel: ReturnType<typeof useKioskModelDelete>,
-	archiveModel: ReturnType<typeof useKioskModelArchive>,
-	previewModel: ReturnType<typeof useKioskModelPreview>,
+	filter: ReturnType<typeof useKioskModelFilter>;
+	list: ReturnType<typeof useKioskModelList>;
+	deleteModel: ReturnType<typeof useKioskModelDelete>;
+	archiveModel: ReturnType<typeof useKioskModelArchive>;
+	previewModel: ReturnType<typeof useKioskModelPreview>;
 };
 
 const KioskModelPageContext = createContext<KioskModelPageContextValue | null>(null);
@@ -57,9 +58,9 @@ export interface UseKioskModelPageConfigReturn {
 	breadcrumbs: BreadcrumbItem[];
 	actions: ControlPanelActionItem[];
 	viewModeConfig: {
-		value: KioskModelViewMode,
-		onChange: (mode: KioskModelViewMode) => void,
-		segments: KioskModelViewMode[],
+		value: KioskModelViewMode;
+		onChange: (mode: KioskModelViewMode) => void;
+		segments: KioskModelViewMode[];
 	};
 }
 
@@ -67,7 +68,7 @@ export function useKioskModelPageConfig(): UseKioskModelPageConfigReturn {
 	const { list: { handleRefresh } } = useKioskModelPageContext();
 
 	const navigate = useNavigate();
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const [viewMode, setViewMode] = useState<KioskModelViewMode>('list');
 
 	const handleCreate = () => {
@@ -76,17 +77,17 @@ export function useKioskModelPageConfig(): UseKioskModelPageConfigReturn {
 
 	const breadcrumbs = useMemo(
 		() => [
-			{ title: translate('title'), href: '../overview' },
-			{ title: translate('kiosk_models.title'), href: '#' },
+			{ title: translate('coremart.vendingMachine.title'), href: '../overview' },
+			{ title: translate('coremart.vendingMachine.kioskModels.title'), href: '#' },
 		],
 		[translate],
 	);
 
 	const actions = useMemo(
 		() => [
-			{ label: translate('action.create'), leftSection: <IconPlus size={16} />, onClick: handleCreate },
+			{ label: translate('nikki.general.actions.create'), leftSection: <IconPlus size={16} />, onClick: handleCreate },
 			{
-				label: translate('action.refresh'),
+				label: translate('nikki.general.actions.refresh'),
 				leftSection: <IconRefresh size={16} />,
 				onClick: handleRefresh,
 				variant: 'outline' as const,

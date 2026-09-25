@@ -1,37 +1,38 @@
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
 import { useCallback, useEffect } from 'react';
 
-import { usePaginationWithTotal } from '../../../../common/hooks';
-import { operationReportService } from '../operationReportService';
+import { operationReportActions, selectLowStockWarnings, VendingMachineDispatch } from '@/appState';
+import { usePagination } from '@/common/hooks';
+import { PagedReduxState } from '@/types';
+
 import { LowStockWarning } from '../type';
 
 
-type SearchResponse = { items: LowStockWarning[], total: number };
+
 
 export function useKioskLowStocks() {
-	const { dispatchMethod, result } = useServiceLayer<SearchResponse>(
-		operationReportService.getLowStockWarnings,
-	);
+	const dispatch = useMicroAppDispatch() as VendingMachineDispatch;
+	const lowStockWarnings: PagedReduxState<LowStockWarning> = useMicroAppSelector(selectLowStockWarnings);
 
 	const fetchList = useCallback((page: number, size: number) => {
-		dispatchMethod({ page, size });
-	}, [dispatchMethod]);
+		dispatch(operationReportActions.fetchLowStockWarnings({ page, size }));
+	}, [dispatch]);
 
-	const pagination = usePaginationWithTotal(fetchList, result.data?.total ?? 0);
-	const { page, pageSize } = pagination;
+	const pagination = usePagination(fetchList, selectLowStockWarnings);
 
 	useEffect(() => {
-		fetchList(page - 1, pageSize);
-	}, [fetchList, page, pageSize]);
+		fetchList(pagination.page - 1, pagination.pageSize);
+	}, []);
 
-	// Default to `[]`: the slice this replaced always exposed an array.
-	const data = result.data?.items ?? [];
-	const isLoading = (result.isPending || result.doneAt == null) && !data.length;
+	const status = lowStockWarnings.status;
+	const data = lowStockWarnings.items;
+	const error = lowStockWarnings.error;
+	const isLoading = (status === 'pending' || status === 'idle') && !data;
 
 	return {
 		data,
-		status: result.isPending ? 'pending' : 'success',
-		error: result.error,
+		status,
+		error,
 		isLoading,
 		pagination,
 	};

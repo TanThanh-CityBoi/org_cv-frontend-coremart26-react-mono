@@ -15,11 +15,11 @@ export interface ShelvesConfigProps {
 	onShelvesConfigRowsChange?: (rows: ShelvesConfigRow[]) => void;
 }
 
-const SHELF_TYPE_OPTIONS: { value: KioskShelfType, labelKey: string }[] = [
-	{ value: KIOSK_SHELF_TYPES.spring, labelKey: 'kiosk_models.shelf_type.spring' },
-	{ value: KIOSK_SHELF_TYPES.conveyor, labelKey: 'kiosk_models.shelf_type.conveyor' },
-	{ value: KIOSK_SHELF_TYPES.hangingConveyor, labelKey: 'kiosk_models.shelf_type.hanging_conveyor' },
-	{ value: KIOSK_SHELF_TYPES.pushTape, labelKey: 'kiosk_models.shelf_type.push_tape' },
+const SHELF_TYPE_OPTIONS: { value: KioskShelfType; labelKey: string }[] = [
+	{ value: KIOSK_SHELF_TYPES.spring, labelKey: 'coremart.vendingMachine.kioskModels.shelfType.spring' },
+	{ value: KIOSK_SHELF_TYPES.conveyor, labelKey: 'coremart.vendingMachine.kioskModels.shelfType.conveyor' },
+	{ value: KIOSK_SHELF_TYPES.hangingConveyor, labelKey: 'coremart.vendingMachine.kioskModels.shelfType.hangingConveyor' },
+	{ value: KIOSK_SHELF_TYPES.pushTape, labelKey: 'coremart.vendingMachine.kioskModels.shelfType.pushTape' },
 ];
 
 function shelfTypeLabel(
@@ -28,10 +28,10 @@ function shelfTypeLabel(
 ): string {
 	if (!shelfType) return '-';
 	const keyMap: Record<string, string> = {
-		[KIOSK_SHELF_TYPES.spring]: translate('kiosk_models.shelf_type.spring'),
-		[KIOSK_SHELF_TYPES.conveyor]: translate('kiosk_models.shelf_type.conveyor'),
-		[KIOSK_SHELF_TYPES.hangingConveyor]: translate('kiosk_models.shelf_type.hanging_conveyor'),
-		[KIOSK_SHELF_TYPES.pushTape]: translate('kiosk_models.shelf_type.push_tape'),
+		[KIOSK_SHELF_TYPES.spring]: translate('coremart.vendingMachine.kioskModels.shelfType.spring'),
+		[KIOSK_SHELF_TYPES.conveyor]: translate('coremart.vendingMachine.kioskModels.shelfType.conveyor'),
+		[KIOSK_SHELF_TYPES.hangingConveyor]: translate('coremart.vendingMachine.kioskModels.shelfType.hangingConveyor'),
+		[KIOSK_SHELF_TYPES.pushTape]: translate('coremart.vendingMachine.kioskModels.shelfType.pushTape'),
 	};
 	return keyMap[shelfType] || shelfType;
 }
@@ -49,17 +49,17 @@ function mergeRowsForRowIds(rowIds: string[], rows: ShelvesConfigRow[]): Shelves
 }
 
 const ShelvesConfigReadOnlyView: React.FC<{
-	shelvesNumber: number,
-	shelvesConfigRows: ShelvesConfigRow[],
+	shelvesNumber: number;
+	shelvesConfigRows: ShelvesConfigRow[];
 }> = ({ shelvesNumber, shelvesConfigRows }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const rows = useMemo(() => rowIdsForShelvesCount(shelvesNumber), [shelvesNumber]);
 
 	return (
 		<Stack gap='md'>
 			<div>
 				<Text size='sm' c='dimmed' mb={2} fw={500}>
-					{translate('kiosk_models.fields.shelves_number')}
+					{translate('coremart.vendingMachine.kioskModels.fields.shelvesNumber')}
 				</Text>
 				<Box p='xs' style={{ border: '1px solid var(--mantine-color-gray-3)', borderRadius: 'var(--mantine-radius-sm)' }}>
 					<Text size='sm'>{shelvesNumber || '-'}</Text>
@@ -69,13 +69,13 @@ const ShelvesConfigReadOnlyView: React.FC<{
 			{shelvesNumber > 0 && (
 				<div>
 					<Text size='sm' c='dimmed' mb={2} fw={500}>
-						{translate('kiosk_models.fields.shelves_config')}
+						{translate('coremart.vendingMachine.kioskModels.fields.shelvesConfig')}
 					</Text>
 					<Table withTableBorder withColumnBorders>
 						<Table.Thead>
 							<Table.Tr>
-								<Table.Th>{translate('kiosk_models.fields.tray_row')}</Table.Th>
-								<Table.Th>{translate('kiosk_models.fields.shelf_type')}</Table.Th>
+								<Table.Th>{translate('coremart.vendingMachine.kioskModels.fields.trayRow')}</Table.Th>
+								<Table.Th>{translate('coremart.vendingMachine.kioskModels.fields.shelfType')}</Table.Th>
 							</Table.Tr>
 						</Table.Thead>
 						<Table.Tbody>
@@ -100,17 +100,17 @@ const ShelvesConfigReadOnlyView: React.FC<{
 };
 
 const ShelvesConfigEditorView: React.FC<{
-	shelvesNumber: number,
-	shelvesConfigRows: ShelvesConfigRow[],
-	onShelvesNumberChange?: (value: number) => void,
-	onShelvesConfigRowsChange?: (rows: ShelvesConfigRow[]) => void,
+	shelvesNumber: number;
+	shelvesConfigRows: ShelvesConfigRow[];
+	onShelvesNumberChange?: (value: number) => void;
+	onShelvesConfigRowsChange?: (rows: ShelvesConfigRow[]) => void;
 }> = ({
 	shelvesNumber = 0,
 	shelvesConfigRows = [],
 	onShelvesNumberChange,
 	onShelvesConfigRowsChange,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const rowIds = useMemo(() => rowIdsForShelvesCount(shelvesNumber), [shelvesNumber]);
 
@@ -169,13 +169,13 @@ const ShelvesConfigEditorView: React.FC<{
 		<Stack gap='md'>
 			<div>
 				<Text size='sm' c='dimmed' mb='xs' fw={500}>
-					{translate('kiosk_models.fields.number_of_trays')}
+					{translate('coremart.vendingMachine.kioskModels.fields.numberOfTrays')}
 				</Text>
 				<Select
 					value={shelvesNumber > 0 ? String(shelvesNumber) : null}
 					onChange={handleTraysCountChange}
 					data={trayOptions}
-					placeholder={translate('kiosk_models.fields.number_of_trays')}
+					placeholder={translate('coremart.vendingMachine.kioskModels.fields.numberOfTrays')}
 					clearable
 				/>
 			</div>
@@ -183,15 +183,15 @@ const ShelvesConfigEditorView: React.FC<{
 			{shelvesNumber > 0 && (
 				<div>
 					<Text size='sm' c='dimmed' mb='xs' fw={500}>
-						{translate('kiosk_models.fields.tray_configurations')}
+						{translate('coremart.vendingMachine.kioskModels.fields.trayConfigurations')}
 					</Text>
 					<Card withBorder p='md' radius='md'>
 						<Table>
 							<Table.Thead>
 								<Table.Tr>
-									<Table.Th>{translate('kiosk_models.fields.tray_row')}</Table.Th>
-									<Table.Th>{translate('kiosk_models.fields.shelf_type')}</Table.Th>
-									<Table.Th>{translate('action.title')}</Table.Th>
+									<Table.Th>{translate('coremart.vendingMachine.kioskModels.fields.trayRow')}</Table.Th>
+									<Table.Th>{translate('coremart.vendingMachine.kioskModels.fields.shelfType')}</Table.Th>
+									<Table.Th>{translate('nikki.general.actions.title')}</Table.Th>
 								</Table.Tr>
 							</Table.Thead>
 							<Table.Tbody>
@@ -212,7 +212,7 @@ const ShelvesConfigEditorView: React.FC<{
 														handleShelfTypeChange(row, value as KioskShelfType | null)
 													}
 													data={shelfTypeSelectData}
-													placeholder={translate('kiosk_models.fields.shelf_type')}
+													placeholder={translate('coremart.vendingMachine.kioskModels.fields.shelfType')}
 													clearable
 												/>
 											</Table.Td>

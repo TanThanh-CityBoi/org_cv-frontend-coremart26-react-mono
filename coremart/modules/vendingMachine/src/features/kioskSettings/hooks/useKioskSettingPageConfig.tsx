@@ -6,12 +6,12 @@ import { useNavigate } from 'react-router';
 import { KioskSettingListViewMode } from '../types';
 
 
-export type BreadcrumbItem = { title: string, href: string };
+export type BreadcrumbItem = { title: string; href: string };
 export type PageAction = React.ButtonHTMLAttributes<HTMLButtonElement> & {
-	label: string,
-	leftSection?: React.ReactNode,
-	onClick?: () => void,
-	variant?: 'filled' | 'outline' | 'light' | 'subtle' | 'default' | 'gradient',
+	label: string;
+	leftSection?: React.ReactNode;
+	onClick?: () => void;
+	variant?: 'filled' | 'outline' | 'light' | 'subtle' | 'default' | 'gradient';
 } | null;
 
 export interface UseKioskSettingPageConfigOptions {
@@ -33,7 +33,7 @@ export const useKioskSettingPageConfig = ({
 	breadcrumbsConfig,
 }: UseKioskSettingPageConfigOptions): UseKioskSettingPageConfigReturn => {
 	const navigate = useNavigate();
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const [viewMode, setViewMode] = useState<KioskSettingListViewMode>('list');
 
 	const handleCreate = () => {
@@ -45,14 +45,14 @@ export const useKioskSettingPageConfig = ({
 			return breadcrumbsConfig;
 		}
 		return [
-			{ title: translate('title'), href: '../overview' },
-			{ title: translate('kiosk_settings.title'), href: '#' },
+			{ title: translate('coremart.vendingMachine.title'), href: '../overview' },
+			{ title: translate('coremart.vendingMachine.kioskSettings.title'), href: '#' },
 		];
 	}, [breadcrumbsConfig, translate]);
 
 	const defaultActions = useMemo(() => [
-		{ label: translate('action.create'), leftSection: <IconPlus size={16} />, onClick: handleCreate },
-		{ label: translate('action.refresh'), leftSection: <IconRefresh size={16} />, onClick: handleRefresh, variant: 'outline' as const },
+		{ label: translate('nikki.general.actions.create'), leftSection: <IconPlus size={16} />, onClick: handleCreate },
+		{ label: translate('nikki.general.actions.refresh'), leftSection: <IconRefresh size={16} />, onClick: handleRefresh, variant: 'outline' as const },
 	], [handleRefresh, translate]);
 
 	const actions = useMemo(() => {

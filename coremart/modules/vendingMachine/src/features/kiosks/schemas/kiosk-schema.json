@@ -3,100 +3,100 @@
 	"fields": {
 		"id": {
 			"type": "string",
-			"label": "{ \"$ref\": 'kiosk.fields.id' }",
+			"label": "{ \"$ref\": 'coremart.vendingMachine.kiosk.fields.id' }",
 			"hidden": true
 		},
 		"code": {
 			"type": "string",
-			"label": "{ \"$ref\": 'kiosk.fields.code' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.kiosk.fields.code' }"
 		},
 		"name": {
 			"type": "string",
-			"label": "{ \"$ref\": 'kiosk.fields.name' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.kiosk.fields.name' }"
 		},
 		"displayName": {
 			"type": "string",
-			"label": "{ \"$ref\": 'kiosk.fields.display_name' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.kiosk.fields.displayName' }"
 		},
 		"connectionStatus": {
 			"type": "enum",
-			"label": "{ \"$ref\": 'kiosk.fields.connection_status' }",
+			"label": "{ \"$ref\": 'coremart.vendingMachine.kiosk.fields.connectionStatus' }",
 			"enum": [
 				{
 					"value": "fast",
-					"label": "{ \"$ref\": 'kiosk.connection_status.fast' }"
+					"label": "{ \"$ref\": 'coremart.vendingMachine.kiosk.connectionStatus.fast' }"
 				},
 				{
 					"value": "slow",
-					"label": "{ \"$ref\": 'kiosk.connection_status.slow' }"
+					"label": "{ \"$ref\": 'coremart.vendingMachine.kiosk.connectionStatus.slow' }"
 				},
 				{
 					"value": "lost",
-					"label": "{ \"$ref\": 'kiosk.connection_status.lost' }"
+					"label": "{ \"$ref\": 'coremart.vendingMachine.kiosk.connectionStatus.lost' }"
 				}
 			]
 		},
 		"locationAddress": {
 			"type": "string",
-			"label": "{ \"$ref\": 'kiosk.fields.address' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.kiosk.fields.address' }"
 		},
 		"isArchived": {
 			"type": "boolean",
-			"label": "{ \"$ref\": 'kiosk.fields.status' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.kiosk.fields.status' }"
 		},
 		"mode": {
 			"type": "enum",
-			"label": "{ \"$ref\": 'kiosk.fields.mode' }",
+			"label": "{ \"$ref\": 'coremart.vendingMachine.kiosk.fields.mode' }",
 			"enum": [
 				{
 					"value": "pending",
-					"label": "{ \"$ref\": 'kiosk.mode.pending' }"
+					"label": "{ \"$ref\": 'coremart.vendingMachine.kiosk.mode.pending' }"
 				},
 				{
 					"value": "selling",
-					"label": "{ \"$ref\": 'kiosk.mode.selling' }"
+					"label": "{ \"$ref\": 'coremart.vendingMachine.kiosk.mode.selling' }"
 				},
 				{
 					"value": "slideshow-only",
-					"label": "{ \"$ref\": 'kiosk.mode.slideshow_only' }"
+					"label": "{ \"$ref\": 'coremart.vendingMachine.kiosk.mode.slideshowOnly' }"
 				}
 			]
 		},
 		"warnings": {
 			"type": "array",
-			"label": "{ \"$ref\": 'kiosk.fields.warnings' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.kiosk.fields.warnings' }"
 		},
 		"stateTemperature": {
 			"type": "string",
-			"label": "{ \"$ref\": 'kiosk.state.temperature' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.kiosk.state.temperature' }"
 		},
 		"stateHumidity": {
 			"type": "string",
-			"label": "{ \"$ref\": 'kiosk.state.humidity' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.kiosk.state.humidity' }"
 		},
 		"stateCurrent": {
 			"type": "string",
-			"label": "{ \"$ref\": 'kiosk.state.current' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.kiosk.state.current' }"
 		},
 		"stateEnergy": {
 			"type": "string",
-			"label": "{ \"$ref\": 'kiosk.state.energy' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.kiosk.state.energy' }"
 		},
 		"statePower": {
 			"type": "string",
-			"label": "{ \"$ref\": 'kiosk.state.power' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.kiosk.state.power' }"
 		},
 		"stateOutputDoorSwitch": {
 			"type": "string",
-			"label": "{ \"$ref\": 'kiosk.state.output_door_switch' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.kiosk.state.outputDoorSwitch' }"
 		},
 		"stateOutputSwitch": {
 			"type": "string",
-			"label": "{ \"$ref\": 'kiosk.state.output_switch' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.kiosk.state.outputSwitch' }"
 		},
 		"createdAt": {
 			"type": "date",
-			"label": "{ \"$ref\": 'kiosk.fields.created_at' }",
+			"label": "{ \"$ref\": 'coremart.vendingMachine.kiosk.fields.createdAt' }",
 			"hidden": true
 		}
 	}

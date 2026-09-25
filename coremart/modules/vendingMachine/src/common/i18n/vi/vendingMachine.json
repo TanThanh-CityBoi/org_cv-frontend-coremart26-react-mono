@@ -1,0 +1,1742 @@
+{
+	"title": "Vending Machine",
+	"menu": {
+		"overview": "Tổng quan",
+		"kiosk": "Kiosk",
+		"kiosk_management": "Quản lý Kiosk",
+		"kiosk_warnings": "Cảnh báo",
+		"kiosk_devices": "Thiết bị",
+		"presentation": "Trình chiếu",
+		"gallery": "Thư viện",
+		"playlists": "Danh sách phát",
+		"mediaPlaylist": "Danh sách phát media",
+		"events": "Sự kiện",
+		"appearance": "Hiển thị",
+		"themes": "Chủ đề",
+		"device": "Thiết bị",
+		"miniGame": "Trò chơi",
+		"kiosk_models": "Dòng máy",
+		"kiosk_settings": "Cài đặt hiển thị",
+		"settings": "Cài đặt",
+		"payment": "Thanh toán",
+		"orders": "Đơn hàng",
+		"reports": "Báo cáo",
+		"business_report": "Báo cáo kinh doanh",
+		"revenue_report": "Báo cáo doanh thu",
+		"business_overview": "Tổng quan kinh doanh",
+		"pnl_report": "Báo cáo P&L",
+		"operations_report": "Báo cáo vận hành",
+		"operations_overview": "Tổng quan vận hành",
+		"revenue_overview": "Tổng quan doanh thu",
+		"refunds_report": "Báo cáo hoàn tiền",
+		"orders_report": "Đơn hàng",
+		"inventory_report": "Báo cáo hàng tồn"
+	},
+	"assignedKioskList": {
+		"addKiosks": "Thêm kiosk",
+		"empty": "Chưa gán kiosk nào"
+	},
+	"common": {
+		"fields": {
+			"createdAt": "Ngày tạo",
+			"deletedAt": "Ngày xóa",
+			"updatedAt": "Ngày cập nhật",
+			"archivedAt": "Ngày lưu trữ",
+			"restoredAt": "Ngày khôi phục"
+		},
+		"datePicker": {
+			"today": "Hôm nay",
+			"lastTwoDays": "2 ngày trước",
+			"lastSevenDays": "7 ngày trước",
+			"thisWeek": "Tuần này",
+			"lastWeek": "Tuần trước",
+			"thisMonth": "Tháng này",
+			"lastMonth": "Tháng trước",
+			"thisYear": "Năm này",
+			"lastYear": "Năm trước",
+			"selectDateRange": "Chọn khoảng thời gian",
+			"selectDateRangeHint": "Vui lòng chọn khoảng thời gian"
+		},
+		"fileDropzone": {
+			"label": "Tải file lên",
+			"hint": "",
+			"browseLabel": "Kéo file vào đây hoặc bấm để chọn",
+			"acceptLabel": "Thả file để tải lên",
+			"rejectLabel": "Không đúng loại file hoặc file quá lớn",
+			"emptyFileLabel": "Chưa chọn file",
+			"clearAriaLabel": "Xóa file"
+		},
+		"actions": {
+			"view": "Xem",
+			"apply": "Áp dụng"
+		},
+		"timeOfDay": {
+			"morning": "buổi sáng",
+			"afternoon": "buổi chiều",
+			"evening": "buổi tối",
+			"night": "đêm"
+		},
+		"messages": {
+			"update_success": "Cập nhật thành công",
+			"update_failed": "Cập nhật thất bại"
+		}
+	},
+	"overview": {
+		"title": "Tổng quan - Máy bán hàng tự động",
+		"statistics": "Thống kê",
+		"kiosk_count": "Số lượng Kiosk",
+		"total_kiosks": "Tổng số Kiosk",
+		"active_kiosks": "Kiosk đang hoạt động",
+		"inactive_kiosks": "Kiosk đã lưu trữ",
+		"avg_temperature": "Nhiệt độ trung bình",
+		"avg_humidity": "Độ ẩm trung bình",
+		"total_power": "Tổng tiêu thụ điện",
+		"kiosk_distribution": "Phân bổ Kiosk",
+		"connection": {
+			"status": "Trạng thái kết nối",
+			"fast": "Nhanh",
+			"slow": "Chậm",
+			"disconnected": "Mất kết nối",
+			"lost": "Mất kết nối"
+		},
+		"operation": {
+			"status": "Trạng thái hoạt động",
+			"selling": "Đang bán",
+			"slideshowOnly": "Chỉ trình chiếu",
+			"pending": "Đang chờ"
+		},
+		"machineType": {
+			"distribution": "Phân bổ loại máy",
+			"dropProduct": "Rớt hàng",
+			"elevator": "Thang nâng"
+		},
+		"errorAlerts": {
+			"title": "Cảnh báo lỗi",
+			"waiting": "Chờ xử lý",
+			"inProgress": "Đang xử lý",
+			"processed": "Đã xử lý",
+			"kioskRef": "Kiosk",
+			"level": "Mức độ",
+			"description": "Mô tả",
+			"status": "Trạng thái",
+			"reportedAt": "Thời điểm ghi nhận",
+			"noErrors": "Không có cảnh báo nào",
+			"viewDetails": "Xem chi tiết",
+			"totalWarnings": "Cảnh báo"
+		},
+		"error": {
+			"status": {
+				"waiting": "Chờ xử lý",
+				"handling": "Đang tiếp nhận",
+				"processing": "Đang xử lý",
+				"processed": "Đã xử lý"
+			},
+			"level": {
+				"low": "Thấp",
+				"medium": "Trung bình",
+				"high": "Cao",
+				"critical": "Nghiêm trọng"
+			}
+		},
+		"lowStock": {
+			"title": "Cảnh báo hết hàng",
+			"kioskOutOfStock": "Kiosk cần nhập hàng",
+			"activeAlerts": "Cảnh báo chưa xử lý",
+			"kioskCode": "Mã Kiosk",
+			"kioskName": "Tên Kiosk",
+			"stockRatio": "Tỉ trọng hàng tồn",
+			"items": "Mặt hàng",
+			"status": "Trạng thái",
+			"urgent": "Khẩn cấp",
+			"noAlerts": "Không có cảnh báo hết hàng nào",
+			"viewDetails": "Xem chi tiết"
+		},
+		"operationParams": {
+			"title": "Thông số hoạt động",
+			"temperature": "Nhiệt độ",
+			"humidity": "Độ ẩm",
+			"powerConsumption": "Điện năng tiêu thụ",
+			"totalPowerConsumption": "Tổng điện năng tiêu thụ",
+			"avgTemperature": "Nhiệt độ trung bình",
+			"avgHumidity": "Độ ẩm trung bình",
+			"temperatureHumidity": "Nhiệt độ / Độ ẩm",
+			"power": "Điện năng (kW)",
+			"energy": "Điện năng tiêu thụ (Wh)"
+		},
+		"support": {
+			"title": "Yêu cầu hỗ trợ",
+			"pending": "Đang chờ",
+			"inProgress": "Đang xử lý",
+			"resolved": "Đã xử lý",
+			"kioskCode": "Mã Kiosk",
+			"kioskName": "Tên Kiosk",
+			"customer": "Khách hàng",
+			"description": "Mô tả",
+			"status": "Trạng thái",
+			"noRequests": "Không có yêu cầu hỗ trợ nào",
+			"viewDetails": "Xem chi tiết",
+			"statusLabels": {
+				"pending": "Đang chờ",
+				"in_progress": "Đang xử lý",
+				"resolved": "Đã xử lý"
+			}
+		},
+		"customerVisit": {
+			"title": "Lưu lượng khách ghé thăm",
+			"description": "Biểu đồ hiển thị lưu lượng khách sử dụng máy bán hàng.",
+			"visits": "Lượt ghé thăm",
+			"count": "Số lượng",
+			"date": "Ngày"
+		}
+	},
+	"kioskProducts": {
+		"search": {
+			"placeholder": "Tìm theo tên, SKU, mã vạch…"
+		},
+		"filter": {
+			"status": "Trạng thái"
+		},
+		"status": {
+			"active": "Đang bán",
+			"draft": "Nháp",
+			"discontinued": "Ngừng bán"
+		},
+		"messages": {
+			"selectOrg": "Chọn tổ chức để xem mặt hàng kho.",
+			"noResults": "Không có mặt hàng phù hợp bộ lọc."
+		},
+		"modal": {
+			"title": "Chọn mặt hàng",
+			"confirm": "Chọn"
+		}
+	},
+	"kiosk": {
+		"title": "Quản lý Kiosk",
+		"title_create": "Tạo Kiosk mới",
+		"detail": {
+			"title": "Chi tiết Kiosk"
+		},
+		"fields": {
+			"code": "Mã Kiosk",
+			"name": "Tên",
+			"displayName": "Tên hiển thị",
+			"address": "Địa chỉ",
+			"coordinates": "Tọa độ",
+			"locationAddress": "Địa chỉ",
+			"latitude": "Vĩ độ",
+			"longitude": "Kinh độ",
+			"isActive": "Trạng thái hoạt động",
+			"connectionStatus": "Kết nối",
+			"status": "Trạng thái",
+			"archived": "Lưu trữ",
+			"mode": "Chế độ",
+			"paymentMethods": "Phương thức thanh toán",
+			"warnings": "Cảnh báo",
+			"actions": "Thao tác",
+			"createdAt": "Ngày tạo",
+			"deletedAt": "Ngày xóa"
+		},
+		"state": {
+			"updatedAt": "Cập nhật lúc",
+			"sectionTitle": "Thông số vận hành",
+			"noData": "Chưa có dữ liệu",
+			"temperature": "Nhiệt độ",
+			"humidity": "Độ ẩm",
+			"current": "Dòng điện",
+			"energy": "Năng lượng",
+			"power": "Công suất",
+			"outputDoorSwitch": "Công tắc cửa",
+			"homeSwitch": "Công tắc Home",
+			"outputSwitch": "Công tắc Output"
+		},
+		"stateSwitch": {
+			"on": "Bật",
+			"off": "Tắt",
+			"unknown": "Không rõ"
+		},
+		"tabs": {
+			"basicInfo": "Thông tin cơ bản",
+			"operationalSettings": "Cài đặt hoạt động",
+			"displaySettings": "Cài đặt hiển thị",
+			"shelvesConfig": "Cấu hình khay",
+			"kioskSetting": "Cài đặt hiển thị",
+			"products": "Mặt hàng",
+			"productsList": "Mặt hàng",
+			"productsGrid": "Nhập hàng",
+			"activity": "Hoạt động"
+		},
+		"stocks": {
+			"view": {
+				"list": "Danh sách",
+				"grid": "Lưới"
+			},
+			"fields": {
+				"image": "Hình ảnh",
+				"code": "Mã SP",
+				"sku": "SKU",
+				"barcode": "Mã vạch",
+				"name": "Tên mặt hàng",
+				"price": "Giá bán",
+				"sellPrice": "Giá bán",
+				"quantity": "Số lượng",
+				"positions": "Vị trí",
+				"actions": "Thao tác",
+				"sortIndex": "Thứ tự hiển thị",
+				"proposedPrice": "Giá gốc",
+				"badgeImage": "Hình ảnh badge",
+				"maxQuantity": "Số lượng tối đa",
+				"warningQuantity": "Số lượng cảnh báo",
+				"isEnabled": "Đã kích hoạt"
+			},
+			"actions": {
+				"addStock": "Thêm mặt hàng",
+				"discardChanges": "Loại bỏ thay đổi",
+				"loadAll": "Nạp tất cả",
+				"viewOnly": "Chỉ Xem"
+			},
+			"empty": "Trống",
+			"create": {
+				"title": "Thêm mặt hàng vào kiosk",
+				"viewSelected": "Xem đã chọn",
+				"backToBrowse": "Quay lại danh sách mặt hàng",
+				"noneSelectedSlide": "Chưa chọn mặt hàng. Quay lại và chọn mặt hàng để đặt giá bán và thứ tự hiển thị."
+			},
+			"edit": {
+				"title": "Chỉnh sửa mặt hàng"
+			},
+			"assign": {
+				"title": "Gán mặt hàng vào vị trí",
+				"hint": "Chọn một mặt hàng, đặt số lượng, sau đó gán.",
+				"empty": "Không có mặt hàng nào trong kho."
+			},
+			"messages": {
+				"discardChanges": "Bạn có chắc chắn muốn loại bỏ thay đổi?",
+				"deleteConfirm": "Bạn có chắc chắn muốn xóa <strong>{{name}}</strong>? Hành động này <strong>không thể hoàn tác</strong>."
+			}
+		},
+		"activity": {
+			"searchPlaceholder": "Tìm kiếm theo nội dung...",
+			"filter": {
+				"type": "Lọc theo loại",
+				"startDate": "Từ ngày",
+				"endDate": "Đến ngày"
+			},
+			"fields": {
+				"time": "Thời gian",
+				"type": "Loại",
+				"content": "Nội dung"
+			},
+			"type": {
+				"warning": "Cảnh báo",
+				"statusDetail": "Hoạt động",
+				"error": "Lỗi",
+				"inform": "Thông tin"
+			},
+			"detail": {
+				"title": "Chi tiết hoạt động"
+			},
+			"noLogs": "Không có log nào"
+		},
+		"status": {
+			"activated": "Đã kích hoạt",
+			"disabled": "Vô hiệu hóa",
+			"deleted": "Đã xóa"
+		},
+		"connectionStatus": {
+			"fast": "Nhanh",
+			"slow": "Chậm",
+			"disconnected": "Mất kết nối",
+			"lost": "Mất kết nối"
+		},
+		"connectionHistory": {
+			"title": "Lịch sử kết nối gần đây",
+			"no_history": "Không có lịch sử kết nối",
+			"just_now": "Vừa xong",
+			"minutes_ago": "{{count}} phút trước",
+			"hours_ago": "{{count}} giờ trước",
+			"days_ago": "{{count}} ngày trước"
+		},
+		"mode": {
+			"pending": "Đang chờ",
+			"selling": "Đang bán",
+			"slideshowOnly": "Chỉ trình chiếu"
+		},
+		"search": {
+			"placeholder": "Tìm kiếm theo mã hoặc tên..."
+		},
+		"filter": {
+			"status": "Lọc theo trạng thái",
+			"connection": "Lọc theo kết nối",
+			"mode": "Lọc theo chế độ"
+		},
+		"warnings": {
+			"title": "Cảnh báo",
+			"more": "{{count}} cảnh báo khác"
+		},
+		"messages": {
+			"no_kiosks": "Không tìm thấy kiosk nào",
+			"create_success": "Kiosk đã được tạo thành công",
+			"update_success": "Kiosk đã được cập nhật thành công",
+			"archive_success": "Đã lưu trữ kiosk thành công",
+			"restore_success": "Đã khôi phục kiosk thành công",
+			"delete_success": "Kiosk đã được xóa thành công",
+			"delete_confirm": "Bạn có chắc chắn muốn xóa Kiosk <strong>{{name}}</strong>? Hành động này sẽ <strong>không thể hoàn tác</strong>.",
+			"invalid_coordinates": "Vĩ độ hoặc kinh độ không hợp lệ. Vui lòng nhập số đúng.",
+			"archive_modal_title": "Xác nhận lưu trữ",
+			"restore_modal_title": "Xác nhận khôi phục",
+			"archive_confirm": "Bạn có chắc chắn muốn lưu trữ Kiosk <strong>{{name}}</strong>?",
+			"restore_confirm": "Bạn có chắc chắn muốn khôi phục Kiosk <strong>{{name}}</strong>?",
+			"not_found": {
+				"title": "Không tìm thấy Kiosk",
+				"message": "Kiosk bạn đang tìm kiếm không tồn tại hoặc đã bị xóa."
+			}
+		}
+	},
+	"slideshow": {
+		"title": "Trình chiếu",
+		"detail": {
+			"title": "Chi tiết Trình chiếu"
+		},
+		"fields": {
+			"id": "Mã định danh",
+			"code": "Mã trình chiếu",
+			"name": "Tên",
+			"description": "Mô tả",
+			"status": "Trạng thái",
+			"startDate": "Ngày bắt đầu",
+			"endDate": "Ngày kết thúc",
+			"createdAt": "Ngày tạo"
+		},
+		"status": {
+			"expired": "Đã hết hạn"
+		},
+		"search": {
+			"placeholder": "Tìm kiếm theo mã hoặc tên..."
+		},
+		"filter": {
+			"status": "Lọc theo trạng thái"
+		},
+		"messages": {
+			"no_slideshows": "Không tìm thấy trình chiếu nào",
+			"no_playlists_found": "Không tìm thấy danh sách trình chiếu nào"
+		},
+		"preview": {
+			"title": "Xem trước",
+			"vertical": "Trình chiếu màn hình dọc (9:16) - Màn hình chờ",
+			"horizontal": "Trình chiếu màn hình ngang - Hiển thị ở footer"
+		},
+		"media": {
+			"title": "Danh sách Media",
+			"add": "Thêm Media",
+			"empty": "Chưa có media nào. Nhấn 'Thêm Media' để thêm.",
+			"fields": {
+				"preview": "Xem trước",
+				"code": "Mã",
+				"name": "Tên",
+				"type": "Loại",
+				"duration": "Thời lượng",
+				"size": "Kích thước"
+			},
+			"type": {
+				"image": "Ảnh",
+				"video": "Video"
+			},
+			"gallery": {
+				"title": "Thư viện Media",
+				"tab": "Thư viện",
+				"folders": "Thư mục",
+				"all": "Tất cả",
+				"items": "mục",
+				"gridView": "Xem dạng lưới",
+				"listView": "Xem dạng danh sách",
+				"selected": "Đã chọn",
+				"selectedCount": "mục đã chọn",
+				"selectedMedia": "Media đã chọn"
+			},
+			"upload": {
+				"tab": "Tải lên",
+				"description": "Chọn file từ máy tính của bạn để tải lên",
+				"button": "Chọn file"
+			}
+		}
+	},
+	"mediaPlaylist": {
+		"title": "Danh sách phát media",
+		"tabs": {
+			"details": "Chi tiết",
+			"settings": "Cài đặt",
+			"kioskList": "kiosk được gán"
+		},
+		"kioskList": {
+			"columnUsage": "Màn hình gán",
+			"usage": {
+				"shopping": "Màn hình mua hàng",
+				"waiting": "Màn hình chờ",
+				"both": "Màn hình mua hàng & chờ"
+			},
+			"empty": "Chưa có kiosk nào dùng danh sách phát này.",
+			"loadError": "Không tải được danh sách kiosk."
+		},
+		"detail": {
+			"title": "Chi tiết danh sách phát"
+		},
+		"create": {
+			"title": "Tạo danh sách phát media"
+		},
+		"fields": {
+			"id": "Mã định danh",
+			"name": "Tên",
+			"status": "Trạng thái",
+			"scopeType": "Phạm vi",
+			"scopeRef": "Tham chiếu phạm vi",
+			"isArchived": "Đã lưu trữ",
+			"mediaItems": "Media",
+			"createdAt": "Ngày tạo"
+		},
+		"scopeType": {
+			"domain": "Miền",
+			"org": "Tổ chức",
+			"hierarchy": "Phân cấp",
+			"private": "Riêng tư"
+		},
+		"archived": {
+			"yes": "Đã lưu trữ",
+			"no": "Đang hoạt động"
+		},
+		"status": {
+			"expired": "Đã hết hạn"
+		},
+		"search": {
+			"placeholder": "Tìm theo tên..."
+		},
+		"filter": {
+			"status": "Lọc theo trạng thái"
+		},
+		"messages": {
+			"no_slideshows": "Không tìm thấy playlist nào",
+			"no_playlists_found": "Không tìm thấy danh sách phát nào",
+			"update_success": "Đã cập nhật danh sách phát thành công",
+			"delete_success": "Đã xóa danh sách phát thành công",
+			"delete_confirm": "Bạn có chắc chắn muốn xóa <strong>{{name}}</strong>? Hành động này không thể hoàn tác.",
+			"archive_modal_title": "Lưu trữ danh sách phát",
+			"restore_modal_title": "Khôi phục danh sách phát",
+			"archive_confirm": "Lưu trữ <strong>{{name}}</strong>?",
+			"restore_confirm": "Khôi phục <strong>{{name}}</strong>?",
+			"archive_success": "Đã lưu trữ danh sách phát thành công",
+			"restore_success": "Đã khôi phục danh sách phát thành công",
+			"name_required": "Vui lòng nhập tên danh sách phát",
+			"create_success": "Đã tạo danh sách phát thành công"
+		},
+		"preview": {
+			"title": "Xem trước",
+			"layout_select": "Giao diện xem trước",
+			"vertical": "Playlist màn hình dọc (9:16) - Màn hình chờ",
+			"horizontal": "Playlist màn hình ngang - Hiển thị ở footer"
+		},
+		"media": {
+			"title": "Danh sách Media",
+			"add": "Thêm Media",
+			"empty": "Chưa có media nào. Nhấn 'Thêm Media' để thêm.",
+			"fields": {
+				"preview": "Xem trước",
+				"code": "Mã",
+				"kioskMediaRef": "Media kiosk",
+				"name": "Tên",
+				"type": "Loại",
+				"duration": "Thời lượng (giây)",
+				"size": "Kích thước",
+				"object_fit": "Chế độ hiển thị"
+			},
+			"object_fit_option": {
+				"fill": "Kéo giãn (fill)",
+				"contain": "Chứa trong khung (contain)",
+				"cover": "Phủ khung (cover)",
+				"none": "Không co giãn (none)",
+				"scale-down": "Thu nhỏ nếu cần (scale-down)"
+			},
+			"type": {
+				"image": "Ảnh",
+				"video": "Video"
+			},
+			"gallery": {
+				"title": "Thư viện Media",
+				"tab": "Thư viện",
+				"folders": "Thư mục",
+				"all": "Tất cả",
+				"items": "mục",
+				"gridView": "Xem dạng lưới",
+				"listView": "Xem dạng danh sách",
+				"selected": "Đã chọn",
+				"selectedCount": "mục đã chọn",
+				"selectedMedia": "Media đã chọn",
+				"config_missing": "Chưa cấu hình URL API.",
+				"load_failed": "Không tải được kiosk media: {{message}}"
+			},
+			"upload": {
+				"tab": "Tải lên",
+				"description": "Chọn file từ máy tính của bạn để tải lên",
+				"button": "Chọn file"
+			},
+			"play_order": "Thứ tự phát",
+			"preview_modal_title": "Xem trước media",
+			"edit_modal_title": "Chỉnh sửa media",
+			"drag_hint": "Kéo để sắp xếp",
+			"preview": "Xem trước",
+			"preview_aspect_ratio": "Tỉ lệ khung xem trước",
+			"edit": "Chỉnh sửa",
+			"timeline": {
+				"title": "Dòng thời gian playlist",
+				"total_duration": "Tổng thời lượng",
+				"resize_hint": "Kéo cạnh phải để chỉnh thời lượng clip này (các clip khác không đổi)",
+				"empty": "Thêm media để xem dòng thời gian.",
+				"trial_play": "Chạy thử",
+				"trial_play_from_start": "Phát từ đầu",
+				"trial_resume": "Tiếp tục",
+				"trial_stop": "Dừng",
+				"trial_position": "Đang phát",
+				"seek_progress_hint": "Bấm để tua",
+				"seek_item_hint": "Bấm để phát từ clip này"
+			}
+		},
+		"selectPlaylists": {
+			"title": "Chọn danh sách phát",
+			"searchPlaceholder": "Tìm kiếm playlist...",
+			"selectedCount": "Đã chọn {{count}} playlist",
+			"noPlaylists": "Không tìm thấy playlist nào",
+			"media": "media"
+		}
+	},
+	"orders": {
+		"search": {
+			"placeholder": "Tìm theo mã đơn, mã giao dịch cổng, hoặc nội dung..."
+		},
+		"filter": {
+			"orderStatus": "Trạng thái đơn hàng",
+			"paymentMethod": "Phương thức thanh toán",
+			"createdFrom": "Tạo từ ngày",
+			"createdTo": "Đến ngày"
+		},
+		"orderStatus": {
+			"idle": "Chờ xử lý",
+			"delivery": "Đang giao",
+			"failed": "Thất bại",
+			"cancelled": "Đã hủy",
+			"completed": "Hoàn tất"
+		},
+		"paymentMethod": {
+			"momo": "MoMo",
+			"vietqr": "VietQR",
+			"mpos": "mPOS",
+			"mbbank": "MB Bank"
+		},
+		"txStatus": {
+			"pending": "Đang chờ",
+			"success": "Thành công",
+			"failed": "Thất bại",
+			"cancelled": "Đã hủy"
+		},
+		"fields": {
+			"id": "Mã đơn",
+			"orderCode": "Mã đơn",
+			"parentOrderRef": "Mã đơn hàng cha",
+			"rootOrderRef": "Mã đơn hàng gốc",
+			"createdAt": "Ngày tạo",
+			"updatedAt": "Cập nhật lúc",
+			"kiosk": "Kiosk",
+			"paymentMethod": "Phương thức thanh toán",
+			"amount": "Tổng tiền",
+			"orderStatus": "Trạng thái đơn",
+			"paymentStatus": "Trạng thái thanh toán",
+			"refundAmount": "Tiền hoàn",
+			"refund": "Hoàn tiền",
+			"refundStatus": "Trạng thái hoàn",
+			"gatewayRef": "Mã tham chiếu cổng",
+			"content": "Nội dung giao dịch"
+		},
+		"actions": {
+			"refund": "Hoàn tiền",
+			"invoice": "Lấy hóa đơn",
+			"history": "Lịch sử đơn hàng"
+		},
+		"messages": {
+			"not_found": {
+				"title": "Không tìm thấy đơn hàng",
+				"message": "Đơn hàng không tồn tại hoặc đã bị xóa."
+			}
+		},
+		"detail": {
+			"title": "Đơn hàng: <strong>{{id}}</strong>",
+			"subtitle": "Tạo lúc: {{created}}",
+			"tab": "Tổng quan"
+		},
+		"sections": {
+			"items": "Mặt hàng trong đơn",
+			"order_discount": "Giảm giá tổng đơn",
+			"chain_group": "Đơn hàng cùng chuỗi (chain)"
+		},
+		"chain_group": {
+			"empty": "Không có đơn nào trong chuỗi này.",
+			"current": "Đơn hiện tại"
+		},
+		"order_discount": {
+			"hint": "Schema hiện tại chưa có trường giảm giá riêng; tổng thanh toán theo trường amount của đơn."
+		},
+		"items": {
+			"product": "Mặt hàng",
+			"productRef": "Mã mặt hàng",
+			"quantity": "Số lượng",
+			"quantityOut": "Đã lấy",
+			"sellPrice": "Đơn giá",
+			"line_total": "Thành tiền",
+			"empty": "Chưa có mặt hàng"
+		},
+		"refund": {
+			"title": "Xác nhận hoàn tiền",
+			"select_all": "Hoàn tất cả mặt hàng",
+			"manual_toggle": "Hoàn thủ công (thông tin ngân hàng)",
+			"total": "Tổng hoàn",
+			"submit": "Xác nhận hoàn",
+			"reason": "Lý do hoàn",
+			"bank_code": "Mã ngân hàng",
+			"account_name": "Tên chủ tài khoản",
+			"select_items": "Chọn mặt hàng hoàn",
+			"evidence": "Tài liệu minh chứng",
+			"evidence_browse": "Kéo tài liệu minh chứng vào đây hoặc bấm để chọn",
+			"evidence_accept": "Thả tài liệu để đính kèm",
+			"evidence_reject": "Tài liệu không hợp lệ hoặc vượt quá 10 MB",
+			"evidence_empty": "Chưa chọn file",
+			"validation_title": "Thiếu thông tin",
+			"validation_bank": "Nhập mã ngân hàng và tên chủ tài khoản khi hoàn thủ công.",
+			"validation_items": "Chọn ít nhất một dòng mặt hàng để hoàn.",
+			"success_title": "Đã gửi hoàn tiền",
+			"success_message": "Yêu cầu hoàn tiền đã được xử lý.",
+			"error_title": "Hoàn tiền thất bại",
+			"error_message": "Không xử lý được hoàn tiền. Vui lòng thử lại hoặc liên hệ hỗ trợ."
+		},
+		"history": {
+			"title": "Lịch sử đơn hàng",
+			"tab_updates": "Cập nhật đơn (JSON)",
+			"tab_stocks": "Nhật ký máy bán hàng",
+			"empty_stocks": "Chưa có log stock",
+			"table": {
+				"index": "#",
+				"content": "Nội dung"
+			}
+		},
+		"invoice": {
+			"pending_title": "Hóa đơn",
+			"pending_message": "Tải hóa đơn cho đơn {{id}} sẽ có khi API sẵn sàng."
+		}
+	},
+	"kioskMedia": {
+		"title": "Media kiosk",
+		"search": {
+			"placeholder": "Tìm theo tên..."
+		},
+		"filter": {
+			"status": "Lọc theo trạng thái"
+		},
+		"edit": {
+			"title": "Đổi tên media kiosk"
+		},
+		"create": {
+			"title": "Tạo media kiosk",
+			"name_placeholder": "Tên hiển thị cho file",
+			"file_label": "File media",
+			"file_placeholder": "Chọn ảnh hoặc video",
+			"upload_zone_title": "Tải file lên",
+			"drop_accept": "Thả để tải lên",
+			"drop_reject": "Không đúng loại hoặc dung lượng file",
+			"preview_alt": "Xem trước file đã chọn",
+			"remove_file_aria": "Bỏ file đã chọn",
+			"validation": {
+				"name": "Vui lòng nhập tên",
+				"file": "Vui lòng chọn file"
+			}
+		},
+		"fields": {
+			"id": "Mã định danh",
+			"name": "Tên",
+			"mediaType": "Loại",
+			"status": "Trạng thái",
+			"isArchived": "Đã lưu trữ",
+			"createdAt": "Ngày tạo",
+			"storageKey": "Khóa lưu trữ",
+			"scope": "Phạm vi",
+			"updatedAt": "Cập nhật lúc"
+		},
+		"messages": {
+			"load_failed": "Không tải được kiosk media: {{message}}",
+			"empty": "Không có kiosk media nào",
+			"create_success": "Đã tạo media kiosk",
+			"create_failed": "Không tạo được media kiosk: {{message}}",
+			"delete_success": "Đã xóa media kiosk",
+			"delete_confirm": "Xóa media kiosk <strong>{{name}}</strong>? Không thể hoàn tác.",
+			"archive_modal_title": "Lưu trữ media kiosk",
+			"restore_modal_title": "Khôi phục media kiosk",
+			"archive_confirm": "Lưu trữ <strong>{{name}}</strong>? Có thể khôi phục sau.",
+			"restore_confirm": "Khôi phục <strong>{{name}}</strong>?",
+			"archive_success": "Đã lưu trữ media kiosk",
+			"restore_success": "Đã khôi phục media kiosk",
+			"update_name_success": "Đã cập nhật tên media kiosk",
+			"update_name_failed": "Không cập nhật được tên: {{message}}"
+		}
+	},
+	"events": {
+		"title_create": "Tạo sự kiện",
+		"tabs": {
+			"basicInfo": "Thông tin cơ bản",
+			"ui": "Giao diện",
+			"products": "Danh sách mặt hàng",
+			"kiosks": "Danh sách kiosk"
+		},
+		"actions": {
+			"addStock": "Thêm mặt hàng",
+			"addKiosks": "Thêm Kiosk"
+		},
+		"detail": {
+			"title": "Chi tiết Sự kiện"
+		},
+		"runPhase": {
+			"upcoming": "Sắp diễn ra",
+			"ongoing": "Đang diễn ra",
+			"ended": "Đã kết thúc"
+		},
+		"fields": {
+			"id": "Mã định danh",
+			"code": "Mã sự kiện",
+			"name": "Tên",
+			"description": "Mô tả",
+			"status": "Trạng thái",
+			"archivedState": "Lưu trữ",
+			"runPhase": "Trạng thái chạy",
+			"startDate": "Ngày bắt đầu",
+			"endDate": "Ngày kết thúc",
+			"startTime": "Thời gian bắt đầu",
+			"endTime": "Thời gian kết thúc",
+			"dailyStartTime": "Giờ bắt đầu trong ngày",
+			"dailyEndTime": "Giờ kết thúc trong ngày",
+			"isAllDay": "Cả ngày",
+			"shoppingScreenPlaylistRef": "Danh sách phát màn hình mua hàng",
+			"waitingScreenPlaylistRef": "Danh sách phát màn hình chờ",
+			"themeRef": "Chủ đề (tham chiếu)",
+			"gameRef": "Trò chơi (tham chiếu)",
+			"createdAt": "Ngày tạo",
+			"kiosks": "Danh sách Kiosk",
+			"products": "Danh sách mặt hàng",
+			"theme": "Chủ đề",
+			"game": "Trò chơi",
+			"themeAndSlideshow": "Chủ đề và Trình chiếu",
+			"slideshowPlaylists": "Danh sách Trình chiếu",
+			"idlePlaylist": "Trình chiếu màn hình chờ",
+			"shoppingPlaylist": "Trình chiếu màn hình mua hàng",
+			"productImage": "Hình ảnh",
+			"productCode": "Mã mặt hàng",
+			"productName": "Tên mặt hàng",
+			"originalPrice": "Giá gốc",
+			"eventPrice": "Giá sự kiện"
+		},
+		"status": {
+			"completed": "Đã hoàn thành"
+		},
+		"search": {
+			"placeholder": "Tìm kiếm theo mã hoặc tên..."
+		},
+		"filter": {
+			"status": "Lọc theo trạng thái"
+		},
+		"productSearch": {
+			"placeholder": "Tìm kiếm mặt hàng theo mã hoặc tên..."
+		},
+		"availableProducts": {
+			"title": "Mặt hàng có thể thêm"
+		},
+		"theme": {
+			"placeholder": "Chọn chủ đề...",
+			"noResults": "Không tìm thấy chủ đề nào"
+		},
+		"playlist": {
+			"idleScreen": "Màn hình chờ",
+			"shoppingScreen": "Màn hình mua hàng",
+			"mediaType": "Loại",
+			"thumbnail": "Hình thu nhỏ",
+			"duration": "Thời lượng",
+			"selectSlideshows": "Chọn trình chiếu",
+			"selectMediaPlaylists": "Chọn danh sách phát"
+		},
+		"selectSlideshows": {
+			"title": "Chọn danh sách phát trình chiếu",
+			"searchPlaceholder": "Tìm kiếm trình chiếu...",
+			"selectedCount": "Đã chọn {{count}} trình chiếu",
+			"noSlideshows": "Không tìm thấy trình chiếu nào",
+			"media": "media"
+		},
+		"selectMediaPlaylists": {
+			"title": "Chọn danh sách phát media",
+			"searchPlaceholder": "Tìm kiếm playlist...",
+			"selectedCount": "Đã chọn {{count}} playlist",
+			"noPlaylists": "Không tìm thấy playlist nào",
+			"media": "media"
+		},
+		"selectKiosks": {
+			"title": "Chọn Kiosk cho sự kiện",
+			"searchPlaceholder": "Tìm kiếm kiosk...",
+			"selectedCount": "Đã chọn {{count}} kiosk",
+			"noKiosks": "Không tìm thấy kiosk nào",
+			"addKiosks": "Thêm Kiosk"
+		},
+		"selectProducts": {
+			"title": "Chọn mặt hàng cho sự kiện",
+			"searchPlaceholder": "Tìm kiếm mặt hàng...",
+			"selectedProducts": "Mặt hàng đã chọn",
+			"availableProducts": "Mặt hàng có sẵn",
+			"noProducts": "Không tìm thấy mặt hàng nào",
+			"addProducts": "Thêm mặt hàng",
+			"editProduct": "Chỉnh sửa mặt hàng",
+			"imageUrl": "URL hình ảnh",
+			"badgeImageUrl": "URL hình ảnh badge"
+		},
+		"eventStock": {
+			"create": {
+				"title": "Thêm mặt hàng vào sự kiện",
+				"viewSelected": "Xem đã chọn",
+				"backToBrowse": "Quay lại danh sách mặt hàng",
+				"noneSelectedSlide": "Chưa chọn mặt hàng. Quay lại và chọn một hoặc nhiều mặt hàng."
+			}
+		},
+		"selectTheme": {
+			"title": "Chọn Chủ đề cho sự kiện",
+			"searchPlaceholder": "Tìm kiếm chủ đề...",
+			"noThemes": "Không tìm thấy chủ đề nào",
+			"selectTheme": "Chọn Chủ đề"
+		},
+		"selectGame": {
+			"title": "Chọn Trò chơi cho sự kiện",
+			"searchPlaceholder": "Tìm kiếm trò chơi...",
+			"noGames": "Không tìm thấy trò chơi nào",
+			"selectGame": "Chọn Trò chơi"
+		},
+		"messages": {
+			"no_events": "Không tìm thấy sự kiện nào",
+			"not_found_title": "Không tìm thấy sự kiện",
+			"not_found_message": "Sự kiện không tồn tại hoặc đã bị xóa.",
+			"create_success": "Đã tạo sự kiện",
+			"update_success": "Đã cập nhật sự kiện",
+			"delete_success": "Đã xóa sự kiện",
+			"delete_confirm": "Xóa sự kiện <strong>{{name}}</strong>? Không thể hoàn tác.",
+			"archive_modal_title": "Lưu trữ sự kiện",
+			"restore_modal_title": "Khôi phục sự kiện",
+			"archive_confirm": "Lưu trữ <strong>{{name}}</strong>? Bạn có thể khôi phục sau.",
+			"restore_confirm": "Khôi phục <strong>{{name}}</strong>?",
+			"archive_success": "Đã lưu trữ sự kiện",
+			"restore_success": "Đã khôi phục sự kiện",
+			"no_kiosks": "Chưa có kiosk nào được gán cho sự kiện này",
+			"no_products": "Chưa có mặt hàng nào trong sự kiện này",
+			"no_theme": "Chưa chọn chủ đề",
+			"no_game": "Chưa chọn trò chơi",
+			"no_idle_playlist": "Chưa có playlist cho màn hình chờ",
+			"no_shopping_playlist": "Chưa có playlist cho màn hình mua hàng",
+			"no_media_in_playlist": "Chưa có media nào trong playlist",
+			"remove_kiosk_from_event_title": "Xóa Kiosk khỏi sự kiện",
+			"remove_kiosk_from_event_confirm": "Bạn có chắc chắn muốn xóa Kiosk <strong>{{kioskName}}</strong> khỏi sự kiện <strong>{{eventName}}</strong>?",
+			"remove_kiosk_from_event_success": "Đã xóa Kiosk <strong>{{kioskName}}</strong> khỏi sự kiện <strong>{{eventName}}</strong>"
+		},
+		"calendar": {
+			"view": {
+				"month": "Tháng",
+				"week": "Tuần",
+				"day": "Ngày",
+				"list": "Danh sách"
+			}
+		}
+	},
+	"settingTemplates": {
+		"detail": {
+			"title": "Chi tiết Mẫu cài đặt"
+		},
+		"fields": {
+			"id": "Mã định danh",
+			"code": "Mã mẫu",
+			"name": "Tên",
+			"description": "Mô tả",
+			"status": "Trạng thái",
+			"createdAt": "Ngày tạo",
+			"kiosks": "Danh sách Kiosk",
+			"products": "Danh sách mặt hàng",
+			"theme": "Chủ đề",
+			"game": "Trò chơi"
+		},
+		"search": {
+			"placeholder": "Tìm kiếm theo mã hoặc tên..."
+		},
+		"filter": {
+			"status": "Lọc theo trạng thái"
+		},
+		"messages": {
+			"no_templates": "Không tìm thấy mẫu cài đặt nào"
+		}
+	},
+	"kioskSettings": {
+		"title": "Cài đặt hiển thị",
+		"title_create": "Tạo cài đặt",
+		"detail": {
+			"title": "Chi tiết cài đặt"
+		},
+		"sections": {
+			"basicInfo": "Thông tin cơ bản"
+		},
+		"tabs": {
+			"basicInfo": "Thông tin cơ bản",
+			"settings": "Cài đặt",
+			"kiosks": "Danh sách Kiosk"
+		},
+		"actions": {
+			"add_kiosk": "Thêm kiosk"
+		},
+		"fields": {
+			"id": "Mã định danh",
+			"code": "Mã cài đặt",
+			"name": "Tên",
+			"description": "Mô tả",
+			"status": "Trạng thái",
+			"isArchived": "Đã lưu trữ",
+			"brand": "Thương hiệu",
+			"createdAt": "Ngày tạo",
+			"kiosks": "Danh sách Kiosk",
+			"products": "Danh sách mặt hàng",
+			"theme": "Chủ đề trình chiếu",
+			"game": "Trò chơi",
+			"settings": "Cài đặt"
+		},
+		"selectSetting": {
+			"title": "Chọn bộ cài đặt hiển thị",
+			"searchPlaceholder": "Tìm theo mã, tên…",
+			"empty": "Chưa chọn bộ cài đặt",
+			"selectButton": "Chọn bộ cài đặt",
+			"noSettings": "Không có bộ cài đặt khớp tìm kiếm",
+			"selectedLabel": "Đã chọn: {{name}}"
+		},
+		"search": {
+			"placeholder": "Tìm kiếm theo mã hoặc tên..."
+		},
+		"filter": {
+			"status": "Lọc theo trạng thái"
+		},
+		"messages": {
+			"no_settings": "Không tìm thấy bộ cài đặt nào",
+			"not_found_title": "Không tìm thấy bộ cài đặt",
+			"not_found_message": "Cài đặt không tồn tại hoặc đã bị xóa.",
+			"create_success": "Đã tạo cài đặt «{{name}}» thành công",
+			"update_success": "Cài đặt đã được cập nhật thành công",
+			"delete_confirm": "Xóa bộ cài đặt <strong>{{name}}</strong>? Không thể hoàn tác.",
+			"archive_modal_title": "Lưu trữ cài đặt",
+			"restore_modal_title": "Khôi phục cài đặt",
+			"archive_confirm": "Lưu trữ <strong>{{name}}</strong>? Bạn có thể khôi phục sau.",
+			"restore_confirm": "Khôi phục <strong>{{name}}</strong>?",
+			"archive_success": "Đã lưu trữ cài đặt",
+			"restore_success": "Đã khôi phục cài đặt",
+			"assign_kiosks_success": "Đã gán {{count}} kiosk cho bộ cài đặt này",
+			"remove_kiosk_wait": "Đang cập nhật kiosk khác. Vui lòng thử lại sau.",
+			"remove_kiosk_from_setting_title": "Gỡ bộ cài đặt khỏi kiosk",
+			"remove_kiosk_from_setting_confirm": "Gỡ <strong>{{settingName}}</strong> khỏi kiosk <strong>{{kioskName}}</strong>? Kiosk sẽ không còn dùng cấu hình này.",
+			"remove_kiosk_from_setting_success": "Đã gỡ bộ cài đặt khỏi kiosk"
+		}
+	},
+	"settings": {
+		"title": "Cài đặt",
+		"title_create": "Tạo cài đặt mới",
+		"detail": {
+			"title": "Chi tiết cài đặt"
+		},
+		"tabs": {
+			"basicInfo": "Thông tin cơ bản"
+		},
+		"fields": {
+			"id": "Mã định danh",
+			"code": "Mã cài đặt",
+			"name": "Tên",
+			"description": "Mô tả",
+			"config": "Cấu hình",
+			"isArchived": "Trạng thái",
+			"createdAt": "Ngày tạo",
+			"updatedAt": "Ngày cập nhật"
+		},
+		"search": {
+			"placeholder": "Tìm kiếm theo mã hoặc tên..."
+		},
+		"filter": {
+			"status": "Lọc theo trạng thái"
+		},
+		"config": {
+			"key": "Khóa",
+			"value": "Giá trị",
+			"no_entries": "Chưa có cấu hình nào"
+		},
+		"messages": {
+			"no_settings": "Không tìm thấy cài đặt nào",
+			"create_success": "Cài đặt đã được tạo thành công",
+			"update_success": "Cài đặt đã được cập nhật thành công",
+			"delete_success": "Cài đặt đã được xóa thành công",
+			"archive_success": "Đã lưu trữ cài đặt",
+			"restore_success": "Đã khôi phục cài đặt",
+			"delete_confirm": "Bạn có chắc chắn muốn xóa cài đặt <strong>{{name}}</strong>? Hành động này không thể hoàn tác.",
+			"not_found": {
+				"title": "Không tìm thấy cài đặt",
+				"message": "Cài đặt bạn đang tìm kiếm không tồn tại hoặc đã bị xóa."
+			}
+		}
+	},
+	"kioskModels": {
+		"title": "Dòng máy",
+		"title_create": "Tạo dòng máy mới",
+		"detail": {
+			"title": "Chi tiết dòng máy"
+		},
+		"tabs": {
+			"basicInfo": "Thông tin cơ bản",
+			"modelSettings": "Cài đặt"
+		},
+		"sections": {
+			"basicInfo": "Thông tin cơ bản",
+			"configuration": "Cấu hình",
+			"contentMedia": "Nội dung & Media",
+			"trayConfiguration": "Cấu hình khay",
+			"metadata": "Thông tin khác"
+		},
+		"fields": {
+			"id": "Mã định danh",
+			"code": "Mã dòng",
+			"modelId": "Mã dòng",
+			"referenceCode": "Mã tham chiếu",
+			"name": "Tên",
+			"model": "Dòng máy",
+			"description": "Mô tả",
+			"status": "Trạng thái",
+			"operatingMode": "Chế độ hoạt động",
+			"kioskType": "Loại kiosk",
+			"interfaceMode": "Chế độ giao diện",
+			"slideshow": "Trình chiếu",
+			"numberOfTrays": "Số khay",
+			"shelvesNumber": "Số khay",
+			"shelvesConfig": "Cấu hình khay",
+			"trayConfigurations": "Cấu hình khay",
+			"trayRow": "Hàng",
+			"shelfType": "Loại khay",
+			"createdAt": "Ngày tạo"
+		},
+		"shelfType": {
+			"spring": "Lò xo",
+			"conveyor": "Băng chuyền",
+			"hangingConveyor": "Băng chuyền treo",
+			"pushTape": "Băng đẩy"
+		},
+		"operatingMode": {
+			"pending": "Chờ xử lý",
+			"selling": "Bán hàng",
+			"slideshowOnly": "Chỉ trình chiếu"
+		},
+		"kioskType": {
+			"elevator": "Thang nâng",
+			"nonElevator": "Rớt hàng"
+		},
+		"interfaceMode": {
+			"normal": "Bình thường",
+			"focus": "Tập trung"
+		},
+		"search": {
+			"placeholder": "Tìm kiếm theo mã hoặc tên..."
+		},
+		"filter": {
+			"status": "Lọc theo trạng thái"
+		},
+		"messages": {
+			"no_models": "Không tìm thấy mô hình nào",
+			"create_success": "Dòng máy đã được tạo thành công",
+			"update_success": "Dòng máy đã được cập nhật thành công",
+			"delete_success": "Dòng máy đã được xóa thành công",
+			"not_found": {
+				"title": "Không tìm thấy dòng máy",
+				"message": "Dòng máy bạn đang tìm kiếm không tồn tại hoặc đã bị xóa."
+			},
+			"delete_confirm": "Bạn có chắc chắn muốn xóa dòng máy <strong>{{name}}</strong>? Hành động này không thể hoàn tác.",
+			"archive_modal_title": "Xác nhận lưu trữ",
+			"restore_modal_title": "Xác nhận khôi phục",
+			"archive_confirm": "Lưu trữ dòng máy <strong>{{name}}</strong>? Bạn có thể khôi phục sau.",
+			"restore_confirm": "Khôi phục dòng máy <strong>{{name}}</strong>?",
+			"archive_success": "Đã lưu trữ dòng máy thành công",
+			"restore_success": "Đã khôi phục dòng máy thành công",
+			"no_slideshow": "Chưa có trình chiếu",
+			"no_trays": "Chưa có khay nào. Nhấn nút 'Thêm hàng' để thêm khay."
+		},
+		"actions": {
+			"addTray": "Thêm hàng"
+		}
+	},
+	"payment": {
+		"title": "Phương thức thanh toán",
+		"title_create": "Tạo phương thức thanh toán",
+		"detail": {
+			"title": "Chi tiết Phương thức thanh toán"
+		},
+		"fields": {
+			"id": "Mã định danh",
+			"code": "Mã",
+			"name": "Tên",
+			"image": "Ảnh",
+			"status": "Trạng thái",
+			"description": "Mô tả",
+			"minTransactionValue": "Giá trị giao dịch thấp nhất",
+			"maxTransactionValue": "Giá trị giao dịch cao nhất",
+			"transactionRange": "Khoảng giá trị giao dịch",
+			"customFields": "Trường tùy chỉnh",
+			"customFieldKey": "Khóa",
+			"customFieldValue": "Giá trị",
+			"customFieldType": "Loại",
+			"createdAt": "Ngày tạo"
+		},
+		"customFieldTypes": {
+			"string": "Chuỗi",
+			"number": "Số",
+			"password": "Mật khẩu",
+			"email": "Email",
+			"url": "URL",
+			"date": "Ngày tháng"
+		},
+		"search": {
+			"placeholder": "Tìm kiếm theo mã hoặc tên..."
+		},
+		"filter": {
+			"status": "Lọc theo trạng thái"
+		},
+		"messages": {
+			"no_payments": "Không tìm thấy phương thức thanh toán nào",
+			"no_custom_fields": "Không có trường tùy chỉnh",
+			"create_success": "Đã tạo phương thức thanh toán thành công",
+			"update_success": "Đã cập nhật phương thức thanh toán thành công",
+			"delete_success": "Đã xóa phương thức thanh toán thành công",
+			"delete_confirm": "Xóa phương thức thanh toán <strong>{{name}}</strong>?",
+			"not_found": {
+				"title": "Không tìm thấy phương thức thanh toán",
+				"message": "Phương thức có thể đã bị xóa hoặc liên kết không hợp lệ."
+			},
+			"archive_success": "Đã lưu trữ phương thức thanh toán thành công",
+			"restore_success": "Đã khôi phục phương thức thanh toán thành công",
+			"archive_modal_title": "Xác nhận lưu trữ phương thức thanh toán",
+			"restore_modal_title": "Xác nhận khôi phục phương thức thanh toán",
+			"archive_confirm": "Bạn có chắc chắn muốn lưu trữ phương thức thanh toán <strong>{{name}}</strong>?",
+			"restore_confirm": "Bạn có chắc chắn muốn khôi phục phương thức thanh toán <strong>{{name}}</strong>?"
+		}
+	},
+	"games": {
+		"title": "Quản lý Trò chơi",
+		"detail": {
+			"title": "Chi tiết Trò chơi",
+			"info": "Thông tin",
+			"versions": "Phiên bản",
+			"preview": "Chơi thử"
+		},
+		"fields": {
+			"id": "Mã định danh",
+			"code": "Mã game",
+			"name": "Tên game",
+			"description": "Mô tả",
+			"status": "Trạng thái",
+			"versions": "Số phiên bản",
+			"latestVersion": "Phiên bản mới nhất",
+			"versionCode": "Mã phiên bản",
+			"versionDescription": "Mô tả phiên bản",
+			"source": "Source code",
+			"source_placeholder": "Nhập HTML/JS source code của game...",
+			"uploadDate": "Ngày tải lên",
+			"minAppVersion": "Phiên bản app tối thiểu",
+			"createdAt": "Ngày tạo",
+			"latest": "Mới nhất",
+			"selectVersion": "Chọn phiên bản"
+		},
+		"tabs": {
+			"info": "Thông tin",
+			"versions": "Phiên bản",
+			"preview": "Chơi thử"
+		},
+		"actions": {
+			"play": "Chơi thử",
+			"add_version": "Thêm phiên bản",
+			"upload_source": "Tải lên source",
+			"reload": "Tải lại"
+		},
+		"search": {
+			"placeholder": "Tìm kiếm theo mã hoặc tên game..."
+		},
+		"filter": {
+			"status": "Lọc theo trạng thái"
+		},
+		"messages": {
+			"no_games": "Không tìm thấy game nào",
+			"no_version": "Không có phiên bản nào",
+			"no_versions": "Không có phiên bản",
+			"source_loaded": "Source đã được tải",
+			"preview_hint": "Nhấn để chơi thử game",
+			"delete_version_confirm": "Bạn có chắc muốn xóa phiên bản này?"
+		}
+	},
+	"themes": {
+		"detail": {
+			"title": "Chi tiết Chủ đề"
+		},
+		"fields": {
+			"id": "Mã định danh",
+			"code": "Mã chủ đề",
+			"name": "Tên chủ đề",
+			"description": "Mô tả",
+			"status": "Trạng thái",
+			"primaryColor": "Màu chủ đạo",
+			"productCardStyle": "Kiểu thẻ mặt hàng",
+			"appBackground": "Nền ứng dụng",
+			"fontStyle": "Kiểu phông chữ",
+			"mascotImage": "Ảnh linh vật",
+			"createdAt": "Ngày tạo"
+		},
+		"productCardStyle": {
+			"default": "Mặc định",
+			"rounded": "Bo tròn",
+			"minimal": "Tối giản",
+			"elegant": "Thanh lịch",
+			"modern": "Hiện đại"
+		},
+		"appBackground": {
+			"none": "Không có",
+			"snow": "Tuyết rơi",
+			"fireworks": "Pháo hoa",
+			"particles": "Hạt",
+			"gradient": "Gradient",
+			"custom": "Tùy chỉnh"
+		},
+		"fontStyle": {
+			"default": "Mặc định",
+			"roboto": "Roboto",
+			"inter": "Inter",
+			"poppins": "Poppins",
+			"montserrat": "Montserrat",
+			"custom": "Tùy chỉnh"
+		},
+		"search": {
+			"placeholder": "Tìm kiếm theo mã hoặc tên..."
+		},
+		"filter": {
+			"status": "Lọc theo trạng thái"
+		},
+		"messages": {
+			"no_themes": "Không tìm thấy chủ đề nào"
+		},
+		"preview": {
+			"title": "Xem trước"
+		}
+	},
+	"device": {
+		"title": "Thiết bị",
+		"detail": {
+			"title": "Chi tiết Thiết bị"
+		},
+		"tabs": {
+			"basicInfo": "Thông tin cơ bản",
+			"specifications": "Thông số kỹ thuật"
+		},
+		"fields": {
+			"id": "Mã định danh",
+			"code": "Mã thiết bị",
+			"name": "Tên",
+			"description": "Mô tả",
+			"status": "Trạng thái",
+			"deviceType": "Loại thiết bị",
+			"specifications": "Thông số",
+			"specKey": "Khóa",
+			"specValue": "Giá trị",
+			"createdAt": "Ngày tạo"
+		},
+		"deviceType": {
+			"motor": "Động cơ đẩy hàng",
+			"pos": "POS",
+			"screen": "Màn hình",
+			"cpu": "CPU",
+			"router": "Router WiFi"
+		},
+		"search": {
+			"placeholder": "Tìm kiếm theo mã hoặc tên..."
+		},
+		"filter": {
+			"status": "Lọc theo trạng thái",
+			"deviceType": "Lọc theo loại thiết bị"
+		},
+		"messages": {
+			"no_devices": "Không tìm thấy thiết bị nào",
+			"no_specifications": "Không có thông số",
+			"create_success": "Thiết bị đã được tạo thành công",
+			"update_success": "Thiết bị đã được cập nhật thành công",
+			"delete_success": "Thiết bị đã được xóa thành công",
+			"delete_confirm": "Bạn có chắc chắn muốn xóa thiết bị <strong>{{name}}</strong>? Hành động này không thể hoàn tác.",
+			"not_found": {
+				"title": "Không tìm thấy thiết bị",
+				"message": "Thiết bị bạn đang tìm kiếm không tồn tại hoặc đã bị xóa."
+			}
+		}
+	},
+	"reports": {
+		"title": "Báo cáo",
+		"business": {
+			"title": "Báo cáo kinh doanh",
+			"overview": "Tổng quan kinh doanh",
+			"generated": "Kinh doanh tạo ra",
+			"orders": "Số đơn hàng",
+			"welcomeCard": {
+				"updatesFromYesterday": "Cập nhật từ hôm qua.",
+				"greeting": "Chào {{timeOfDay}}, Captain!",
+				"updatesFromToday": "Cập nhật hôm nay.",
+				"earnings": "Doanh thu",
+				"orders": "Đơn hàng",
+				"visitors": "Lượt truy cập",
+				"averageRevenue": "Doanh thu trung bình",
+				"averageRevenuePerOrder": "Doanh thu trung bình / đơn",
+				"itemsSold": "Mặt hàng đã bán",
+				"itemsErrored": "Mặt hàng lỗi",
+				"errorRate": "Tỷ lệ lỗi (%)",
+				"refundedAmount": "Số tiền hoàn",
+				"refundedOrders": "Đơn hoàn tiền",
+				"refundRate": "Tỷ lệ hoàn (%)",
+				"itemsCount": "{{count}} mặt hàng",
+				"ordersCount": "{{count}} đơn",
+				"viewAllReports": "Xem tất cả báo cáo >"
+			}
+		},
+		"revenue": {
+			"title": "Doanh thu",
+			"overview": "Tổng quan doanh thu",
+			"generated": "Doanh thu tạo ra",
+			"orders": "Số đơn hàng"
+		},
+		"revenueByProduct": {
+			"title": "Doanh thu theo mặt hàng",
+			"tableTitle": "Doanh thu theo mặt hàng",
+			"topProductsTableTitle": "Mặt hàng có doanh thu cao nhất",
+			"topProductsTableDescription": "Bảng tổng hợp mặt hàng có doanh thu cao nhất",
+			"tableDescription": "Bảng tổng hợp doanh thu theo mặt hàng",
+			"overview": "Tổng quan doanh thu theo mặt hàng",
+			"generated": "Doanh thu theo mặt hàng tạo ra",
+			"orders": "Số đơn hàng theo mặt hàng"
+		},
+		"revenueByPaymentMethod": {
+			"title": "Doanh thu theo phương thức thanh toán",
+			"overview": "Tổng quan doanh thu theo phương thức thanh toán",
+			"stackedBarChartDescription": "Phân bổ doanh thu theo phương thức thanh toán",
+			"generated": "Doanh thu theo phương thức thanh toán tạo ra",
+			"orders": "Số đơn hàng theo phương thức thanh toán"
+		},
+		"revenueByKiosk": {
+			"title": "Doanh thu theo điểm bán",
+			"topKiosks": "Doanh thu theo điểm bán",
+			"topKiosksDescription": "Tổng hợp điểm bán có doanh thu cao nhất",
+			"overview": "Tổng quan doanh thu theo kiosk",
+			"generated": "Doanh thu theo kiosk tạo ra",
+			"orders": "Số đơn hàng theo kiosk"
+		},
+		"revenueReport": {
+			"reportType": "Loại báo cáo",
+			"typeOverview": "Tổng quan doanh thu",
+			"typeByKiosk": "Doanh thu theo kiosk",
+			"typeByPayment": "Doanh thu theo phương thức thanh toán",
+			"typeByProduct": "Doanh thu theo mặt hàng",
+			"timeFromPlaceholder": "Từ",
+			"timeToPlaceholder": "Đến",
+			"view": "Xem",
+			"export": "Xuất",
+			"columnFilter": "Lọc…",
+			"tableTotal": "Tổng {{count}}",
+			"rowDateLabel": "{{shortDate}}",
+			"paymentFallback": "Phương thức {{index}}",
+			"detailTable": "Chi tiết",
+			"summary": {
+				"totalOrders": "Tổng số đơn hàng",
+				"totalItemsSold": "Tổng số mặt hàng đã bán",
+				"totalRevenue": "Tổng doanh thu",
+				"totalRefund": "Tổng tiền hoàn",
+				"averageRevenue": "Doanh thu trung bình",
+				"maximumRevenue": "Doanh thu cao nhất",
+				"minimumRevenue": "Doanh thu thấp nhất"
+			},
+			"chart": {
+				"revenueOverview": "Tổng quan doanh thu",
+				"revenueOverviewHint": "Theo dõi hiệu suất doanh thu theo ngày, tháng và năm.",
+				"totalRevenue": "Tổng doanh thu",
+				"dailyOverview": "Tổng quan doanh thu",
+				"dailyOverviewHint": "Doanh thu và đơn hàng theo ngày",
+				"byHour": "Doanh thu theo giờ",
+				"radioRevenue": "Doanh thu",
+				"radioOrders": "Số đơn hàng",
+				"revenueAxisLabel": "Doanh thu (VND)",
+				"ordersAxisLabel": "Số đơn hàng",
+				"tooltipRevenueValue": "Doanh thu: {{value}}",
+				"tooltipOrdersValue": "Số đơn hàng: {{value}}",
+				"byKiosk": "Doanh thu theo kiosk",
+				"byPayment": "Doanh thu theo phương thức thanh toán",
+				"revenueShareByPayment": "Tỉ trọng doanh thu theo phương thức thanh toán",
+				"topProductsByRevenue": "Mặt hàng có doanh thu cao nhất",
+				"revenueAxisShort": "Doanh thu",
+				"byCategory": "Doanh thu theo danh mục",
+				"categoryDoughnutTitle": "Danh mục mặt hàng",
+				"categoryDoughnutDescription": "Danh mục mặt hàng có doanh thu cao nhất",
+				"otherKiosks": "Kiosk khác"
+			},
+			"columns": {
+				"date": "Ngày",
+				"orders": "Tổng số đơn hàng",
+				"orderTime": "Thời gian",
+				"orderCount": "Đơn hàng",
+				"cancelledOrderCount": "Đơn huỷ",
+				"refundedOrderCount": "Đơn hoàn",
+				"totalItemCount": "Mặt hàng (tổng)",
+				"totalSuccessItemCount": "Mặt hàng thành công",
+				"totalRevenue": "Doanh thu",
+				"averageRevenue": "Doanh thu TB",
+				"totalRefund": "Tiền hoàn",
+				"productsSold": "Mặt hàng đã bán",
+				"refund": "Tiền hoàn",
+				"discount": "Giảm giá",
+				"revenue": "Doanh thu",
+				"kiosk": "Kiosk",
+				"paymentMethod": "Phương thức thanh toán",
+				"product": "Mặt hàng",
+				"category": "Danh mục",
+				"quantity": "Số lượng"
+			},
+			"exportPendingTitle": "Xuất dữ liệu",
+			"exportPendingMessage": "Chức năng xuất sẽ được kết nối API sau.",
+			"missingDateRange": "Chọn khoảng ngày và nhấn Áp dụng để tải báo cáo.",
+			"exportSuccess": "Đã tải xuống.",
+			"exportFailed": "{{message}}",
+			"kioskRevenueDetail": {
+				"backToRevenueReport": "Quay lại báo cáo doanh thu",
+				"kioskHeading": "Kiosk {{name}}",
+				"pageTitle": "Kiosk {{name}} — báo cáo doanh thu",
+				"ordersSection": "Đơn hàng",
+				"productRevenueSection": "Doanh thu theo mặt hàng"
+			}
+		},
+		"refundReport": {
+			"title": "Báo cáo hoàn tiền",
+			"heading": "Báo cáo hoàn tiền",
+			"footerSummary": "Tổng {{count}} ({{selected}} đã chọn)",
+			"pageOfTotal": "Trang {{page}} / {{total}}",
+			"summary": {
+				"totalRefundAmount": "Tổng tiền hoàn",
+				"refundOrderCount": "Số đơn hoàn",
+				"orderRefundRate": "Tỉ lệ hoàn theo đơn",
+				"refundedProductQty": "Số mặt hàng hoàn (theo lượng)",
+				"productRefundRate": "Tỉ lệ mặt hàng hoàn"
+			},
+			"charts": {
+				"topKiosks": "Kiosk bị hoàn nhiều nhất",
+				"refundRateByMethod": "Tỉ trọng tiền hoàn theo phương thức",
+				"topProducts": "Mặt hàng được hoàn nhiều nhất",
+				"otherKiosks": "Kiosk khác",
+				"otherProducts": "Mặt hàng khác",
+				"refundAmountAxis": "Số tiền hoàn",
+				"refundOrderAxis": "Số đơn hoàn",
+				"productQtyAxis": "Số lượng mặt hàng hoàn",
+				"refundRatePercent": "% hoàn trên doanh thu",
+				"tooltipRefund": "Tiền hoàn",
+				"tooltipOrders": "Đơn",
+				"tooltipRate": "Tỉ lệ",
+				"tooltipRevenue": "Doanh thu",
+				"methodRateHint": "Mỗi phần là tỉ lệ tiền hoàn của phương thức trên tổng tiền hoàn trong kỳ đã lọc.",
+				"radioRefundAmount": "Theo tiền hoàn",
+				"radioRefundOrders": "Theo số đơn hoàn",
+				"radioProductQty": "Theo số lượng"
+			},
+			"methods": {
+				"momo": "Hoàn Tiền MoMo",
+				"vietqr": "Hoàn Tiền VietQR",
+				"manual": "Hoàn Tiền Thủ Công"
+			},
+			"columns": {
+				"date": "Ngày",
+				"reference": "Mã tham chiếu",
+				"kiosk": "Kiosk",
+				"createdBy": "Người tạo",
+				"refundMethod": "Phương thức hoàn",
+				"amount": "Số tiền",
+				"refundedBy": "Người hoàn",
+				"reason": "Lý do"
+			},
+			"table": {
+				"title": "Danh sách đơn hoàn"
+			}
+		},
+		"inventoryReport": {
+			"title": "Báo cáo hàng tồn hiện tại",
+			"heading": "Báo cáo hàng tồn hiện tại",
+			"footerSummary": "Tổng {{count}} ({{selected}} đã chọn)",
+			"pageOfTotal": "Trang {{page}} / {{total}}",
+			"chart": {
+				"stockByProduct": "Tồn kho theo mặt hàng",
+				"shareByCategory": "Tỉ trọng tồn hàng theo danh mục"
+			},
+			"categories": {
+				"softDrink": "Nước Ngọt",
+				"purifiedWater": "Nước tinh khiết",
+				"tea": "Trà",
+				"milk": "Sữa",
+				"coffee": "Cà Phê",
+				"beer": "Bia",
+				"coconut": "Dừa",
+				"food": "Đồ ăn",
+				"unknown": "unknown",
+				"organic": "Organic"
+			},
+			"columns": {
+				"productName": "Tên mặt hàng",
+				"totalQty": "Số lượng tổng",
+				"sellingQty": "Số lượng đang bán",
+				"warningQty": "Số lượng cảnh báo",
+				"maxQty": "Số lượng tối đa"
+			}
+		},
+		"pnlReport": {
+			"documentTitle": "Báo cáo kết quả kinh doanh (P&L)",
+			"periodUnset": "Chọn khoảng thời gian và bấm Xem",
+			"hintManualEntry": "Nhập số tiền theo đồng báo cáo cho kỳ đã chọn (dữ liệu chỉ dùng trên trang này cho đến khi nối API). Sau khi đổi bộ lọc, bấm Xem.",
+			"salesRevenue": "Doanh thu bán hàng",
+			"revenueDeductions": "Giảm trừ doanh thu",
+			"refunds": "Tiền hoàn",
+			"promotions": "Khuyến mại",
+			"netRevenue": "Doanh thu thuần",
+			"formulaNetRevenue": "Doanh thu thuần = Doanh thu bán hàng − (Tiền hoàn + Khuyến mại)",
+			"cogs": "Giá vốn hàng bán",
+			"cogsAmount": "Số tiền giá vốn",
+			"cogsChangedTitle": "Giá vốn đã được chỉnh sửa",
+			"cogsChangedBody": "Giá vốn hiện khác với giá trị đã cố định khi bấm Xem (áp dụng bộ lọc). Nên đối chiếu với báo cáo doanh thu và hàng tồn.",
+			"linkRevenueReport": "Mở báo cáo doanh thu",
+			"linkInventoryReport": "Mở báo cáo hàng tồn",
+			"grossProfit": "Lợi nhuận gộp",
+			"formulaGrossProfit": "Lợi nhuận gộp = Doanh thu thuần − Giá vốn hàng bán",
+			"financialRevenue": "Doanh thu hoạt động tài chính",
+			"financialExpense": "Chi phí tài chính",
+			"sellingExpenses": "Chi phí điểm bán",
+			"fixedCosts": "Chi phí cố định (định phí)",
+			"electricity": "Điện",
+			"internet": "Internet",
+			"rent": "Mặt bằng",
+			"fixedOther": "Khác (định phí)",
+			"variableCosts": "Chi phí biến đổi (biến phí)",
+			"partnerDiscount": "Chiết khấu đối tác",
+			"gatewayFees": "Chiết khấu cổng thanh toán",
+			"gatewayMomo": "MoMo",
+			"gatewayVietqr": "VietQR",
+			"gatewayMpos": "mPOS",
+			"expiredGoods": "Chi phí hàng hủy (hết hạn)",
+			"variableOther": "Khác (biến phí)",
+			"sellingExpenseSubtotal": "Cộng — chi phí điểm bán",
+			"adminExpense": "Chi phí quản lý doanh nghiệp",
+			"netOperatingProfit": "Lợi nhuận thuần từ hoạt động kinh doanh",
+			"formulaNetOperating": "LN thuần HĐKD = Lợi nhuận gộp + Doanh thu TC − Chi phí TC − Chi phí điểm bán − Chi phí QLDN",
+			"otherIncome": "Thu nhập khác",
+			"otherExpense": "Chi phí khác",
+			"otherProfit": "Lợi nhuận khác",
+			"formulaOtherProfit": "Lợi nhuận khác = Thu nhập khác − Chi phí khác",
+			"profitBeforeTax": "Tổng lợi nhuận trước thuế",
+			"formulaBeforeTax": "LN trước thuế = LN thuần HĐKD + Lợi nhuận khác",
+			"taxes": "Thuế và phí",
+			"vatRateLabel": "Thuế VAT (%) áp trên chênh (Doanh thu thuần − Giá vốn)",
+			"vatFormulaHint": "Số thuế VAT = Tỉ lệ × (Doanh thu thuần − Giá vốn). Chỉnh tỉ lệ nếu khác quy định thực tế.",
+			"vatAmount": "Thuế VAT (ước tính)",
+			"citRateLabel": "Thuế TNDN (%) trên lợi nhuận trước thuế",
+			"citFormulaHint": "Mặc định 20%; chỉ tính khi LN trước thuế dương. Cập nhật nếu theo thiết lập kế toán của bạn.",
+			"citAmount": "Thuế thu nhập doanh nghiệp",
+			"totalTax": "Tổng thuế phí",
+			"profitAfterTax": "Lợi nhuận sau thuế",
+			"formulaAfterTax": "Lợi nhuận sau thuế = LN trước thuế − Tổng thuế phí",
+			"manualWorksheetTitle": "Bảng chi tiết (nhập liệu)",
+			"dashboard": {
+				"mockDataBanner": "Biểu đồ và KPI phía dưới là dữ liệu mẫu để xem layout. Khi có API hãy thay bằng số liệu thực.",
+				"kpiTotalRevenue": "Tổng doanh thu",
+				"kpiTotalGrossProfit": "Tổng lợi nhuận gộp",
+				"kpiReturnOnAssets": "ROA (sinh lời tài sản)",
+				"kpiOperatingProfit": "LN thuần từ HĐKD",
+				"kpiReturnOnEquity": "ROE (sinh lời vốn chủ)",
+				"kpiNetProfit": "LN sau thuế",
+				"chartOperating": "Doanh thu & chi phí hoạt động — 12 tháng",
+				"chartGrossTrend": "Lợi nhuận gộp — 12 tháng",
+				"chartOperatingTrend": "Lợi nhuận hoạt động — 12 tháng",
+				"chartNetTrend": "Lợi nhuận ròng — 12 tháng",
+				"expenseToday": "Chi phí theo nhóm (hôm nay)",
+				"expenseLastMonth": "Chi phí theo nhóm (cuối tháng trước)",
+				"stackedRevenue": "Doanh thu — 12 tháng",
+				"stackedExpenseType": "Chi phí theo loại — 12 tháng",
+				"stackedRevenueAccount": "Doanh thu kênh — 12 tháng",
+				"stackedExpenseAccount": "Chi tiết chi phí — 12 tháng",
+				"dsRevenue": "Doanh thu",
+				"dsExpenses": "Chi phí",
+				"dsOperatingMarginPct": "Biên LN hoạt động %",
+				"dsAmount": "Số tiền",
+				"dsGrossMarginPct": "Biên gộp %",
+				"dsOperatingProfit": "LN hoạt động",
+				"dsOperatingMargin": "Biên LN HĐKD %",
+				"dsNetProfit": "LN ròng",
+				"dsNetMarginPct": "Biên ròng %",
+				"dsDirectCosts": "Giá vốn trực tiếp",
+				"dsGrossProfit": "Lợi nhuận gộp",
+				"dsOperatingExpense": "Chi phí hoạt động",
+				"dsSales": "Bán lẻ",
+				"dsService": "Dịch vụ / phụ phí",
+				"dsRent": "Mặt bằng",
+				"dsUtils": "Điện / tiện ích",
+				"dsGateway": "Cổng thanh toán & ngân hàng",
+				"dsPartnerDisc": "Chiết khấu đối tác",
+				"dsExpired": "Hàng hết hạn / huỷ",
+				"dsAdminHr": "Lương / QLDN",
+				"dsMisc": "Khác",
+				"statementTitle": "Bảng cân đối kết quả (tóm tắt)",
+				"colAccount": "Khoản mục",
+				"colMtd": "Tháng này",
+				"colLastMonth": "Tháng trước",
+				"colYtd": "Lũy kế năm",
+				"rowRevenue": "Doanh thu",
+				"rowDirectCosts": "Giá vốn",
+				"rowGrossProfit": "Lợi nhuận gộp",
+				"rowExpenseLine": "Chi phí",
+				"rowOperatingProfit": "Lợi nhuận hoạt động",
+				"rowOtherIncome": "Thu nhập (chi phí) khác",
+				"rowDepreciation": "Khấu hao",
+				"rowOverheads": "Chi phí chung",
+				"rowNetProfit": "Lợi nhuận ròng",
+				"expenseSlices": {
+					"rent": "Thuê mặt bằng",
+					"electricity": "Điện",
+					"gatewayFees": "Phí cổng thanh toán",
+					"waste": "Hàng huỷ / hết hạn",
+					"marketing": "Marketing",
+					"payrollTax": "Thuế lương",
+					"otherExpense": "Khác"
+				}
+			}
+		},
+		"filterBar": {
+			"title": "Bộ lọc báo cáo",
+			"expand": "Hiện bộ lọc",
+			"collapse": "Ẩn bộ lọc",
+			"dateRange": "Khoảng thời gian",
+			"kiosk": "Kiosk",
+			"kioskPlaceholder": "Chọn kiosk",
+			"reportSections": "Phần báo cáo hiển thị",
+			"toggleSection": "Bật/tắt hiển thị phần báo cáo",
+			"sectionLabels": {
+				"summaryCards": "Chào mừng & doanh thu quý",
+				"hourlyKiosk": "Theo giờ & kiosk dẫn đầu",
+				"trendsCategory": "Xu hướng & danh mục",
+				"productsPayment": "Mặt hàng, thanh toán & hoạt động",
+				"regionMap": "Bản đồ khu vực",
+				"revenueSummary": "Tóm tắt",
+				"revenueTables": "Bảng chi tiết",
+				"revenueCharts": "Biểu đồ & phân tích"
+			}
+		}
+	}
+}

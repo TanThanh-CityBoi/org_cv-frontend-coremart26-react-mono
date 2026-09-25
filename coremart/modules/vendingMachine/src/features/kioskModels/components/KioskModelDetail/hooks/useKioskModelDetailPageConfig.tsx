@@ -4,10 +4,11 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
 
-import { ControlPanelActionItem } from '../../../../../components/ControlPanel';
-import { KioskModel } from '../../../types';
+import { ControlPanelActionItem } from '@/components/ControlPanel';
+import { useKioskModelDetailTabControl } from '@/features/kioskModels/components/KioskModelDetail/kioskModelDetailTabControl';
+import { KioskModel } from '@/features/kioskModels/types';
+
 import { KioskModelBasicInfo } from '../KioskModelBasicInfo';
-import { useKioskModelDetailTabControl } from '../kioskModelDetailTabControl';
 import { KioskModelSettings } from '../KioskModelSettings';
 import { useKioskModelDetailBreadcrumbs } from './useKioskModelDetailBreadcrumbs';
 
@@ -16,24 +17,24 @@ import type { KioskModelDetailTabId, UseKioskModelDetailPageConfigReturn } from 
 
 
 type DetailTabConfig = {
-	id: KioskModelDetailTabId,
-	title: string,
-	content: () => React.ReactNode,
+	id: KioskModelDetailTabId;
+	title: string;
+	content: () => React.ReactNode;
 };
 
 const useKioskModelDetailTabs = ({ model }: { model?: KioskModel }): Array<DetailTabConfig> => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const tabs = useMemo<Array<DetailTabConfig>>(() => {
 		if (!model) return [];
 		return [
 			{
 				id: 'basicInfo',
-				title: translate('kiosk_models.tabs.basic_info'),
+				title: translate('coremart.vendingMachine.kioskModels.tabs.basicInfo'),
 				content: () => <KioskModelBasicInfo key='basicInfo' model={model} />,
 			},
 			{
 				id: 'modelSettings',
-				title: translate('kiosk_models.tabs.model_settings'),
+				title: translate('coremart.vendingMachine.kioskModels.tabs.modelSettings'),
 				content: () => <KioskModelSettings key='modelSettings' model={model} />,
 			},
 		];
@@ -44,12 +45,12 @@ const useKioskModelDetailTabs = ({ model }: { model?: KioskModel }): Array<Detai
 
 const useTabActions = ({ activeTab }: { activeTab: KioskModelDetailTabId }): ControlPanelActionItem[] => {
 	const navigate = useNavigate();
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const { registry } = useKioskModelDetailTabControl();
 
 	const actions = useMemo<ControlPanelActionItem[]>(() => {
 		const baseActions = [{
-			label: translate('action.back'),
+			label: translate('nikki.general.actions.back'),
 			onClick: () => navigate('../kiosk-models'),
 			leftSection: <IconArrowLeft size={16} />,
 			variant: 'outline',

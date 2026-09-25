@@ -1,5 +1,5 @@
-import { buildSimpleSearchGraph, type SimpleFilter } from '../../common/helpers';
-import { SearchGraph } from '../../types';
+import { buildSimpleSearchGraph, type SimpleFilter } from '@/common/helpers';
+import { SearchGraph } from '@/types';
 
 import type { ControlPanelFilterConfig } from './types';
 import type { DateValue, DatesRangeValue } from '@mantine/dates';

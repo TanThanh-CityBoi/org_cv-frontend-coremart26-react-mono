@@ -4,19 +4,19 @@ import { IconCloudUpload, IconFile, IconPhoto, IconTrash } from '@tabler/icons-r
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { formatFileSize } from '../../common/helpers';
+import { formatFileSize } from '@/common/helpers';
 
 import type { DropzoneProps } from '@mantine/dropzone';
 
 
 const FD_I18N = {
-	label: 'common.file_dropzone.label',
-	hint: 'common.file_dropzone.hint',
-	browseLabel: 'common.file_dropzone.browse_label',
-	acceptLabel: 'common.file_dropzone.accept_label',
-	rejectLabel: 'common.file_dropzone.reject_label',
-	emptyFileLabel: 'common.file_dropzone.empty_file_label',
-	clearAriaLabel: 'common.file_dropzone.clear_aria_label',
+	label: 'coremart.vendingMachine.common.fileDropzone.label',
+	hint: 'coremart.vendingMachine.common.fileDropzone.hint',
+	browseLabel: 'coremart.vendingMachine.common.fileDropzone.browseLabel',
+	acceptLabel: 'coremart.vendingMachine.common.fileDropzone.acceptLabel',
+	rejectLabel: 'coremart.vendingMachine.common.fileDropzone.rejectLabel',
+	emptyFileLabel: 'coremart.vendingMachine.common.fileDropzone.emptyFileLabel',
+	clearAriaLabel: 'coremart.vendingMachine.common.fileDropzone.clearAriaLabel',
 } as const;
 
 
@@ -52,10 +52,10 @@ function mergeDroppedFiles(
 }
 
 function buildDropzoneRestProps(args: {
-	multiple: boolean,
-	maxFilesProp: number | undefined,
-	accept: DropzoneProps['accept'] | undefined,
-	maxSize: number | undefined,
+	multiple: boolean;
+	maxFilesProp: number | undefined;
+	accept: DropzoneProps['accept'] | undefined;
+	maxSize: number | undefined;
 }): Partial<Pick<DropzoneProps, 'accept' | 'maxSize' | 'multiple' | 'maxFiles'>> {
 	const { multiple, maxFilesProp, accept, maxSize } = args;
 	const dropzoneProps: Partial<Pick<DropzoneProps, 'accept' | 'maxSize' | 'multiple' | 'maxFiles'>> = {
@@ -124,11 +124,11 @@ function DropzoneRejectPrompt({ rejectLabel }: { rejectLabel: string }) {
 }
 
 type FilePreviewSlotProps = {
-	file: File | null,
-	imageThumbSrc: string | null,
-	emptyFileLabel: string,
-	clearAriaLabel: string,
-	onClear: () => void,
+	file: File | null;
+	imageThumbSrc: string | null;
+	emptyFileLabel: string;
+	clearAriaLabel: string;
+	onClear: () => void;
 };
 
 function FilePreviewSlot({
@@ -201,12 +201,12 @@ function FilePreviewSlot({
 }
 
 type FilePreviewStackProps = {
-	effectiveFiles: File[],
-	previewUrls: (string | null)[],
-	emptyFileLabel: string,
-	clearAriaLabel: string,
-	onClearAll: () => void,
-	onRemoveAt: (index: number) => void,
+	effectiveFiles: File[];
+	previewUrls: (string | null)[];
+	emptyFileLabel: string;
+	clearAriaLabel: string;
+	onClearAll: () => void;
+	onRemoveAt: (index: number) => void;
 };
 
 function FilePreviewStack({
@@ -245,20 +245,20 @@ function FilePreviewStack({
 }
 
 export type FileDropzoneUploadProps = {
-	/** Omit to use `common.file_dropzone.*` defaults. */
-	label?: string,
-	hint?: string,
-	browseLabel?: string,
-	acceptLabel?: string,
-	rejectLabel?: string,
-	emptyFileLabel?: string,
-	files: File[],
-	onFilesChange: (files: File[]) => void,
-	multiple?: boolean,
-	maxFiles?: number,
-	accept?: DropzoneProps['accept'],
-	maxSize?: number,
-	clearAriaLabel?: string,
+	/** Omit to use `coremart.vendingMachine.common.fileDropzone.*` defaults. */
+	label?: string;
+	hint?: string;
+	browseLabel?: string;
+	acceptLabel?: string;
+	rejectLabel?: string;
+	emptyFileLabel?: string;
+	files: File[];
+	onFilesChange: (files: File[]) => void;
+	multiple?: boolean;
+	maxFiles?: number;
+	accept?: DropzoneProps['accept'];
+	maxSize?: number;
+	clearAriaLabel?: string;
 };
 
 function resolveFileDropzoneLabels(
@@ -279,19 +279,19 @@ function resolveFileDropzoneLabels(
 }
 
 type FileDropzoneUploadContentProps = {
-	label: string,
-	hint?: string,
-	browseLabel: string,
-	acceptLabel: string,
-	rejectLabel: string,
-	emptyFileLabel: string,
-	clearAriaLabel: string,
-	effectiveFiles: File[],
-	previewUrls: (string | null)[],
-	dropzoneRest: Partial<Pick<DropzoneProps, 'accept' | 'maxSize' | 'multiple' | 'maxFiles'>>,
-	onDrop: (dropped: File[]) => void,
-	onClearAll: () => void,
-	onRemoveAt: (index: number) => void,
+	label: string;
+	hint?: string;
+	browseLabel: string;
+	acceptLabel: string;
+	rejectLabel: string;
+	emptyFileLabel: string;
+	clearAriaLabel: string;
+	effectiveFiles: File[];
+	previewUrls: (string | null)[];
+	dropzoneRest: Partial<Pick<DropzoneProps, 'accept' | 'maxSize' | 'multiple' | 'maxFiles'>>;
+	onDrop: (dropped: File[]) => void;
+	onClearAll: () => void;
+	onRemoveAt: (index: number) => void;
 };
 
 function FileDropzoneUploadContent({
@@ -372,7 +372,7 @@ export const FileDropzoneUpload: React.FC<FileDropzoneUploadProps> = ({
 	maxSize = 10 * 1024 * 1024, // 10MB
 	clearAriaLabel: clearAriaLabelProp,
 }) => {
-	const { t } = useTranslation('vending_machine');
+	const { t } = useTranslation();
 	const {
 		label,
 		hint,

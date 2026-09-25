@@ -1,24 +1,21 @@
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
 import React from 'react';
 
-import { paymentService } from '../paymentService';
-import { PaymentMethod } from '../types';
-
-
-type GetOneResponse = { item: PaymentMethod };
+import { VendingMachineDispatch, paymentActions, selectPaymentDetail } from '@/appState';
 
 
 export function usePaymentDetail(paymentId: string | undefined) {
-	const { dispatchMethod, result } = useServiceLayer<GetOneResponse>(paymentService.getById);
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
+	const detail = useMicroAppSelector(selectPaymentDetail);
 
 	React.useEffect(() => {
-		if (paymentId) {
-			dispatchMethod({ id: paymentId });
+		if (paymentId && detail.data?.id !== paymentId) {
+			dispatch(paymentActions.getPayment(paymentId));
 		}
-	}, [dispatchMethod, paymentId]);
+	}, [dispatch, paymentId, detail.data?.id]);
 
 	return {
-		payment: result.data?.item,
-		isLoading: result.isPending,
+		payment: detail.data,
+		isLoading: detail.status === 'pending' || detail.status === 'idle',
 	};
 }

@@ -3,10 +3,11 @@ import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
-import { ControlPanelActionItem } from '../../../../../components/ControlPanel';
-import { KioskDevice } from '../../../types';
+import { ControlPanelActionItem } from '@/components/ControlPanel';
+import { useKioskDeviceDetailTabControl } from '@/features/kioskDevices/components/KioskDeviceDetail/kioskDeviceDetailTabControl';
+import { KioskDevice } from '@/features/kioskDevices/types';
+
 import { KioskDeviceBasicInfo } from '../KioskDeviceBasicInfo';
-import { useKioskDeviceDetailTabControl } from '../kioskDeviceDetailTabControl';
 import { KioskDeviceSpecifications } from '../KioskDeviceSpecifications';
 import { useKioskDeviceDetailBreadcrumbs } from './useKioskDeviceDetailBreadcrumbs';
 
@@ -14,24 +15,24 @@ import type { KioskDeviceDetailTabId, UseKioskDeviceDetailPageConfigProps, UseKi
 
 
 type DetailTabConfig = {
-	id: KioskDeviceDetailTabId,
-	title: string,
-	content: () => React.ReactNode,
+	id: KioskDeviceDetailTabId;
+	title: string;
+	content: () => React.ReactNode;
 };
 
 const useKioskDeviceDetailTabs = ({ kioskDevice }: { kioskDevice?: KioskDevice }): Array<DetailTabConfig> => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const tabs = useMemo<Array<DetailTabConfig>>(() => {
 		if (!kioskDevice) return [];
 		return [
 			{
 				id: 'basicInfo',
-				title: translate('device.tabs.basic_info'),
+				title: translate('coremart.vendingMachine.device.tabs.basicInfo'),
 				content: () => <KioskDeviceBasicInfo key='basicInfo' kioskDevice={kioskDevice} />,
 			},
 			{
 				id: 'specifications',
-				title: translate('device.tabs.specifications'),
+				title: translate('coremart.vendingMachine.device.tabs.specifications'),
 				content: () => <KioskDeviceSpecifications key='specifications' kioskDevice={kioskDevice} />,
 			},
 		];
@@ -42,12 +43,12 @@ const useKioskDeviceDetailTabs = ({ kioskDevice }: { kioskDevice?: KioskDevice }
 
 const useTabActions = ({ activeTab }: { activeTab: KioskDeviceDetailTabId }): ControlPanelActionItem[] => {
 	const navigate = useNavigate();
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const { registry } = useKioskDeviceDetailTabControl();
 
 	const actions = useMemo<ControlPanelActionItem[]>(() => {
 		const baseActions = [{
-			label: translate('action.back'),
+			label: translate('nikki.general.actions.back'),
 			onClick: () => navigate('../kiosk-devices'),
 			leftSection: <IconArrowLeft size={16} />,
 			variant: 'outline',

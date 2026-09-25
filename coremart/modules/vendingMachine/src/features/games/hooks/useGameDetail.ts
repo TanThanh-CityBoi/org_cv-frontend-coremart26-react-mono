@@ -1,23 +1,21 @@
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
 import React from 'react';
 
-import { gameCrudService } from '../gameService';
-
-import type { Game } from '../types';
+import { VendingMachineDispatch, gameActions, selectGameDetail } from '@/appState';
 
 
 export function useGameDetail(gameId: string | undefined) {
-	const { dispatchMethod, result } = useServiceLayer<Game>(gameCrudService.getById);
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
+	const detail = useMicroAppSelector(selectGameDetail);
 
 	React.useEffect(() => {
-		if (gameId && result.data?.id !== gameId) {
-			dispatchMethod({ id: gameId });
+		if (gameId && detail.data?.id !== gameId) {
+			dispatch(gameActions.getGame(gameId));
 		}
-	}, [dispatchMethod, gameId, result.data?.id]);
+	}, [dispatch, gameId, detail.data?.id]);
 
 	return {
-		// `useServiceLayer` yields `null` before the first call; consumers expect `undefined`.
-		game: result.data ?? undefined,
-		isLoading: result.isPending || result.doneAt == null,
+		game: detail.data,
+		isLoading: detail.status === 'pending' || detail.status === 'idle',
 	};
 }

@@ -3,13 +3,14 @@ import { IconDeviceDesktop, IconMapPin, IconSearch } from '@tabler/icons-react';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { buildSimpleSearchGraph } from '../../common/helpers';
-import { useKioskList } from '../../features/kiosks/hooks';
-import { Kiosk, KioskMode } from '../../features/kiosks/types';
-import { SearchGraph } from '../../types';
-import { ArchivedStatusBadge } from '../ArchivedStatusBadge';
+import { buildSimpleSearchGraph } from '@/common/helpers';
+import { ArchivedStatusBadge } from '@/components/ArchivedStatusBadge';
+import { TablePagination } from '@/components/Table';
+import { useKioskList } from '@/features/kiosks/hooks';
+import { Kiosk, KioskMode } from '@/features/kiosks/types';
+import { SearchGraph } from '@/types';
+
 import { KioskModeStatusBadge } from '../KioskModeStatusBadge';
-import { TablePagination } from '../Table';
 
 
 export interface KioskSelectModalProps {
@@ -26,7 +27,7 @@ export const KioskSelectModal: React.FC<KioskSelectModalProps> = ({
 	onClose,
 	onSelectKiosks,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const [selectedKiosks, setSelectedKiosks] = useState<Kiosk[]>([]);
 	const [searchQuery, setSearchQuery] = useState('');
 
@@ -83,14 +84,14 @@ export const KioskSelectModal: React.FC<KioskSelectModalProps> = ({
 		<Modal
 			opened={opened}
 			onClose={handleCancel}
-			title={translate('events.select_kiosks.title')}
+			title={translate('coremart.vendingMachine.events.selectKiosks.title')}
 			centered
 			size='xl'
 		>
 			<Stack gap='md'>
 				{/* Search */}
 				<TextInput
-					placeholder={translate('events.select_kiosks.search_placeholder')}
+					placeholder={translate('coremart.vendingMachine.events.selectKiosks.searchPlaceholder')}
 					leftSection={<IconSearch size={16} />}
 					value={searchQuery}
 					onChange={(e) => setSearchQuery(e.currentTarget.value)}
@@ -99,7 +100,7 @@ export const KioskSelectModal: React.FC<KioskSelectModalProps> = ({
 				{/* Selected Count */}
 				{selectedKiosks.length > 0 && (
 					<Text size='sm' c='blue' fw={500}>
-						{translate('events.select_kiosks.selected_count', { count: selectedKiosks.length })}
+						{translate('coremart.vendingMachine.events.selectKiosks.selectedCount', { count: selectedKiosks.length })}
 					</Text>
 				)}
 
@@ -107,18 +108,18 @@ export const KioskSelectModal: React.FC<KioskSelectModalProps> = ({
 				<ScrollArea h={400}>
 					{searchedKiosks.length === 0 ? (
 						<Text size='sm' c='dimmed' ta='center' py='md'>
-							{translate('events.select_kiosks.no_kiosks')}
+							{translate('coremart.vendingMachine.events.selectKiosks.noKiosks')}
 						</Text>
 					) : (
 						<Table striped highlightOnHover>
 							<Table.Thead>
 								<Table.Tr>
 									<Table.Th style={{ width: 50 }}></Table.Th>
-									<Table.Th>{translate('kiosk.fields.code')}</Table.Th>
-									<Table.Th>{translate('kiosk.fields.name')}</Table.Th>
-									<Table.Th>{translate('kiosk.fields.address')}</Table.Th>
-									<Table.Th>{translate('kiosk.fields.status')}</Table.Th>
-									<Table.Th>{translate('kiosk.fields.mode')}</Table.Th>
+									<Table.Th>{translate('coremart.vendingMachine.kiosk.fields.code')}</Table.Th>
+									<Table.Th>{translate('coremart.vendingMachine.kiosk.fields.name')}</Table.Th>
+									<Table.Th>{translate('coremart.vendingMachine.kiosk.fields.address')}</Table.Th>
+									<Table.Th>{translate('coremart.vendingMachine.kiosk.fields.status')}</Table.Th>
+									<Table.Th>{translate('coremart.vendingMachine.kiosk.fields.mode')}</Table.Th>
 								</Table.Tr>
 							</Table.Thead>
 							<Table.Tbody>
@@ -186,10 +187,10 @@ export const KioskSelectModal: React.FC<KioskSelectModalProps> = ({
 				{/* Actions */}
 				<Group justify='flex-end' gap='xs'>
 					<Button variant='subtle' onClick={handleCancel}>
-						{translate('action.cancel')}
+						{translate('nikki.general.actions.cancel')}
 					</Button>
 					<Button onClick={handleConfirm} disabled={selectedKiosks.length === 0}>
-						{translate('action.confirm')}
+						{translate('nikki.general.actions.confirm')}
 					</Button>
 				</Group>
 			</Stack>

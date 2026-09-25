@@ -15,8 +15,8 @@ export function RevenueReportSwitcher({
 	active,
 	filters,
 }: {
-	active: RevenueReportTypeKey,
-	filters: RevenueReportFilters,
+	active: RevenueReportTypeKey;
+	filters: RevenueReportFilters;
 }): React.ReactElement {
 	switch (active) {
 		case REVENUE_REPORT_TYPE.BY_KIOSK:

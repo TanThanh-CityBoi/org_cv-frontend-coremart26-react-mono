@@ -3,20 +3,20 @@
 	"fields": {
 		"id": {
 			"type": "string",
-			"label": "{ \"$ref\": 'media_playlist.fields.id' }",
+			"label": "{ \"$ref\": 'coremart.vendingMachine.mediaPlaylist.fields.id' }",
 			"hidden": true
 		},
 		"name": {
 			"type": "string",
-			"label": "{ \"$ref\": 'media_playlist.fields.name' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.mediaPlaylist.fields.name' }"
 		},
 		"isArchived": {
 			"type": "boolean",
-			"label": "{ \"$ref\": 'media_playlist.fields.status' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.mediaPlaylist.fields.status' }"
 		},
 		"mediaItems": {
 			"type": "string",
-			"label": "{ \"$ref\": 'media_playlist.fields.media_items' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.mediaPlaylist.fields.mediaItems' }"
 		}
 	}
 }

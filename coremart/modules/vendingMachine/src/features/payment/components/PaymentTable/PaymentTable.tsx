@@ -12,8 +12,9 @@ import { TFunction } from 'i18next';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { ArchivedStatusBadge } from '../../../../components/ArchivedStatusBadge';
-import { NameCell, TableAction, TableContainer, TextCell, type TableActionItem } from '../../../../components/Table';
+import { ArchivedStatusBadge } from '@/components/ArchivedStatusBadge';
+import { NameCell, TableAction, TableContainer, TextCell, type TableActionItem } from '@/components/Table';
+
 import { PaymentMethod } from '../../types';
 
 
@@ -40,7 +41,7 @@ export function getPaymentTableActions(
 	const defaultActions: (TableActionItem & { active?: boolean })[] = [
 		{
 			key: PAYMENT_TABLE_ACTIONS.VIEW,
-			label: translate('action.view'),
+			label: translate('nikki.general.actions.view'),
 			icon: <IconEye size={16} />,
 			onClick: () => actions[PAYMENT_TABLE_ACTIONS.VIEW]?.(payment),
 			color: 'blue',
@@ -48,7 +49,7 @@ export function getPaymentTableActions(
 		},
 		{
 			key: PAYMENT_TABLE_ACTIONS.EDIT,
-			label: translate('action.edit'),
+			label: translate('nikki.general.actions.edit'),
 			icon: <IconEdit size={16} />,
 			onClick: () => actions[PAYMENT_TABLE_ACTIONS.EDIT]?.(payment),
 			color: 'gray',
@@ -56,7 +57,7 @@ export function getPaymentTableActions(
 		},
 		{
 			key: PAYMENT_TABLE_ACTIONS.ARCHIVE,
-			label: translate('action.archive'),
+			label: translate('nikki.general.actions.archive'),
 			icon: <IconArchive size={16} />,
 			onClick: () => actions[PAYMENT_TABLE_ACTIONS.ARCHIVE]?.(payment),
 			color: 'orange',
@@ -64,7 +65,7 @@ export function getPaymentTableActions(
 		},
 		{
 			key: PAYMENT_TABLE_ACTIONS.RESTORE,
-			label: translate('action.restore'),
+			label: translate('nikki.general.actions.restore'),
 			icon: <IconRestore size={16} />,
 			onClick: () => actions[PAYMENT_TABLE_ACTIONS.RESTORE]?.(payment),
 			color: 'blue',
@@ -72,7 +73,7 @@ export function getPaymentTableActions(
 		},
 		{
 			key: PAYMENT_TABLE_ACTIONS.DELETE,
-			label: translate('action.delete'),
+			label: translate('nikki.general.actions.delete'),
 			icon: <IconTrash size={16} />,
 			onClick: () => actions[PAYMENT_TABLE_ACTIONS.DELETE]?.(payment),
 			color: 'red',
@@ -87,7 +88,7 @@ function renderActionsHeader(
 	_schema: unknown,
 	translate: (key: string) => string,
 ) {
-	return <Text fw={600} fz='sm' ta='end'>{translate('action.title')}</Text>;
+	return <Text fw={600} fz='sm' ta='end'>{translate('nikki.general.actions.title')}</Text>;
 }
 
 function formatTransactionRangeCell(row: Record<string, unknown>) {
@@ -116,7 +117,7 @@ export const PaymentTable: React.FC<PaymentTableProps> = ({
 	isLoading,
 	actions,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const colRenderers: React.ComponentProps<typeof AutoTable>['columnRenderers'] = {
 		method: (row) => <TextCell content={String(row.method || '')} />,
@@ -156,7 +157,7 @@ export const PaymentTable: React.FC<PaymentTableProps> = ({
 		actions: (row) => (
 			<TableAction
 				actions={getPaymentTableActions(row as unknown as PaymentMethod, actions, translate)}
-				overflowMenuLabel={translate('action.title')}
+				overflowMenuLabel={translate('nikki.general.actions.title')}
 			/>
 		),
 	};
@@ -169,7 +170,6 @@ export const PaymentTable: React.FC<PaymentTableProps> = ({
 		<Box pos='relative'>
 			<TableContainer>
 				<AutoTable
-					translationNs='vending_machine'
 					columns={columns}
 					data={data}
 					schema={schema}

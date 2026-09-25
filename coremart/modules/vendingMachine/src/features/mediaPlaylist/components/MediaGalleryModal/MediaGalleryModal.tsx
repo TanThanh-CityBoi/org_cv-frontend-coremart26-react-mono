@@ -29,7 +29,7 @@ export const MediaGalleryModal: React.FC<MediaGalleryModalProps> = ({
 	selectedMediaIds = [],
 	baseApiUrl,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const {
 		media,
 		loadingGallery,
@@ -78,13 +78,13 @@ export const MediaGalleryModal: React.FC<MediaGalleryModalProps> = ({
 		onClose();
 	};
 
-	const alreadyLabel = translate('media_playlist.media.gallery.selected');
+	const alreadyLabel = translate('coremart.vendingMachine.mediaPlaylist.media.gallery.selected');
 
 	return (
 		<Modal
 			opened={opened}
 			onClose={handleCancel}
-			title={translate('media_playlist.media.gallery.title')}
+			title={translate('coremart.vendingMachine.mediaPlaylist.media.gallery.title')}
 			size='xl'
 			centered
 			overlayProps={{ opacity: 0.5, blur: 4 }}
@@ -110,11 +110,11 @@ export const MediaGalleryModal: React.FC<MediaGalleryModalProps> = ({
 				<SelectedMediaStrip
 					items={selectedMedia}
 					selectedMediaTitle={translate(
-						'media_playlist.media.gallery.selected_media',
+						'coremart.vendingMachine.mediaPlaylist.media.gallery.selectedMedia',
 					)}
-					removeAriaLabel={translate('action.remove')}
-					cancelLabel={translate('action.cancel')}
-					addLabel={translate('action.add')}
+					removeAriaLabel={translate('nikki.general.actions.remove')}
+					cancelLabel={translate('nikki.general.actions.cancel')}
+					addLabel={translate('nikki.general.actions.add')}
 					onRemove={handleToggleMedia}
 					onCancel={handleCancel}
 					onConfirm={handleConfirm}

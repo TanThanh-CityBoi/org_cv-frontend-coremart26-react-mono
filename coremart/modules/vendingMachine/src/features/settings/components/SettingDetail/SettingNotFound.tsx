@@ -9,7 +9,7 @@ export interface SettingNotFoundProps {
 }
 
 export const SettingNotFound: React.FC<SettingNotFoundProps> = () => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	return (
 		<Center
@@ -20,8 +20,8 @@ export const SettingNotFound: React.FC<SettingNotFoundProps> = () => {
 		>
 			<Stack align='center' gap='md'>
 				<IconAlertCircle size={48} color='red' />
-				<Title order={4}>{translate('settings.messages.not_found.title')}</Title>
-				<Text c='dimmed'>{translate('settings.messages.not_found.message')}</Text>
+				<Title order={4}>{translate('coremart.vendingMachine.settings.messages.not_found.title')}</Title>
+				<Text c='dimmed'>{translate('coremart.vendingMachine.settings.messages.not_found.message')}</Text>
 			</Stack>
 		</Center>
 	);

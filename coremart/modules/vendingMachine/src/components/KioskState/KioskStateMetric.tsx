@@ -3,8 +3,8 @@ import React from 'react';
 
 
 export type KioskStateMetricProps = TextProps & {
-	value: string | null | undefined,
-	emptyPlaceholder?: string,
+	value: string | null | undefined;
+	emptyPlaceholder?: string;
 };
 
 export const KioskStateMetric: React.FC<KioskStateMetricProps> = ({

@@ -1,29 +1,30 @@
-import { routingService } from '@nikkierp/shell/routing';
-import { useFindMyOrg } from '@nikkierp/shell/userContext';
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+import { GLOBAL_CONTEXT_SLUG } from '@nikkierp/shell/constants';
+import { useFindMyOrg, useHasGlobalContextAccess } from '@nikkierp/shell/userContext';
+import { setActiveOrgAction } from '@nikkierp/ui/appState/routingSlice';
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { Navigate, Outlet, useLocation, useParams } from 'react-router';
-
-import { sharedStateService } from '../features/sharedState';
 
 
 export function OrgSubLayout(): React.ReactNode {
+	const dispatch = useDispatch();
 	const location = useLocation();
 	const { orgSlug } = useParams();
+	const isGlobalContext = orgSlug === GLOBAL_CONTEXT_SLUG;
 	const found = useFindMyOrg(orgSlug!);
-	const { dispatchMethod: setActiveOrg } = useServiceLayer(routingService.setActiveOrg);
-	const { dispatchMethod: setCurrentOrgId } = useServiceLayer(sharedStateService.setCurrentOrgId);
+	const hasGlobalContextAccess = useHasGlobalContextAccess();
 
 	React.useEffect(() => {
-		setActiveOrg(orgSlug!);
-	}, [location, orgSlug, setActiveOrg]);
+		dispatch(setActiveOrgAction(orgSlug!));
+	}, [location, orgSlug, dispatch]);
 
-	// The URL carries the slug, but an API call needs the id, and resolving one to the other
-	// needs the org list from `me/context`. Keyed on `found?.id` so this re-runs when that
-	// fetch lands — on a hard reload it has usually not resolved by the first render.
-	React.useEffect(() => {
-		setCurrentOrgId(found?.id ?? null);
-	}, [found?.id, setCurrentOrgId]);
+	// Xử lý global context
+	if (isGlobalContext) {
+		if (!hasGlobalContextAccess) {
+			return <Navigate to='/unauthorized' replace />;
+		}
+		return <Outlet />;
+	}
 
 	// Xử lý org context
 	if (found) {

@@ -9,7 +9,7 @@ import { IconEdit, IconTrash } from '@tabler/icons-react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import type { Resource } from '../../../resources';
+import type { Resource } from '@/features/resources';
 
 
 export interface ActionTableProps extends AutoTableProps {

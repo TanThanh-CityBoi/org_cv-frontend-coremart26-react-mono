@@ -5,45 +5,45 @@ import { useSearchParams } from 'react-router';
 
 
 type DetailLayoutTab = {
-	id: string,
-	title: string,
-	content: React.ReactNode | (() => React.ReactNode),
+	id: string;
+	title: string;
+	content: React.ReactNode | (() => React.ReactNode);
 };
 
 type DetailLayoutHeader = {
-	title: React.ReactNode,
-	subtitle?: React.ReactNode,
-	avatar?: React.ReactNode,
+	title: React.ReactNode;
+	subtitle?: React.ReactNode;
+	avatar?: React.ReactNode;
 };
 
 export type DetailLayoutProps = React.ComponentProps<typeof Stack> & {
-	header?: DetailLayoutHeader,
-	sections?: React.ReactNode[],
+	header?: DetailLayoutHeader;
+	sections?: React.ReactNode[];
 
 	/**
 	 * Tabs to display in the layout.
 	 * If only one tab is provided, it will be displayed without the tabs component.
 	 * The tab id is the value of the tab's `id` property.
 	 */
-	tabs?: DetailLayoutTab[],
+	tabs?: DetailLayoutTab[];
 	/**
 	 * The id of the active tab.
 	 * If not provided, the first tab will be used.
 	 * The tab id is the value of the tab's `id` property.
 	 */
-	activeTab?: string,
+	activeTab?: string;
 	/**
 	 * Callback to handle tab change.
 	 * If not provided, the active tab will be updated internally.
 	 * The tab id is the value of the tab's `id` property.
 	 */
-	onTabChange?: (value: string) => void,
+	onTabChange?: (value: string) => void;
 
 	/**
 	 * When true, keep the active tab in the URL as `?tab=<tabs[].id>` (react-router).
 	 * Ignores `activeTab` for the selected tab; `onTabChange` still runs.
 	 */
-	syncWithUrl?: boolean,
+	syncWithUrl?: boolean;
 };
 
 
@@ -62,8 +62,8 @@ function useDetailLayoutTabSelection(
 	onTabChange: ((value: string) => void) | undefined,
 	syncWithUrl: boolean | undefined,
 ): {
-	currentActiveTab: string,
-	handleTabChange: (value: string | null) => void,
+	currentActiveTab: string;
+	handleTabChange: (value: string | null) => void;
 } {
 	const defaultTabId = tabs?.[0]?.id ?? '0';
 	const [searchParams, setSearchParams] = useSearchParams();
@@ -164,10 +164,10 @@ const DetailLayoutSections: React.FC<{ sections?: DetailLayoutProps['sections'] 
 
 
 const DetailLayoutTabs: React.FC<{
-	tabs?: DetailLayoutProps['tabs'],
-	activeTab?: string,
-	onTabChange?: (value: string) => void,
-	syncWithUrl?: boolean,
+	tabs?: DetailLayoutProps['tabs'];
+	activeTab?: string;
+	onTabChange?: (value: string) => void;
+	syncWithUrl?: boolean;
 }> = ({ tabs, activeTab, onTabChange, syncWithUrl }) => {
 
 	const enableSyncWithUrl = syncWithUrl && tabs && tabs.length > 1;

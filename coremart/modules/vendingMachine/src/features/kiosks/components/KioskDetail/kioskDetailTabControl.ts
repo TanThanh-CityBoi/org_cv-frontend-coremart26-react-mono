@@ -1,7 +1,6 @@
-import { createDetailTabControl } from '../../../../components/DetailLayout';
-
 import type { KioskDetailTabs } from './hooks/types';
 
+import { createDetailTabControl } from '@/components/DetailLayout';
 
 
 

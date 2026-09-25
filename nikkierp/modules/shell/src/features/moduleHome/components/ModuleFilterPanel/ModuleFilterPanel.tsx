@@ -7,14 +7,10 @@ import {
 	Stack,
 	Text,
 } from '@mantine/core';
-import { testAttrs } from '@nikkierp/common/utils';
 import { IconLayoutGrid, IconList } from '@tabler/icons-react';
 import { FC } from 'react';
 
 import { FilterState, GroupByOption, ModuleViewMode, SortByOption } from '../ModuleHomePage';
-
-
-const MODULE_FILTER_TEST_ID = 'shell.moduleFilter';
 
 
 type ModuleFilterPanelProps = {
@@ -65,14 +61,12 @@ export const ModuleFilterPanel: FC<ModuleFilterPanelProps> = ({
 				color='var(--mantine-color-black)'
 				checked={filters.showDisabled}
 				onChange={handleShowDisabledChange}
-				{...testAttrs(MODULE_FILTER_TEST_ID, 'showDisabled')}
 			/>
 			<Checkbox
 				label={<Text className='capitalize' size={'sm'} fw={500}>Show orphaned modules</Text>}
 				color='var(--mantine-color-black)'
 				checked={filters.showOrphaned}
 				onChange={handleShowOrphanedChange}
-				{...testAttrs(MODULE_FILTER_TEST_ID, 'showOrphaned')}
 			/>
 
 			<SortBySelect
@@ -106,7 +100,6 @@ const GroupBySelect: FC<GroupBySelectProps> = ({ value, onChange }) => {
 			value={value}
 			onChange={(val) => onChange(val as GroupByOption)}
 			clearable
-			{...testAttrs(MODULE_FILTER_TEST_ID, 'groupBy')}
 		/>
 	);
 };
@@ -130,7 +123,6 @@ const SortBySelect: FC<SortBySelectProps> = ({ value, onChange }) => {
 			value={value}
 			onChange={(val) => onChange(val as SortByOption | null)}
 			clearable
-			{...testAttrs(MODULE_FILTER_TEST_ID, 'sortBy')}
 		/>
 	);
 };
@@ -167,7 +159,6 @@ const ViewModeSegmentedControl: FC<{
 			data={segments}
 			value={viewMode}
 			onChange={(val: string) => onViewModeChange(val as ModuleViewMode)}
-			{...testAttrs(MODULE_FILTER_TEST_ID, 'viewMode')}
 		/>
 	);
 };

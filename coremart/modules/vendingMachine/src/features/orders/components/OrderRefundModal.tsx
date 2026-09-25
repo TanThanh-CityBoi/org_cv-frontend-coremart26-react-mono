@@ -18,23 +18,24 @@ import { useUIState } from '@nikkierp/shell/contexts';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { formatDateTime, getLocalizedName } from '../../../common/helpers';
-import { FileDropzoneUpload } from '../../../components';
+import { formatDateTime, getLocalizedName } from '@/common/helpers';
+import { FileDropzoneUpload } from '@/components';
+
 import { formatOrderMoney } from '../formatters';
 import { useOrderDetail, useOrderRefund } from '../hooks';
 import { VdOrderCurrency, VdOrderItem } from '../types';
 
 
-type SelectedLine = { itemId: string, maxQty: number, qty: number, selected: boolean };
+type SelectedLine = { itemId: string; maxQty: number; qty: number; selected: boolean };
 
 export type OrderRefundModalProps = {
-	opened: boolean,
-	onClose: () => void,
-	orderId: string | null,
+	opened: boolean;
+	onClose: () => void;
+	orderId: string | null;
 };
 
 export const OrderRefundModal: React.FC<OrderRefundModalProps> = ({ opened, onClose, orderId }) => {
-	const { t: translate, i18n } = useTranslation('vending_machine');
+	const { t: translate, i18n } = useTranslation();
 	const { notification } = useUIState();
 	const { order, isLoading } = useOrderDetail(
 		opened && orderId ? { id: orderId } : {},
@@ -121,16 +122,16 @@ export const OrderRefundModal: React.FC<OrderRefundModalProps> = ({ opened, onCl
 
 		if (!someRefundLinesSelected) {
 			notification.showError(
-				translate('orders.refund.validation_items'),
-				translate('orders.refund.validation_title'),
+				translate('coremart.vendingMachine.orders.refund.validation_items'),
+				translate('coremart.vendingMachine.orders.refund.validation_title'),
 			);
 			return;
 		}
 
 		if (manual && (!bankCode.trim() || !accountName.trim())) {
 			notification.showError(
-				translate('orders.refund.validation_bank'),
-				translate('orders.refund.validation_title'),
+				translate('coremart.vendingMachine.orders.refund.validation_bank'),
+				translate('coremart.vendingMachine.orders.refund.validation_title'),
 			);
 			return;
 		}
@@ -144,8 +145,8 @@ export const OrderRefundModal: React.FC<OrderRefundModalProps> = ({ opened, onCl
 
 		if (!items.length) {
 			notification.showError(
-				translate('orders.refund.validation_items'),
-				translate('orders.refund.validation_title'),
+				translate('coremart.vendingMachine.orders.refund.validation_items'),
+				translate('coremart.vendingMachine.orders.refund.validation_title'),
 			);
 			return;
 		}
@@ -168,18 +169,18 @@ export const OrderRefundModal: React.FC<OrderRefundModalProps> = ({ opened, onCl
 			opened={opened}
 			onClose={onCloseModal}
 			size='xl'
-			title={translate('orders.refund.title')}
+			title={translate('coremart.vendingMachine.orders.refund.title')}
 		>
-			{isLoading && <Text size='sm' c='dimmed'>{translate('messages.loading')}</Text>}
+			{isLoading && <Text size='sm' c='dimmed'>{translate('nikki.general.messages.loading')}</Text>}
 			{!isLoading && order && (
 				<Stack gap='md'>
 					<Box>
 						<Text size='sm'>
-							{translate('orders.fields.id')}: {' '}
+							{translate('coremart.vendingMachine.orders.fields.id')}: {' '}
 							<strong>{order?.orderCode || ''}</strong>
 						</Text>
 						<Text size='sm'>
-							{translate('orders.fields.created_at')}: {' '}
+							{translate('coremart.vendingMachine.orders.fields.createdAt')}: {' '}
 							{formatDateTime(order?.createdAt || '')}
 						</Text>
 					</Box>
@@ -187,20 +188,20 @@ export const OrderRefundModal: React.FC<OrderRefundModalProps> = ({ opened, onCl
 					<Divider/>
 
 					<Textarea
-						label={translate('orders.refund.reason')}
+						label={translate('coremart.vendingMachine.orders.refund.reason')}
 						value={reason}
 						onChange={(e) => setReason(e.currentTarget.value)}
 					/>
 
 					<FileDropzoneUpload
-						label={translate('orders.refund.evidence')}
+						label={translate('coremart.vendingMachine.orders.refund.evidence')}
 						accept={['image/*', 'application/pdf']}
 						files={evidences}
 						onFilesChange={setEvidences}
-						browseLabel={translate('orders.refund.evidence_browse')}
-						acceptLabel={translate('orders.refund.evidence_accept')}
-						rejectLabel={translate('orders.refund.evidence_reject')}
-						emptyFileLabel={translate('orders.refund.evidence_empty')}
+						browseLabel={translate('coremart.vendingMachine.orders.refund.evidence_browse')}
+						acceptLabel={translate('coremart.vendingMachine.orders.refund.evidence_accept')}
+						rejectLabel={translate('coremart.vendingMachine.orders.refund.evidence_reject')}
+						emptyFileLabel={translate('coremart.vendingMachine.orders.refund.evidence_empty')}
 						multiple
 						maxFiles={3}
 					/>
@@ -208,7 +209,7 @@ export const OrderRefundModal: React.FC<OrderRefundModalProps> = ({ opened, onCl
 					<Divider/>
 
 					<Stack gap={'xs'}>
-						<Text size='sm'>{translate('orders.refund.select_items')}</Text>
+						<Text size='sm'>{translate('coremart.vendingMachine.orders.refund.select_items')}</Text>
 						<Table withTableBorder withColumnBorders>
 							<Table.Thead>
 								<Table.Tr>
@@ -225,12 +226,12 @@ export const OrderRefundModal: React.FC<OrderRefundModalProps> = ({ opened, onCl
 													setLines((prev) => prev.map((l) => ({ ...l, selected: false })));
 												}
 											}}
-											aria-label={translate('orders.refund.select_all')}
+											aria-label={translate('coremart.vendingMachine.orders.refund.select_all')}
 										/>
 									</Table.Th>
-									<Table.Th>{translate('orders.items.product')}</Table.Th>
-									<Table.Th w={100}>{translate('orders.items.quantity')}</Table.Th>
-									<Table.Th>{translate('orders.items.line_total')}</Table.Th>
+									<Table.Th>{translate('coremart.vendingMachine.orders.items.product')}</Table.Th>
+									<Table.Th w={100}>{translate('coremart.vendingMachine.orders.items.quantity')}</Table.Th>
+									<Table.Th>{translate('coremart.vendingMachine.orders.items.line_total')}</Table.Th>
 								</Table.Tr>
 							</Table.Thead>
 							<Table.Tbody>
@@ -278,18 +279,18 @@ export const OrderRefundModal: React.FC<OrderRefundModalProps> = ({ opened, onCl
 						<Checkbox
 							checked={manual}
 							onChange={(e) => setManual(e.currentTarget.checked)}
-							label={translate('orders.refund.manual_toggle')}
+							label={translate('coremart.vendingMachine.orders.refund.manual_toggle')}
 							mb={3}
 						/>
 						{manual && (
 							<>
 								<TextInput
-									label={translate('orders.refund.bank_code')}
+									label={translate('coremart.vendingMachine.orders.refund.bank_code')}
 									value={bankCode}
 									onChange={(e) => setBankCode(e.currentTarget.value)}
 								/>
 								<TextInput
-									label={translate('orders.refund.account_name')}
+									label={translate('coremart.vendingMachine.orders.refund.account_name')}
 									value={accountName}
 									onChange={(e) => setAccountName(e.currentTarget.value)}
 								/>
@@ -298,7 +299,7 @@ export const OrderRefundModal: React.FC<OrderRefundModalProps> = ({ opened, onCl
 					</Stack>
 
 					<Text fw={600}>
-						{translate('orders.refund.total')}{': '}
+						{translate('coremart.vendingMachine.orders.refund.total')}{': '}
 						{formatOrderMoney(String(selectedTotal), currency)}
 					</Text>
 
@@ -306,14 +307,14 @@ export const OrderRefundModal: React.FC<OrderRefundModalProps> = ({ opened, onCl
 
 					<Group justify='flex-end'>
 						<Button variant='default' disabled={isRefundPending} onClick={onCloseModal}>
-							{translate('action.close')}
+							{translate('nikki.general.actions.close')}
 						</Button>
 						<Button
 							loading={isRefundPending}
 							disabled={isRefundPending || !someRefundLinesSelected}
 							onClick={submit}
 						>
-							{translate('orders.refund.submit')}
+							{translate('coremart.vendingMachine.orders.refund.submit')}
 						</Button>
 					</Group>
 				</Stack>

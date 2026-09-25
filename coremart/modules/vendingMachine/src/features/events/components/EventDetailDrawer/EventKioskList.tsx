@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { AssignedKioskList, AssignedKioskListProps } from '../../../../components/AssignKiosks';
+import { AssignedKioskList, AssignedKioskListProps } from '@/components/AssignKiosks';
 
 
 /** Wrapper cho màn chi tiết sự kiện — dùng copy i18n của events. */
@@ -10,8 +10,8 @@ export const EventKioskList: React.FC<EventKioskListProps> = ({ translationKeys,
 	<AssignedKioskList
 		{...rest}
 		translationKeys={{
-			addKiosks: 'events.select_kiosks.add_kiosks',
-			empty: 'events.messages.no_kiosks',
+			addKiosks: 'coremart.vendingMachine.events.selectKiosks.addKiosks',
+			empty: 'coremart.vendingMachine.events.messages.no_kiosks',
 			...translationKeys,
 		}}
 	/>

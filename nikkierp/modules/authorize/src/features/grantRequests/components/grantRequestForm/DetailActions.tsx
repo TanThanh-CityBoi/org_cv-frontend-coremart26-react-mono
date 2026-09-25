@@ -3,7 +3,7 @@ import { IconArrowLeft, IconCheck, IconX } from '@tabler/icons-react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import type { GrantRequest } from '../..';
+import type { GrantRequest } from '@/features/grantRequests';
 
 
 interface DetailActionsProps {

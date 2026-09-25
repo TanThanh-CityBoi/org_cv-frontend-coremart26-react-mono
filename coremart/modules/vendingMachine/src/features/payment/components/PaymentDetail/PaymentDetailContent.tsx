@@ -1,20 +1,20 @@
 import React, { useCallback, useLayoutEffect, useState } from 'react';
 
+import {
+	paymentConfigToRows,
+	type PaymentConfigRow,
+} from '@/features/payment/utils/paymentConfigRows';
 
 import { mergePaymentDetailFormData } from './mergePaymentDetailFormData';
 import { PaymentDetailInner } from './PaymentDetailInner';
 import { PaymentDetailModals } from './PaymentDetailModals';
-import {
-	paymentConfigToRows,
-	type PaymentConfigRow,
-} from '../../utils/paymentConfigRows';
 
 import type { UsePaymentDetailPageConfigReturn } from './hooks/types';
-import type { PaymentMethod } from '../../types';
+import type { PaymentMethod } from '@/features/payment/types';
 
 
 export type PaymentDetailContentProps = {
-	payment: PaymentMethod,
+	payment: PaymentMethod;
 } & Omit<UsePaymentDetailPageConfigReturn, 'breadcrumbs' | 'actions'>;
 
 export const PaymentDetailContent: React.FC<PaymentDetailContentProps> = ({

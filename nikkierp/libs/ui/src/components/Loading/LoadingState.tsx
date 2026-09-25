@@ -9,7 +9,7 @@ export interface LoadingStateProps {
 }
 
 export const LoadingState: React.FC<LoadingStateProps> = ({
-	messageKey = 'messages.loading',
+	messageKey = 'nikki.general.messages.loading',
 	minHeight = 400,
 }) => {
 	const { t: translate } = useTranslation();

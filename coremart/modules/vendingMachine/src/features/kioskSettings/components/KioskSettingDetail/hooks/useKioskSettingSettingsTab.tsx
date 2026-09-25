@@ -2,21 +2,22 @@ import { IconDeviceFloppy, IconEdit, IconX } from '@tabler/icons-react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { ControlPanelProps } from '../../../../../components/ControlPanel/ControlPanel';
-import { Game } from '../../../../games/types';
-import { Playlist } from '../../../../mediaPlaylist/types';
-import { Theme } from '../../../../themes/types';
+import { ControlPanelProps } from '@/components/ControlPanel/ControlPanel';
+import { Game } from '@/features/games/types';
+import { Playlist } from '@/features/mediaPlaylist/types';
+import { Theme } from '@/features/themes/types';
+
 import { KioskSetting } from '../../../types';
 import { useRegisterKioskSettingDetailTab } from '../kioskSettingDetailTabControl';
 import { useKioskSettingDetailPersistence } from './useKioskSettingDetailPersistence';
 
 
 type UseKioskSettingSettingsTabArgs = {
-	setting: KioskSetting,
+	setting: KioskSetting;
 };
 
 export function useKioskSettingSettingsTab({ setting }: UseKioskSettingSettingsTabArgs) {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const [isEditing, setIsEditing] = useState(false);
 	const { onSaveSettings, isSaveSubmitting } = useKioskSettingDetailPersistence(setting, {
 		onUpdateSuccess: () => setIsEditing(false),
@@ -54,19 +55,19 @@ export function useKioskSettingSettingsTab({ setting }: UseKioskSettingSettingsT
 
 	const actions = useMemo<ControlPanelProps['actions']>(() => [
 		...(!isEditing ? [{
-			label: translate('action.edit'),
+			label: translate('nikki.general.actions.edit'),
 			leftSection: <IconEdit size={16} />,
 			onClick: handleEdit,
 			variant: 'filled' as const,
 		}] : [{
-			label: translate('action.save'),
+			label: translate('nikki.general.actions.save'),
 			leftSection: <IconDeviceFloppy size={16} />,
 			onClick: handleSave,
 			variant: 'filled' as const,
 			disabled: isSaveSubmitting,
 			loading: isSaveSubmitting,
 		}, {
-			label: translate('action.cancel'),
+			label: translate('nikki.general.actions.cancel'),
 			leftSection: <IconX size={16} />,
 			onClick: handleCancel,
 			variant: 'outline' as const,

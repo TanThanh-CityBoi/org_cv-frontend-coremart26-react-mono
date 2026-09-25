@@ -20,7 +20,7 @@ export function useMediaListKioskMutations(
 	baseApiUrl: string | undefined,
 ) {
 	const { notification } = useUIState();
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const detailMediaRef = useRef<KioskMedia | null>(null);
 	detailMediaRef.current = detailMedia;
 
@@ -67,8 +67,8 @@ export function useMediaListKioskMutations(
 		(km: KioskMedia) => {
 			if (!baseApiUrl) {
 				notification.showError(
-					translate('media_playlist.media.gallery.config_missing'),
-					translate('messages.error'),
+					translate('coremart.vendingMachine.mediaPlaylist.media.gallery.config_missing'),
+					translate('nikki.general.messages.error'),
 				);
 				return;
 			}

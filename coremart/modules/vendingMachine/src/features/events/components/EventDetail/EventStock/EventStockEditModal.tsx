@@ -6,11 +6,11 @@ import blankPicture from '@nikkierp/ui/assets/images/blank-picture.png';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { getLocalizedName } from '../../../../../common/helpers';
-import { MOCK_EVENT_STOCK_CREATE_PRODUCTS } from '../../../mocks/mockEventStockCreateProducts';
+import { getLocalizedName } from '@/common/helpers';
+import { MOCK_EVENT_STOCK_CREATE_PRODUCTS } from '@/features/events/mocks/mockEventStockCreateProducts';
 
-import type { EventStockUpdateFormPayload } from '../../../hooks/useEventStockUpdate';
-import type { EventStock } from '../../../types';
+import type { EventStockUpdateFormPayload } from '@/features/events/hooks/useEventStockUpdate';
+import type { EventStock } from '@/features/events/types';
 
 
 
@@ -26,18 +26,18 @@ function parseNonNegativeInt(raw: string | number | undefined): number {
 }
 
 export type EventStockEditModalProps = {
-	opened: boolean,
-	stock: EventStock | null,
-	lang: string,
-	onClose: () => void,
-	onSubmit: (p: EventStockUpdateFormPayload) => void,
-	isSubmitting: boolean,
+	opened: boolean;
+	stock: EventStock | null;
+	lang: string;
+	onClose: () => void;
+	onSubmit: (p: EventStockUpdateFormPayload) => void;
+	isSubmitting: boolean;
 };
 
 export const EventStockEditModal: React.FC<EventStockEditModalProps> = ({
 	opened, stock, lang, onClose, onSubmit, isSubmitting,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const [sellPrice, setSellPrice] = useState(0);
 
 	useEffect(() => {
@@ -63,7 +63,7 @@ export const EventStockEditModal: React.FC<EventStockEditModalProps> = ({
 		<Modal
 			opened={opened}
 			onClose={onClose}
-			title={translate('events.event_stock.edit.title', {
+			title={translate('coremart.vendingMachine.events.eventStock.edit.title', {
 				defaultValue: 'Event product line',
 			})}
 			centered
@@ -92,7 +92,7 @@ export const EventStockEditModal: React.FC<EventStockEditModalProps> = ({
 						<Divider />
 						<Stack gap={3}>
 							<Text size='sm' c='dimmed'>
-								{translate('kiosk.stocks.fields.proposed_price', {
+								{translate('coremart.vendingMachine.kiosk.stocks.fields.proposedPrice', {
 									defaultValue: 'Reference price',
 								})}
 							</Text>
@@ -101,7 +101,7 @@ export const EventStockEditModal: React.FC<EventStockEditModalProps> = ({
 					</Stack>
 				</Group>
 				<NumberInput
-					label={translate('kiosk.stocks.fields.sell_price', {
+					label={translate('coremart.vendingMachine.kiosk.stocks.fields.sellPrice', {
 						defaultValue: 'Sell price',
 					})}
 					value={sellPrice}
@@ -114,10 +114,10 @@ export const EventStockEditModal: React.FC<EventStockEditModalProps> = ({
 				/>
 				<Group justify='flex-end' mt='md'>
 					<Button variant='default' onClick={onClose} disabled={isSubmitting}>
-						{translate('action.cancel', { defaultValue: 'Cancel' })}
+						{translate('nikki.general.actions.cancel', { defaultValue: 'Cancel' })}
 					</Button>
 					<Button loading={isSubmitting} onClick={() => onSubmit({ sellPrice })}>
-						{translate('action.save', { defaultValue: 'Save' })}
+						{translate('nikki.general.actions.save', { defaultValue: 'Save' })}
 					</Button>
 				</Group>
 			</Stack>

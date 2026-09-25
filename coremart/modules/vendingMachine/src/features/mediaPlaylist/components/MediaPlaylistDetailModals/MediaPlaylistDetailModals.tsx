@@ -2,18 +2,18 @@ import { ConfirmModal } from '@nikkierp/ui/components';
 import React from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 
-import type { Playlist } from '../../types';
+import type { Playlist } from '@/features/mediaPlaylist/types';
 
 
 export type MediaPlaylistDetailModalsProps = {
-	playlist: Playlist,
-	closeDeleteModal: () => void,
-	confirmDelete: () => void,
-	isOpenDeleteModal: boolean,
-	isOpenArchiveModal: boolean,
-	pendingArchive: { playlist: Playlist, targetArchived: boolean } | null,
-	handleConfirmArchive: () => void,
-	handleCloseArchiveModal: () => void,
+	playlist: Playlist;
+	closeDeleteModal: () => void;
+	confirmDelete: () => void;
+	isOpenDeleteModal: boolean;
+	isOpenArchiveModal: boolean;
+	pendingArchive: { playlist: Playlist; targetArchived: boolean } | null;
+	handleConfirmArchive: () => void;
+	handleCloseArchiveModal: () => void;
 };
 
 export const MediaPlaylistDetailModals: React.FC<MediaPlaylistDetailModalsProps> = ({
@@ -26,23 +26,23 @@ export const MediaPlaylistDetailModals: React.FC<MediaPlaylistDetailModalsProps>
 	handleConfirmArchive,
 	handleCloseArchiveModal,
 }) => {
-	const { t } = useTranslation('vending_machine');
+	const { t } = useTranslation();
 
 	return (
 		<>
 			<ConfirmModal
-				title={t('messages.delete.confirm')}
+				title={t('nikki.general.messages.delete_confirm')}
 				opened={isOpenDeleteModal}
 				onClose={closeDeleteModal}
 				onConfirm={confirmDelete}
 				message={
 					<Trans
-						i18nKey='media_playlist.messages.delete_confirm'
+						i18nKey='coremart.vendingMachine.mediaPlaylist.messages.delete_confirm'
 						values={{ name: playlist.name }}
 						components={{ strong: <strong /> }}
 					/>
 				}
-				confirmLabel={t('action.delete')}
+				confirmLabel={t('nikki.general.actions.delete')}
 				confirmColor='red'
 			/>
 
@@ -51,20 +51,20 @@ export const MediaPlaylistDetailModals: React.FC<MediaPlaylistDetailModalsProps>
 				onClose={handleCloseArchiveModal}
 				onConfirm={handleConfirmArchive}
 				title={pendingArchive?.targetArchived
-					? t('media_playlist.messages.archive_modal_title')
-					: t('media_playlist.messages.restore_modal_title')}
+					? t('coremart.vendingMachine.mediaPlaylist.messages.archive_modal_title')
+					: t('coremart.vendingMachine.mediaPlaylist.messages.restore_modal_title')}
 				message={
 					<Trans
 						i18nKey={pendingArchive?.targetArchived
-							? 'media_playlist.messages.archive_confirm'
-							: 'media_playlist.messages.restore_confirm'}
+							? 'coremart.vendingMachine.mediaPlaylist.messages.archive_confirm'
+							: 'coremart.vendingMachine.mediaPlaylist.messages.restore_confirm'}
 						values={{ name: pendingArchive?.playlist?.name || '' }}
 						components={{ strong: <strong /> }}
 					/>
 				}
 				confirmLabel={pendingArchive?.targetArchived
-					? t('action.archive')
-					: t('action.restore')}
+					? t('nikki.general.actions.archive')
+					: t('nikki.general.actions.restore')}
 				confirmColor={pendingArchive?.targetArchived ? 'orange' : 'blue'}
 			/>
 		</>

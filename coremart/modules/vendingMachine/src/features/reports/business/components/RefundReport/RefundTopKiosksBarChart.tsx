@@ -12,7 +12,7 @@ import React, { useMemo, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { useTranslation } from 'react-i18next';
 
-import { fmtShortNumber } from '../../../../../common/helpers';
+import { fmtShortNumber } from '@/common/helpers';
 
 import type { KioskRefundBreakdown } from './type';
 
@@ -22,9 +22,9 @@ import type { KioskRefundBreakdown } from './type';
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 type RefundTopKiosksBarChartProps = {
-	data: KioskRefundBreakdown[],
-	maxDisplay?: number,
-	title?: string,
+	data: KioskRefundBreakdown[];
+	maxDisplay?: number;
+	title?: string;
 };
 
 export function RefundTopKiosksBarChart({
@@ -32,7 +32,7 @@ export function RefundTopKiosksBarChart({
 	maxDisplay = 8,
 	title,
 }: RefundTopKiosksBarChartProps): React.ReactElement {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const [activeTab, setActiveTab] = useState<string | null>('amount');
 
 	const sortedData = useMemo(() => {
@@ -50,7 +50,7 @@ export function RefundTopKiosksBarChart({
 			return [
 				...topItems,
 				{
-					kioskName: translate('reports.refund_report.charts.other_kiosks'),
+					kioskName: translate('coremart.vendingMachine.reports.refundReport.charts.otherKiosks'),
 					refundAmount: otherAmount,
 					refundOrders: otherOrders,
 				},
@@ -70,8 +70,8 @@ export function RefundTopKiosksBarChart({
 			{
 				label:
 					activeTab === 'amount'
-						? translate('reports.refund_report.charts.refund_amount_axis')
-						: translate('reports.refund_report.charts.refund_order_axis'),
+						? translate('coremart.vendingMachine.reports.refundReport.charts.refundAmountAxis')
+						: translate('coremart.vendingMachine.reports.refundReport.charts.refundOrderAxis'),
 				data:
 					activeTab === 'amount'
 						? sortedData.map((d) => d.refundAmount)
@@ -107,9 +107,9 @@ export function RefundTopKiosksBarChart({
 					label: (context: any) => {
 						const value = context.parsed?.x ?? 0;
 						if (activeTab === 'amount') {
-							return `${translate('reports.refund_report.charts.tooltip_refund')}: ${new Intl.NumberFormat('vi-VN').format(value)}`;
+							return `${translate('coremart.vendingMachine.reports.refundReport.charts.tooltipRefund')}: ${new Intl.NumberFormat('vi-VN').format(value)}`;
 						}
-						return `${translate('reports.refund_report.charts.tooltip_orders')}: ${new Intl.NumberFormat('vi-VN').format(value)}`;
+						return `${translate('coremart.vendingMachine.reports.refundReport.charts.tooltipOrders')}: ${new Intl.NumberFormat('vi-VN').format(value)}`;
 					},
 				},
 			},
@@ -121,8 +121,8 @@ export function RefundTopKiosksBarChart({
 					display: true,
 					text:
 						activeTab === 'amount'
-							? translate('reports.refund_report.charts.refund_amount_axis')
-							: translate('reports.refund_report.charts.refund_order_axis'),
+							? translate('coremart.vendingMachine.reports.refundReport.charts.refundAmountAxis')
+							: translate('coremart.vendingMachine.reports.refundReport.charts.refundOrderAxis'),
 				},
 				ticks: {
 					callback: (value: number | string) => {
@@ -154,12 +154,12 @@ export function RefundTopKiosksBarChart({
 						<Group gap='md'>
 							<Radio
 								value='amount'
-								label={translate('reports.refund_report.charts.radio_refund_amount')}
+								label={translate('coremart.vendingMachine.reports.refundReport.charts.radioRefundAmount')}
 								size='xs'
 							/>
 							<Radio
 								value='orders'
-								label={translate('reports.refund_report.charts.radio_refund_orders')}
+								label={translate('coremart.vendingMachine.reports.refundReport.charts.radioRefundOrders')}
 								size='xs'
 							/>
 						</Group>

@@ -4,17 +4,17 @@ import { ArcElement, Chart as ChartJS, Legend, Tooltip } from 'chart.js';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { fmtCurrency, getLocalizedName } from '../../../../../common/helpers';
-import { PaginationConfig } from '../../../../../common/hooks';
+import { fmtCurrency, getLocalizedName } from '@/common/helpers';
+import { PaginationConfig } from '@/common/hooks';
+import { REPORT_PALETTE_FILLS, reportPaletteKeyAt } from '@/components/reportChartTheme';
 import {
 	TimeRangeSelect,
 	type TimeRangePreset,
 	type TimeRangePresetPickerProps,
 	type TimeRangePresetRange,
-} from '../../../../../components/RangePicker';
-import { REPORT_PALETTE_FILLS, reportPaletteKeyAt } from '../../../../../components/reportChartTheme';
+} from '@/components/RangePicker';
 
-import type { RevenueReportByCategory } from '../../type';
+import type { RevenueReportByCategory } from '@/features/reports/business/type';
 
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -46,7 +46,7 @@ export function ProductCategoryRevenue({
 	filterPresets,
 	onFilterChange,
 }: ProductCategoryRevenueProps) {
-	const { t: translate, i18n } = useTranslation('vending_machine');
+	const { t: translate, i18n } = useTranslation();
 
 	const processedItems = useMemo(() => {
 		if (items.length <= MAX_DISPLAY_ITEMS) {
@@ -64,10 +64,10 @@ export function ProductCategoryRevenue({
 				<Group justify='space-between' align='flex-start'>
 					<Stack gap={4}>
 						<Title order={4} fw={600}>
-							{translate('reports.revenue_report.chart.category_doughnut_title')}
+							{translate('coremart.vendingMachine.reports.revenueReport.chart.categoryDoughnutTitle')}
 						</Title>
 						<Text size='xs' c='dimmed'>
-							{translate('reports.revenue_report.chart.category_doughnut_description')}
+							{translate('coremart.vendingMachine.reports.revenueReport.chart.categoryDoughnutDescription')}
 						</Text>
 					</Stack>
 					{showFilter && (

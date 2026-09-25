@@ -21,23 +21,23 @@ export const GameGridView: React.FC<GameGridViewProps> = ({
 	onEdit,
 	onDelete,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const getStatusBadge = (status: 'active' | 'inactive') => {
 		const statusMap = {
-			active: { color: 'green', label: translate('status.active') },
-			inactive: { color: 'gray', label: translate('status.inactive') },
+			active: { color: 'green', label: translate('nikki.general.status.active') },
+			inactive: { color: 'gray', label: translate('nikki.general.status.inactive') },
 		};
 		const statusInfo = statusMap[status];
 		return <Badge color={statusInfo.color} size='sm'>{statusInfo.label}</Badge>;
 	};
 
 	if (isLoading) {
-		return <Text c='dimmed'>{translate('messages.loading')}</Text>;
+		return <Text c='dimmed'>{translate('nikki.general.messages.loading')}</Text>;
 	}
 
 	if (games.length === 0) {
-		return <Text c='dimmed'>{translate('games.messages.no_games')}</Text>;
+		return <Text c='dimmed'>{translate('coremart.vendingMachine.games.messages.no_games')}</Text>;
 	}
 
 	return (
@@ -68,14 +68,14 @@ export const GameGridView: React.FC<GameGridViewProps> = ({
 							</Group>
 							<Group gap='xs' onClick={(e) => e.stopPropagation()}>
 								{onEdit && (
-									<Tooltip label={translate('action.edit')}>
+									<Tooltip label={translate('nikki.general.actions.edit')}>
 										<ActionIcon variant='subtle' color='gray' size='sm' onClick={() => onEdit(game.id)}>
 											<IconEdit size={14} />
 										</ActionIcon>
 									</Tooltip>
 								)}
 								{onDelete && (
-									<Tooltip label={translate('action.delete')}>
+									<Tooltip label={translate('nikki.general.actions.delete')}>
 										<ActionIcon variant='subtle' color='red' size='sm' onClick={() => onDelete(game.id)}>
 											<IconTrash size={14} />
 										</ActionIcon>
@@ -96,22 +96,22 @@ export const GameGridView: React.FC<GameGridViewProps> = ({
 
 						{game.latestVersion && (
 							<Text size='xs' c='dimmed'>
-								{translate('games.fields.latest_version')}: {game.latestVersion}
+								{translate('coremart.vendingMachine.games.fields.latestVersion')}: {game.latestVersion}
 							</Text>
 						)}
 
 						{game.minAppVersion && (
 							<Text size='xs' c='dimmed'>
-								{translate('games.fields.min_app_version')}: {game.minAppVersion}
+								{translate('coremart.vendingMachine.games.fields.minAppVersion')}: {game.minAppVersion}
 							</Text>
 						)}
 
 						<Text size='xs' c='dimmed'>
-							{translate('games.fields.versions')}: {game.versions.length}
+							{translate('coremart.vendingMachine.games.fields.versions')}: {game.versions.length}
 						</Text>
 
 						<Text size='xs' c='dimmed'>
-							{translate('games.fields.created_at')}: {new Date(game.createdAt).toLocaleDateString()}
+							{translate('coremart.vendingMachine.games.fields.createdAt')}: {new Date(game.createdAt).toLocaleDateString()}
 						</Text>
 					</Stack>
 				</Card>

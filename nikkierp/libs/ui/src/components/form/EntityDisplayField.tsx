@@ -2,10 +2,10 @@ import { TextInput } from '@mantine/core';
 import { useId } from '@mantine/hooks';
 import React from 'react';
 import { useWatch } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 import { BaseFieldWrapper } from './fields';
 import { useFormField, useFieldData } from './formContext';
-import { useLocalize, useTranslate } from '../../i18n';
 
 
 export interface EntityDisplayFieldProps<TEntity> {
@@ -25,8 +25,7 @@ export function EntityDisplayField<TEntity>({
 	fallbackLabelKey,
 	fallbackValue,
 }: EntityDisplayFieldProps<TEntity>) {
-	const localize = useLocalize('common');
-	const translate = useTranslate('common');
+	const { t: translate } = useTranslation();
 	const { control } = useFormField();
 	const fieldData = useFieldData(fieldName);
 	const inputId = useId();
@@ -38,11 +37,11 @@ export function EntityDisplayField<TEntity>({
 
 	const displayValue = React.useMemo(() => {
 		if (!fieldValue) {
-			return fallbackValue || (translate(fallbackLabelKey!));
+			return fallbackValue || (fallbackLabelKey ? translate(fallbackLabelKey) : '');
 		}
 		const entity = entities?.find((e) => getEntityId(e) === fieldValue);
 		return entity ? getEntityName(entity) : fieldValue;
-	}, [fieldValue, entities, getEntityId, getEntityName, fallbackLabelKey, fallbackValue, localize]);
+	}, [fieldValue, entities, getEntityId, getEntityName, fallbackLabelKey, fallbackValue, translate]);
 
 	if (!fieldData) {
 		return null;
@@ -51,10 +50,10 @@ export function EntityDisplayField<TEntity>({
 	return (
 		<BaseFieldWrapper
 			inputId={inputId}
-			label={localize(fieldData.label)}
-			description={localize(fieldData.description as any)}
+			label={translate(fieldData.label)}
+			description={translate(fieldData.description ?? '')}
 			isRequired={fieldData.isRequired}
-			error={localize(fieldData.error as any)}
+			error={translate(fieldData.error ?? '')}
 		>
 			<TextInput
 				id={inputId}

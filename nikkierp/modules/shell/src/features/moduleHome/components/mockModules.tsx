@@ -23,9 +23,9 @@ export const mockModules = [
 				lastUsed: '2025-01-01',
 			},
 			{
-				name: 'IAM',
-				slug: 'iam',
-				category: 'IAM',
+				name: 'Identity',
+				slug: 'identity',
+				category: 'Identity',
 				icon: identityIcon,
 				isDisabled: false,
 				isOrphaned: false,
@@ -84,7 +84,7 @@ export const mockModules = [
 			},
 			{
 				name: 'Vending Machine',
-				slug: 'vending_machine',
+				slug: 'vending-machine',
 				category: 'Vending Machine',
 				icon: vendingMachineIcon,
 				isDisabled: false,
@@ -100,7 +100,7 @@ export const mockModules = [
 		modules: [
 			{
 				name: 'File Drive',
-				slug: 'file_drive',
+				slug: 'file-drive',
 				category: 'File Drive',
 				icon: fileDriveIcon,
 				isDisabled: true,
@@ -109,7 +109,7 @@ export const mockModules = [
 			},
 			{
 				name: 'HR Management',
-				slug: 'hr_management',
+				slug: 'hr-management',
 				category: 'HR Management',
 				icon: 'icon-hr-management',
 				isDisabled: false,
@@ -118,7 +118,7 @@ export const mockModules = [
 			},
 			{
 				name: 'Asset Management',
-				slug: 'asset_management',
+				slug: 'asset-management',
 				category: 'Asset Management',
 				icon: 'icon-asset-management',
 				isDisabled: false,
@@ -133,7 +133,7 @@ export const mockModules = [
 		modules: [
 			{
 				name: 'Chat',
-				slug: 'chat',
+				slug: '',
 				category: 'communication',
 				icon: 'icon-chat',
 				isDisabled: false,
@@ -172,7 +172,7 @@ export const mockModules = [
 		modules: [
 			{
 				name: 'Vending Machine',
-				slug: 'vending_machine',
+				slug: 'vending-machine',
 				category: 'infomationTechnology',
 				icon: 'icon-vending-machine',
 				isDisabled: false,
@@ -211,7 +211,7 @@ export const mockModules = [
 		modules: [
 			{
 				name: 'Accounting',
-				slug: 'accounting',
+				slug: 'purchase',
 				category: 'financialManagement',
 				icon: 'icon-accounting',
 				isDisabled: false,

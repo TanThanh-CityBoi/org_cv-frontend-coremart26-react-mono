@@ -1,15 +1,16 @@
 import { Stack } from '@mantine/core';
 import React from 'react';
 
-import { GameSelect } from '../../../../components/GameSelect';
-import { MediaPlaylistSelect } from '../../../../components/MediaPlaylistSelect';
-import { ThemeSelect } from '../../../../components/ThemeSelect';
+import { GameSelect } from '@/components/GameSelect';
+import { MediaPlaylistSelect } from '@/components/MediaPlaylistSelect';
+import { ThemeSelect } from '@/components/ThemeSelect';
+
 import { KioskSetting } from '../../types';
 import { useKioskSettingSettingsTab } from './hooks/useKioskSettingSettingsTab';
 
 
 export type KioskSettingDetailSettingsProps = {
-	setting: KioskSetting,
+	setting: KioskSetting;
 };
 
 export const KioskSettingDetailSettings: React.FC<KioskSettingDetailSettingsProps> = ({

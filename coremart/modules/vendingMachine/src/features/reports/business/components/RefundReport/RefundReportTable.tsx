@@ -1,13 +1,14 @@
 import { Alert, Anchor, Button, Group, Text, Title } from '@mantine/core';
 import { AutoTable } from '@nikkierp/ui/components';
+import { ModelSchema } from '@nikkierp/ui/model';
 import { IconDownload } from '@tabler/icons-react';
 import dayjs from 'dayjs';
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 
-import { asLegacyModelSchema } from '../../../../../common/helpers';
-import { TableContainer, TablePagination } from '../../../../../components/Table';
+import { TableContainer, TablePagination } from '@/components/Table';
+
 import { useRefundOrders } from '../../hooks';
 
 import type { RefundColumnKey, RefundReportAppliedFilters } from './type';
@@ -25,20 +26,20 @@ const REFUND_TABLE_COLUMNS: RefundColumnKey[] = [
 	'reason',
 ];
 
-const refundReportSchema = asLegacyModelSchema({
+const refundReportSchema: ModelSchema = {
 	name: 'RefundReport',
 	fields: {
-		occurredAt: { type: 'string', label: 'reports.refund_report.columns.date' },
-		reference: { type: 'string', label: 'reports.refund_report.columns.reference' },
-		kiosk: { type: 'string', label: 'reports.refund_report.columns.kiosk' },
-		createdBy: { type: 'string', label: 'reports.refund_report.columns.created_by' },
-		refundMethod: { type: 'string', label: 'reports.refund_report.columns.refund_method' },
-		amount: { type: 'string', label: 'reports.refund_report.columns.amount' },
-		refundedBy: { type: 'string', label: 'reports.refund_report.columns.refunded_by' },
-		reason: { type: 'string', label: 'reports.refund_report.columns.reason' },
+		occurredAt: { type: 'string', label: 'coremart.vendingMachine.reports.refundReport.columns.date' },
+		reference: { type: 'string', label: 'coremart.vendingMachine.reports.refundReport.columns.reference' },
+		kiosk: { type: 'string', label: 'coremart.vendingMachine.reports.refundReport.columns.kiosk' },
+		createdBy: { type: 'string', label: 'coremart.vendingMachine.reports.refundReport.columns.createdBy' },
+		refundMethod: { type: 'string', label: 'coremart.vendingMachine.reports.refundReport.columns.refundMethod' },
+		amount: { type: 'string', label: 'coremart.vendingMachine.reports.refundReport.columns.amount' },
+		refundedBy: { type: 'string', label: 'coremart.vendingMachine.reports.refundReport.columns.refundedBy' },
+		reason: { type: 'string', label: 'coremart.vendingMachine.reports.refundReport.columns.reason' },
 		orderId: { type: 'string', label: 'orderId', hidden: true },
 	},
-});
+};
 
 function mapOrderToRow(order: OrderRefundReport): Record<string, unknown> {
 	return {
@@ -56,11 +57,11 @@ function mapOrderToRow(order: OrderRefundReport): Record<string, unknown> {
 }
 
 type RefundReportTableProps = {
-	applied: RefundReportAppliedFilters,
+	applied: RefundReportAppliedFilters;
 };
 
 export function RefundReportTable({ applied }: RefundReportTableProps): React.ReactElement {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const { items, isLoading, error, pagination, handleExport } = useRefundOrders(applied);
 
@@ -88,7 +89,7 @@ export function RefundReportTable({ applied }: RefundReportTableProps): React.Re
 	const headerRenderers: React.ComponentProps<typeof AutoTable>['headerRenderers'] = {
 		amount: () => (
 			<Text fw={600} fz='sm' ta='end'>
-				{translate('reports.refund_report.columns.amount')}
+				{translate('coremart.vendingMachine.reports.refundReport.columns.amount')}
 			</Text>
 		),
 	};
@@ -109,21 +110,20 @@ export function RefundReportTable({ applied }: RefundReportTableProps): React.Re
 			unstyledScrollContainer
 			header={
 				<Group justify='space-between' mb={6}>
-					<Title order={4} fw={600}>{translate('reports.refund_report.table.title')}</Title>
+					<Title order={4} fw={600}>{translate('coremart.vendingMachine.reports.refundReport.table.title')}</Title>
 					<Button
 						size='sm'
 						leftSection={<IconDownload size={16} />}
 						disabled={isLoading || !pagination.totalItems}
 						onClick={handleExport}
 					>
-						{translate('reports.revenue_report.export')}
+						{translate('coremart.vendingMachine.reports.revenueReport.export')}
 					</Button>
 				</Group>
 			}
 			footer={<TablePagination {...pagination} />}
 		>
 			<AutoTable
-				translationNs='vending_machine'
 				columns={[...REFUND_TABLE_COLUMNS]}
 				data={tableData}
 				schema={refundReportSchema}

@@ -1,32 +1,87 @@
+/* eslint-disable max-lines-per-function */
+
 import { useUIState } from '@nikkierp/shell/contexts';
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
-import { useCallback, useState } from 'react';
+import { ReduxActionState } from '@nikkierp/ui/appState';
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
+import { RefObject, useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { useMutationOutcome } from '../../../common/hooks/useMutationOutcome';
-import { eventStockCrudService } from '../eventStockService';
+import {
+	eventActions,
+	selectBulkCreateEventStock,
+	VendingMachineDispatch,
+} from '@/appState';
 
-import type { RestCreateResponse } from '../../../types';
+import type { BulkCreateEventStocksRequest } from '@/features/events/eventSlice';
+import type { RestCreateResponse } from '@/types';
 
 
 export type CreateEventStockFormPayload = {
-	productRef: string,
-	sellPrice: number,
+	productRef: string;
+	sellPrice: number;
 };
 
 export type UseCreateEventStockArgs = {
-	event: { id?: string },
-	onSuccess?: () => void,
-	onError?: () => void,
+	event: { id?: string };
+	onSuccess?: () => void;
+	onError?: () => void;
 };
 
+function useCreateEventStocksBulkOutcomeSync(
+	bulkState: ReduxActionState<RestCreateResponse[]>,
+	requestIdRef: RefObject<string | null>,
+	dispatch: VendingMachineDispatch,
+	notification: ReturnType<typeof useUIState>['notification'],
+	translate: ReturnType<typeof useTranslation>['t'],
+	onClose: () => void,
+	onSuccess?: () => void,
+	onError?: () => void,
+) {
+	useEffect(() => {
+		const requestId = bulkState.requestId;
+		const matchesDispatch = requestId != null && requestIdRef.current === requestId;
+		if (!matchesDispatch) {
+			return;
+		}
+		if (bulkState.status === 'success') {
+			requestIdRef.current = null;
+			const count = bulkState.data?.length ?? 0;
+			notification.showInfo(
+				count > 1
+					? translate('coremart.vendingMachine.eventStock.create.successMany', {
+						defaultValue: 'Products added to event',
+					})
+					: translate('coremart.vendingMachine.eventStock.create.success', {
+						defaultValue: 'Product added to event',
+					}),
+				translate('nikki.general.messages.success'),
+			);
+			onClose();
+			onSuccess?.();
+			dispatch(eventActions.resetBulkCreateEventStock());
+			return;
+		}
+		if (bulkState.status === 'error') {
+			requestIdRef.current = null;
+			notification.showError(
+				bulkState.error ?? translate('nikki.general.errors.create_failed'),
+				translate('nikki.general.messages.error'),
+			);
+			onError?.();
+			dispatch(eventActions.resetBulkCreateEventStock());
+		}
+	}, [bulkState, dispatch, notification, translate, onClose, onSuccess, onError, requestIdRef]);
+}
+
 export function useCreateEventStock(
-	{ event, onSuccess = () => {}, onError = () => {} }: UseCreateEventStockArgs,
+	{ event, onSuccess, onError = () => {} }: UseCreateEventStockArgs,
 ) {
 	const { notification } = useUIState();
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
 	const [isOpen, setIsOpen] = useState(false);
-	const { dispatchMethod, result } = useServiceLayer<RestCreateResponse[]>(eventStockCrudService.bulkCreate);
+	const bulkState = useMicroAppSelector(selectBulkCreateEventStock);
+	const requestIdRef = useRef<string | null>(null);
 
 	const handleCloseModal = useCallback(() => {
 		setIsOpen(false);
@@ -44,33 +99,38 @@ export function useCreateEventStock(
 			}
 			if (!event.id) {
 				notification.showError(
-					translate('errors.createFailed'),
-					translate('messages.error'),
+					translate('nikki.general.errors.create_failed'),
+					translate('nikki.general.messages.error'),
 				);
 				return;
 			}
-			dispatchMethod({
-				eventId: event.id,
-				items: list.map((p) => ({ productRef: p.productRef, sellPrice: String(p.sellPrice) })),
-			});
+			const items = list.map((p) => ({
+				productRef: p.productRef,
+				sellPrice: String(p.sellPrice),
+			}));
+			const body: BulkCreateEventStocksRequest = { eventId: event.id, items };
+			const pending = dispatch(eventActions.bulkCreateEventStock(body));
+			requestIdRef.current = pending.requestId;
 		},
-		[dispatchMethod, event.id, notification, translate],
+		[dispatch, event.id, notification, translate],
 	);
 
-	useMutationOutcome(result, {
-		successKey: () => ((result.data?.length ?? 0) > 1
-			? 'event_stock.create.success_many'
-			: 'event_stock.create.success'),
-		errorKey: 'errors.createFailed',
-		onSuccess: () => { handleCloseModal(); onSuccess(); },
-		onError: () => { handleCloseModal(); onError(); },
-	});
+	useCreateEventStocksBulkOutcomeSync(
+		bulkState,
+		requestIdRef,
+		dispatch,
+		notification,
+		translate,
+		handleCloseModal,
+		onSuccess,
+		onError,
+	);
 
 	return {
 		isOpenCreateModal: isOpen,
 		handleOpenCreateModal,
 		handleCloseModal,
 		handleSubmit,
-		isSubmitting: result.isPending,
+		isSubmitting: bulkState.status === 'pending',
 	};
 }

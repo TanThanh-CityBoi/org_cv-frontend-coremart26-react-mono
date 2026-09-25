@@ -1,26 +1,36 @@
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
 import React from 'react';
 
-import { usePaginationWithTotal } from '../../../common/hooks';
-import { SearchGraph } from '../../../types';
-import { KIOSK_SETTING_DEFAULT_PAGE_SIZE, kioskSettingCrudService } from '../kioskSettingService';
+import {
+	VendingMachineDispatch,
+	kioskSettingActions,
+	selectKioskSettingList,
+} from '@/appState';
+import { usePagination } from '@/common/hooks';
+import { KIOSK_SETTING_DEFAULT_PAGE_SIZE } from '@/features/kioskSettings/kioskSettingSlice';
+import { SearchGraph, SearchParams } from '@/types';
+
+
 import { KioskSetting } from '../types';
 
 
-type SearchResponse = { items: KioskSetting[], total: number };
-
-
-export function useKioskSettingList(options?: { enabled?: boolean, graph?: SearchGraph }) {
+export function useKioskSettingList(options?: { enabled?: boolean; graph?: SearchGraph }) {
 	const enabled = options?.enabled ?? true;
 	const graph = options?.graph;
 
-	const { dispatchMethod, result } = useServiceLayer<SearchResponse>(kioskSettingCrudService.search);
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
+	const list = useMicroAppSelector(selectKioskSettingList);
 
 	const fetchList = React.useCallback((targetPage: number, size: number, searchGraph?: SearchGraph) => {
-		dispatchMethod({ page: targetPage - 1, size, graph: searchGraph });
-	}, [dispatchMethod]);
+		const params: SearchParams<KioskSetting> = {
+			page: targetPage - 1,
+			size,
+			graph: searchGraph,
+		};
+		dispatch(kioskSettingActions.searchKioskSettings(params));
+	}, [dispatch]);
 
-	const pagination = usePaginationWithTotal(fetchList, result.data?.total ?? 0, {
+	const pagination = usePagination(fetchList, selectKioskSettingList, {
 		graph,
 		fallbackPageSize: KIOSK_SETTING_DEFAULT_PAGE_SIZE,
 	});
@@ -36,12 +46,13 @@ export function useKioskSettingList(options?: { enabled?: boolean, graph?: Searc
 		fetchList(page, pageSize, graph);
 	}, [enabled, fetchList, graph, page, pageSize]);
 
-	const settings = result.data?.items;
-	const isLoading = enabled && !settings?.length && result.isPending;
+	const settings = list.items;
+	const status = list.status;
+	const isLoading = enabled && !settings?.length && (status === 'pending' || status === 'idle');
 
 	return {
 		settings,
-		status: result.isPending ? 'pending' : 'success',
+		status,
 		isLoadingList: isLoading,
 		handleRefresh,
 		pagination,

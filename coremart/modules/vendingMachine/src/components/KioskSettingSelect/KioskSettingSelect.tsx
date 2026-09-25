@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { KioskSettingCard } from './KioskSettingCard';
 import { KioskSettingSelectModal } from './KioskSettingSelectModal';
 
-import type { KioskSetting } from '../../features/kioskSettings/types';
+import type { KioskSetting } from '@/features/kioskSettings/types';
 
 
 export interface KioskSettingSelectProps {
@@ -24,7 +24,7 @@ export const KioskSettingSelect: React.FC<KioskSettingSelectProps> = ({
 	onRemove,
 	disabled = false,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const [modalOpened, setModalOpened] = useState(false);
 
 	const handleSelect = (settings: KioskSetting[]) => {
@@ -37,7 +37,7 @@ export const KioskSettingSelect: React.FC<KioskSettingSelectProps> = ({
 	return (
 		<Box>
 			<Text size='sm' c='dimmed' mb={3} fw={500}>
-				{translate('kiosk_settings.fields.settings')}
+				{translate('coremart.vendingMachine.kioskSettings.fields.settings')}
 			</Text>
 			<KioskSettingCard
 				setting={value}

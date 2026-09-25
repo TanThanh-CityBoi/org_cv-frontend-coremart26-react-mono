@@ -2,34 +2,32 @@
 
 import { DatesRangeValue } from '@mantine/dates';
 import { DateValue } from '@mantine/dates';
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
 import React, { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { usePaginationWithTotal } from '../../../common/hooks';
-import { controlPanelToSearchGraph } from '../../../components';
-import { type ControlPanelFilterConfig } from '../../../components';
-import { SearchGraph } from '../../../types';
-// The enum, not the `'asc' | 'desc'` type alias the `@/types` barrel re-exports under the same name.
-import { SortDirection } from '../../../types/search-graph';
-import { orderCrudService } from '../orderService';
+import { VendingMachineDispatch, selectVendingOrderList, vendingOrderActions } from '@/appState';
+import { usePagination } from '@/common/hooks';
+import { controlPanelToSearchGraph } from '@/components';
+import { type ControlPanelFilterConfig } from '@/components';
+import { SearchGraph } from '@/types';
+
 import { ORDER_STATUSES, PAYMENT_METHODS, VdOrder, VdOrderStatus, VdPaymentMethod } from '../types';
 
 
-type SearchResponse = { items: VdOrder[], total: number };
-
 export function useOrderList(graph?: SearchGraph) {
-	const { dispatchMethod, result } = useServiceLayer<SearchResponse>(orderCrudService.search);
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
+	const list = useMicroAppSelector(selectVendingOrderList);
 
 	const fetchList = useCallback((targetPage: number, size: number, searchGraph?: SearchGraph) => {
-		dispatchMethod({
+		dispatch(vendingOrderActions.listOrders({
 			page: targetPage - 1,
 			size,
-			graph: { order: [['created_at', SortDirection.DESC]], ...(searchGraph ?? {}) },
-		});
-	}, [dispatchMethod]);
+			graph: searchGraph,
+		}));
+	}, [dispatch]);
 
-	const pagination = usePaginationWithTotal(fetchList, result.data?.total ?? 0, { graph });
+	const pagination = usePagination(fetchList, selectVendingOrderList, { graph });
 	const { page, pageSize } = pagination;
 
 	React.useEffect(() => {
@@ -40,10 +38,10 @@ export function useOrderList(graph?: SearchGraph) {
 		fetchList(page, pageSize, graph);
 	}, [fetchList, page, pageSize, graph]);
 
-	const orders = result.data?.items ?? [];
-	const status = result.isPending ? 'pending' : 'success';
-	const isLoading = !orders.length && (result.isPending || result.doneAt == null);
-	const isEmpty = !orders.length && !result.isPending && result.doneAt != null;
+	const orders = list.items ?? [];
+	const status = list.status;
+	const isLoading = !orders.length && (status === 'pending' || status === 'idle');
+	const isEmpty = !orders.length && status !== 'idle' && status !== 'pending';
 
 	return {
 		orders,
@@ -56,7 +54,7 @@ export function useOrderList(graph?: SearchGraph) {
 }
 
 export function useOrderFilter() {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const [searchValue, setSearchValue] = useState('');
 	const [orderStatus, setOrderStatus] = useState<VdOrderStatus[]>([]);
 	const [paymentMethod, setPaymentMethod] = useState<VdPaymentMethod[]>([]);
@@ -76,14 +74,14 @@ export function useOrderFilter() {
 				value: searchValue,
 				onChange: setSearchValue,
 				searchFields: ['orderCode', 'gatewayRefCode'],
-				placeholder: translate('orders.search.placeholder'),
+				placeholder: translate('coremart.vendingMachine.orders.search.placeholder'),
 			},
 			{
 				key: 'createdAt',
 				type: 'dateRange' as const,
 				value: dateRange,
 				onChange: handleDateChange,
-				placeholder: translate('common.date_picker.select_date_range'),
+				placeholder: translate('coremart.vendingMachine.common.datePicker.selectDateRange'),
 				clearable: true,
 				valueFormat: 'DD/MM/YYYY',
 				// disabled: true,
@@ -95,9 +93,9 @@ export function useOrderFilter() {
 				onChange: setOrderStatus,
 				options: ORDER_STATUSES.map((s) => ({
 					value: s,
-					label: translate(`orders.order_status.${s}`),
+					label: translate(`coremart.vendingMachine.orders.orderStatus.${s}`),
 				})),
-				placeholder: translate('orders.filter.order_status'),
+				placeholder: translate('coremart.vendingMachine.orders.filter.orderStatus'),
 				clearable: true,
 			},
 			{
@@ -107,9 +105,9 @@ export function useOrderFilter() {
 				onChange: setPaymentMethod,
 				options: PAYMENT_METHODS.map((p) => ({
 					value: p,
-					label: translate(`orders.payment_method.${p}`),
+					label: translate(`coremart.vendingMachine.orders.paymentMethod.${p}`),
 				})),
-				placeholder: translate('orders.filter.payment_method'),
+				placeholder: translate('coremart.vendingMachine.orders.filter.paymentMethod'),
 				clearable: true,
 			},
 

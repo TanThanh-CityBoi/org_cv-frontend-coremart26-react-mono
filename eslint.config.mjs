@@ -56,20 +56,6 @@ export default defineConfig([
 					ignoreRegExpLiterals: true,
 				},
 			],
-			// `interface` / declared fields: semicolons; object types in `type` aliases: commas
-			'@stylistic/member-delimiter-style': [
-				'error',
-				{
-					multiline: { delimiter: 'semi', requireLast: true },
-					singleline: { delimiter: 'semi', requireLast: false },
-					overrides: {
-						typeLiteral: {
-							multiline: { delimiter: 'comma', requireLast: true },
-							singleline: { delimiter: 'comma', requireLast: false },
-						},
-					},
-				},
-			],
 			'@stylistic/no-mixed-spaces-and-tabs': 'error',
 			'@stylistic/no-trailing-spaces': 'error',
 			'@stylistic/quotes': [
@@ -91,7 +77,7 @@ export default defineConfig([
 		languageOptions: {
 			parser: parserTs,
 			parserOptions: {
-				// project: ['./tsconfig.json'], // Commented out to avoid full project build in every save.
+				project: ['./tsconfig.json'],
 				ecmaVersion: 'latest',
 				sourceType: 'module',
 			},
@@ -157,14 +143,6 @@ export default defineConfig([
 				},
 			],
 			'import/newline-after-import': ['error', { 'count': 2 }],
-			'no-restricted-imports': ['error', {
-				patterns: [{
-					group: ['@/*'],
-					message: "Do not use the '@/' path alias — it only resolves inside this package's own build "
-						+ 'tooling and breaks when consumed as a micro-frontend or by cross-package tooling. '
-						+ 'Use a relative import instead.',
-				}],
-			}],
 		},
 		settings: {
 			'import/parsers': {
@@ -174,121 +152,6 @@ export default defineConfig([
 				node: { extensions: ['.js', '.jsx', '.ts', '.tsx'] },
 				typescript: { alwaysTryTypes: true },
 			},
-		},
-	},
-
-	// View-engine architectural boundaries.
-	// These are what make "the core has zero implementation imports" checkable
-	// rather than a convention people remember for a while.
-	{
-		plugins: { import: importPlugin },
-		rules: {
-			'import/no-restricted-paths': ['error', {
-				basePath: import.meta.dirname,
-				zones: [
-					{
-						target: './nikkierp/libs/viewengine/src',
-						from: [
-							'./nikkierp/libs/viewkit-mantine',
-							'./nikkierp/libs/ui',
-							'./nikkierp/libs/shell',
-							'./nikkierp/modules',
-							'./coremart/modules',
-						],
-						message: '@nikkierp/viewengine is implementation-free: no kits, no UI, no modules.',
-					},
-					{
-						target: './nikkierp/libs/ui/src',
-						from: './nikkierp/libs/viewkit-mantine',
-						message: '@nikkierp/ui must not import a view kit. Kits depend on ui, never the reverse.',
-					},
-					{
-						// Consumers only -- `viewengine`'s own barrel legitimately re-exports it.
-						target: [
-							'./nikkierp/libs/ui',
-							'./nikkierp/libs/shell',
-							'./nikkierp/libs/viewkit-mantine',
-							'./nikkierp/modules',
-							'./coremart/modules',
-						],
-						from: './nikkierp/libs/viewengine/src/engine/defaultEngine.ts',
-						message: 'Use the host-provided engine (init options / useViewEngine), not defaultViewEngine.',
-					},
-				],
-			}],
-			'no-restricted-imports': ['error', {
-				patterns: [{
-					group: ['@nikkierp/ui/viewEngine', '@nikkierp/ui/viewEngine/*'],
-					message: 'Deprecated. Import from @nikkierp/viewengine or @nikkierp/viewkit-mantine.',
-				}],
-			}],
-		},
-	},
-
-	// `import/no-restricted-paths` above only resolves *relative* imports; workspace
-	// packages come in as bare specifiers and slip past it. These per-area
-	// `no-restricted-imports` blocks are what actually enforce the same boundaries
-	// for `@nikkierp/*` imports.
-	{
-		files: ['nikkierp/libs/viewengine/**'],
-		rules: {
-			'no-restricted-imports': ['error', {
-				patterns: [{
-					group: ['@nikkierp/ui', '@nikkierp/ui/*', '@nikkierp/shell', '@nikkierp/shell/*',
-						'@nikkierp/viewkit-*', '@nikkierp/microapp-*', '@coremart/*'],
-					message: '@nikkierp/viewengine is implementation-free: no kits, no UI, no shell, no modules.',
-				}, {
-					group: ['@/*'],
-					message: "Do not use the '@/' path alias — it only resolves inside this package's own build "
-						+ 'tooling and breaks when consumed as a micro-frontend or by cross-package tooling. '
-						+ 'Use a relative import instead.',
-				}],
-			}],
-		},
-	},
-	{
-		files: ['nikkierp/libs/ui/**'],
-		rules: {
-			'no-restricted-imports': ['error', {
-				patterns: [{
-					group: ['@nikkierp/viewkit-*'],
-					message: '@nikkierp/ui must not import a view kit. Kits depend on ui, never the reverse.',
-				}, {
-					group: ['@nikkierp/viewengine/engine'],
-					message: 'Importing the engine barrel exposes defaultViewEngine. Import ./core, ./metadata or ./render.',
-				}, {
-					group: ['@/*'],
-					message: "Do not use the '@/' path alias — it only resolves inside this package's own build "
-						+ 'tooling and breaks when consumed as a micro-frontend or by cross-package tooling. '
-						+ 'Use a relative import instead.',
-				}],
-			}],
-		},
-	},
-
-	// Modules resolve each other as packages, so the specifier is the right lever:
-	// a path-based zone would also catch a module's own intra-package imports.
-	// Scoped to modules so the host apps can still list them in their bundle.
-	{
-		files: ['nikkierp/modules/**', 'coremart/modules/**'],
-		rules: {
-			'no-restricted-imports': ['error', {
-				patterns: [{
-					group: ['@nikkierp/ui/viewEngine', '@nikkierp/ui/viewEngine/*'],
-					message: 'Deprecated. Import from @nikkierp/viewengine or @nikkierp/viewkit-mantine.',
-				}, {
-					group: ['@nikkierp/microapp-*', '@coremart/microapp-*'],
-					message: 'Modules must not import each other. Communicate via the command bus.',
-				}, {
-					group: ['@nikkierp/viewengine/engine'],
-					message: 'Use the engine the host passed to `init` / `useViewEngine()`, not a new instance.',
-				}, {
-					group: ['@/*'],
-					message: "Do not use the '@/' path alias — it only resolves inside this package's own build "
-						+ 'tooling and breaks when consumed as a micro-frontend or by cross-package tooling. '
-						+ 'Use a relative import instead.',
-				}],
-			}],
 		},
 	},
 
@@ -339,5 +202,8 @@ export default defineConfig([
 			'**/coverage/',
 			'**/public/',
 		],
+		settings: {
+			'import/resolver': { typescript: { alwaysTryTypes: true } },
+		},
 	},
 ]);

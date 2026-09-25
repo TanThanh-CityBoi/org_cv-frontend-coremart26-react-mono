@@ -5,7 +5,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
-import { TableContainer } from '../../../../components/Table';
+import { TableContainer } from '@/components/Table';
 
 
 export interface KioskDeviceTableProps extends AutoTableProps {
@@ -56,9 +56,9 @@ function renderStatusColumn(
 	translate: (key: string) => string,
 ) {
 	const status = row.status as string;
-	const statusMap: Record<string, { color: string, label: string }> = {
-		active: { color: 'green', label: translate('status.active') },
-		inactive: { color: 'gray', label: translate('status.inactive') },
+	const statusMap: Record<string, { color: string; label: string }> = {
+		active: { color: 'green', label: translate('nikki.general.status.active') },
+		inactive: { color: 'gray', label: translate('nikki.general.status.inactive') },
 	};
 	const statusInfo = statusMap[status] || { color: 'gray', label: status };
 	return <Badge color={statusInfo.color} size='sm'>{statusInfo.label}</Badge>;
@@ -69,19 +69,19 @@ function renderDeviceTypeColumn(
 	translate: (key: string) => string,
 ) {
 	const deviceType = row.deviceType as string;
-	const typeMap: Record<string, { color: string, label: string }> = {
-		motor: { color: 'blue', label: translate('device.device_type.motor') },
-		pos: { color: 'cyan', label: translate('device.device_type.pos') },
-		screen: { color: 'purple', label: translate('device.device_type.screen') },
-		cpu: { color: 'orange', label: translate('device.device_type.cpu') },
-		router: { color: 'teal', label: translate('device.device_type.router') },
+	const typeMap: Record<string, { color: string; label: string }> = {
+		motor: { color: 'blue', label: translate('coremart.vendingMachine.device.deviceType.motor') },
+		pos: { color: 'cyan', label: translate('coremart.vendingMachine.device.deviceType.pos') },
+		screen: { color: 'purple', label: translate('coremart.vendingMachine.device.deviceType.screen') },
+		cpu: { color: 'orange', label: translate('coremart.vendingMachine.device.deviceType.cpu') },
+		router: { color: 'teal', label: translate('coremart.vendingMachine.device.deviceType.router') },
 	};
 	const typeInfo = typeMap[deviceType] || { color: 'gray', label: deviceType };
 	return <Badge color={typeInfo.color} size='sm' variant='light'>{typeInfo.label}</Badge>;
 }
 
 function renderSpecificationsColumn(row: Record<string, unknown>) {
-	const specifications = row.specifications as Array<{ key: string, value: string }> | undefined;
+	const specifications = row.specifications as Array<{ key: string; value: string }> | undefined;
 	if (!specifications || specifications.length === 0) {
 		return <Text c='dimmed' size='sm'>-</Text>;
 	}
@@ -104,21 +104,21 @@ function renderActionsColumn(
 		<Box style={{ minWidth: 120 }}>
 			<Group gap='xs' justify='flex-end' onClick={(e) => e.stopPropagation()}>
 				{onView && (
-					<Tooltip label={translate('action.view')}>
+					<Tooltip label={translate('nikki.general.actions.view')}>
 						<ActionIcon variant='subtle' color='blue' onClick={() => onView(kioskDeviceId)}>
 							<IconEye size={16} />
 						</ActionIcon>
 					</Tooltip>
 				)}
 				{onEdit && (
-					<Tooltip label={translate('action.edit')}>
+					<Tooltip label={translate('nikki.general.actions.edit')}>
 						<ActionIcon variant='subtle' color='gray' onClick={() => onEdit(kioskDeviceId)}>
 							<IconEdit size={16} />
 						</ActionIcon>
 					</Tooltip>
 				)}
 				{onDelete && (
-					<Tooltip label={translate('action.delete')}>
+					<Tooltip label={translate('nikki.general.actions.delete')}>
 						<ActionIcon variant='subtle' color='red' onClick={() => onDelete(kioskDeviceId)}>
 							<IconTrash size={16} />
 						</ActionIcon>
@@ -134,7 +134,7 @@ function renderActionsHeader(
 	_schema: unknown,
 	translate: (key: string) => string,
 ) {
-	return <Text fw={600} fz='sm' ta={'end'}>{translate('action.title')}</Text>;
+	return <Text fw={600} fz='sm' ta={'end'}>{translate('nikki.general.actions.title')}</Text>;
 }
 
 export const KioskDeviceTable: React.FC<KioskDeviceTableProps> = ({
@@ -146,7 +146,7 @@ export const KioskDeviceTable: React.FC<KioskDeviceTableProps> = ({
 	onEdit,
 	onDelete,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	return (
 		<div style={{ position: 'relative' }}>
@@ -161,7 +161,6 @@ export const KioskDeviceTable: React.FC<KioskDeviceTableProps> = ({
 			</style>
 			<TableContainer>
 				<AutoTable
-					translationNs='vending_machine'
 					columns={columns}
 					data={data}
 					schema={schema}

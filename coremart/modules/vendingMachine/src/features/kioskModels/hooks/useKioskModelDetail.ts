@@ -1,24 +1,23 @@
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
 import React from 'react';
 
-import { kioskModelCrudService } from '../kioskModelService';
+import { VendingMachineDispatch, kioskModelActions, selectKioskModelDetail } from '@/appState';
+
 import { KioskModel } from '../types';
 
 
-type GetOneResponse = { item: KioskModel };
-
-
-export function useKioskModelDetail(modelId?: string): { model: KioskModel | undefined, isLoading: boolean } {
-	const { dispatchMethod, result } = useServiceLayer<GetOneResponse>(kioskModelCrudService.getById);
+export function useKioskModelDetail(modelId?: string): { model: KioskModel | undefined; isLoading: boolean } {
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
+	const detail = useMicroAppSelector(selectKioskModelDetail);
 
 	React.useEffect(() => {
 		if (modelId) {
-			dispatchMethod({ id: modelId });
+			dispatch(kioskModelActions.getKioskModel(modelId));
 		}
-	}, [modelId, dispatchMethod]);
+	}, [modelId, dispatch]);
 
 	return {
-		model: result.data?.item,
-		isLoading: result.isPending,
+		model: detail.data,
+		isLoading: detail.status === 'pending' || detail.status === 'idle',
 	};
 }

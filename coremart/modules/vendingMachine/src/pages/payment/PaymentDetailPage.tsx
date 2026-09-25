@@ -2,18 +2,18 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
 
-import { ControlPanel } from '../../components';
-import { PageContainer } from '../../components/PageContainer';
+import { ControlPanel } from '@/components';
+import { PageContainer } from '@/components/PageContainer';
 import {
 	PaymentDetailContent,
 	PaymentNotFound,
 	usePaymentDetailPageConfig,
-} from '../../features/payment/components/PaymentDetail';
-import { usePaymentDetail } from '../../features/payment/hooks/usePaymentDetail';
+} from '@/features/payment/components/PaymentDetail';
+import { usePaymentDetail } from '@/features/payment/hooks/usePaymentDetail';
 
 
 export const PaymentDetailPage: React.FC = () => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const { id } = useParams<{ id: string }>();
 	const { payment, isLoading } = usePaymentDetail(id);
 	const pageConfig = usePaymentDetailPageConfig({ payment });
@@ -21,7 +21,7 @@ export const PaymentDetailPage: React.FC = () => {
 
 	return (
 		<PageContainer
-			documentTitle={payment?.name ?? translate('payment.detail.title')}
+			documentTitle={payment?.name ?? translate('coremart.vendingMachine.payment.detail.title')}
 			breadcrumbs={breadcrumbs}
 			sections={[<ControlPanel key='payment-detail-actions' actions={actions} />]}
 			isLoading={isLoading && !payment}

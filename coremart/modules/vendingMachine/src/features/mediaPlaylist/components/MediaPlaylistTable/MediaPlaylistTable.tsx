@@ -7,9 +7,9 @@ import { useTranslation } from 'react-i18next';
 
 
 
-import { ArchivedStatusBadge } from '../../../../components/ArchivedStatusBadge';
-import { NameCell, TableAction, TableContainer, TablePagination, type TableActionItem, TextCell } from '../../../../components/Table';
-import { type TablePaginationProps } from '../../../../components/Table';
+import { ArchivedStatusBadge } from '@/components/ArchivedStatusBadge';
+import { NameCell, TableAction, TableContainer, TablePagination, type TableActionItem, TextCell } from '@/components/Table';
+import { type TablePaginationProps } from '@/components/Table';
 
 import type { KioskMedia, Playlist } from '../../types';
 
@@ -38,7 +38,7 @@ export function getMediaPlaylistTableActions(
 	const defaultActions: (TableActionItem & { active?: boolean })[] = [
 		{
 			key: MEDIA_PLAYLIST_ACTIONS.PREVIEW,
-			label: translate('action.preview'),
+			label: translate('nikki.general.actions.preview'),
 			icon: <IconLayoutSidebarRightExpand size={20} stroke={1.6} />,
 			onClick: () => actions[MEDIA_PLAYLIST_ACTIONS.PREVIEW]?.(playlist),
 			color: 'gray',
@@ -46,7 +46,7 @@ export function getMediaPlaylistTableActions(
 		},
 		{
 			key: MEDIA_PLAYLIST_ACTIONS.VIEW_DETAIL,
-			label: translate('action.viewDetails'),
+			label: translate('nikki.general.actions.viewDetail'),
 			icon: <IconEye size={16} />,
 			onClick: () => actions[MEDIA_PLAYLIST_ACTIONS.VIEW_DETAIL]?.(playlist),
 			color: 'blue',
@@ -54,7 +54,7 @@ export function getMediaPlaylistTableActions(
 		},
 		{
 			key: MEDIA_PLAYLIST_ACTIONS.ARCHIVE,
-			label: translate('action.archive'),
+			label: translate('nikki.general.actions.archive'),
 			icon: <IconArchive size={16} />,
 			onClick: () => actions[MEDIA_PLAYLIST_ACTIONS.ARCHIVE]?.(playlist),
 			color: 'orange',
@@ -62,7 +62,7 @@ export function getMediaPlaylistTableActions(
 		},
 		{
 			key: MEDIA_PLAYLIST_ACTIONS.RESTORE,
-			label: translate('action.restore'),
+			label: translate('nikki.general.actions.restore'),
 			icon: <IconRestore size={16} />,
 			onClick: () => actions[MEDIA_PLAYLIST_ACTIONS.RESTORE]?.(playlist),
 			color: 'blue',
@@ -70,7 +70,7 @@ export function getMediaPlaylistTableActions(
 		},
 		{
 			key: MEDIA_PLAYLIST_ACTIONS.DELETE,
-			label: translate('action.delete'),
+			label: translate('nikki.general.actions.delete'),
 			icon: <IconTrash size={16} />,
 			onClick: () => actions[MEDIA_PLAYLIST_ACTIONS.DELETE]?.(playlist),
 			color: 'red',
@@ -85,7 +85,7 @@ function renderActionsHeader(
 	_schema: unknown,
 	translate: (key: string) => string,
 ) {
-	return <Text fw={600} fz='sm' ta={'end'}>{translate('action.title')}</Text>;
+	return <Text fw={600} fz='sm' ta={'end'}>{translate('nikki.general.actions.title')}</Text>;
 }
 
 export interface MediaPlaylistTableProps extends AutoTableProps {
@@ -101,7 +101,7 @@ export const MediaPlaylistTable: React.FC<MediaPlaylistTableProps> = ({
 	actions,
 	pagination,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const colRenderers: React.ComponentProps<typeof AutoTable>['columnRenderers'] = {
 		name: (row) => (
@@ -118,7 +118,7 @@ export const MediaPlaylistTable: React.FC<MediaPlaylistTableProps> = ({
 		actions: (row) => (
 			<TableAction
 				actions={getMediaPlaylistTableActions(row as unknown as Playlist, actions, translate)}
-				overflowMenuLabel={translate('action.title')}
+				overflowMenuLabel={translate('nikki.general.actions.title')}
 			/>
 		),
 	};
@@ -131,7 +131,6 @@ export const MediaPlaylistTable: React.FC<MediaPlaylistTableProps> = ({
 		<Box pos='relative'>
 			<TableContainer footer={<TablePagination {...pagination} />}>
 				<AutoTable
-					translationNs='vending_machine'
 					columns={columns}
 					data={data}
 					schema={schema}

@@ -1,13 +1,14 @@
 {
 	"extends": "../../tsconfig-react.base.json",
 	"compilerOptions": {
-		"rootDir": ".",
+		"baseUrl": ".",
 		"outDir": "dist"
 	},
 	"include": [
 		"src/**/*",
 		"types/*",
 		"node_modules/vite/types/*",
+		"../../modules/shell/src/components/AuthorizedGuard.tsx",
 	],
 	"exclude": [
 		"node_modules",

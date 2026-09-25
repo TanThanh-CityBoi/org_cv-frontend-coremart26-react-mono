@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { ControlPanelProps } from '../ControlPanel';
+import { ControlPanelProps } from '@/components/ControlPanel';
 
 /** Một reference cố định cho tab không có action — tránh effect chạy lại mỗi render khi gọi `[]`. */
 const STABLE_EMPTY_ACTIONS: NonNullable<ControlPanelProps['actions']> = [];
@@ -22,7 +22,7 @@ function sameActionLists(
 }
 
 export type DetailTabControlEntry = {
-	actions: ControlPanelProps['actions'],
+	actions: ControlPanelProps['actions'];
 };
 
 /**
@@ -32,9 +32,9 @@ export function createDetailTabControl<T extends string>() {
 	type Registry = Partial<Record<T, DetailTabControlEntry>>;
 
 	type DetailTabControlContextValue = {
-		registry: Registry,
-		registerTab: (tabId: T, entry: DetailTabControlEntry) => void,
-		unregisterTab: (tabId: T) => void,
+		registry: Registry;
+		registerTab: (tabId: T, entry: DetailTabControlEntry) => void;
+		unregisterTab: (tabId: T) => void;
 	};
 
 	const DetailTabControlContext = React.createContext<DetailTabControlContextValue | null>(null);

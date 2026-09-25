@@ -1,6 +1,6 @@
 import maplibregl from 'maplibre-gl';
 
-import { Kiosk } from '../../types';
+import { Kiosk } from '@/features/kiosks/types';
 
 
 export const DEFAULT_MAP_CENTER: [number, number] = [106.660172, 10.762622]; // Ho Chi Minh City

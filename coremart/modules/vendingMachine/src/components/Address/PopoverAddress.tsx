@@ -11,7 +11,7 @@ interface PopoverAddressProps {
 }
 export const PopoverAddress: React.FC<PopoverAddressProps> = ({ address, latitude, longitude }) => {
 
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const handleOpenGoogleMaps = (e: React.MouseEvent) => {
 		e.stopPropagation();
@@ -32,7 +32,7 @@ export const PopoverAddress: React.FC<PopoverAddressProps> = ({ address, latitud
 	const popoverContent = (
 		<Stack gap='xs' style={{ maxWidth: 300 }}>
 			<Text size='sm' fw={500}>
-				{address || translate?.('messages.no.address') || 'No address'}
+				{address || translate?.('nikki.general.messages.no_address') || 'No address'}
 			</Text>
 			<Button
 				size='xs'
@@ -40,7 +40,7 @@ export const PopoverAddress: React.FC<PopoverAddressProps> = ({ address, latitud
 				leftSection={<IconMapPin size={14} />}
 				onClick={(e) => handleOpenGoogleMaps(e)}
 			>
-				{translate?.('action.viewOnMap') || 'View on map'}
+				{translate?.('nikki.general.actions.view_on_map') || 'View on map'}
 			</Button>
 		</Stack>
 	);

@@ -1,4 +1,5 @@
-import { ViewMode } from '../../components/ControlPanel/ControlPanel';
+import { ViewMode } from '@/components/ControlPanel/ControlPanel';
+
 import { Game } from '../games/types';
 import { Kiosk } from '../kiosks/types';
 import { Playlist } from '../mediaPlaylist/types';

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import { type Event } from '../types';
+
 import { useEventDetail } from './useEventDetail';
 
 

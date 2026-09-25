@@ -1,10 +1,10 @@
+import { AuthorizeDispatch, grantRequestActions, selectDeleteGrantRequest } from '@/appState';
 import { useUIState } from '@nikkierp/shell/contexts';
 import { useMicroAppSelector } from '@nikkierp/ui/microApp';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { AuthorizeDispatch, grantRequestActions, selectDeleteGrantRequest } from '../../../appState';
-import { GrantRequest } from '../types';
+import { GrantRequest } from '@/features/grantRequests/types';
 
 
 export function useGrantRequestDelete(

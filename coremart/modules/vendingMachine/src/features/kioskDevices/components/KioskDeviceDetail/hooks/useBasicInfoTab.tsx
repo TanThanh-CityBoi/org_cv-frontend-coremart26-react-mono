@@ -1,20 +1,19 @@
-import { ModelSchema } from '@nikkierp/common/dynamicModel';
+import { ModelSchema } from '@nikkierp/ui/model';
 import { IconDeviceFloppy, IconEdit, IconTrash, IconX } from '@tabler/icons-react';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { asLegacyModelSchema } from '../../../../../common/helpers';
-import { ControlPanelProps } from '../../../../../components/ControlPanel';
+import { ControlPanelProps } from '@/components/ControlPanel';
+import { useRegisterKioskDeviceDetailTab } from '@/features/kioskDevices/components/KioskDeviceDetail/kioskDeviceDetailTabControl';
 import {
 	KioskDeviceCreateFormData,
 	kioskDeviceToCreateFormValues,
 	formDataToKioskDeviceUpdatePayload,
-} from '../../../hooks/useKioskDeviceCreate';
-import { useKioskDeviceDelete } from '../../../hooks/useKioskDeviceDelete';
-import { useKioskDeviceEdit } from '../../../hooks/useKioskDeviceEdit';
-import kioskDeviceCreateSchema from '../../../kioskDeviceCreate-schema.json';
-import { KioskDevice } from '../../../types';
-import { useRegisterKioskDeviceDetailTab } from '../kioskDeviceDetailTabControl';
+} from '@/features/kioskDevices/hooks/useKioskDeviceCreate';
+import { useKioskDeviceDelete } from '@/features/kioskDevices/hooks/useKioskDeviceDelete';
+import { useKioskDeviceEdit } from '@/features/kioskDevices/hooks/useKioskDeviceEdit';
+import kioskDeviceCreateSchema from '@/features/kioskDevices/kioskDeviceCreate-schema.json';
+import { KioskDevice } from '@/features/kioskDevices/types';
 
 
 export const BASIC_INFO_FORM_ID = 'kiosk-device-basic-info-form';
@@ -30,13 +29,13 @@ function buildBasicInfoActions(
 ): ControlPanelProps['actions'] {
 	return [
 		...(!isEditing ? [{
-			label: translate('action.edit'),
+			label: translate('nikki.general.actions.edit'),
 			leftSection: <IconEdit size={16} />,
 			onClick: handleEdit,
 			type: 'button' as const,
 			variant: 'filled' as const,
 		}] : [{
-			label: translate('action.save'),
+			label: translate('nikki.general.actions.save'),
 			leftSection: <IconDeviceFloppy size={16} />,
 			onClick: handleSave,
 			type: 'button' as const,
@@ -44,7 +43,7 @@ function buildBasicInfoActions(
 			disabled: isSubmitting,
 			loading: isSubmitting,
 		}, {
-			label: translate('action.cancel'),
+			label: translate('nikki.general.actions.cancel'),
 			leftSection: <IconX size={16} />,
 			onClick: handleCancel,
 			type: 'button' as const,
@@ -52,7 +51,7 @@ function buildBasicInfoActions(
 			disabled: isSubmitting,
 		}]),
 		{
-			label: translate('action.delete'),
+			label: translate('nikki.general.actions.delete'),
 			leftSection: <IconTrash size={16} />,
 			onClick: handleDelete,
 			type: 'button' as const,
@@ -64,29 +63,29 @@ function buildBasicInfoActions(
 }
 
 export type UseBasicInfoTabArgs = {
-	kioskDevice: KioskDevice,
+	kioskDevice: KioskDevice;
 };
 
 export type UseBasicInfoTabReturn = {
-	formId: string,
-	isEditing: boolean,
-	isSubmitting: boolean,
-	modelSchema: ModelSchema,
-	modelValue: ReturnType<typeof kioskDeviceToCreateFormValues>,
-	onFormSubmit: (data: KioskDeviceCreateFormData) => void,
-	closeDeleteModal: () => void,
-	confirmDelete: () => void,
-	isOpenDeleteModal: boolean,
+	formId: string;
+	isEditing: boolean;
+	isSubmitting: boolean;
+	modelSchema: ModelSchema;
+	modelValue: ReturnType<typeof kioskDeviceToCreateFormValues>;
+	onFormSubmit: (data: KioskDeviceCreateFormData) => void;
+	closeDeleteModal: () => void;
+	confirmDelete: () => void;
+	isOpenDeleteModal: boolean;
 };
 
 export function useBasicInfoTab({ kioskDevice }: UseBasicInfoTabArgs): UseBasicInfoTabReturn {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const [isEditing, setIsEditing] = useState(false);
 
 	const onUpdateSuccess = useCallback(() => setIsEditing(false), []);
 	const { isSubmitting, handleSubmit } = useKioskDeviceEdit(kioskDevice, { onUpdateSuccess });
 
-	const modelSchema = asLegacyModelSchema(kioskDeviceCreateSchema);
+	const modelSchema = kioskDeviceCreateSchema as ModelSchema;
 
 	const onFormSubmit = useCallback((data: KioskDeviceCreateFormData) => {
 		handleSubmit(formDataToKioskDeviceUpdatePayload(data));

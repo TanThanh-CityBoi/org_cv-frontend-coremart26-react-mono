@@ -10,27 +10,28 @@ import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 
+import { fmtCurrency, fmtNumber } from '@/common/helpers';
+import { TableContainer, TablePagination } from '@/components/Table';
+
 import { RevenueByKioskBarChart } from './RevenueByKioskBarChart';
-import { asLegacyModelSchema, fmtCurrency, fmtNumber } from '../../../../../common/helpers';
-import { TableContainer, TablePagination } from '../../../../../components/Table';
 import { useRevenueReportByKiosk, useRevenueReportByKioskChart } from '../../hooks';
 
-import type { RevenueReportByKiosk as RevenueReportByKioskRow } from '../../type';
 import type { RevenueReportFilters } from '../RevenueReportSwitcher/type';
+import type { RevenueReportByKiosk as RevenueReportByKioskRow } from '@/features/reports/business/type';
 
 
 const BY_KIOSK_COLUMNS = ['kiosk', 'orders', 'productsSold', 'refund', 'revenue'] as const;
 
-const byKioskSchema = asLegacyModelSchema({
+const byKioskSchema: ModelSchema = {
 	name: 'RevenueByKiosk',
 	fields: {
-		kiosk: { type: 'string', label: 'reports.revenue_report.columns.kiosk' },
-		orders: { type: 'string', label: 'reports.revenue_report.columns.orders' },
-		productsSold: { type: 'string', label: 'reports.revenue_report.columns.products_sold' },
-		refund: { type: 'string', label: 'reports.revenue_report.columns.refund' },
-		revenue: { type: 'string', label: 'reports.revenue_report.columns.revenue' },
+		kiosk: { type: 'string', label: 'coremart.vendingMachine.reports.revenueReport.columns.kiosk' },
+		orders: { type: 'string', label: 'coremart.vendingMachine.reports.revenueReport.columns.orders' },
+		productsSold: { type: 'string', label: 'coremart.vendingMachine.reports.revenueReport.columns.productsSold' },
+		refund: { type: 'string', label: 'coremart.vendingMachine.reports.revenueReport.columns.refund' },
+		revenue: { type: 'string', label: 'coremart.vendingMachine.reports.revenueReport.columns.revenue' },
 	},
-});
+};
 
 function mapKioskRowsToTableData(rows: RevenueReportByKioskRow[]): Record<string, unknown>[] {
 	return rows.map((row) => ({
@@ -45,7 +46,7 @@ function mapKioskRowsToTableData(rows: RevenueReportByKioskRow[]): Record<string
 
 
 export function RevenueReportByKiosk({ filters }: { filters: RevenueReportFilters }): React.ReactElement {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const {
 		items: tableItems,
@@ -81,10 +82,10 @@ export function RevenueReportByKiosk({ filters }: { filters: RevenueReportFilter
 	};
 
 	const headerRenderers: React.ComponentProps<typeof AutoTable>['headerRenderers'] = {
-		orders: () => <Text fw={600} fz='sm' ta='end'>{translate('reports.revenue_report.columns.orders')}</Text>,
-		productsSold: () => <Text fw={600} fz='sm' ta='end'>{translate('reports.revenue_report.columns.products_sold')}</Text>,
-		refund: () => <Text fw={600} fz='sm' ta='end'>{translate('reports.revenue_report.columns.refund')}</Text>,
-		revenue: () => <Text fw={600} fz='sm' ta='end'>{translate('reports.revenue_report.columns.revenue')}</Text>,
+		orders: () => <Text fw={600} fz='sm' ta='end'>{translate('coremart.vendingMachine.reports.revenueReport.columns.orders')}</Text>,
+		productsSold: () => <Text fw={600} fz='sm' ta='end'>{translate('coremart.vendingMachine.reports.revenueReport.columns.productsSold')}</Text>,
+		refund: () => <Text fw={600} fz='sm' ta='end'>{translate('coremart.vendingMachine.reports.revenueReport.columns.refund')}</Text>,
+		revenue: () => <Text fw={600} fz='sm' ta='end'>{translate('coremart.vendingMachine.reports.revenueReport.columns.revenue')}</Text>,
 	};
 
 	return (
@@ -93,13 +94,13 @@ export function RevenueReportByKiosk({ filters }: { filters: RevenueReportFilter
 				<Skeleton height={400} radius='md' />
 			) : chartError ? (
 				<Alert color='red.4' bg='red.0' mih={200}
-					title={translate('reports.revenue_report.chart.by_kiosk')}>
+					title={translate('coremart.vendingMachine.reports.revenueReport.chart.byKiosk')}>
 					{chartError}
 				</Alert>
 			) : (
 				<RevenueByKioskBarChart
 					data={chartItems}
-					title={translate('reports.revenue_report.chart.by_kiosk')}
+					title={translate('coremart.vendingMachine.reports.revenueReport.chart.byKiosk')}
 				/>
 			)}
 
@@ -110,7 +111,7 @@ export function RevenueReportByKiosk({ filters }: { filters: RevenueReportFilter
 				header={
 					<Group justify='space-between' align='flex-start' wrap='nowrap' mb={6}>
 						<Title order={4} fw={600}>
-							{translate('reports.revenue_report.detail_table')}
+							{translate('coremart.vendingMachine.reports.revenueReport.detailTable')}
 						</Title>
 						<Button
 							size='sm'
@@ -118,7 +119,7 @@ export function RevenueReportByKiosk({ filters }: { filters: RevenueReportFilter
 							disabled={tableIsLoading || !pagination.totalItems}
 							onClick={handleExport}
 						>
-							{translate('reports.revenue_report.export')}
+							{translate('coremart.vendingMachine.reports.revenueReport.export')}
 						</Button>
 					</Group>
 				}
@@ -130,7 +131,6 @@ export function RevenueReportByKiosk({ filters }: { filters: RevenueReportFilter
 					</Alert>
 				) : (
 					<AutoTable
-						translationNs='vending_machine'
 						columns={[...BY_KIOSK_COLUMNS]}
 						data={tableData}
 						schema={byKioskSchema}

@@ -15,7 +15,7 @@ export const FavoritesSection: React.FC<FavoritesSectionProps> = ({
 	favoritesConfig,
 	onSaveFavorite,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	if (!favoritesConfig) return null;
 
@@ -24,7 +24,7 @@ export const FavoritesSection: React.FC<FavoritesSectionProps> = ({
 			<Group gap='xs' mb='xs'>
 				<IconStar size={16} style={{ color: '#ffd43b' }} />
 				<Text size='sm' fw={500}>
-					{translate('search.favorites')}
+					{translate('nikki.general.favorites.title')}
 				</Text>
 			</Group>
 			<Stack gap='xs'>
@@ -37,7 +37,7 @@ export const FavoritesSection: React.FC<FavoritesSectionProps> = ({
 						onSaveFavorite();
 					}}
 				>
-					{translate('search.saveCurrentFilter')}
+					{translate('nikki.general.favorites.save_current')}
 				</Button>
 				{favoritesConfig.savedFilters && favoritesConfig.savedFilters.length > 0 && (
 					<Stack gap={4}>

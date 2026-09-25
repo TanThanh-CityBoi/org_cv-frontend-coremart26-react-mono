@@ -4,8 +4,8 @@ import { IconDeviceGamepad2, IconSearch } from '@tabler/icons-react';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { mockGames } from '../../features/games/mockGames';
-import { Game } from '../../features/games/types';
+import { mockGames } from '@/features/games/mockGames';
+import { Game } from '@/features/games/types';
 
 
 
@@ -21,7 +21,7 @@ export const GameSelectModal: React.FC<GameSelectModalProps> = ({
 	onClose,
 	onSelectGame,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const [games, setGames] = useState<Game[]>([]);
 	const [selectedGame, setSelectedGame] = useState<Game | undefined>();
 	const [searchQuery, setSearchQuery] = useState('');
@@ -66,13 +66,13 @@ export const GameSelectModal: React.FC<GameSelectModalProps> = ({
 		<Modal
 			opened={opened}
 			onClose={handleCancel}
-			title={translate('events.select_game.title')}
+			title={translate('coremart.vendingMachine.events.selectGame.title')}
 			size='xl'
 		>
 			<Stack gap='md'>
 				{/* Search */}
 				<TextInput
-					placeholder={translate('events.select_game.search_placeholder')}
+					placeholder={translate('coremart.vendingMachine.events.selectGame.searchPlaceholder')}
 					leftSection={<IconSearch size={16} />}
 					value={searchQuery}
 					onChange={(e) => setSearchQuery(e.currentTarget.value)}
@@ -82,7 +82,7 @@ export const GameSelectModal: React.FC<GameSelectModalProps> = ({
 				<ScrollArea h={400}>
 					{filteredGames.length === 0 ? (
 						<Text size='sm' c='dimmed' ta='center' py='md'>
-							{translate('events.select_game.no_games')}
+							{translate('coremart.vendingMachine.events.selectGame.noGames')}
 						</Text>
 					) : (
 						<SimpleGrid cols={2} spacing='md'>
@@ -119,7 +119,7 @@ export const GameSelectModal: React.FC<GameSelectModalProps> = ({
 													{game.status}
 												</Badge>
 												<Text size='xs' c='dimmed'>
-													{translate('games.fields.latest_version')}: {game.latestVersion}
+													{translate('coremart.vendingMachine.games.fields.latestVersion')}: {game.latestVersion}
 												</Text>
 											</Group>
 										</Stack>
@@ -133,10 +133,10 @@ export const GameSelectModal: React.FC<GameSelectModalProps> = ({
 				{/* Actions */}
 				<Group justify='flex-end' gap='xs'>
 					<Button variant='subtle' onClick={handleCancel}>
-						{translate('action.cancel')}
+						{translate('nikki.general.actions.cancel')}
 					</Button>
 					<Button onClick={handleConfirm} disabled={!selectedGame}>
-						{translate('action.confirm')}
+						{translate('nikki.general.actions.confirm')}
 					</Button>
 				</Group>
 			</Stack>

@@ -2,10 +2,10 @@ import { Box, SimpleGrid } from '@mantine/core';
 import { AutoField } from '@nikkierp/ui/components';
 import React from 'react';
 
-import classes from './EventFormFields.module.css';
-import { DateTimeField } from '../../../../components/Form';
-import { TimeField } from '../../../../components/Form/TimeField';
+import { DateTimeField } from '@/components/Form';
+import { TimeField } from '@/components/Form/TimeField';
 
+import classes from './EventFormFields.module.css';
 
 
 

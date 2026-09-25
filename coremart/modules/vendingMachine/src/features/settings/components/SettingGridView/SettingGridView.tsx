@@ -4,19 +4,20 @@ import { TFunction } from 'i18next';
 import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { CardActionMenu } from '../../../../components';
-import { ArchivedStatusBadge } from '../../../../components/ArchivedStatusBadge';
-import { TablePagination } from '../../../../components/Table';
-import { type TablePaginationProps } from '../../../../components/Table';
+import { CardActionMenu } from '@/components';
+import { ArchivedStatusBadge } from '@/components/ArchivedStatusBadge';
+import { TablePagination } from '@/components/Table';
+import { type TablePaginationProps } from '@/components/Table';
+
 import { Setting } from '../../types';
 import { getSettingTableActions, type SettingTableActions } from '../SettingTable';
 
 
 type SettingGridCardProps = {
-	setting: Setting,
-	cardActions: SettingTableActions,
-	onPreview?: (setting: Setting) => void,
-	translate: TFunction,
+	setting: Setting;
+	cardActions: SettingTableActions;
+	onPreview?: (setting: Setting) => void;
+	translate: TFunction;
 };
 
 function SettingGridCard({ setting, cardActions, onPreview, translate }: SettingGridCardProps) {
@@ -61,7 +62,7 @@ function SettingGridCard({ setting, cardActions, onPreview, translate }: Setting
 				</Group>
 
 				<Text size='xs' c='dimmed'>
-					{translate('settings.fields.created_at')}: {new Date(setting.createdAt).toLocaleDateString()}
+					{translate('coremart.vendingMachine.settings.fields.createdAt')}: {new Date(setting.createdAt).toLocaleDateString()}
 				</Text>
 			</Stack>
 		</Card>
@@ -81,15 +82,15 @@ export const SettingGridView: React.FC<SettingGridViewProps> = ({
 	actions = {},
 	pagination,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const { preview: onPreview, ...cardActions } = actions;
 
 	if (isLoading) {
-		return <Text c='dimmed'>{translate('messages.loading')}</Text>;
+		return <Text c='dimmed'>{translate('nikki.general.messages.loading')}</Text>;
 	}
 
 	if (settings.length === 0) {
-		return <Text c='dimmed'>{translate('settings.messages.no_settings')}</Text>;
+		return <Text c='dimmed'>{translate('coremart.vendingMachine.settings.messages.no_settings')}</Text>;
 	}
 
 	return (

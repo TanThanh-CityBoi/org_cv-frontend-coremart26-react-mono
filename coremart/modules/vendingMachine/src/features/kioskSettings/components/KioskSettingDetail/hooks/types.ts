@@ -1,6 +1,6 @@
-import { ControlPanelProps } from '../../../../../components/ControlPanel/ControlPanel';
-import { DetailLayoutProps } from '../../../../../components/DetailLayout';
-import { PageContainerProps } from '../../../../../components/PageContainer';
+import { ControlPanelProps } from '@/components/ControlPanel/ControlPanel';
+import { DetailLayoutProps } from '@/components/DetailLayout';
+import { PageContainerProps } from '@/components/PageContainer';
 
 import type { KioskSetting } from '../../../types';
 
@@ -8,13 +8,13 @@ import type { KioskSetting } from '../../../types';
 export type KioskSettingDetailTabId = 'basicInfo' | 'settings' | 'kiosks';
 
 export type UseKioskSettingDetailPageConfigProps = {
-	setting?: KioskSetting,
+	setting?: KioskSetting;
 };
 
 export type UseKioskSettingDetailPageConfigReturn = {
-	breadcrumbs: NonNullable<PageContainerProps['breadcrumbs']>,
-	actions: ControlPanelProps['actions'],
-	tabs: DetailLayoutProps['tabs'],
-	activeTab: KioskSettingDetailTabId,
-	onTabChange: (tab: string) => void,
+	breadcrumbs: NonNullable<PageContainerProps['breadcrumbs']>;
+	actions: ControlPanelProps['actions'];
+	tabs: DetailLayoutProps['tabs'];
+	activeTab: KioskSettingDetailTabId;
+	onTabChange: (tab: string) => void;
 };

@@ -3,7 +3,8 @@ import { throttle } from 'lodash';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { ControlPanelFilter, ControlPanelFilterConfig } from '..';
+import { ControlPanelFilter, ControlPanelFilterConfig } from '@/components';
+
 import classes from './StickyFilterBar.module.css';
 
 
@@ -17,7 +18,7 @@ export interface StickyFilterBarProps {
 
 // eslint-disable-next-line max-lines-per-function
 export const StickyFilterBar: React.FC<StickyFilterBarProps> = ({ title, filters, handleApply }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const [loading, setLoading] = useState(false);
 	const loadingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -96,7 +97,7 @@ export const StickyFilterBar: React.FC<StickyFilterBarProps> = ({ title, filters
 						loading={loading}
 						onClick={throttledApply}
 					>
-						{translate('common.actions.view')}
+						{translate('coremart.vendingMachine.common.actions.view')}
 					</Button>
 				)}
 			</Flex>

@@ -12,12 +12,13 @@ import React, { useMemo, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { useTranslation } from 'react-i18next';
 
-import { fmtCurrency, fmtNumber, fmtShortNumber } from '../../../../../common/helpers/formartNumber';
+import { fmtCurrency, fmtNumber, fmtShortNumber } from '@/common/helpers/formartNumber';
 import {
 	TimeRangeSelect,
 	type TimeRangePreset,
 	type TimeRangePresetRange,
-} from '../../../../../components/RangePicker';
+} from '@/components/RangePicker';
+
 import { RevenueReportByKiosk } from '../../type';
 
 
@@ -45,7 +46,7 @@ export function RevenueByKioskBarChart({
 	defaultPreset = 'this_month',
 	onFilterChange,
 }: RevenueByKioskBarChartProps): React.ReactElement {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const [activeTab, setActiveTab] = useState<string | null>('revenue');
 
 	// Sort by revenue or orders descending based on active tab
@@ -68,7 +69,7 @@ export function RevenueByKioskBarChart({
 				...topItems,
 				{
 					kioskId: 'other',
-					kioskName: translate('reports.revenue_report.chart.other_kiosks'),
+					kioskName: translate('coremart.vendingMachine.reports.revenueReport.chart.otherKiosks'),
 					totalRevenue: otherRevenue,
 					orderCount: otherOrders,
 				},
@@ -84,10 +85,10 @@ export function RevenueByKioskBarChart({
 		return name.substring(0, maxLength - 3) + '...';
 	};
 
-	const revenueLabel = translate('reports.revenue_report.chart.radio_revenue');
-	const ordersLabel = translate('reports.revenue_report.chart.radio_orders');
-	const revenueAxisLabel = translate('reports.revenue_report.chart.revenue_axis_label');
-	const ordersAxisLabel = translate('reports.revenue_report.chart.orders_axis_label');
+	const revenueLabel = translate('coremart.vendingMachine.reports.revenueReport.chart.radioRevenue');
+	const ordersLabel = translate('coremart.vendingMachine.reports.revenueReport.chart.radioOrders');
+	const revenueAxisLabel = translate('coremart.vendingMachine.reports.revenueReport.chart.revenueAxisLabel');
+	const ordersAxisLabel = translate('coremart.vendingMachine.reports.revenueReport.chart.ordersAxisLabel');
 
 	const chartData = {
 		labels: sortedData.map((d) => truncateName(d.kioskName)),
@@ -129,9 +130,9 @@ export function RevenueByKioskBarChart({
 					label: (context: any) => {
 						const value = context.parsed?.x ?? 0;
 						if (activeTab === 'revenue') {
-							return translate('reports.revenue_report.chart.tooltip_revenue_value', { value: fmtCurrency(value) });
+							return translate('coremart.vendingMachine.reports.revenueReport.chart.tooltipRevenueValue', { value: fmtCurrency(value) });
 						}
-						return translate('reports.revenue_report.chart.tooltip_orders_value', { value: fmtNumber(value) });
+						return translate('coremart.vendingMachine.reports.revenueReport.chart.tooltipOrdersValue', { value: fmtNumber(value) });
 					},
 				},
 			},
@@ -167,13 +168,13 @@ export function RevenueByKioskBarChart({
 					<Stack gap={4}>
 						{title && (
 							<>
-								<Title order={4} fw={600}>
-									{title}
-								</Title>
-								<Text size='xs' c='dimmed'>
-									{description ?? ''}
-								</Text>
-							</>
+							<Title order={4} fw={600}>
+								{title}
+							</Title>
+							<Text size='xs' c='dimmed'>
+								{description ?? ''}
+							</Text>
+						</>
 						)}
 					</Stack>
 					<Group gap='md' align='center'>

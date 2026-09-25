@@ -3,7 +3,7 @@
 	"fields": {
 		"id": {
 			"type": "string",
-			"label": "{ \"$ref\": 'events.fields.id' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.events.fields.id' }"
 		},
 		"etag": {
 			"type": "string",
@@ -11,47 +11,47 @@
 		},
 		"code": {
 			"type": "string",
-			"label": "{ \"$ref\": 'events.fields.code' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.events.fields.code' }"
 		},
 		"name": {
 			"type": "string",
-			"label": "{ \"$ref\": 'events.fields.name' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.events.fields.name' }"
 		},
 		"description": {
 			"type": "string",
-			"label": "{ \"$ref\": 'events.fields.description' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.events.fields.description' }"
 		},
 		"isArchived": {
 			"type": "boolean",
-			"label": "{ \"$ref\": 'events.fields.archived_state' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.events.fields.archivedState' }"
 		},
 		"runPhase": {
 			"type": "string",
-			"label": "{ \"$ref\": 'events.fields.run_phase' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.events.fields.runPhase' }"
 		},
 		"startTime": {
 			"type": "date",
-			"label": "{ \"$ref\": 'events.fields.start_date' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.events.fields.startDate' }"
 		},
 		"endTime": {
 			"type": "date",
-			"label": "{ \"$ref\": 'events.fields.end_date' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.events.fields.endDate' }"
 		},
 		"dailyStartTime": {
 			"type": "string",
-			"label": "{ \"$ref\": 'events.fields.daily_start_time' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.events.fields.dailyStartTime' }"
 		},
 		"dailyEndTime": {
 			"type": "string",
-			"label": "{ \"$ref\": 'events.fields.daily_end_time' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.events.fields.dailyEndTime' }"
 		},
 		"isAllDay": {
 			"type": "boolean",
-			"label": "{ \"$ref\": 'events.fields.is_all_day' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.events.fields.isAllDay' }"
 		},
 		"createdAt": {
 			"type": "date",
-			"label": "{ \"$ref\": 'events.fields.created_at' }",
+			"label": "{ \"$ref\": 'coremart.vendingMachine.events.fields.createdAt' }",
 			"hidden": true
 		}
 	}

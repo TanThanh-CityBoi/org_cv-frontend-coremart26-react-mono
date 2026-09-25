@@ -2,7 +2,7 @@ import { Button, Group } from '@mantine/core';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import type { Entitlement } from '../../../entitlements';
+import type { Entitlement } from '@/features/entitlements';
 
 
 interface FormActionsSectionProps {

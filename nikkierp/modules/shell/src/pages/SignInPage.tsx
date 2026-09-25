@@ -1,6 +1,11 @@
-import { withWindowTitleI18n } from '@nikkierp/ui/hookhoc';
+import { useDocumentTitle } from '@nikkierp/ui/hooks';
 
 import * as signIn from '../features/signIn/SignInPage';
 
 
-export const SignInPage = withWindowTitleI18n(signIn.SignInPage, 'action.signIn');
+export const SignInPage = () => {
+	useDocumentTitle('nikki.shell.signIn.signIn', 'Sign In');
+	return (
+		<signIn.SignInPage />
+	);
+};

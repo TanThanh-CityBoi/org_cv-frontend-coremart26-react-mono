@@ -4,9 +4,9 @@ import maplibregl from 'maplibre-gl';
 import { useRef, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { getCurrentConnectionStatus } from '../../../../../common/helpers';
-import { buildKioskStatePopupHtml } from '../../../../../components/KioskState';
-import { Kiosk, ConnectionStatus } from '../../../types';
+import { getCurrentConnectionStatus } from '@/common/helpers';
+import { buildKioskStatePopupHtml } from '@/components/KioskState';
+import { Kiosk, ConnectionStatus } from '@/features/kiosks/types';
 
 
 const clearMarkers = (markersRef: React.RefObject<maplibregl.Marker[]>) => {
@@ -50,8 +50,8 @@ const createMarkerElement = (isActive: boolean, connectionStatus?: ConnectionSta
 const createPopupContent = (kiosk: Kiosk, isOperational: boolean, translate: TFunction): string => {
 	const name = kiosk.name || kiosk.code || '';
 	const statusText = isOperational
-		? translate('status.active')
-		: translate('status.archived');
+		? translate('nikki.general.status.active')
+		: translate('nikki.general.status.archived');
 
 	const connectionHistory = (kiosk?.connection?.history ?? []) || [];
 	const currentStatus = getCurrentConnectionStatus(connectionHistory?.[0]);
@@ -61,10 +61,10 @@ const createPopupContent = (kiosk: Kiosk, isOperational: boolean, translate: TFu
 	return `
 		<div style="padding: 8px;">
 			<strong>${name}</strong><br/>
-			<span>${translate('kiosk.fields.code')}: ${kiosk.code}</span><br/>
-			<span>${translate('kiosk.fields.status')}: ${statusText}</span><br/>
-			<span>${translate('kiosk.fields.connection_status')}: ${connectionStatusText}</span><br/>
-			<span>${translate('kiosk.fields.address')}: ${kiosk.locationAddress || '—'}</span>
+			<span>${translate('coremart.vendingMachine.kiosk.fields.code')}: ${kiosk.code}</span><br/>
+			<span>${translate('coremart.vendingMachine.kiosk.fields.status')}: ${statusText}</span><br/>
+			<span>${translate('coremart.vendingMachine.kiosk.fields.connectionStatus')}: ${connectionStatusText}</span><br/>
+			<span>${translate('coremart.vendingMachine.kiosk.fields.address')}: ${kiosk.locationAddress || '—'}</span>
 			${stateInfo}
 		</div>
 	`;
@@ -73,11 +73,11 @@ const createPopupContent = (kiosk: Kiosk, isOperational: boolean, translate: TFu
 const getConnectionStatusText = (connectionStatus: ConnectionStatus | undefined, translate: TFunction): string => {
 	switch (connectionStatus) {
 		case ConnectionStatus.FAST:
-			return translate('kiosk.connection_status.fast');
+			return translate('coremart.vendingMachine.kiosk.connectionStatus.fast');
 		case ConnectionStatus.SLOW:
-			return translate('kiosk.connection_status.slow');
+			return translate('coremart.vendingMachine.kiosk.connectionStatus.slow');
 		case ConnectionStatus.LOST:
-			return translate('kiosk.connection_status.disconnected');
+			return translate('coremart.vendingMachine.kiosk.connectionStatus.disconnected');
 		default:
 			return '—';
 	}
@@ -134,7 +134,7 @@ interface UseMapMarkersProps {
 
 export function useMapMarkers({ mapRef, kiosks = [], colorScheme }: UseMapMarkersProps) {
 	const markersRef = useRef<maplibregl.Marker[]>([]);
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	// Filter kiosks that have valid coordinates
 	const kiosksWithCoordinates = useMemo(() => {

@@ -18,11 +18,11 @@ import type { ReportFilterMenuBarProps } from './types';
 const PEEK_W = 44;
 
 const ToggleEdgeButton: React.FC<{
-	expanded: boolean,
-	onClick: () => void,
-	expandLabel: string,
-	collapseLabel: string,
-	collapseDirection: 'left' | 'right',
+	expanded: boolean;
+	onClick: () => void;
+	expandLabel: string;
+	collapseLabel: string;
+	collapseDirection: 'left' | 'right';
 }> = ({ expanded, onClick, expandLabel, collapseLabel, collapseDirection }) => {
 	const theme = useMantineTheme();
 	const isRight = collapseDirection === 'right';
@@ -77,7 +77,7 @@ export const ReportFilterMenuBar: React.FC<ReportFilterMenuBarProps> = ({
 	sectionVisibility,
 	onSectionVisibilityChange,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const theme = useMantineTheme();
 	const isCompact = useMediaQuery('(max-width: 62em)');
 	const isNarrow = useMediaQuery('(max-width: 36em)');
@@ -159,8 +159,8 @@ export const ReportFilterMenuBar: React.FC<ReportFilterMenuBarProps> = ({
 					<ToggleEdgeButton
 						expanded={expanded}
 						onClick={toggle}
-						expandLabel={translate('reports.filter_bar.expand')}
-						collapseLabel={translate('reports.filter_bar.collapse')}
+						expandLabel={translate('coremart.vendingMachine.reports.filterBar.expand')}
+						collapseLabel={translate('coremart.vendingMachine.reports.filterBar.collapse')}
 						collapseDirection={collapseDirection}
 					/>
 				)}
@@ -169,8 +169,8 @@ export const ReportFilterMenuBar: React.FC<ReportFilterMenuBarProps> = ({
 					<ToggleEdgeButton
 						expanded={expanded}
 						onClick={toggle}
-						expandLabel={translate('reports.filter_bar.expand')}
-						collapseLabel={translate('reports.filter_bar.collapse')}
+						expandLabel={translate('coremart.vendingMachine.reports.filterBar.expand')}
+						collapseLabel={translate('coremart.vendingMachine.reports.filterBar.collapse')}
 						collapseDirection={collapseDirection}
 					/>
 				)}

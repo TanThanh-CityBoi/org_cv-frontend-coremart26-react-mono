@@ -3,17 +3,18 @@ import { IconPlus } from '@tabler/icons-react';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { ControlPanelProps } from '../../../../../components/ControlPanel/ControlPanel';
-import { SearchGraph, SearchOperator } from '../../../../../types';
-import { useKioskListInEvent } from '../../../hooks';
+import { ControlPanelProps } from '@/components/ControlPanel/ControlPanel';
+import { useKioskListInEvent } from '@/features/events/hooks';
+import { SearchGraph, SearchOperator } from '@/types';
+
 import { useRegisterEventDetailTab } from '../eventDetailTabControl';
 
-import type { Event } from '../../../types';
+import type { Event } from '@/features/events/types';
 
 
 type UseEventKiosksTabArgs = {
-	event: Event,
-	graph: SearchGraph,
+	event: Event;
+	graph: SearchGraph;
 };
 
 function useTablePagination(
@@ -33,7 +34,7 @@ function useTablePagination(
 }
 
 export function useEventKiosksTab({ event, graph }: UseEventKiosksTabArgs) {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const list = useKioskListInEvent({ eventId: event.id, graph });
 	const pagination = useTablePagination(list.pagination);
 
@@ -49,7 +50,7 @@ export function useEventKiosksTab({ event, graph }: UseEventKiosksTabArgs) {
 
 	const tabActions = useMemo<ControlPanelProps['actions']>(() => [
 		{
-			label: translate('events.actions.add_kiosks', {
+			label: translate('coremart.vendingMachine.events.actions.addKiosks', {
 				defaultValue: 'Thêm Kiosk',
 			}),
 			leftSection: <IconPlus size={16} />,

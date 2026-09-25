@@ -15,18 +15,19 @@ import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { useTranslation } from 'react-i18next';
 
-import { fmtCurrency, fmtNumber, fmtShortNumber } from '../../../../../common/helpers/formartNumber';
+import { fmtCurrency, fmtNumber, fmtShortNumber } from '@/common/helpers/formartNumber';
 import {
 	TimeRangeSelect,
 	type TimeRangePreset,
 	type TimeRangePresetRange,
-} from '../../../../../components/RangePicker';
-import { GroupTime } from '../../../../../types/api';
-import { formatOrderTimeLabel } from '../../../helpers';
+} from '@/components/RangePicker';
+import { formatOrderTimeLabel } from '@/features/reports/helpers';
+import { GroupTime } from '@/types/api';
+
 import { RevenueReportFilters } from '../RevenueReportSwitcher';
 
-import type { PaginationConfig } from '../../../../../common/hooks';
-import type { ReportOverview, RevenueReportByOrderTime } from '../../type';
+import type { PaginationConfig } from '@/common/hooks';
+import type { ReportOverview, RevenueReportByOrderTime } from '@/features/reports/business/type';
 
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
@@ -34,23 +35,23 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 const AVERAGE_LINE_PLUGIN_ID = 'revenueAverageLine';
 
 type RevenueAvgLinePluginOptions = {
-	averageRevenue: number | null,
+	averageRevenue: number | null;
 };
 
 type AvgLineHitRegion = {
-	lineY: number,
-	lineX0: number,
-	lineX1: number,
-	pillLeft: number,
-	pillRight: number,
-	pillTop: number,
-	pillBottom: number,
+	lineY: number;
+	lineX0: number;
+	lineX1: number;
+	pillLeft: number;
+	pillRight: number;
+	pillTop: number;
+	pillBottom: number;
 };
 
 type ChartWithAvgLine = Chart & {
-	_avgLineHit?: AvgLineHitRegion | null,
-	_avgLineTooltipEl?: HTMLDivElement,
-	_avgLineHandlers?: { move: (e: MouseEvent) => void, leave: () => void },
+	_avgLineHit?: AvgLineHitRegion | null;
+	_avgLineTooltipEl?: HTMLDivElement;
+	_avgLineHandlers?: { move: (e: MouseEvent) => void; leave: () => void };
 };
 
 function getRevenueAvgOpts(chart: Chart): RevenueAvgLinePluginOptions {
@@ -125,7 +126,7 @@ function showAvgLineTooltip(c: ChartWithAvgLine, canvasX: number, canvasY: numbe
 	el.style.top = `${top}px`;
 }
 
-const revenueAverageLinePlugin: Plugin<'bar'> = {
+const revenueAverageLinePlugin: Plugin = {
 	id: AVERAGE_LINE_PLUGIN_ID,
 	afterInit(chart) {
 		const c = chart as ChartWithAvgLine;
@@ -268,10 +269,10 @@ function useChartOptions(
 	activeTab: 'revenue' | 'orders' = 'revenue',
 	opts: { averageRevenue: number, maxRevenue: number, maxOrders: number },
 ) {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const { averageRevenue, maxRevenue, maxOrders } = opts ;
-	const revenueAxisLabel = translate('reports.revenue_report.chart.revenue_axis_label');
-	const ordersAxisLabel = translate('reports.revenue_report.chart.orders_axis_label');
+	const revenueAxisLabel = translate('coremart.vendingMachine.reports.revenueReport.chart.revenueAxisLabel');
+	const ordersAxisLabel = translate('coremart.vendingMachine.reports.revenueReport.chart.ordersAxisLabel');
 
 	const chartOptions = useMemo(() => {
 		return {
@@ -293,9 +294,9 @@ function useChartOptions(
 						label: (context: any) => {
 							const value = context.parsed.y;
 							if (activeTab === 'revenue') {
-								return translate('reports.revenue_report.chart.tooltip_revenue_value', { value: fmtCurrency(value) });
+								return translate('coremart.vendingMachine.reports.revenueReport.chart.tooltipRevenueValue', { value: fmtCurrency(value) });
 							}
-							return translate('reports.revenue_report.chart.tooltip_orders_value', { value: fmtNumber(value) });
+							return translate('coremart.vendingMachine.reports.revenueReport.chart.tooltipOrdersValue', { value: fmtNumber(value) });
 						},
 					},
 				},
@@ -337,16 +338,16 @@ const DRAG_THRESHOLD = 50;
 const WHEEL_DEBOUNCE_MS = 400;
 
 type NavHandlers = {
-	hasPagination: boolean,
-	page: number,
-	totalPages: number,
-	goToPrev: () => void,
-	goToNext: () => void,
-	onWheel: (e: React.WheelEvent) => void,
-	onMouseDown: (e: React.MouseEvent) => void,
-	onMouseMove: (e: React.MouseEvent) => void,
-	onMouseUp: (e: React.MouseEvent) => void,
-	onMouseLeave: () => void,
+	hasPagination: boolean;
+	page: number;
+	totalPages: number;
+	goToPrev: () => void;
+	goToNext: () => void;
+	onWheel: (e: React.WheelEvent) => void;
+	onMouseDown: (e: React.MouseEvent) => void;
+	onMouseMove: (e: React.MouseEvent) => void;
+	onMouseUp: (e: React.MouseEvent) => void;
+	onMouseLeave: () => void;
 };
 
 function useChartNavigation(pagination: PaginationConfig | undefined): NavHandlers {
@@ -406,10 +407,10 @@ function useChartNavigation(pagination: PaginationConfig | undefined): NavHandle
 }
 
 type ChartBodyProps = {
-	chartData: ReturnType<typeof useChartData>,
-	chartOptions: ReturnType<typeof useChartOptions>,
-	nav: NavHandlers,
-	isLoading?: boolean,
+	chartData: ReturnType<typeof useChartData>;
+	chartOptions: ReturnType<typeof useChartOptions>;
+	nav: NavHandlers;
+	isLoading?: boolean;
 };
 
 function useChartData(
@@ -417,9 +418,9 @@ function useChartData(
 	activeTab: 'revenue' | 'orders',
 	labels: string[],
 ) {
-	const { t: translate } = useTranslation('vending_machine');
-	const revenueLabel = translate('reports.revenue_report.chart.radio_revenue');
-	const ordersLabel = translate('reports.revenue_report.chart.radio_orders');
+	const { t: translate } = useTranslation();
+	const revenueLabel = translate('coremart.vendingMachine.reports.revenueReport.chart.radioRevenue');
+	const ordersLabel = translate('coremart.vendingMachine.reports.revenueReport.chart.radioOrders');
 
 	return {
 		labels,
@@ -492,7 +493,7 @@ export function RevenueTimeSeriesChart({
 	onFilterChange,
 }: RevenueChartProps): React.ReactElement {
 	const [activeTab, setActiveTab] = useState<'revenue' | 'orders' | null>('revenue');
-	const { t: translate, i18n } = useTranslation('vending_machine');
+	const { t: translate, i18n } = useTranslation();
 	const nav = useChartNavigation(pagination);
 	const { hasPagination, page, totalPages, onPageChange } = { ...nav, onPageChange: pagination?.onPageChange };
 
@@ -504,34 +505,34 @@ export function RevenueTimeSeriesChart({
 		maxOrders: Number(overview?.highestOrderCountStats?.orderCount ?? 0),
 	});
 
-	const revenueLabel = translate('reports.revenue_report.chart.radio_revenue');
-	const ordersLabel = translate('reports.revenue_report.chart.radio_orders');
+	const revenueLabel = translate('coremart.vendingMachine.reports.revenueReport.chart.radioRevenue');
+	const ordersLabel = translate('coremart.vendingMachine.reports.revenueReport.chart.radioOrders');
 
 	return (
 		<Card shadow='sm' padding='md' radius='md' withBorder h='100%'>
 			<Stack gap='md' h='100%'>
-				<Group justify='space-between' align='center'>
-					<Stack gap={4}>
-						<Title order={4} fw={600}>{title ?? 'Sales Insight'}</Title>
-						<Text size='xs' c='dimmed'>{subtitle ?? 'Overview of revenue and orders'}</Text>
-					</Stack>
-					<Group gap='md' align='center'>
-						{hasPagination && <Text size='xs' c='dimmed'>{page} / {totalPages}</Text>}
-						<Radio.Group value={activeTab} onChange={(value) => setActiveTab(value as 'revenue' | 'orders')}>
-							<Group gap='sm'>
-								<Radio value='revenue' label={revenueLabel} size='xs' />
-								<Radio value='orders' label={ordersLabel} size='xs' />
-							</Group>
-						</Radio.Group>
-						{showFilter && (
-							<TimeRangeSelect
-								value={activePreset}
-								defaultValue={defaultPreset}
-								onChange={onFilterChange}
-							/>
-						)}
-					</Group>
+			<Group justify='space-between' align='center'>
+				<Stack gap={4}>
+					<Title order={4} fw={600}>{title ?? 'Sales Insight'}</Title>
+					<Text size='xs' c='dimmed'>{subtitle ?? 'Overview of revenue and orders'}</Text>
+				</Stack>
+				<Group gap='md' align='center'>
+					{hasPagination && <Text size='xs' c='dimmed'>{page} / {totalPages}</Text>}
+					<Radio.Group value={activeTab} onChange={(value) => setActiveTab(value as 'revenue' | 'orders')}>
+						<Group gap='sm'>
+							<Radio value='revenue' label={revenueLabel} size='xs' />
+							<Radio value='orders' label={ordersLabel} size='xs' />
+						</Group>
+					</Radio.Group>
+					{showFilter && (
+						<TimeRangeSelect
+							value={activePreset}
+							defaultValue={defaultPreset}
+							onChange={onFilterChange}
+						/>
+					)}
 				</Group>
+			</Group>
 				<ChartBody chartData={chartData} chartOptions={chartOptions} nav={nav} isLoading={isLoading} />
 				{hasPagination && (
 					<Group justify='center' gap={6}>

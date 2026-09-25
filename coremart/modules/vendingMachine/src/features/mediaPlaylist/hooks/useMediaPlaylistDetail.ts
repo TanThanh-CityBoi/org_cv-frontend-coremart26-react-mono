@@ -1,25 +1,19 @@
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
 import React from 'react';
 
-import { mediaPlaylistCrudService } from '../mediaPlaylistCrudService';
-
-import type { Playlist } from '../types';
-
-
-type GetOneResponse = { item: Playlist };
-
+import { VendingMachineDispatch, mediaPlaylistActions, selectMediaPlaylistDetail } from '@/appState';
 
 export function useMediaPlaylistDetail(playlistId?: string) {
-	const { dispatchMethod, result } = useServiceLayer<GetOneResponse>(mediaPlaylistCrudService.getById);
-
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
+	const detail = useMicroAppSelector(selectMediaPlaylistDetail);
 	React.useEffect(() => {
 		if (playlistId) {
-			dispatchMethod({ id: playlistId });
+			dispatch(mediaPlaylistActions.getMediaPlaylist(playlistId));
 		}
-	}, [playlistId, dispatchMethod]);
-
+	}, [playlistId, dispatch]);
+	const isLoading = Boolean(playlistId) && (detail.status === 'pending' || detail.status === 'idle');
 	return {
-		playlist: result.data?.item,
-		isLoading: Boolean(playlistId) && result.isPending,
+		playlist: detail.data,
+		isLoading,
 	};
 }

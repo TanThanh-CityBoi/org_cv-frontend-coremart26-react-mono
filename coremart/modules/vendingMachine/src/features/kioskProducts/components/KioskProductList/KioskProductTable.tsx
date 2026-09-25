@@ -5,15 +5,14 @@ import { IconCheck } from '@tabler/icons-react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { formatCatalogPrice } from '../../sellPrice';
 import { KioskProduct } from '../../type';
 
 
 export type KioskProductTableProps = {
-	products: KioskProduct[],
-	displayNameFor: (p: KioskProduct) => string,
-	isRowSelected?: (productId: string) => boolean,
-	onRowActivate?: (product: KioskProduct) => void,
+	products: KioskProduct[];
+	displayNameFor: (p: KioskProduct) => string;
+	isRowSelected?: (productId: string) => boolean;
+	onRowActivate?: (product: KioskProduct) => void;
 };
 
 export const KioskProductTable: React.FC<KioskProductTableProps> = ({
@@ -22,19 +21,19 @@ export const KioskProductTable: React.FC<KioskProductTableProps> = ({
 	isRowSelected,
 	onRowActivate,
 }) => {
-	const { t } = useTranslation('vending_machine');
+	const { t } = useTranslation();
 	return (
 		<Table striped highlightOnHover verticalSpacing='sm'>
 			<Table.Thead>
 				<Table.Tr>
 					{onRowActivate && <Table.Th w={50} />}
 					<Table.Th w={60} />
-					<Table.Th>{t('kiosk.stocks.fields.sku')}</Table.Th>
-					<Table.Th>{t('kiosk.stocks.fields.barcode')}</Table.Th>
-					<Table.Th>{t('kiosk.stocks.fields.name')}</Table.Th>
-					<Table.Th>{t('kiosk.fields.status')}</Table.Th>
+					<Table.Th>{t('coremart.vendingMachine.kiosk.stocks.fields.sku')}</Table.Th>
+					<Table.Th>{t('coremart.vendingMachine.kiosk.stocks.fields.barcode')}</Table.Th>
+					<Table.Th>{t('coremart.vendingMachine.kiosk.stocks.fields.name')}</Table.Th>
+					<Table.Th>{t('coremart.vendingMachine.kiosk.fields.status')}</Table.Th>
 					<Table.Th style={{ textAlign: 'right' }}>
-						{t('kiosk.stocks.fields.proposed_price')}
+						{t('coremart.vendingMachine.kiosk.stocks.fields.proposedPrice')}
 					</Table.Th>
 				</Table.Tr>
 			</Table.Thead>
@@ -73,7 +72,7 @@ export const KioskProductTable: React.FC<KioskProductTableProps> = ({
 								<Badge size='sm' variant='light'>{p.status}</Badge>
 							</Table.Td>
 							<Table.Td style={{ textAlign: 'right' }}>
-								<Text size='sm'>{formatCatalogPrice(p.proposedPrice, formatCurrency.VND)}</Text>
+								<Text size='sm'>{formatCurrency.VND(Number(p.proposedPrice))}</Text>
 							</Table.Td>
 						</Table.Tr>
 					);

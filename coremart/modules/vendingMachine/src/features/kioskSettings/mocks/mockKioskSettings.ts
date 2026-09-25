@@ -1,11 +1,12 @@
 
+import { mockKiosks } from '@/features/kiosks/mocks';
+
 import { mockGames } from '../../games/mockGames';
-import { mockKiosks } from '../../kiosks/mocks';
 import { mockMediaPlaylists } from '../../mediaPlaylist/mocks/mockMediaPlaylists';
 import { mockThemes } from '../../themes/mockThemes';
 
-import type { RestArchiveResponse, PagedSearchResponse } from '../../../types';
 import type { KioskSetting, KioskSettingUpdatePatch } from '../types';
+import type { RestArchiveResponse, PagedSearchResponse } from '@/types';
 
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -177,7 +178,7 @@ export const mockKioskSettings = {
 
 	async setArchivedKioskSetting(
 		id: string,
-		payload: { etag: string, isArchived: boolean },
+		payload: { etag: string; isArchived: boolean },
 	): Promise<RestArchiveResponse> {
 		await delay(400);
 		const index = mockKioskSettingsData.findIndex((s) => s.id === id);

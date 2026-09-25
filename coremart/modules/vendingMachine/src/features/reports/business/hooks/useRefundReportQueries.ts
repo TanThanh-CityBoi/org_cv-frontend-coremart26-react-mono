@@ -1,23 +1,27 @@
 
 import { notifications } from '@mantine/notifications';
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
 import dayjs from 'dayjs';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { triggerBlobDownload } from '../../../../common/helpers';
-import { formatTimeQuery } from '../../../../common/helpers/format-time';
-import { usePaginationWithTotal } from '../../../../common/hooks/usePagination';
+import {
+	type VendingMachineDispatch,
+	refundReportActions,
+	selectRefundByKiosk,
+	selectRefundByPaymentMethod,
+	selectRefundByProduct,
+	selectRefundOrders,
+	selectRefundOverview,
+} from '@/appState';
+import { triggerBlobDownload } from '@/common/helpers';
+import { formatTimeQuery } from '@/common/helpers/format-time';
+import { usePagination } from '@/common/hooks/usePagination';
+
 import { refundReportService, REFUND_REPORT_DEFAULT_PAGE_SIZE } from '../refundReportService';
 
-import type { BaseReportQuery } from '../../../../types';
-import type {
-	KioskRefundReport,
-	OrderRefundReport,
-	PaymentMethodRefundReport,
-	ProductRefundReport,
-	RefundReportAppliedFilters,
-} from '../components/RefundReport/type';
+import type { RefundReportAppliedFilters } from '../components/RefundReport/type';
+import type { BaseReportQuery } from '@/types';
 
 
 function refundAppliedToBaseQuery(applied: RefundReportAppliedFilters): BaseReportQuery | null {
@@ -46,105 +50,99 @@ function refundFiltersKey(applied: RefundReportAppliedFilters): string {
 
 
 export function useRefundOverview(applied: RefundReportAppliedFilters) {
-	const { dispatchMethod, result } = useServiceLayer(refundReportService.getOverview);
+	const dispatch = useMicroAppDispatch() as VendingMachineDispatch;
+	const overview = useMicroAppSelector(selectRefundOverview);
 	const query = useMemo(() => refundAppliedToBaseQuery(applied), [applied]);
 
 	useEffect(() => {
 		if (!query) return;
-		dispatchMethod(query);
-	}, [dispatchMethod, query]);
+		dispatch(refundReportActions.fetchRefundOverview(query));
+	}, [dispatch, query]);
 
 	return {
-		data: result.data ?? null,
-		isLoading: result.isPending || result.doneAt == null,
-		error: result.error,
+		data: overview.data ?? null,
+		isLoading: overview.status === 'pending' || overview.status === 'idle',
+		error: overview.error,
 	};
 }
 
 
 export function useRefundByKiosk(applied: RefundReportAppliedFilters) {
-	const { dispatchMethod, result } = useServiceLayer<{ items: KioskRefundReport[] }>(
-		refundReportService.getByKiosk,
-	);
+	const dispatch = useMicroAppDispatch() as VendingMachineDispatch;
+	const slice = useMicroAppSelector(selectRefundByKiosk);
 	const query = useMemo(() => refundAppliedToBaseQuery(applied), [applied]);
 
 	useEffect(() => {
 		if (!query) return;
-		dispatchMethod(query);
-	}, [dispatchMethod, query]);
+		dispatch(refundReportActions.fetchRefundByKiosk(query));
+	}, [dispatch, query]);
 
 	return {
-		// Default to `[]`: the slice these replaced always exposed an array.
-		items: result.data?.items ?? [],
-		isLoading: result.isPending || result.doneAt == null,
-		error: result.error,
+		items: slice.items,
+		isLoading: slice.status === 'pending' || slice.status === 'idle',
+		error: slice.error,
 	};
 }
 
 
 export function useRefundByPaymentMethod(applied: RefundReportAppliedFilters) {
-	const { dispatchMethod, result } = useServiceLayer<{ items: PaymentMethodRefundReport[] }>(
-		refundReportService.getByPaymentMethod,
-	);
+	const dispatch = useMicroAppDispatch() as VendingMachineDispatch;
+	const slice = useMicroAppSelector(selectRefundByPaymentMethod);
 	const query = useMemo(() => refundAppliedToBaseQuery(applied), [applied]);
 
 	useEffect(() => {
 		if (!query) return;
-		dispatchMethod(query);
-	}, [dispatchMethod, query]);
+		dispatch(refundReportActions.fetchRefundByPaymentMethod(query));
+	}, [dispatch, query]);
 
 	return {
-		// Default to `[]`: the slice these replaced always exposed an array.
-		items: result.data?.items ?? [],
-		isLoading: result.isPending || result.doneAt == null,
-		error: result.error,
+		items: slice.items,
+		isLoading: slice.status === 'pending' || slice.status === 'idle',
+		error: slice.error,
 	};
 }
 
 
 export function useRefundByProduct(applied: RefundReportAppliedFilters) {
-	const { dispatchMethod, result } = useServiceLayer<{ items: ProductRefundReport[] }>(
-		refundReportService.getByProduct,
-	);
+	const dispatch = useMicroAppDispatch() as VendingMachineDispatch;
+	const slice = useMicroAppSelector(selectRefundByProduct);
 	const query = useMemo(() => refundAppliedToBaseQuery(applied), [applied]);
 
 	useEffect(() => {
 		if (!query) return;
-		dispatchMethod(query);
-	}, [dispatchMethod, query]);
+		dispatch(refundReportActions.fetchRefundByProduct(query));
+	}, [dispatch, query]);
 
 	return {
-		// Default to `[]`: the slice these replaced always exposed an array.
-		items: result.data?.items ?? [],
-		isLoading: result.isPending || result.doneAt == null,
-		error: result.error,
+		items: slice.items,
+		isLoading: slice.status === 'pending' || slice.status === 'idle',
+		error: slice.error,
 	};
 }
 
 
 export function useRefundOrders(applied: RefundReportAppliedFilters) {
-	const { t: translate } = useTranslation('vending_machine');
-	const { dispatchMethod, result } = useServiceLayer<{ items: OrderRefundReport[], total: number }>(
-		refundReportService.getOrders,
-	);
+	const dispatch = useMicroAppDispatch() as VendingMachineDispatch;
+	const { t: translate } = useTranslation();
+	const slice = useMicroAppSelector(selectRefundOrders);
 
 	const filtersKey = useMemo(() => refundFiltersKey(applied), [applied]);
 	const query = useMemo(() => refundAppliedToBaseQuery(applied), [applied]);
 
 	const fetchList = useCallback((targetPage: number, pageSize: number) => {
 		if (!query) return;
-		dispatchMethod({ ...query, page: targetPage - 1, size: pageSize });
-	}, [dispatchMethod, query]);
+		dispatch(refundReportActions.fetchRefundOrders({ ...query, page: targetPage - 1, size: pageSize }));
+	}, [dispatch, query]);
 
-	const pagination = usePaginationWithTotal(fetchList, result.data?.total ?? 0, {
+	const pagination = usePagination(fetchList, selectRefundOrders, {
 		fallbackPageSize: REFUND_REPORT_DEFAULT_PAGE_SIZE,
 		resetPageKey: filtersKey,
 	});
-	const { page, pageSize } = pagination;
+
 
 	useEffect(() => {
-		fetchList(page, pageSize);
-	}, [fetchList, page, pageSize]);
+		fetchList(pagination.page, pagination.pageSize);
+	}, [fetchList]);
 
 	const handleExport = useCallback(async () => {
 		if (!query) return;
@@ -153,29 +151,29 @@ export function useRefundOrders(applied: RefundReportAppliedFilters) {
 			triggerBlobDownload(blob, `Refund-orders-${dayjs().format('YYYYMMDD-HHmm')}.xlsx`);
 			notifications.show({
 				color: 'green',
-				title: translate('reports.revenue_report.export'),
-				message: translate('reports.revenue_report.export_success'),
+				title: translate('coremart.vendingMachine.reports.revenueReport.export'),
+				message: translate('coremart.vendingMachine.reports.revenueReport.exportSuccess'),
 			});
 		}
 		catch (err) {
 			const message = err instanceof Error ? err.message : String(err);
 			notifications.show({
 				color: 'red',
-				title: translate('reports.revenue_report.export'),
-				message: translate('reports.revenue_report.export_failed', { message }),
+				title: translate('coremart.vendingMachine.reports.revenueReport.export'),
+				message: translate('coremart.vendingMachine.reports.revenueReport.exportFailed', { message }),
 			});
 		}
 	}, [query, translate]);
 
 
 
-	const items = result.data?.items ?? [];
-	const isLoading = (result.isPending || result.doneAt == null) && !items.length;
+	const items = slice.items;
+	const isLoading = (slice.status === 'pending' || slice.status === 'idle') && !items.length;
 
 	return {
 		items,
 		isLoading,
-		error: result.error,
+		error: slice.error,
 		pagination,
 		handleExport,
 	};

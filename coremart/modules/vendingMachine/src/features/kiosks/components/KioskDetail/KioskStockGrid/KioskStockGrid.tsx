@@ -3,6 +3,8 @@ import { Box, Center, Flex, Stack } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { useCallback, useMemo, useRef, useState, FC, useEffect } from 'react';
 
+import { useKioskPositionEdit, useKioskStock } from '@/features/kiosks/hooks';
+import { Kiosk } from '@/features/kiosks/types';
 
 import { AssignStockPositionModal } from './AssignStockPositionModal';
 import { EditStockPositionModal } from './EditStockPositionModal';
@@ -13,8 +15,6 @@ import {
 	ROW_LETTERS,
 } from './kioskStock.helpers';
 import { UnstyledCellStock } from './UnstyledCellStock';
-import { useKioskPositionEdit, useKioskStock } from '../../../hooks';
-import { Kiosk } from '../../../types';
 import { useKioskStockGridTab } from '../hooks/useKioskStockGridTab';
 
 import type { CellStockItem, KioskStockCol, KioskStockGridMap, KioskStockRow } from './kioskStock.types';
@@ -75,13 +75,13 @@ export const KioskStockGrid: FC<KioskStockGridProps> = (props) => {
 
 	const [cellDetailOpen, setCellDetailOpen] = useState(false);
 	const [cellDetailContext, setCellDetailContext] = useState<{
-		row: string,
-		col: string,
-		cell: CellStockItem | null,
+		row: string;
+		col: string;
+		cell: CellStockItem | null;
 	} | null>(null);
 
 	const [assignOpen, setAssignOpen] = useState(false);
-	const [assignSlot, setAssignSlot] = useState<{ row: string, col: string } | null>(null);
+	const [assignSlot, setAssignSlot] = useState<{ row: string; col: string } | null>(null);
 
 	const addUpdatedCellKey = useCallback((cellKey: string) => {
 		if (updateRef.current.includes(cellKey)) {

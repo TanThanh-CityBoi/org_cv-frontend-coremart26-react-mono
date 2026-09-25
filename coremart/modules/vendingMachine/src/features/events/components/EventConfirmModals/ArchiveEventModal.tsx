@@ -6,11 +6,11 @@ import { Trans, useTranslation } from 'react-i18next';
 export type EventArchiveRestoreModalType = 'archive' | 'restore';
 
 export type ArchiveEventModalProps = {
-	opened: boolean,
-	onClose: () => void,
-	onConfirm: () => void,
-	type: EventArchiveRestoreModalType,
-	name: string,
+	opened: boolean;
+	onClose: () => void;
+	onConfirm: () => void;
+	type: EventArchiveRestoreModalType;
+	name: string;
 };
 
 export const ArchiveEventModal: React.FC<ArchiveEventModalProps> = ({
@@ -20,30 +20,30 @@ export const ArchiveEventModal: React.FC<ArchiveEventModalProps> = ({
 	type,
 	name,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const isArchive = type === 'archive';
 
 	return (
 		<ConfirmModal
 			title={isArchive
-				? translate('events.messages.archive_modal_title')
-				: translate('events.messages.restore_modal_title')}
+				? translate('coremart.vendingMachine.events.messages.archive_modal_title')
+				: translate('coremart.vendingMachine.events.messages.restore_modal_title')}
 			opened={opened}
 			onClose={onClose}
 			onConfirm={onConfirm}
 			message={
 				<Trans
 					i18nKey={isArchive
-						? 'events.messages.archive_confirm'
-						: 'events.messages.restore_confirm'}
+						? 'coremart.vendingMachine.events.messages.archive_confirm'
+						: 'coremart.vendingMachine.events.messages.restore_confirm'}
 					values={{ name }}
 					components={{ strong: <strong /> }}
 				/>
 			}
 			confirmLabel={isArchive
-				? translate('action.archive')
-				: translate('action.restore')}
+				? translate('nikki.general.actions.archive')
+				: translate('nikki.general.actions.restore')}
 			confirmColor={isArchive ? 'orange' : 'blue'}
 		/>
 	);

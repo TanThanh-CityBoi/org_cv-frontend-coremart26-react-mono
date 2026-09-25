@@ -1,7 +1,5 @@
 import { NavLink, Stack } from '@mantine/core';
-import { testAttrs } from '@nikkierp/common/utils';
-import { TranslateFn } from '@nikkierp/ui/i18n';
-import { MenuItem } from '@nikkierp/ui/menu';
+import { MenuBarItem } from '@nikkierp/ui/appState';
 import React from 'react';
 import { Link } from 'react-router';
 
@@ -9,33 +7,28 @@ import {
 	getPathWithPrefix,
 	hasActiveNestedItemWithPrefix,
 	isPathActiveWithPrefix,
-	MENU_BAR_TEST_ID,
 } from './helper';
 
 
 export type VerticalMenuBarProps = {
-	items: MenuItem[],
-	pathPrefix: string,
-	currentPath: string,
-	/** Bound to the contributing module's namespace; items carry keys, not labels. */
-	t: TranslateFn,
+	items: MenuBarItem[];
+	pathPrefix: string;
+	currentPath: string;
 };
 
 export const VerticalMenuBar: React.FC<VerticalMenuBarProps> = ({
 	items,
 	pathPrefix,
 	currentPath,
-	t,
 }) => {
 	return (
 		<Stack gap={0}>
 			{items.map((item) => (
 				<VerticalMenuItem
-					key={item.labelKey}
+					key={item.label}
 					item={item}
 					pathPrefix={pathPrefix}
 					currentPath={currentPath}
-					t={t}
 				/>
 			))}
 		</Stack>
@@ -43,17 +36,15 @@ export const VerticalMenuBar: React.FC<VerticalMenuBarProps> = ({
 };
 
 type VerticalMenuItemProps = {
-	item: MenuItem,
-	pathPrefix: string,
-	currentPath: string,
-	t: TranslateFn,
+	item: MenuBarItem;
+	pathPrefix: string;
+	currentPath: string;
 };
 
 const VerticalMenuItem: React.FC<VerticalMenuItemProps> = ({
 	item,
 	pathPrefix,
 	currentPath,
-	t,
 }) => {
 	const hasSubItems = item.items && item.items.length > 0;
 	const isActive = item.link
@@ -69,17 +60,16 @@ const VerticalMenuItem: React.FC<VerticalMenuItemProps> = ({
 	const children = hasSubItems
 		? item.items!.map((subItem) => (
 			<VerticalMenuItem
-				key={subItem.labelKey}
+				key={subItem.label}
 				item={subItem}
 				pathPrefix={pathPrefix}
 				currentPath={currentPath}
-				t={t}
 			/>
 		))
 		: undefined;
 
 	const navLinkProps = {
-		label: t(item.labelKey),
+		label: item.label,
 		active: hasActiveChild || isActive,
 		defaultOpened: hasActiveChild,
 		childrenOffset: 24,
@@ -89,8 +79,6 @@ const VerticalMenuItem: React.FC<VerticalMenuItemProps> = ({
 				borderRadius: '10px',
 			},
 		},
-		// Keyed on `labelKey`, not the translated label, so the id survives a locale change.
-		...testAttrs(MENU_BAR_TEST_ID, 'verticalItem', item.labelKey),
 	};
 
 	// If item has link, use Link component for navigation

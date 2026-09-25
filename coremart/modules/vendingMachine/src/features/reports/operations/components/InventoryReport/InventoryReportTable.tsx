@@ -8,9 +8,9 @@ import { IconDownload } from '@tabler/icons-react';
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { asLegacyModelSchema, fmtNumber, getLocalizedName } from '../../../../../common/helpers';
-import { PaginationConfig } from '../../../../../common/hooks';
-import { TableContainer, TablePagination } from '../../../../../components/Table';
+import { fmtNumber, getLocalizedName } from '@/common/helpers';
+import { PaginationConfig } from '@/common/hooks';
+import { TableContainer, TablePagination } from '@/components/Table';
 
 import type { InventoryTableColumnKey, ProductInventoryReport } from './type';
 
@@ -24,24 +24,24 @@ const INVENTORY_TABLE_COLUMNS: InventoryTableColumnKey[] = [
 	'maxQty',
 ];
 
-const inventoryReportSchema = asLegacyModelSchema({
+const inventoryReportSchema: ModelSchema = {
 	name: 'InventoryReport',
 	fields: {
-		productName: { type: 'string', label: 'reports.inventory_report.columns.product_name' },
-		totalQty: { type: 'string', label: 'reports.inventory_report.columns.total_qty' },
-		sellingQty: { type: 'string', label: 'reports.inventory_report.columns.selling_qty' },
-		warningQty: { type: 'string', label: 'reports.inventory_report.columns.warning_qty' },
-		maxQty: { type: 'string', label: 'reports.inventory_report.columns.max_qty' },
+		productName: { type: 'string', label: 'coremart.vendingMachine.reports.inventoryReport.columns.productName' },
+		totalQty: { type: 'string', label: 'coremart.vendingMachine.reports.inventoryReport.columns.totalQty' },
+		sellingQty: { type: 'string', label: 'coremart.vendingMachine.reports.inventoryReport.columns.sellingQty' },
+		warningQty: { type: 'string', label: 'coremart.vendingMachine.reports.inventoryReport.columns.warningQty' },
+		maxQty: { type: 'string', label: 'coremart.vendingMachine.reports.inventoryReport.columns.maxQty' },
 	},
-});
+};
 
 
 type InventoryReportTableProps = {
-	items?: ProductInventoryReport[],
-	isLoading?: boolean,
-	error?: string | null,
-	pagination?: PaginationConfig,
-	handleExport?: () => void,
+	items?: ProductInventoryReport[];
+	isLoading?: boolean;
+	error?: string | null;
+	pagination?: PaginationConfig;
+	handleExport?: () => void;
 };
 
 function mapRow(r: ProductInventoryReport, lang: string): Record<string, unknown> {
@@ -62,7 +62,7 @@ export function InventoryReportTable({
 	pagination,
 	handleExport,
 }: InventoryReportTableProps): React.ReactElement {
-	const { t: translate, i18n } = useTranslation('vending_machine');
+	const { t: translate, i18n } = useTranslation();
 
 	const tableData = useMemo(
 		() => items?.map((r) => mapRow(r, i18n.language)) ?? [],
@@ -93,10 +93,10 @@ export function InventoryReportTable({
 	};
 
 	const headerRenderers: React.ComponentProps<typeof AutoTable>['headerRenderers'] = {
-		totalQty: () => <Text fw={600} fz='sm' ta='end'>{translate('reports.inventory_report.columns.total_qty')}</Text>,
-		sellingQty: () => <Text fw={600} fz='sm' ta='end'>{translate('reports.inventory_report.columns.selling_qty')}</Text>,
-		warningQty: () => <Text fw={600} fz='sm' ta='end'>{translate('reports.inventory_report.columns.warning_qty')}</Text>,
-		maxQty: () => <Text fw={600} fz='sm' ta='end'>{translate('reports.inventory_report.columns.max_qty')}</Text>,
+		totalQty: () => <Text fw={600} fz='sm' ta='end'>{translate('coremart.vendingMachine.reports.inventoryReport.columns.totalQty')}</Text>,
+		sellingQty: () => <Text fw={600} fz='sm' ta='end'>{translate('coremart.vendingMachine.reports.inventoryReport.columns.sellingQty')}</Text>,
+		warningQty: () => <Text fw={600} fz='sm' ta='end'>{translate('coremart.vendingMachine.reports.inventoryReport.columns.warningQty')}</Text>,
+		maxQty: () => <Text fw={600} fz='sm' ta='end'>{translate('coremart.vendingMachine.reports.inventoryReport.columns.maxQty')}</Text>,
 	};
 
 	const header = (
@@ -107,7 +107,7 @@ export function InventoryReportTable({
 				disabled={isLoading || !pagination?.totalItems}
 				onClick={handleExport}
 			>
-				{translate('reports.revenue_report.export')}
+				{translate('coremart.vendingMachine.reports.revenueReport.export')}
 			</Button>
 		</Group>
 
@@ -131,7 +131,6 @@ export function InventoryReportTable({
 			unstyledScrollContainer
 		>
 			<AutoTable
-				translationNs='vending_machine'
 				columns={[...INVENTORY_TABLE_COLUMNS]}
 				data={tableData}
 				schema={inventoryReportSchema}

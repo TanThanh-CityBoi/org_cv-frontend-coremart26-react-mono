@@ -2,8 +2,8 @@ import { IconPlus } from '@tabler/icons-react';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { ControlPanelProps } from '../../../../../components/ControlPanel';
-import { useRegisterEventDetailTab } from '../eventDetailTabControl';
+import { ControlPanelProps } from '@/components/ControlPanel';
+import { useRegisterEventDetailTab } from '@/features/events/components/EventDetail/eventDetailTabControl';
 
 
 export function buildEventStockListActions(
@@ -12,7 +12,7 @@ export function buildEventStockListActions(
 ): ControlPanelProps['actions'] {
 	return [
 		{
-			label: translate('events.actions.add_stock', {
+			label: translate('coremart.vendingMachine.events.actions.addStock', {
 				defaultValue: 'Add product',
 			}),
 			leftSection: <IconPlus size={16} />,
@@ -23,11 +23,11 @@ export function buildEventStockListActions(
 }
 
 export type UseEventStockListTabArgs = {
-	handleAddStock: () => void,
+	handleAddStock: () => void;
 };
 
 export function useEventStockListTab({ handleAddStock }: UseEventStockListTabArgs): void {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const panelActions = useMemo(
 		() => buildEventStockListActions(translate, { handleAddStock }),

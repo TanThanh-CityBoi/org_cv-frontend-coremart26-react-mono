@@ -4,18 +4,18 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 
 
-import { getOutermostVerticalScrollParent } from '../../common/helpers';
-import { StickyFilterBar, type ControlPanelFilterConfig } from '../../components';
-import { PageContainer } from '../../components/PageContainer';
-import { useRevenueReportKioskOptions } from '../../features/reports/business';
+import { getOutermostVerticalScrollParent } from '@/common/helpers';
+import { StickyFilterBar, type ControlPanelFilterConfig } from '@/components';
+import { PageContainer } from '@/components/PageContainer';
+import { useRevenueReportKioskOptions } from '@/features/reports/business';
 import {
 	InventoryReportContent,
 	type InventoryReportAppliedFilters,
-} from '../../features/reports/operations/components/InventoryReport';
+} from '@/features/reports/operations/components/InventoryReport';
 
 
 export const InventoryReportPage: React.FC = () => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const reportSectionRef = useRef<HTMLDivElement>(null);
 	const scrollAfterApplyRef = useRef(false);
 
@@ -47,7 +47,7 @@ export const InventoryReportPage: React.FC = () => {
 			searchValue: kioskSearch,
 			onSearchChange: setKioskSearch,
 			options: kioskOptions,
-			placeholder: translate('reports.filter_bar.kiosk_placeholder'),
+			placeholder: translate('coremart.vendingMachine.reports.filterBar.kioskPlaceholder'),
 			clearable: true,
 			minWidth: 240,
 		},
@@ -78,9 +78,9 @@ export const InventoryReportPage: React.FC = () => {
 	}, [draftKioskIds, draftKioskLabels]);
 
 	return (
-		<PageContainer documentTitle={translate('reports.inventory_report.title')}>
+		<PageContainer documentTitle={translate('coremart.vendingMachine.reports.inventoryReport.title')}>
 			<StickyFilterBar
-				title={translate('reports.inventory_report.heading')}
+				title={translate('coremart.vendingMachine.reports.inventoryReport.heading')}
 				filters={filters}
 				handleApply={handleApply}
 			/>

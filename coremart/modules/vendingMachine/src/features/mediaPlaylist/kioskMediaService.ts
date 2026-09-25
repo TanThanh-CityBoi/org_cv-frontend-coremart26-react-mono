@@ -1,7 +1,7 @@
 import * as request from '@nikkierp/common/request';
 import { camelToSnakeObject, cleanEmptyString, snakeToCamelObject } from '@nikkierp/common/utils';
 
-import { buildFieldsQuery, buildSearchParams } from '../../common/helpers';
+import { buildFieldsQuery, buildSearchParams } from '@/common/helpers';
 
 import type { GalleryMedia, KioskMedia } from './types';
 import type {
@@ -11,7 +11,7 @@ import type {
 	RestDeleteResponse,
 	SearchParams,
 	RestUpdateResponse,
-} from '../../types';
+} from '@/types';
 
 
 
@@ -55,7 +55,7 @@ export function mapKioskMediaToGalleryMedia(km: KioskMedia, baseApiUrl: string):
 }
 
 /** Multipart POST `vending-machine/kiosk-media` — `name` + `file` (file phải là `File`/`Blob`, không phải chuỗi đường dẫn). */
-export function buildKioskMediaCreateFormData(params: { name: string, file: File }): FormData {
+export function buildKioskMediaCreateFormData(params: { name: string; file: File }): FormData {
 	const form = new FormData();
 	form.append('name', params.name.trim());
 	form.append('file', params.file);
@@ -86,7 +86,7 @@ export const kioskMediaService = {
 		return snakeToCamelObject(result) as RestCreateResponse;
 	},
 
-	async updateKioskMediaName(id: string, body: { etag: string, name: string }): Promise<RestUpdateResponse> {
+	async updateKioskMediaName(id: string, body: { etag: string; name: string }): Promise<RestUpdateResponse> {
 		const cleaned = cleanEmptyString(body as object);
 		const result = await request.put<any>(`${BASE_PATH}/${id}/name`, { json: camelToSnakeObject(cleaned) });
 		return snakeToCamelObject(result) as RestUpdateResponse;
@@ -97,7 +97,7 @@ export const kioskMediaService = {
 		return snakeToCamelObject(result) as RestDeleteResponse;
 	},
 
-	async setKioskMediaArchived(id: string, body: { etag: string, isArchived: boolean }): Promise<RestArchiveResponse> {
+	async setKioskMediaArchived(id: string, body: { etag: string; isArchived: boolean }): Promise<RestArchiveResponse> {
 		const result = await request.post<any>(`${BASE_PATH}/${id}/archived`, {
 			json: camelToSnakeObject(body),
 		});

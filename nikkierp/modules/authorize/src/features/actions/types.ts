@@ -1,4 +1,4 @@
-import { Resource } from '../resources/types';
+import { Resource } from '@/features/resources/types';
 
 
 interface Action {

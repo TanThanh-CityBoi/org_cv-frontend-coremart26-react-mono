@@ -60,7 +60,7 @@ export function KioskMediaFileSelector({
 	onFileChange,
 	error,
 }: KioskMediaFileSelectorProps) {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const previewUrl = useObjectPreviewUrl(file);
 	const showVideo = file ? isVideoFile(file) : false;
 
@@ -96,7 +96,7 @@ export function KioskMediaFileSelector({
 						<Stack align='center' gap='xs'>
 							<UploadCircleIcon />
 							<Text size='sm' fw={600} c='blue.6'>
-								{translate('kiosk_media.create.drop_accept')}
+								{translate('coremart.vendingMachine.kioskMedia.create.drop_accept')}
 							</Text>
 						</Stack>
 					</Dropzone.Accept>
@@ -116,7 +116,7 @@ export function KioskMediaFileSelector({
 								<IconX size={28} color='var(--mantine-color-red-7)' stroke={1.5} />
 							</Box>
 							<Text size='sm' fw={600} c='error.7'>
-								{translate('kiosk_media.create.drop_reject')}
+								{translate('coremart.vendingMachine.kioskMedia.create.drop_reject')}
 							</Text>
 						</Stack>
 					</Dropzone.Reject>
@@ -124,7 +124,7 @@ export function KioskMediaFileSelector({
 						<Stack align='center' gap='xs'>
 							<UploadCircleIcon />
 							<Text size='sm' fw={600} c='blue.6'>
-								{translate('kiosk_media.create.upload_zone_title')}
+								{translate('coremart.vendingMachine.kioskMedia.create.upload_zone_title')}
 							</Text>
 						</Stack>
 					</Dropzone.Idle>
@@ -154,7 +154,7 @@ export function KioskMediaFileSelector({
 					) : (
 						<Image
 							src={previewUrl}
-							alt={translate('kiosk_media.create.preview_alt')}
+							alt={translate('coremart.vendingMachine.kioskMedia.create.preview_alt')}
 							fit='contain'
 							mah={280}
 							mx='auto'
@@ -185,7 +185,7 @@ export function KioskMediaFileSelector({
 						color='blue'
 						radius='xl'
 						size='lg'
-						aria-label={translate('kiosk_media.create.remove_file_aria')}
+						aria-label={translate('coremart.vendingMachine.kioskMedia.create.remove_file_aria')}
 						onClick={() => onFileChange(null)}
 					>
 						<IconTrash size={18} stroke={1.5} />

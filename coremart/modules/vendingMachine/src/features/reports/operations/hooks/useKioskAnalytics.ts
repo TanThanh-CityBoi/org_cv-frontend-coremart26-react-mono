@@ -1,23 +1,21 @@
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
 import dayjs from 'dayjs';
 import { useCallback, useEffect, useMemo } from 'react';
 
-import { usePaginationWithTotal } from '../../../../common/hooks';
-import { GroupTime } from '../../../../types';
-import { operationReportService } from '../operationReportService';
+import { operationReportActions, selectKioskAnalytics, VendingMachineDispatch } from '@/appState';
+import { usePagination } from '@/common/hooks';
+import { GroupTime, PagedReduxState } from '@/types';
+
 import { KioskAnalyticsQuery, KioskStateAnalytic } from '../type';
-
-
-type SearchResponse = { items: KioskStateAnalytic[], total: number };
 
 
 const BUCKET_FILL_LIMIT = 30;
 
 export type KioskAnalyticsFilters = {
-	fromDate: string,
-	toDate: string,
-	bucketType: GroupTime,
-	kioskIds?: string[],
+	fromDate: string;
+	toDate: string;
+	bucketType: GroupTime;
+	kioskIds?: string[];
 };
 
 const defaultFilters: KioskAnalyticsFilters = {
@@ -109,9 +107,8 @@ export function fillMissingAnalyticBuckets(
 
 
 export function useKioskAnalytics(filters: KioskAnalyticsFilters = defaultFilters) {
-	const { dispatchMethod, result } = useServiceLayer<SearchResponse>(
-		operationReportService.getKioskAnalytics,
-	);
+	const dispatch = useMicroAppDispatch() as VendingMachineDispatch;
+	const kioskAnalytics: PagedReduxState<KioskStateAnalytic> = useMicroAppSelector(selectKioskAnalytics);
 
 	const baseQuery = useMemo<Omit<KioskAnalyticsQuery, 'page' | 'size'>>(() => ({
 		fromDate: filters.fromDate,
@@ -121,20 +118,19 @@ export function useKioskAnalytics(filters: KioskAnalyticsFilters = defaultFilter
 	}), [filters.fromDate, filters.toDate, filters.bucketType, filters.kioskIds]);
 
 	const fetchList = useCallback((page: number, size: number) => {
-		dispatchMethod({ ...baseQuery, page, size });
-	}, [dispatchMethod, baseQuery]);
+		dispatch(operationReportActions.fetchKioskAnalytics({ ...baseQuery, page, size }));
+	}, [dispatch, baseQuery]);
 
-	const pagination = usePaginationWithTotal(fetchList, result.data?.total ?? 0, { fallbackPageSize: 30 });
-	const { page, pageSize } = pagination;
+	const pagination = usePagination(fetchList, selectKioskAnalytics, { fallbackPageSize: 30 });
 
 	useEffect(() => {
-		fetchList(page - 1, pageSize);
-	}, [fetchList, page, pageSize]);
+		fetchList(pagination.page - 1, pagination.pageSize);
+	}, [baseQuery]);
 
-	const status = result.isPending ? 'pending' : 'success';
-	const rawItems = result.data?.items;
-	const error = result.error;
-	const isLoading = (result.isPending || result.doneAt == null) && !rawItems?.length;
+	const status = kioskAnalytics.status;
+	const rawItems = kioskAnalytics.items;
+	const error = kioskAnalytics.error;
+	const isLoading = (status === 'pending' || status === 'idle') && !rawItems?.length;
 
 	const data = useMemo(
 		() => fillMissingAnalyticBuckets(rawItems ?? [], filters.fromDate, filters.toDate, filters.bucketType),

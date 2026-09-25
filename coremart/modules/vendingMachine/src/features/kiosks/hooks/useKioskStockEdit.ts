@@ -1,14 +1,12 @@
 import { notifications } from '@mantine/notifications';
 import { useCallback, useState } from 'react';
 
-import { kioskStockService } from '../kioskStockService';
-
-import type { KioskStockReplaceLine } from '../types';
+import { kioskService, type KioskStockReplaceLine } from '../kioskService';
 
 
 export type UseKioskStockEditParams = {
-	kioskId: string,
-	onUpdateSuccess?: () => void,
+	kioskId: string;
+	onUpdateSuccess?: () => void;
 };
 
 export function useKioskStockEdit({ kioskId, onUpdateSuccess }: UseKioskStockEditParams) {
@@ -26,7 +24,7 @@ export function useKioskStockEdit({ kioskId, onUpdateSuccess }: UseKioskStockEdi
 			}
 			setIsSubmitting(true);
 			try {
-				await kioskStockService.replaceAll({ kioskId, body: { stocks } });
+				await kioskService.replaceKioskStocks(kioskId, { stocks });
 				onUpdateSuccess?.();
 				notifications.show({
 					title: 'Success',

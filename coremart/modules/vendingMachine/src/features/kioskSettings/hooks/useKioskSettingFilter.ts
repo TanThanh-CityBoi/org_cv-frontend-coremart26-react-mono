@@ -1,12 +1,13 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { type ControlPanelFilterConfig } from '../../../components';
+import { type ControlPanelFilterConfig } from '@/components';
+
 import { type KioskSetting } from '../types';
 
 
 export const useKioskSettingFilter = (settings: KioskSetting[]) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const [statusFilter, setStatusFilter] = React.useState<string[]>([]);
 	const [searchValue, setSearchValue] = React.useState('');
@@ -46,10 +47,10 @@ export const useKioskSettingFilter = (settings: KioskSetting[]) => {
 			value: statusFilter,
 			onChange: setActiveFilter,
 			options: [
-				{ value: 'active', label: translate('status.active') },
-				{ value: 'inactive', label: translate('status.inactive') },
+				{ value: 'active', label: translate('nikki.general.status.active') },
+				{ value: 'inactive', label: translate('nikki.general.status.inactive') },
 			],
-			placeholder: translate('kiosk_settings.filter.status'),
+			placeholder: translate('coremart.vendingMachine.kioskSettings.filter.status'),
 		},
 	], [statusFilter, translate, setActiveFilter]);
 

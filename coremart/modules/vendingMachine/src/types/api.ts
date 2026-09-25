@@ -7,13 +7,13 @@ import { SearchGraph } from './search-graph';
  * (use the hook's `fallbackPageSize` option instead to avoid cross-page contamination).
  */
 export type PagedReduxState<T> = {
-	status: 'idle' | 'pending' | 'success' | 'error',
-	error: string | null,
-	requestId?: string | null,
-	items: T[],
-	total: number,
-	page: number,
-	size: number,
+	status: 'idle' | 'pending' | 'success' | 'error';
+	error: string | null;
+	requestId?: string | null;
+	items: T[];
+	total: number;
+	page: number;
+	size: number;
 };
 
 export function basePagedReduxState<T>(defaultSize: number): PagedReduxState<T> {
@@ -29,48 +29,48 @@ export function basePagedReduxState<T>(defaultSize: number): PagedReduxState<T> 
 
 
 export type RestCreateResponse = {
-	id: string,
-	createdAt: number,
-	etag: string,
+	id: string;
+	createdAt: number;
+	etag: string;
 };
 
 export type RestUpdateResponse = {
-	affectedCount: number,
-	affectedAt: string,
-	etag: string,
+	affectedCount: number;
+	affectedAt: string;
+	etag: string;
 };
 
 export type RestArchiveResponse = {
-	affectedCount: number,
-	affectedAt: string,
-	etag: string,
+	affectedCount: number;
+	affectedAt: string;
+	etag: string;
 };
 
 export type RestDeleteResponse = {
-	affectedCount: number,
-	affectedAt: string,
-	etag: string,
+	affectedCount: number;
+	affectedAt: string;
+	etag: string;
 };
 
 export type Pagination = {
-	total: number,
-	page: number,
-	size: number,
+	total: number;
+	page: number;
+	size: number;
 };
 
 export type PagedSearchResponse<T> = Pagination & {
-	items: T[],
+	items: T[];
 };
 
 export type PageQuery = {
-	page?: number,
-	size?: number,
+	page?: number;
+	size?: number;
 };
 
 export type SearchParams<T=any> = PageQuery & {
-	graph?: SearchGraph,
-	fields?: Array<keyof T>,
-	extra?: Record<string, string>,
+	graph?: SearchGraph;
+	fields?: Array<keyof T>;
+	extra?: Record<string, string>;
 
 	// /** @deprecated use `fields` instead */
 	// columns?: Array<keyof T>;
@@ -80,25 +80,25 @@ export type SearchParams<T=any> = PageQuery & {
 //* Report query types
 
 export type ReportTimeQuery = {
-	fromDate: string, // ISO Z, ví dụ 2026-05-01T00:00:00Z
-	toDate: string,
+	fromDate: string; // ISO Z, ví dụ 2026-05-01T00:00:00Z
+	toDate: string;
 	/** Chuỗi `hh:mm:ss` (ghi trên URL), ví dụ 00:00:00 — Bruno `time_of_date_from`. */
-	timeOfDateFrom?: string,
+	timeOfDateFrom?: string;
 	/** Chuỗi `hh:mm:ss`, ví dụ 23:59:59 — Bruno `time_of_date_to`. */
-	timeOfDateTo?: string,
+	timeOfDateTo?: string;
 };
 
 export type GroupTime = 'hour' | 'day' | 'month' | 'year';
 export type GroupTimeQuery = {
-	groupTime?: GroupTime,
+	groupTime?: GroupTime;
 };
 
 export type SortDirection = 'asc' | 'desc';
 export type SortQuery = {
 	sort?: {
-		field: string,
-		direction: SortDirection,
-	}[],
+		field: string;
+		direction: SortDirection;
+	}[];
 };
 
 //* Base report query types

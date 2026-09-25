@@ -4,26 +4,26 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
 
-import { BreadcrumbItem } from '../../../components/BreadCrumbs';
-import { ControlPanelActionItem } from '../../../components/ControlPanel';
 import { usePaymentArchived } from '../hooks/usePaymentArchived';
 import { usePaymentDelete } from '../hooks/usePaymentDelete';
 import { usePaymentFilter } from '../hooks/usePaymentFilter';
 import { usePaymentList } from '../hooks/usePaymentList';
 import { usePaymentPreview } from '../hooks/usePaymentPreview';
 
-import type { ViewMode } from '../../../components/ControlPanel/types';
+import type { ViewMode } from '@/components/ControlPanel/types';
 
+import { BreadcrumbItem } from '@/components/BreadCrumbs';
+import { ControlPanelActionItem } from '@/components/ControlPanel';
 
 
 export type PaymentListViewMode = Extract<ViewMode, 'list' | 'grid'>;
 
 type PaymentListPageContextValue = {
-	filter: ReturnType<typeof usePaymentFilter>,
-	list: ReturnType<typeof usePaymentList>,
-	deletePayment: ReturnType<typeof usePaymentDelete>,
-	archivePayment: ReturnType<typeof usePaymentArchived>,
-	previewPayment: ReturnType<typeof usePaymentPreview>,
+	filter: ReturnType<typeof usePaymentFilter>;
+	list: ReturnType<typeof usePaymentList>;
+	deletePayment: ReturnType<typeof usePaymentDelete>;
+	archivePayment: ReturnType<typeof usePaymentArchived>;
+	previewPayment: ReturnType<typeof usePaymentPreview>;
 };
 
 const PaymentListPageContext = createContext<PaymentListPageContextValue | null>(null);
@@ -59,9 +59,9 @@ export interface UsePaymentListPageConfigReturn {
 	breadcrumbs: BreadcrumbItem[];
 	actions: ControlPanelActionItem[];
 	viewModeConfig: {
-		value: PaymentListViewMode,
-		onChange: (mode: PaymentListViewMode) => void,
-		segments: PaymentListViewMode[],
+		value: PaymentListViewMode;
+		onChange: (mode: PaymentListViewMode) => void;
+		segments: PaymentListViewMode[];
 	};
 }
 
@@ -69,7 +69,7 @@ export function usePaymentListPageConfig(): UsePaymentListPageConfigReturn {
 	const { list: { handleRefresh } } = usePaymentListPageContext();
 
 	const navigate = useNavigate();
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const [viewMode, setViewMode] = useState<PaymentListViewMode>('list');
 
 	const handleCreate = () => {
@@ -78,17 +78,17 @@ export function usePaymentListPageConfig(): UsePaymentListPageConfigReturn {
 
 	const breadcrumbs = useMemo(
 		() => [
-			{ title: translate('title'), href: '../overview' },
-			{ title: translate('payment.title'), href: '#' },
+			{ title: translate('coremart.vendingMachine.title'), href: '../overview' },
+			{ title: translate('coremart.vendingMachine.payment.title'), href: '#' },
 		],
 		[translate],
 	);
 
 	const actions = useMemo(
 		() => [
-			{ label: translate('action.create'), leftSection: <IconPlus size={16} />, onClick: handleCreate },
+			{ label: translate('nikki.general.actions.create'), leftSection: <IconPlus size={16} />, onClick: handleCreate },
 			{
-				label: translate('action.refresh'),
+				label: translate('nikki.general.actions.refresh'),
 				leftSection: <IconRefresh size={16} />,
 				onClick: handleRefresh,
 				variant: 'outline' as const,

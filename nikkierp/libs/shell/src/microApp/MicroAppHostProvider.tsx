@@ -1,94 +1,31 @@
-import { CommandBus, ICommandBus } from '@nikkierp/common/commandBus';
-import { IEventBus } from '@nikkierp/common/eventBus';
-import { createMenuRegistry, IMenuRegistry, MenuContribution, useMenuContribution } from '@nikkierp/ui/menu';
-import {
-	HostServices, MicroAppMetadata, IMicroAppWebComponent, MicroAppDomType, MicroAppProps,
-	MicroAppRoutingOptions, MicroAppApiOptions,
-} from '@nikkierp/ui/microApp';
-import { createViewEngine } from '@nikkierp/viewengine/engine';
-import { contributeMantineViewKit } from '@nikkierp/viewkit-mantine';
+import { MicroAppMetadata, IMicroAppWebComponent, MicroAppDomType, MicroAppProps, MicroAppRoutingOptions, MicroAppApiOptions } from '@nikkierp/ui/microApp';
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { useInRouterContext, useLocation, UNSAFE_NavigationContext } from 'react-router-dom';
 
 import { MicroAppManager, MicroAppPack } from './MicroAppManager';
-import { ensureAccessToken } from '../authenticate/authService';
-import { createShellCommandBus, ShellCommandRegistrar } from '../commandBus';
+import { registerReducerFactory } from '../appState/store';
+import { authService } from '../auth';
 import { useShellEnvVars } from '../config';
-import { shellEventBus } from '../eventBus';
-
-import type { IViewEngine } from '@nikkierp/viewengine/core';
 
 
-type MicroAppHostContextValue = {
-	manager: MicroAppManager,
-	host: HostServices,
-};
+const MicroAppHostContext = createContext<MicroAppManager | null>(null);
 
-const MicroAppHostContext = createContext<MicroAppHostContextValue | null>(null);
-
-function useMicroAppHostContext(): MicroAppHostContextValue {
+export const useMicroAppManager = () => {
 	const context = useContext(MicroAppHostContext);
 	if (!context) {
 		throw new Error('useMicroAppManager must be used within a MicroAppProvider');
 	}
 	return context;
-}
-
-export const useMicroAppManager = () => useMicroAppHostContext().manager;
-
-export const useShellCommandBus = (): ICommandBus => useMicroAppHostContext().host.commandBus;
-
-export const useShellViewEngine = (): IViewEngine => useMicroAppHostContext().host.viewEngine;
-
-export const useShellMenuRegistry = (): IMenuRegistry => useMicroAppHostContext().host.menuRegistry;
-
-export const useShellEventBus = (): IEventBus => useMicroAppHostContext().host.eventBus;
-
-/**
- * The menu contributed by `slug`, re-rendering when that module registers.
- *
- * The one hook the Shell's menu bar should call: going through the host context is what
- * guarantees it reads the *host's* registry rather than constructing its own, which would
- * be invisible to every micro-app.
- */
-export function useShellMenu(slug?: string | null): MenuContribution | undefined {
-	return useMenuContribution(useShellMenuRegistry(), slug);
-}
-
-export type MicroAppHostProviderProps = React.PropsWithChildren & {
-	microApps: MicroAppMetadata[],
-	/** Command handlers owned by the shell implementation. See {@link ShellCommandDeps}. */
-	extraRegistrars?: ShellCommandRegistrar[],
 };
 
-/**
- * Creates the host-owned services exactly once. Everything here is an instance
- * the Shell hands to micro-apps through `init`, which is what makes a
- * separately-built bundle able to contribute to the same registries.
- */
-export function MicroAppHostProvider(
-	{ children, microApps, extraRegistrars }: MicroAppHostProviderProps,
-): React.ReactNode {
-	const [hostValue] = useState<MicroAppHostContextValue>(() => {
-		const manager = new MicroAppManager(microApps);
-		const viewEngine = createViewEngine({ instanceId: 'shell' });
-		contributeMantineViewKit(viewEngine);
-		// The registry must exist before the bus: the shell.layout.* handlers close over it.
-		const menuRegistry = createMenuRegistry();
-		// Created at module scope, not here: the Shell's own chrome subscribes above this
-		// provider and before it renders. Same instance either way.
-		const eventBus = shellEventBus;
-		const commandBus = createShellCommandBus(manager, { menuRegistry, extraRegistrars });
-		// Installs the fallback singleton for code running outside React and outside `init` —
-		// chiefly module service classes, which are constructed at import time. Mirrors the
-		// `EventBus.setInstance` call in `MicroAppProvider`.
-		CommandBus.setInstance(commandBus);
-		const host: HostServices = { commandBus, viewEngine, menuRegistry, eventBus };
-		manager.setHostServices(host);
-		return { manager, host };
-	});
+export type MicroAppHostProviderProps = React.PropsWithChildren & {
+	microApps: MicroAppMetadata[];
+};
+
+export function MicroAppHostProvider({ children, microApps }: MicroAppHostProviderProps): React.ReactNode {
+	const [manager] = useState(() => new MicroAppManager(microApps));
 	return (
-		<MicroAppHostContext.Provider value={hostValue} >
+		<MicroAppHostContext.Provider value={manager} >
 			{children}
 		</MicroAppHostContext.Provider>
 	);
@@ -107,10 +44,10 @@ export function LazyMicroWidget(props: LazyMicroWidgetProps): React.ReactNode {
 }
 
 type InternalLazyMicroAppProps = {
-	slug: string,
-	basePath?: string,
-	widgetName?: string,
-	fallback?: React.ReactNode,
+	slug: string;
+	basePath?: string;
+	widgetName?: string;
+	fallback?: React.ReactNode;
 };
 
 function InternalLazyMicroApp({ slug, basePath, widgetName, fallback }: InternalLazyMicroAppProps): React.ReactNode {
@@ -166,7 +103,7 @@ function useFetchMicroAppPack(
 	setError: (error: Error | null) => void,
 ): MicroAppDomType | null {
 	const [domType, setDomType] = useState<MicroAppDomType | null>(null);
-	const { manager } = useMicroAppHostContext();
+	const manager = useMicroAppManager();
 
 	useEffect(() => {
 		let isMounted = true;
@@ -175,7 +112,11 @@ function useFetchMicroAppPack(
 		manager.fetchMicroApp(slug).then((pack) => {
 			if (isMounted) {
 				try {
-					const result = manager.initPack(slug, pack);
+					const result = pack.init({
+						htmlTag: pack.metadata.htmlTag,
+						config: pack.config,
+						registerReducer: registerReducerFactory(slug),
+					});
 					setDomType(result.domType);
 					setMicroAppPack(pack);
 				}
@@ -199,10 +140,8 @@ function useFetchMicroAppPack(
 	return domType;
 }
 
-type UseSetupMicroAppOptions = Omit<
-	MicroAppProps, 'registerReducer' | 'routing' | 'api' | 'commandBus' | 'viewEngine' | 'eventBus'
-> & {
-	basePath?: string,
+type UseSetupMicroAppOptions = Omit<MicroAppProps, 'registerReducer' | 'routing' | 'api'> & {
+	basePath?: string;
 };
 
 function useSetupMicroApp(
@@ -213,7 +152,6 @@ function useSetupMicroApp(
 	const ref = useRef<IMicroAppWebComponent | null>(null);
 	const routingOpts = useRoutingOpts(opts.basePath);
 	const apiOpts = useApiOptions();
-	const { host } = useMicroAppHostContext();
 
 	useEffect(() => {
 		if (ref.current && microAppPack) {
@@ -221,28 +159,22 @@ function useSetupMicroApp(
 				config: microAppPack.config,
 				routing: routingOpts,
 				api: apiOpts,
-				commandBus: host.commandBus,
-				viewEngine: host.viewEngine,
-				eventBus: host.eventBus,
 				...opts,
 			};
 			forceRerender(n => n + 1);
 		}
-	}, [microAppPack, ref.current, routingOpts.location, host]);
+	}, [microAppPack, ref.current, routingOpts.location]);
 
 	return ref;
 }
 
 function useRoutingOpts(basePath?: string): MicroAppRoutingOptions {
 	const isInRouter = useInRouterContext();
-	const location = useLocation();
-	const navigator = useContext(UNSAFE_NavigationContext).navigator;
-
 	if (isInRouter) {
 		return {
 			basePath,
-			location,
-			navigator,
+			location: useLocation(),
+			navigator: useContext(UNSAFE_NavigationContext).navigator,
 		};
 	}
 	return {};
@@ -250,13 +182,12 @@ function useRoutingOpts(basePath?: string): MicroAppRoutingOptions {
 
 function useApiOptions(): MicroAppApiOptions {
 	const envVars = useShellEnvVars();
+	const authSvc = authService();
 
 	return {
 		defaultBaseUrl: envVars.BASE_API_URL,
-		getAccessToken: ensureAccessToken,
+		getToken: authSvc.getAccessToken.bind(authSvc),
+		restoreSession: authSvc.restoreAuthSession.bind(authSvc),
+		clearSession: authSvc.clearAuthSession.bind(authSvc),
 	};
 }
-
-// KYC Event: Before or after the re-verification
-// Reverify all customers? - ask Sam & Josh
-// => for manually onboarded customers.

@@ -5,12 +5,12 @@ import { IconSearch } from '@tabler/icons-react';
 import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { buildSimpleSearchGraph } from '../../common/helpers';
-import { useKioskSettingList } from '../../features/kioskSettings/hooks';
-import { ArchivedStatusBadge } from '../ArchivedStatusBadge';
-import { TablePagination } from '../Table';
+import { buildSimpleSearchGraph } from '@/common/helpers';
+import { ArchivedStatusBadge } from '@/components/ArchivedStatusBadge';
+import { TablePagination } from '@/components/Table';
+import { useKioskSettingList } from '@/features/kioskSettings/hooks';
 
-import type { KioskSetting } from '../../features/kioskSettings/types';
+import type { KioskSetting } from '@/features/kioskSettings/types';
 
 
 export interface KioskSettingSelectModalProps {
@@ -24,7 +24,7 @@ export const KioskSettingSelectModal: React.FC<KioskSettingSelectModalProps> = (
 	onClose,
 	onSelectSettings,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const [searchQuery, setSearchQuery] = useState('');
 	const [debouncedSearch] = useDebouncedValue(searchQuery.trim(), 300);
 
@@ -68,12 +68,12 @@ export const KioskSettingSelectModal: React.FC<KioskSettingSelectModalProps> = (
 		<Modal
 			opened={opened}
 			onClose={handleCancel}
-			title={translate('kiosk_settings.select_setting.title')}
+			title={translate('coremart.vendingMachine.kioskSettings.selectSetting.title')}
 			size='xl'
 		>
 			<Stack gap='md'>
 				<TextInput
-					placeholder={translate('kiosk_settings.select_setting.search_placeholder')}
+					placeholder={translate('coremart.vendingMachine.kioskSettings.selectSetting.searchPlaceholder')}
 					leftSection={<IconSearch size={16} />}
 					value={searchQuery}
 					onChange={(e) => setSearchQuery(e.currentTarget.value)}
@@ -82,7 +82,7 @@ export const KioskSettingSelectModal: React.FC<KioskSettingSelectModalProps> = (
 				{selected ? (
 					<Text size='sm' c='blue' fw={500}>
 						{translate(
-							'kiosk_settings.select_setting.selected_label',
+							'coremart.vendingMachine.kioskSettings.selectSetting.selectedLabel',
 							{ name: selected.name },
 						)}
 					</Text>
@@ -91,21 +91,21 @@ export const KioskSettingSelectModal: React.FC<KioskSettingSelectModalProps> = (
 				<ScrollArea h={400}>
 					{isLoadingList ? (
 						<Text size='sm' c='dimmed' ta='center' py='md'>
-							{translate('messages.loading')}
+							{translate('nikki.general.messages.loading')}
 						</Text>
 					) : showEmpty ? (
 						<Text size='sm' c='dimmed' ta='center' py='md'>
-							{translate('kiosk_settings.select_setting.no_settings')}
+							{translate('coremart.vendingMachine.kioskSettings.selectSetting.noSettings')}
 						</Text>
 					) : (
 						<Table striped highlightOnHover>
 							<Table.Thead>
 								<Table.Tr>
 									<Table.Th style={{ width: 40 }} />
-									<Table.Th>{translate('kiosk_settings.fields.code')}</Table.Th>
-									<Table.Th>{translate('kiosk_settings.fields.name')}</Table.Th>
-									<Table.Th>{translate('kiosk_settings.fields.description')}</Table.Th>
-									<Table.Th>{translate('kiosk_settings.fields.status')}</Table.Th>
+									<Table.Th>{translate('coremart.vendingMachine.kioskSettings.fields.code')}</Table.Th>
+									<Table.Th>{translate('coremart.vendingMachine.kioskSettings.fields.name')}</Table.Th>
+									<Table.Th>{translate('coremart.vendingMachine.kioskSettings.fields.description')}</Table.Th>
+									<Table.Th>{translate('coremart.vendingMachine.kioskSettings.fields.status')}</Table.Th>
 								</Table.Tr>
 							</Table.Thead>
 							<Table.Tbody>
@@ -154,10 +154,10 @@ export const KioskSettingSelectModal: React.FC<KioskSettingSelectModalProps> = (
 
 				<Group justify='flex-end' gap='xs'>
 					<Button variant='subtle' onClick={handleCancel}>
-						{translate('action.cancel')}
+						{translate('nikki.general.actions.cancel')}
 					</Button>
 					<Button onClick={handleConfirm} disabled={!selected}>
-						{translate('action.confirm')}
+						{translate('nikki.general.actions.confirm')}
 					</Button>
 				</Group>
 			</Stack>

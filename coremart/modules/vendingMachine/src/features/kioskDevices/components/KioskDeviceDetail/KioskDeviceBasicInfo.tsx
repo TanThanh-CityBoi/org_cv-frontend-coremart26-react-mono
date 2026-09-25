@@ -3,7 +3,8 @@ import { ConfirmModal, FormFieldProvider, FormStyleProvider } from '@nikkierp/ui
 import React from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 
-import { KioskDevice } from '../../types';
+import { KioskDevice } from '@/features/kioskDevices/types';
+
 import { KioskDeviceFormFields } from '../KioskDeviceFormFields/KioskDeviceFormFields';
 import { useBasicInfoTab } from './hooks/useBasicInfoTab';
 
@@ -13,13 +14,13 @@ export interface KioskDeviceBasicInfoProps {
 }
 
 const KioskDeviceBasicInfoAuditDates: React.FC<{ kioskDevice: KioskDevice }> = ({ kioskDevice }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	return (
 		<React.Fragment>
 			<Divider my={3} />
 			<Box>
 				<Text size='sm' c='dimmed' mb={3}>
-					{translate('device.fields.created_at')}
+					{translate('coremart.vendingMachine.device.fields.createdAt')}
 				</Text>
 				<Text size='sm'>{new Date(kioskDevice.createdAt).toLocaleString()}</Text>
 			</Box>
@@ -28,7 +29,7 @@ const KioskDeviceBasicInfoAuditDates: React.FC<{ kioskDevice: KioskDevice }> = (
 };
 
 export const KioskDeviceBasicInfo: React.FC<KioskDeviceBasicInfoProps> = ({ kioskDevice }) => {
-	const { t } = useTranslation('vending_machine');
+	const { t } = useTranslation();
 
 	const {
 		formId, isEditing, isSubmitting, modelSchema, modelValue, onFormSubmit,
@@ -66,15 +67,15 @@ export const KioskDeviceBasicInfo: React.FC<KioskDeviceBasicInfoProps> = ({ kios
 			</Stack>
 
 			<ConfirmModal
-				title={t('messages.delete.confirm')}
+				title={t('nikki.general.messages.delete_confirm')}
 				opened={isOpenDeleteModal}
 				onClose={closeDeleteModal}
 				onConfirm={confirmDelete}
-				message={<Trans i18nKey='device.messages.delete_confirm'
+				message={<Trans i18nKey='coremart.vendingMachine.device.messages.delete_confirm'
 					values={{ name: kioskDevice?.name || '' }}
 					components={{ strong: <strong /> }}
 				/>}
-				confirmLabel={t('action.delete')}
+				confirmLabel={t('nikki.general.actions.delete')}
 				confirmColor='red'
 			/>
 		</React.Fragment>

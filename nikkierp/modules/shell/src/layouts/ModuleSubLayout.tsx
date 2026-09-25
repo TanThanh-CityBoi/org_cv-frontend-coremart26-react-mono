@@ -1,21 +1,17 @@
-import { routingService } from '@nikkierp/shell/routing';
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+import { setActiveModuleAction } from '@nikkierp/ui/appState/routingSlice';
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { Outlet, useLocation, useParams } from 'react-router';
-
-import { sharedStateService } from '../features/sharedState';
 
 
 export function ModuleSubLayout(): React.ReactNode {
+	const dispatch = useDispatch();
 	const location = useLocation();
 	const { moduleSlug } = useParams();
-	const { dispatchMethod: setActiveModule } = useServiceLayer(routingService.setActiveModule);
-	const { dispatchMethod: setCurrentModule } = useServiceLayer(sharedStateService.setCurrentModule);
 
 	React.useEffect(() => {
-		setActiveModule(moduleSlug);
-		setCurrentModule(moduleSlug);
-	}, [location, moduleSlug, setActiveModule, setCurrentModule]);
+		dispatch(setActiveModuleAction(moduleSlug));
+	}, [location]);
 
 	return <Outlet />;
 }

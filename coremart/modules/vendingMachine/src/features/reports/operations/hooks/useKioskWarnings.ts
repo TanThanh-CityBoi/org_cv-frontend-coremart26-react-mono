@@ -1,37 +1,36 @@
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
 import { useCallback, useEffect } from 'react';
 
-import { usePaginationWithTotal } from '../../../../common/hooks';
-import { operationReportService } from '../operationReportService';
+import { operationReportActions, selectKioskWarnings, VendingMachineDispatch } from '@/appState';
+import { usePagination } from '@/common/hooks';
+import { PagedReduxState } from '@/types';
+
 import { KioskWarning } from '../type';
 
 
-type SearchResponse = { items: KioskWarning[], total: number };
-
 export function useKioskWarnings() {
-	const { dispatchMethod, result } = useServiceLayer<SearchResponse>(
-		operationReportService.getKioskWarnings,
-	);
+	const dispatch = useMicroAppDispatch() as VendingMachineDispatch;
+	const kioskWarnings: PagedReduxState<KioskWarning> = useMicroAppSelector(selectKioskWarnings);
 
 	const fetchList = useCallback((page: number, size: number) => {
-		dispatchMethod({ page, size });
-	}, [dispatchMethod]);
+		dispatch(operationReportActions.fetchKioskWarnings({ page, size }));
+	}, [dispatch]);
 
-	const pagination = usePaginationWithTotal(fetchList, result.data?.total ?? 0);
-	const { page, pageSize } = pagination;
+	const pagination = usePagination(fetchList, selectKioskWarnings);
 
 	useEffect(() => {
-		fetchList(page - 1, pageSize);
-	}, [fetchList, page, pageSize]);
+		fetchList(pagination.page - 1, pagination.pageSize);
+	}, []);
 
-	// Default to `[]`: the slice this replaced always exposed an array.
-	const data = result.data?.items ?? [];
-	const isLoading = (result.isPending || result.doneAt == null) && !data.length;
+	const status = kioskWarnings.status;
+	const data = kioskWarnings.items;
+	const error = kioskWarnings.error;
+	const isLoading = (status === 'pending' || status === 'idle') && !data;
 
 	return {
 		data,
-		status: result.isPending ? 'pending' : 'success',
-		error: result.error,
+		status,
+		error,
 		isLoading,
 		pagination,
 	};

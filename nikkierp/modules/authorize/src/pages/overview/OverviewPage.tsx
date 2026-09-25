@@ -1,7 +1,7 @@
 import { Alert, Grid, Stack, Title } from '@mantine/core';
 import { GLOBAL_CONTEXT_SLUG } from '@nikkierp/shell/constants';
-import { useActiveOrgModule } from '@nikkierp/shell/routing';
 import { useActiveOrgWithDetails } from '@nikkierp/shell/userContext';
+import { useActiveOrgModule } from '@nikkierp/ui/appState/routingSlice';
 import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
 import {
 	IconKey,
@@ -28,10 +28,10 @@ import {
 	selectResourceList,
 	selectRoleList,
 	selectRoleSuiteList,
-} from '../../appState';
-import { GrantRequest, RequestStatus } from '../../features/grantRequests';
-import { QuickLinks, StatCard } from '../../features/overviews';
-import { useAuthorizePermissions } from '../../hooks/useAuthorizePermissions';
+} from '@/appState';
+import { GrantRequest, RequestStatus } from '@/features/grantRequests';
+import { QuickLinks, StatCard } from '@/features/overviews';
+import { useAuthorizePermissions } from '@/hooks/useAuthorizePermissions';
 
 
 // eslint-disable-next-line max-lines-per-function
@@ -43,12 +43,12 @@ function OverviewPageBody(): React.ReactNode {
 	const orgId = orgSlug === GLOBAL_CONTEXT_SLUG ? null : activeOrg?.id;
 	const permissions = useAuthorizePermissions();
 
-	const resources = useMicroAppSelector(selectResourceList) as any;
-	const actions = useMicroAppSelector(selectActionList) as any[];
-	const entitlements = useMicroAppSelector(selectEntitlementList) as any[];
-	const roles = useMicroAppSelector(selectRoleList) as any[];
-	const roleSuites = useMicroAppSelector(selectRoleSuiteList) as any[];
-	const grantRequests = useMicroAppSelector(selectGrantRequestList) as any[];
+	const resources = useMicroAppSelector(selectResourceList);
+	const actions = useMicroAppSelector(selectActionList);
+	const entitlements = useMicroAppSelector(selectEntitlementList);
+	const roles = useMicroAppSelector(selectRoleList);
+	const roleSuites = useMicroAppSelector(selectRoleSuiteList);
+	const grantRequests = useMicroAppSelector(selectGrantRequestList);
 
 	const pendingRequests = permissions.grantRequest.canView
 		? grantRequests.filter((r: GrantRequest) => r.status === RequestStatus.PENDING)

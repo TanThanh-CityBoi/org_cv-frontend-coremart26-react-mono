@@ -17,10 +17,10 @@ import { IconArrowLeft, IconArrowRight, IconCheck, IconX } from '@tabler/icons-r
 import React, { useCallback, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { Kiosk } from '@/features/kiosks/types';
 
 import { KioskStockSortCard } from './KioskStockSortCard';
 import { useKioskStockSort } from './useKioskStockSort';
-import { Kiosk } from '../../../../types';
 
 
 const COLS = 4;
@@ -29,19 +29,19 @@ const PAGE_SIZE = COLS * ROWS;
 const AUTO_PAGE_DELAY_MS = 600;
 
 export type KioskStockSortModalProps = {
-	kiosk: Kiosk,
-	opened: boolean,
-	onClose: () => void,
-	onSuccess?: () => void,
+	kiosk: Kiosk;
+	opened: boolean;
+	onClose: () => void;
+	onSuccess?: () => void;
 };
 
 type PageNavZoneProps = {
-	direction: 'prev' | 'next',
-	disabled: boolean,
-	isDragging: boolean,
-	onHoverStart: () => void,
-	onHoverEnd: () => void,
-	onActivate: () => void,
+	direction: 'prev' | 'next';
+	disabled: boolean;
+	isDragging: boolean;
+	onHoverStart: () => void;
+	onHoverEnd: () => void;
+	onActivate: () => void;
 };
 
 function PageNavZone({ direction, disabled, isDragging, onHoverStart, onHoverEnd, onActivate }: PageNavZoneProps) {
@@ -78,7 +78,7 @@ function EmptySlot() {
 }
 
 export function KioskStockSortModal({ kiosk, opened, onClose, onSuccess }: KioskStockSortModalProps) {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const [page, setPage] = useState(1);
 	const [isDragging, setIsDragging] = useState(false);
 	const autoPageTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -144,13 +144,13 @@ export function KioskStockSortModal({ kiosk, opened, onClose, onSuccess }: Kiosk
 			title={
 				<Group gap='xs'>
 					<Text fw={700} size='lg'>
-						{translate('kiosk_stock.sort.title', {
+						{translate('coremart.vendingMachine.kioskStock.sort.title', {
 							defaultValue: 'Sắp xếp sản phẩm',
 						})}
 					</Text>
 					{isDirty && (
 						<Text size='xs' c='orange' fw={500}>
-							{translate('kiosk_stock.sort.unsaved', {
+							{translate('coremart.vendingMachine.kioskStock.sort.unsaved', {
 								defaultValue: '• Chưa lưu',
 							})}
 						</Text>
@@ -229,7 +229,7 @@ export function KioskStockSortModal({ kiosk, opened, onClose, onSuccess }: Kiosk
 							onClick={handleClose}
 							disabled={isSaving}
 						>
-							{translate('action.cancel')}
+							{translate('nikki.general.actions.cancel')}
 						</Button>
 						{isDirty && (
 							<Button
@@ -238,7 +238,7 @@ export function KioskStockSortModal({ kiosk, opened, onClose, onSuccess }: Kiosk
 								onClick={handleDiscard}
 								disabled={isSaving}
 							>
-								{translate('action.discard', { defaultValue: 'Huỷ thay đổi' })}
+								{translate('nikki.general.actions.discard', { defaultValue: 'Huỷ thay đổi' })}
 							</Button>
 						)}
 						<Button
@@ -247,7 +247,7 @@ export function KioskStockSortModal({ kiosk, opened, onClose, onSuccess }: Kiosk
 							loading={isSaving}
 							disabled={!isDirty}
 						>
-							{translate('action.save')}
+							{translate('nikki.general.actions.save')}
 						</Button>
 					</Group>
 				</>

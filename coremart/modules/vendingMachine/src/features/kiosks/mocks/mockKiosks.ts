@@ -1,4 +1,4 @@
-import { ConnectionStatus, Kiosk, KioskMode, KioskStatus, UIMode } from '../types';
+import { ConnectionStatus, Kiosk, KioskMode, KioskStatus, UIMode } from '@/features/kiosks/types';
 
 
 const mockKiosksData: Kiosk[] = [
@@ -86,7 +86,7 @@ const mockKiosksData: Kiosk[] = [
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-type PagedResult<T> = { items: T[], total: number, page: number, size: number };
+type PagedResult<T> = { items: T[]; total: number; page: number; size: number };
 
 /** Local mock — not used when `kioskService` calls the real API. */
 export const mockKiosks = {

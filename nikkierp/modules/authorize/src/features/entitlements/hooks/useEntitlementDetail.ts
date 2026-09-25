@@ -5,6 +5,8 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { resolvePath, useLocation, useNavigate, useParams } from 'react-router';
 
+import type { Entitlement } from '@/features/entitlements';
+
 import {
 	AuthorizeDispatch,
 	actionActions,
@@ -14,10 +16,7 @@ import {
 	selectEntitlementState,
 	selectResourceList,
 	selectUpdateEntitlement,
-} from '../../../appState';
-
-import type { Entitlement } from '..';
-
+} from '@/appState';
 
 
 function useEntitlementData(

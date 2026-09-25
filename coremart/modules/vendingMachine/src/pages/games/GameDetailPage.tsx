@@ -2,26 +2,25 @@
 import {
 	Badge, Box, Button, Divider, FileButton, Group, Select, Stack, Table, Tabs, Text, Textarea, TextInput,
 } from '@mantine/core';
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+import { useMicroAppDispatch } from '@nikkierp/ui/microApp';
 import { IconDeviceGamepad, IconPlus, IconTrash, IconUpload } from '@tabler/icons-react';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
 
-import { DetailControlPanel } from '../../components/ControlPanel';
-import { PageContainer } from '../../components/PageContainer';
-import { GamePreview } from '../../features/games/components/GamePreview';
-import { gameCrudService } from '../../features/games/gameService';
-import { useGameDetail, useGameVersions } from '../../features/games/hooks';
-import { Game, GameStatus, GameVersion } from '../../features/games/types';
+import { VendingMachineDispatch, gameActions } from '@/appState';
+import { DetailControlPanel } from '@/components/ControlPanel';
+import { PageContainer } from '@/components/PageContainer';
+import { GamePreview } from '@/features/games/components/GamePreview';
+import { useGameDetail } from '@/features/games/hooks';
+import { Game, GameStatus, GameVersion } from '@/features/games/types';
 
 
 export const GameDetailPage: React.FC = () => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const { id } = useParams<{ id: string }>();
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
 	const { game, isLoading } = useGameDetail(id);
-	const { dispatchMethod: updateGame } = useServiceLayer(gameCrudService.update);
-	const { addVersion, deleteVersion } = useGameVersions();
 
 	const [isEditing, setIsEditing] = useState(false);
 	const [editedGame, setEditedGame] = useState<Partial<Game>>({});
@@ -47,9 +46,9 @@ export const GameDetailPage: React.FC = () => {
 	}, [game]);
 
 	const getStatusBadge = (status: GameStatus) => {
-		const statusMap: Record<string, { color: string, label: string }> = {
-			active: { color: 'green', label: translate('status.active') },
-			inactive: { color: 'gray', label: translate('status.inactive') },
+		const statusMap: Record<string, { color: string; label: string }> = {
+			active: { color: 'green', label: translate('nikki.general.status.active') },
+			inactive: { color: 'gray', label: translate('nikki.general.status.inactive') },
 		};
 		const statusInfo = statusMap[status] || { color: 'gray', label: status };
 		return <Badge color={statusInfo.color}>{statusInfo.label}</Badge>;
@@ -57,7 +56,11 @@ export const GameDetailPage: React.FC = () => {
 
 	const handleSave = async () => {
 		if (!game) return;
-		await updateGame({ id: game.id, etag: game.etag, ...editedGame });
+		await dispatch(gameActions.updateGame({
+			id: game.id,
+			etag: game.etag,
+			updates: editedGame,
+		}));
 		setIsEditing(false);
 	};
 
@@ -84,7 +87,10 @@ export const GameDetailPage: React.FC = () => {
 			uploadDate: new Date().toISOString(),
 		};
 
-		await addVersion(game, newVersion);
+		await dispatch(gameActions.addGameVersion({
+			gameId: game.id,
+			version: newVersion,
+		}));
 
 		setNewVersionCode('');
 		setNewVersionDescription('');
@@ -94,8 +100,11 @@ export const GameDetailPage: React.FC = () => {
 
 	const handleDeleteVersion = async (versionCode: string) => {
 		if (!game) return;
-		if (window.confirm(translate('games.messages.delete_version_confirm'))) {
-			await deleteVersion(game, versionCode);
+		if (window.confirm(translate('coremart.vendingMachine.games.messages.delete_version_confirm'))) {
+			await dispatch(gameActions.deleteGameVersion({
+				gameId: game.id,
+				versionCode,
+			}));
 		}
 	};
 
@@ -110,9 +119,9 @@ export const GameDetailPage: React.FC = () => {
 	};
 
 	const breadcrumbs = [
-		{ title: translate('title'), href: '../overview' },
-		{ title: translate('menu.mini_game'), href: '../games' },
-		{ title: game?.name || translate('games.detail.title'), href: '#' },
+		{ title: translate('coremart.vendingMachine.title'), href: '../overview' },
+		{ title: translate('coremart.vendingMachine.menu.miniGame'), href: '../games' },
+		{ title: game?.name || translate('coremart.vendingMachine.games.detail.title'), href: '#' },
 	];
 
 	if (isLoading || !game) {
@@ -121,7 +130,7 @@ export const GameDetailPage: React.FC = () => {
 				breadcrumbs={breadcrumbs}
 				actionBar={<div />}
 			>
-				<Text c='dimmed'>{translate('messages.loading')}</Text>
+				<Text c='dimmed'>{translate('nikki.general.messages.loading')}</Text>
 			</PageContainer>
 		);
 	}
@@ -142,26 +151,26 @@ export const GameDetailPage: React.FC = () => {
 
 			<Tabs defaultValue='info'>
 				<Tabs.List>
-					<Tabs.Tab value='info'>{translate('games.tabs.info')}</Tabs.Tab>
-					<Tabs.Tab value='versions'>{translate('games.tabs.versions')}</Tabs.Tab>
-					<Tabs.Tab value='preview'>{translate('games.tabs.preview')}</Tabs.Tab>
+					<Tabs.Tab value='info'>{translate('coremart.vendingMachine.games.tabs.info')}</Tabs.Tab>
+					<Tabs.Tab value='versions'>{translate('coremart.vendingMachine.games.tabs.versions')}</Tabs.Tab>
+					<Tabs.Tab value='preview'>{translate('coremart.vendingMachine.games.tabs.preview')}</Tabs.Tab>
 				</Tabs.List>
 
 				<Tabs.Panel value='info' pt='md'>
 					<Stack gap='md'>
 						<Group justify='space-between'>
-							<Text fw={500} size='lg'>{translate('games.detail.info')}</Text>
+							<Text fw={500} size='lg'>{translate('coremart.vendingMachine.games.detail.info')}</Text>
 							{!isEditing ? (
 								<Button size='xs' onClick={() => setIsEditing(true)}>
-									{translate('action.edit')}
+									{translate('nikki.general.actions.edit')}
 								</Button>
 							) : (
 								<Group gap='xs'>
 									<Button size='xs' onClick={handleSave}>
-										{translate('action.save')}
+										{translate('nikki.general.actions.save')}
 									</Button>
 									<Button size='xs' variant='subtle' onClick={handleCancel}>
-										{translate('action.cancel')}
+										{translate('nikki.general.actions.cancel')}
 									</Button>
 								</Group>
 							)}
@@ -171,7 +180,7 @@ export const GameDetailPage: React.FC = () => {
 
 						<div>
 							<Text size='sm' c='dimmed' mb='xs'>
-								{translate('games.fields.code')}
+								{translate('coremart.vendingMachine.games.fields.code')}
 							</Text>
 							{isEditing ? (
 								<TextInput
@@ -187,7 +196,7 @@ export const GameDetailPage: React.FC = () => {
 
 						<div>
 							<Text size='sm' c='dimmed' mb='xs'>
-								{translate('games.fields.name')}
+								{translate('coremart.vendingMachine.games.fields.name')}
 							</Text>
 							{isEditing ? (
 								<TextInput
@@ -203,7 +212,7 @@ export const GameDetailPage: React.FC = () => {
 
 						<div>
 							<Text size='sm' c='dimmed' mb='xs'>
-								{translate('games.fields.description')}
+								{translate('coremart.vendingMachine.games.fields.description')}
 							</Text>
 							{isEditing ? (
 								<Textarea
@@ -221,15 +230,15 @@ export const GameDetailPage: React.FC = () => {
 
 						<div>
 							<Text size='sm' c='dimmed' mb='xs'>
-								{translate('games.fields.status')}
+								{translate('coremart.vendingMachine.games.fields.status')}
 							</Text>
 							{isEditing ? (
 								<Select
 									value={editedGame.status}
 									onChange={(value) => setEditedGame({ ...editedGame, status: value as GameStatus })}
 									data={[
-										{ value: 'active', label: translate('status.active') },
-										{ value: 'inactive', label: translate('status.inactive') },
+										{ value: 'active', label: translate('nikki.general.status.active') },
+										{ value: 'inactive', label: translate('nikki.general.status.inactive') },
 									]}
 								/>
 							) : (
@@ -241,7 +250,7 @@ export const GameDetailPage: React.FC = () => {
 
 						<div>
 							<Text size='sm' c='dimmed' mb='xs'>
-								{translate('games.fields.latest_version')}
+								{translate('coremart.vendingMachine.games.fields.latestVersion')}
 							</Text>
 							<Text size='sm'>{game.latestVersion || '-'}</Text>
 						</div>
@@ -250,7 +259,7 @@ export const GameDetailPage: React.FC = () => {
 
 						<div>
 							<Text size='sm' c='dimmed' mb='xs'>
-								{translate('games.fields.min_app_version')}
+								{translate('coremart.vendingMachine.games.fields.minAppVersion')}
 							</Text>
 							{isEditing ? (
 								<TextInput
@@ -268,7 +277,7 @@ export const GameDetailPage: React.FC = () => {
 
 						<div>
 							<Text size='sm' c='dimmed' mb='xs'>
-								{translate('games.fields.created_at')}
+								{translate('coremart.vendingMachine.games.fields.createdAt')}
 							</Text>
 							<Text size='sm'>{new Date(game.createdAt).toLocaleString()}</Text>
 						</div>
@@ -277,7 +286,7 @@ export const GameDetailPage: React.FC = () => {
 
 						<div>
 							<Text size='sm' c='dimmed' mb='xs'>
-								{translate('games.fields.upload_date')}
+								{translate('coremart.vendingMachine.games.fields.uploadDate')}
 							</Text>
 							<Text size='sm'>{new Date(game.uploadDate).toLocaleString()}</Text>
 						</div>
@@ -287,13 +296,13 @@ export const GameDetailPage: React.FC = () => {
 				<Tabs.Panel value='versions' pt='md'>
 					<Stack gap='md'>
 						<Group justify='space-between'>
-							<Text fw={500} size='lg'>{translate('games.detail.versions')}</Text>
+							<Text fw={500} size='lg'>{translate('coremart.vendingMachine.games.detail.versions')}</Text>
 							<Button
 								size='xs'
 								leftSection={<IconPlus size={14} />}
 								onClick={() => setIsAddingVersion(true)}
 							>
-								{translate('games.actions.add_version')}
+								{translate('coremart.vendingMachine.games.actions.add_version')}
 							</Button>
 						</Group>
 
@@ -303,14 +312,14 @@ export const GameDetailPage: React.FC = () => {
 							<Box p='md' style={{ border: '1px solid var(--mantine-color-gray-3)', borderRadius: '4px' }}>
 								<Stack gap='sm'>
 									<TextInput
-										label={translate('games.fields.version_code')}
+										label={translate('coremart.vendingMachine.games.fields.versionCode')}
 										placeholder='v1.0.0'
 										value={newVersionCode}
 										onChange={(e) => setNewVersionCode(e.currentTarget.value)}
 									/>
 									<Textarea
-										label={translate('games.fields.version_description')}
-										placeholder={translate('games.fields.version_description')}
+										label={translate('coremart.vendingMachine.games.fields.versionDescription')}
+										placeholder={translate('coremart.vendingMachine.games.fields.versionDescription')}
 										value={newVersionDescription}
 										onChange={(e) => setNewVersionDescription(e.currentTarget.value)}
 										rows={3}
@@ -318,25 +327,25 @@ export const GameDetailPage: React.FC = () => {
 									<FileButton onChange={handleFileUpload} accept='.html,.htm'>
 										{(props) => (
 											<Button {...props} leftSection={<IconUpload size={14} />} variant='light'>
-												{translate('games.actions.upload_source')}
+												{translate('coremart.vendingMachine.games.actions.upload_source')}
 											</Button>
 										)}
 									</FileButton>
 									{newVersionSource && (
 										<Text size='xs' c='green'>
-											{translate('games.messages.source_loaded')}
+											{translate('coremart.vendingMachine.games.messages.source_loaded')}
 										</Text>
 									)}
 									<Textarea
-										label={translate('games.fields.source')}
-										placeholder={translate('games.fields.source_placeholder')}
+										label={translate('coremart.vendingMachine.games.fields.source')}
+										placeholder={translate('coremart.vendingMachine.games.fields.source_placeholder')}
 										value={newVersionSource}
 										onChange={(e) => setNewVersionSource(e.currentTarget.value)}
 										rows={10}
 									/>
 									<Group>
 										<Button size='xs' onClick={handleAddVersion} disabled={!newVersionCode.trim() || !newVersionSource.trim()}>
-											{translate('action.add')}
+											{translate('nikki.general.actions.add')}
 										</Button>
 										<Button size='xs' variant='subtle' onClick={() => {
 											setIsAddingVersion(false);
@@ -344,7 +353,7 @@ export const GameDetailPage: React.FC = () => {
 											setNewVersionDescription('');
 											setNewVersionSource('');
 										}}>
-											{translate('action.cancel')}
+											{translate('nikki.general.actions.cancel')}
 										</Button>
 									</Group>
 								</Stack>
@@ -355,9 +364,9 @@ export const GameDetailPage: React.FC = () => {
 							<Table striped highlightOnHover>
 								<Table.Thead>
 									<Table.Tr>
-										<Table.Th>{translate('games.fields.version_code')}</Table.Th>
-										<Table.Th>{translate('games.fields.version_description')}</Table.Th>
-										<Table.Th>{translate('games.fields.upload_date')}</Table.Th>
+										<Table.Th>{translate('coremart.vendingMachine.games.fields.versionCode')}</Table.Th>
+										<Table.Th>{translate('coremart.vendingMachine.games.fields.versionDescription')}</Table.Th>
+										<Table.Th>{translate('coremart.vendingMachine.games.fields.uploadDate')}</Table.Th>
 										<Table.Th style={{ width: 100 }}></Table.Th>
 									</Table.Tr>
 								</Table.Thead>
@@ -371,7 +380,7 @@ export const GameDetailPage: React.FC = () => {
 													</Text>
 													{version.code === game.latestVersion && (
 														<Badge size='xs' color='blue'>
-															{translate('games.fields.latest')}
+															{translate('coremart.vendingMachine.games.fields.latest')}
 														</Badge>
 													)}
 												</Group>
@@ -403,19 +412,19 @@ export const GameDetailPage: React.FC = () => {
 								</Table.Tbody>
 							</Table>
 						) : (
-							<Text c='dimmed'>{translate('games.messages.no_versions')}</Text>
+							<Text c='dimmed'>{translate('coremart.vendingMachine.games.messages.no_versions')}</Text>
 						)}
 					</Stack>
 				</Tabs.Panel>
 
 				<Tabs.Panel value='preview' pt='md'>
 					<Stack gap='md'>
-						<Text fw={500} size='lg'>{translate('games.detail.preview')}</Text>
+						<Text fw={500} size='lg'>{translate('coremart.vendingMachine.games.detail.preview')}</Text>
 						<Divider />
 						{game.versions.length > 0 ? (
 							<>
 								<Select
-									label={translate('games.fields.select_version')}
+									label={translate('coremart.vendingMachine.games.fields.selectVersion')}
 									value={selectedVersion?.code || game.versions[0]?.code}
 									onChange={(value) => {
 										const version = game.versions.find((v: GameVersion) => v.code === value);
@@ -428,7 +437,7 @@ export const GameDetailPage: React.FC = () => {
 								<GamePreview game={game} version={selectedVersion || game.versions[0]} />
 							</>
 						) : (
-							<Text c='dimmed'>{translate('games.messages.no_versions')}</Text>
+							<Text c='dimmed'>{translate('coremart.vendingMachine.games.messages.no_versions')}</Text>
 						)}
 					</Stack>
 				</Tabs.Panel>

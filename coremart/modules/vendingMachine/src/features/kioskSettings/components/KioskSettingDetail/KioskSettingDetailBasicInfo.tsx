@@ -3,7 +3,8 @@ import { FormFieldProvider, FormStyleProvider } from '@nikkierp/ui/components';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { ArchivedStatusBadge } from '../../../../components/ArchivedStatusBadge';
+import { ArchivedStatusBadge } from '@/components/ArchivedStatusBadge';
+
 import { KioskSetting } from '../../types';
 import { ArchiveKioskSettingModal, DeleteKioskSettingModal } from '../KioskSettingConfirmModals';
 import { KioskSettingFormFields } from '../KioskSettingFormFields';
@@ -15,13 +16,13 @@ export interface KioskSettingDetailBasicInfoProps {
 }
 
 const KioskSettingBasicInfoAuditDates: React.FC<{ setting: KioskSetting }> = ({ setting }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	return (
 		<React.Fragment>
 			<Divider my={3} />
 			<Box>
 				<Text size='sm' c='dimmed' mb={3}>
-					{translate('kiosk_settings.fields.created_at')}
+					{translate('coremart.vendingMachine.kioskSettings.fields.createdAt')}
 				</Text>
 				<Text size='sm'>{new Date(setting.createdAt).toLocaleString()}</Text>
 			</Box>
@@ -46,7 +47,7 @@ export const KioskSettingDetailBasicInfo: React.FC<KioskSettingDetailBasicInfoPr
 		handleCloseArchiveModal,
 	} = useKioskSettingBasicInfoTab({ setting });
 
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const archiveBadge = React.useMemo(
 		() => <ArchivedStatusBadge isArchived={!!setting.isArchived} />,
 		[setting.isArchived],
@@ -82,7 +83,7 @@ export const KioskSettingDetailBasicInfo: React.FC<KioskSettingDetailBasicInfoPr
 				<Divider my={3} />
 				<Box>
 					<Text size='sm' c='dimmed' mb={3}>
-						{translate('kiosk_settings.fields.status')}
+						{translate('coremart.vendingMachine.kioskSettings.fields.status')}
 					</Text>
 					{archiveBadge}
 				</Box>

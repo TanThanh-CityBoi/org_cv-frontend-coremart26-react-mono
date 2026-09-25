@@ -3,7 +3,7 @@ import { FC, useMemo } from 'react';
 import { Link } from 'react-router';
 
 
-export type BreadcrumbItem = { title: string, href: string };
+export type BreadcrumbItem = { title: string; href: string };
 export interface BreadCrumbsProps {
 	items: BreadcrumbItem[];
 }

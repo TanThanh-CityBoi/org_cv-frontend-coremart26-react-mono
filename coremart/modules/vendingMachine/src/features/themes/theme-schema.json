@@ -3,132 +3,132 @@
 	"fields": {
 		"id": {
 			"type": "string",
-			"label": "{ \"$ref\": 'themes.fields.id' }",
+			"label": "{ \"$ref\": 'coremart.vendingMachine.themes.fields.id' }",
 			"hidden": true
 		},
 		"code": {
 			"type": "string",
-			"label": "{ \"$ref\": 'themes.fields.code' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.themes.fields.code' }"
 		},
 		"name": {
 			"type": "string",
-			"label": "{ \"$ref\": 'themes.fields.name' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.themes.fields.name' }"
 		},
 		"description": {
 			"type": "string",
-			"label": "{ \"$ref\": 'themes.fields.description' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.themes.fields.description' }"
 		},
 		"status": {
 			"type": "enum",
-			"label": "{ \"$ref\": 'themes.fields.status' }",
+			"label": "{ \"$ref\": 'coremart.vendingMachine.themes.fields.status' }",
 			"enum": [
 				{
 					"value": "active",
-					"label": "{ \"$ref\": 'status.active' }"
+					"label": "{ \"$ref\": 'nikki.general.status.active' }"
 				},
 				{
 					"value": "inactive",
-					"label": "{ \"$ref\": 'status.inactive' }"
+					"label": "{ \"$ref\": 'nikki.general.status.inactive' }"
 				}
 			]
 		},
 		"primaryColor": {
 			"type": "string",
-			"label": "{ \"$ref\": 'themes.fields.primary_color' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.themes.fields.primaryColor' }"
 		},
 		"productCardStyle": {
 			"type": "enum",
-			"label": "{ \"$ref\": 'themes.fields.product_card_style' }",
+			"label": "{ \"$ref\": 'coremart.vendingMachine.themes.fields.productCardStyle' }",
 			"enum": [
 				{
 					"value": "default",
-					"label": "{ \"$ref\": 'themes.product_card_style.default' }"
+					"label": "{ \"$ref\": 'coremart.vendingMachine.themes.productCardStyle.default' }"
 				},
 				{
 					"value": "rounded",
-					"label": "{ \"$ref\": 'themes.product_card_style.rounded' }"
+					"label": "{ \"$ref\": 'coremart.vendingMachine.themes.productCardStyle.rounded' }"
 				},
 				{
 					"value": "minimal",
-					"label": "{ \"$ref\": 'themes.product_card_style.minimal' }"
+					"label": "{ \"$ref\": 'coremart.vendingMachine.themes.productCardStyle.minimal' }"
 				},
 				{
 					"value": "elegant",
-					"label": "{ \"$ref\": 'themes.product_card_style.elegant' }"
+					"label": "{ \"$ref\": 'coremart.vendingMachine.themes.productCardStyle.elegant' }"
 				},
 				{
 					"value": "modern",
-					"label": "{ \"$ref\": 'themes.product_card_style.modern' }"
+					"label": "{ \"$ref\": 'coremart.vendingMachine.themes.productCardStyle.modern' }"
 				}
 			]
 		},
 		"appBackground": {
 			"type": "enum",
-			"label": "{ \"$ref\": 'themes.fields.app_background' }",
+			"label": "{ \"$ref\": 'coremart.vendingMachine.themes.fields.appBackground' }",
 			"enum": [
 				{
 					"value": "none",
-					"label": "{ \"$ref\": 'themes.app_background.none' }"
+					"label": "{ \"$ref\": 'coremart.vendingMachine.themes.appBackground.none' }"
 				},
 				{
 					"value": "snow",
-					"label": "{ \"$ref\": 'themes.app_background.snow' }"
+					"label": "{ \"$ref\": 'coremart.vendingMachine.themes.appBackground.snow' }"
 				},
 				{
 					"value": "fireworks",
-					"label": "{ \"$ref\": 'themes.app_background.fireworks' }"
+					"label": "{ \"$ref\": 'coremart.vendingMachine.themes.appBackground.fireworks' }"
 				},
 				{
 					"value": "particles",
-					"label": "{ \"$ref\": 'themes.app_background.particles' }"
+					"label": "{ \"$ref\": 'coremart.vendingMachine.themes.appBackground.particles' }"
 				},
 				{
 					"value": "gradient",
-					"label": "{ \"$ref\": 'themes.app_background.gradient' }"
+					"label": "{ \"$ref\": 'coremart.vendingMachine.themes.appBackground.gradient' }"
 				},
 				{
 					"value": "custom",
-					"label": "{ \"$ref\": 'themes.app_background.custom' }"
+					"label": "{ \"$ref\": 'coremart.vendingMachine.themes.appBackground.custom' }"
 				}
 			]
 		},
 		"fontStyle": {
 			"type": "enum",
-			"label": "{ \"$ref\": 'themes.fields.font_style' }",
+			"label": "{ \"$ref\": 'coremart.vendingMachine.themes.fields.fontStyle' }",
 			"enum": [
 				{
 					"value": "default",
-					"label": "{ \"$ref\": 'themes.font_style.default' }"
+					"label": "{ \"$ref\": 'coremart.vendingMachine.themes.fontStyle.default' }"
 				},
 				{
 					"value": "roboto",
-					"label": "{ \"$ref\": 'themes.font_style.roboto' }"
+					"label": "{ \"$ref\": 'coremart.vendingMachine.themes.fontStyle.roboto' }"
 				},
 				{
 					"value": "inter",
-					"label": "{ \"$ref\": 'themes.font_style.inter' }"
+					"label": "{ \"$ref\": 'coremart.vendingMachine.themes.fontStyle.inter' }"
 				},
 				{
 					"value": "poppins",
-					"label": "{ \"$ref\": 'themes.font_style.poppins' }"
+					"label": "{ \"$ref\": 'coremart.vendingMachine.themes.fontStyle.poppins' }"
 				},
 				{
 					"value": "montserrat",
-					"label": "{ \"$ref\": 'themes.font_style.montserrat' }"
+					"label": "{ \"$ref\": 'coremart.vendingMachine.themes.fontStyle.montserrat' }"
 				},
 				{
 					"value": "custom",
-					"label": "{ \"$ref\": 'themes.font_style.custom' }"
+					"label": "{ \"$ref\": 'coremart.vendingMachine.themes.fontStyle.custom' }"
 				}
 			]
 		},
 		"mascotImage": {
 			"type": "string",
-			"label": "{ \"$ref\": 'themes.fields.mascot_image' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.themes.fields.mascotImage' }"
 		},
 		"createdAt": {
 			"type": "date",
-			"label": "{ \"$ref\": 'themes.fields.created_at' }",
+			"label": "{ \"$ref\": 'coremart.vendingMachine.themes.fields.createdAt' }",
 			"hidden": true
 		}
 	}

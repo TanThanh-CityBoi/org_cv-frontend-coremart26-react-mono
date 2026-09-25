@@ -2,47 +2,47 @@
 import {
 	Button, Group, Select, Stack, Text, TextInput,
 } from '@mantine/core';
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
 import { AutoTable } from '@nikkierp/ui/components';
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
 import { ModelSchema } from '@nikkierp/ui/model';
 import { IconSearch } from '@tabler/icons-react';
 import dayjs from 'dayjs';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { kioskActions, selectKioskLogs, VendingMachineDispatch } from '@/appState';
+import { buildSimpleSearchGraph, SimpleFilter } from '@/common/helpers';
+import { usePagination } from '@/common/hooks';
+import { camelToKebab } from '@/common/utils';
+import { RangePicker } from '@/components/RangePicker';
+import { TableContainer, TablePagination } from '@/components/Table';
+import { SearchGraph } from '@/types';
+
 import {
 	formatKioskActivityTimestamp,
 	KioskActivityDetailModal,
 	KioskActivityTypeBadge,
 } from './KioskActivityDetailModal';
-import { SimpleFilter, asLegacyModelSchema, buildSimpleSearchGraph } from '../../../../common/helpers';
-import { usePaginationWithTotal } from '../../../../common/hooks';
-import { camelToKebab } from '../../../../common/utils';
-import { RangePicker } from '../../../../components/RangePicker';
-import { TableContainer, TablePagination } from '../../../../components/Table';
-import { SearchGraph } from '../../../../types';
-import { kioskLogService } from '../../kioskLogService';
 import { KioskActivityLogType, KioskLog } from '../../types';
 
 
 type KioskActivityDateRange = React.ComponentProps<typeof RangePicker>['value'];
-const kioskActivityLogSchema = asLegacyModelSchema({
+const kioskActivityLogSchema: ModelSchema = {
 	name: 'kioskActivityLog',
 	fields: {
 		id: { type: 'string', label: '', hidden: true },
-		createdAt: { type: 'string', label: 'kiosk.activity.fields.time' },
-		logType: { type: 'string', label: 'kiosk.activity.fields.type' },
-		payload: { type: 'string', label: 'kiosk.activity.fields.content' },
-		actions: { type: 'string', label: 'action.title' },
+		createdAt: { type: 'string', label: 'coremart.vendingMachine.kiosk.activity.fields.time' },
+		logType: { type: 'string', label: 'coremart.vendingMachine.kiosk.activity.fields.type' },
+		payload: { type: 'string', label: 'coremart.vendingMachine.kiosk.activity.fields.content' },
+		actions: { type: 'string', label: 'nikki.general.actions.title' },
 	},
-});
+};
 
 
 export const KioskActivity: React.FC = () => {
-	const { t: translate } = useTranslation('vending_machine');
-	const { dispatchMethod, result } = useServiceLayer<{ items: KioskLog[], total: number }>(
-		kioskLogService.search,
-	);
+	const { t: translate } = useTranslation();
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
+	const kioskLogs = useMicroAppSelector(selectKioskLogs);
 	const [selectedLog, setSelectedLog] = useState<KioskLog | null>(null);
 	const [detailModalOpened, setDetailModalOpened] = useState(false);
 	const [searchQuery, setSearchQuery] = useState('');
@@ -83,10 +83,10 @@ export const KioskActivity: React.FC = () => {
 	const graphKey = useMemo(() => JSON.stringify(graph), [graph]);
 
 	const fetchKioskLogs = useCallback((targetPage: number, size: number, g?: SearchGraph) => {
-		dispatchMethod({ page: targetPage - 1, size, graph: g });
-	}, [dispatchMethod]);
+		dispatch(kioskActions.searchKioskLogs({ page: targetPage - 1, size, graph: g }));
+	}, [dispatch]);
 
-	const pagination = usePaginationWithTotal(fetchKioskLogs, result.data?.total ?? 0, {
+	const pagination = usePagination(fetchKioskLogs, selectKioskLogs, {
 		graph,
 		resetPageKey: graphKey,
 		fallbackPageSize: 10,
@@ -108,11 +108,11 @@ export const KioskActivity: React.FC = () => {
 	}, []);
 
 	const activityTableData = useMemo(
-		() => (result.data?.items ?? []).map((log: KioskLog) => ({
+		() => kioskLogs.items.map((log: KioskLog) => ({
 			...log,
 			actions: '',
 		})) as Record<string, unknown>[],
-		[result.data?.items],
+		[kioskLogs.items],
 	);
 
 	const activityColumnRenderers = useMemo(
@@ -134,7 +134,7 @@ export const KioskActivity: React.FC = () => {
 					variant='subtle'
 					onClick={() => handleViewDetail(row as unknown as KioskLog)}
 				>
-					{translate('action.view')}
+					{translate('nikki.general.actions.view')}
 				</Button>
 			),
 		}),
@@ -145,7 +145,7 @@ export const KioskActivity: React.FC = () => {
 		<Stack gap='md'>
 			<Group gap='md' align='flex-end'>
 				<TextInput
-					placeholder={translate('kiosk.activity.search_placeholder')}
+					placeholder={translate('coremart.vendingMachine.kiosk.activity.searchPlaceholder')}
 					leftSection={<IconSearch size={16} />}
 					value={searchQuery}
 					onChange={(e) => {
@@ -154,22 +154,22 @@ export const KioskActivity: React.FC = () => {
 					style={{ flex: 1 }}
 				/>
 				<Select
-					placeholder={translate('kiosk.activity.filter.type')}
+					placeholder={translate('coremart.vendingMachine.kiosk.activity.filter.type')}
 					value={selectedType}
 					onChange={(v) => {
 						setSelectedType(v);
 					}}
 					data={[
-						{ value: KioskActivityLogType.WARNING, label: translate('kiosk.activity.type.warning') },
-						{ value: KioskActivityLogType.STATUS_DETAIL, label: translate('kiosk.activity.type.status_detail') },
-						{ value: KioskActivityLogType.ERROR, label: translate('kiosk.activity.type.error') },
-						{ value: KioskActivityLogType.INFORM, label: translate('kiosk.activity.type.inform') },
+						{ value: KioskActivityLogType.WARNING, label: translate('coremart.vendingMachine.kiosk.activity.type.warning') },
+						{ value: KioskActivityLogType.STATUS_DETAIL, label: translate('coremart.vendingMachine.kiosk.activity.type.statusDetail') },
+						{ value: KioskActivityLogType.ERROR, label: translate('coremart.vendingMachine.kiosk.activity.type.error') },
+						{ value: KioskActivityLogType.INFORM, label: translate('coremart.vendingMachine.kiosk.activity.type.inform') },
 					]}
 					clearable
 				/>
 				<RangePicker
 					w={280}
-					placeholder={translate('common.date_picker.select_date_range')}
+					placeholder={translate('coremart.vendingMachine.common.datePicker.selectDateRange')}
 					value={dateRange}
 					onChange={(v) => {
 						setDateRange(v);
@@ -192,12 +192,11 @@ export const KioskActivity: React.FC = () => {
 				}
 			>
 				<AutoTable
-					translationNs='vending_machine'
 					columns={['createdAt', 'logType', 'payload', 'actions']}
 					data={activityTableData}
 					schema={kioskActivityLogSchema}
 					columnRenderers={activityColumnRenderers}
-					isLoading={result.isPending && !activityTableData.length}
+					isLoading={kioskLogs.status === 'pending' && !activityTableData.length}
 					striped='even'
 					highlightOnHover
 					theadProps={{ bg: 'var(--mantine-color-gray-0)' }}

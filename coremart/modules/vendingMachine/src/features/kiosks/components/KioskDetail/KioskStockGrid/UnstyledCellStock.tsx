@@ -8,30 +8,30 @@ import {
 import { useEffect, useState, FC, memo as reactMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import classes from './UnstyledCellStock.module.css';
-import { getLocalizedName, LanguageCode } from '../../../../../common/helpers';
+import { getLocalizedName, LanguageCode } from '@/common/helpers';
 
+import classes from './UnstyledCellStock.module.css';
 
 import type { CellStockItem } from './kioskStock.types';
 
 
 type CellStockProps = {
-	readOnly: boolean,
-	row: string, // Grid row
-	col: string, // Grid column
-	cellData?: CellStockItem | null,
-	handleCopyCell: (cell: CellStockItem) => void,
-	handlePasteCell: (row: string, col: string) => void,
-	handleDeleteCell: (row: string, col: string) => void,
-	handleEditCell: (cell: CellStockItem) => void,
-	onAssignStock: (row: string, col: string) => void,
-	onEditDetail: (row: string, col: string) => void,
+	readOnly: boolean;
+	row: string; // Grid row
+	col: string; // Grid column
+	cellData?: CellStockItem | null;
+	handleCopyCell: (cell: CellStockItem) => void;
+	handlePasteCell: (row: string, col: string) => void;
+	handleDeleteCell: (row: string, col: string) => void;
+	handleEditCell: (cell: CellStockItem) => void;
+	onAssignStock: (row: string, col: string) => void;
+	onEditDetail: (row: string, col: string) => void
 };
 
 
 
 const ProductTitle = ({ name, sku }: { name: CellStockItem['name'], sku: string }) => {
-	const { i18n } = useTranslation('vending_machine');
+	const { i18n } = useTranslation();
 	const currentLanguage = i18n.language as LanguageCode;
 
 	{/* <div className={classes.tooltip}>

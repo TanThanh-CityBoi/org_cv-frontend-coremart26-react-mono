@@ -3,7 +3,8 @@ import { IconPackage } from '@tabler/icons-react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { getLocalizedName } from '../../../../common/helpers';
+import { getLocalizedName } from '@/common/helpers';
+
 import { formatOrderMoney } from '../../formatters';
 
 import type { VdOrder, VdOrderCurrency, VdOrderItem } from '../../types';
@@ -52,30 +53,30 @@ function OrderItemThumb({ imageUrl }: { imageUrl?: string }) {
 type MetaProps = { item: VdOrderItem };
 
 function OrderItemMetaLine({ item }: MetaProps) {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	return (
 		<Stack gap={6}>
 			<Text size='sm' c='dimmed' lineClamp={1}>SKU: {item.productInfo?.sku ?? '—'}</Text>
 			<Group>
 				<Text size='sm' c='dimmed'>
-					{translate('kiosk.stocks.fields.proposed_price')}
+					{translate('coremart.vendingMachine.kiosk.stocks.fields.proposedPrice')}
 					{': '}
 					{formatOrderMoney(item.productInfo?.proposedPrice, 'VND')}
 				</Text>
 				<Pipe />
 				<Text size='sm' c='dimmed'>
-					{translate('kiosk.stocks.fields.sell_price')}
+					{translate('coremart.vendingMachine.kiosk.stocks.fields.sellPrice')}
 					{': '}
 					{formatOrderMoney(item.sellPrice, 'VND')}
 				</Text>
 				{/* <Text size='sm' c='dimmed'>
-					{translate('orders.items.quantity_out')}
+					{translate('coremart.vendingMachine.orders.items.quantityOut')}
 					{': '}
 					{item.quantityOut != null ? String(item.quantityOut) : '—'}
 				</Text> */}
 			</Group>
 			<Text size='sm' c='dimmed'>
-				{translate('orders.items.quantity')}
+				{translate('coremart.vendingMachine.orders.items.quantity')}
 				{': '}
 				{item.quantity != null ? String(item.quantity) : '—'}
 			</Text>
@@ -83,10 +84,10 @@ function OrderItemMetaLine({ item }: MetaProps) {
 	);
 }
 
-type OrderItemLineCardProps = { item: VdOrderItem, currency: VdOrderCurrency };
+type OrderItemLineCardProps = { item: VdOrderItem; currency: VdOrderCurrency };
 
 export const OrderItemLineCard: React.FC<OrderItemLineCardProps> = ({ item, currency }) => {
-	const { i18n } = useTranslation('vending_machine');
+	const { i18n } = useTranslation();
 	const productName = getLocalizedName(item.productInfo?.name, i18n.language);
 	const imageUrl = readInfoString(item.productInfo, 'imageUrl')
 		?? readInfoString(item.productInfo, 'image')
@@ -131,10 +132,10 @@ export const OrderItemLineCard: React.FC<OrderItemLineCardProps> = ({ item, curr
 };
 
 export function OrderItemLineList({ order }: { order: VdOrder }) {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const items = order.items ?? [];
 	if (items.length === 0) {
-		return <Text c='dimmed' size='sm'>{translate('orders.items.empty')}</Text>;
+		return <Text c='dimmed' size='sm'>{translate('coremart.vendingMachine.orders.items.empty')}</Text>;
 	}
 	return (
 		<Stack gap='md'>

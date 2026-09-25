@@ -1,5 +1,6 @@
 /* eslint-disable max-lines-per-function */
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+import { useMicroAppDispatch } from '@nikkierp/ui/microApp';
+import { ModelSchema } from '@nikkierp/ui/model';
 import {
 	IconArchive,
 	IconDeviceFloppy,
@@ -11,17 +12,18 @@ import {
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { asLegacyModelSchema } from '../../../../../common/helpers';
-import { ControlPanelProps } from '../../../../../components/ControlPanel/ControlPanel';
-import { useKioskSettingArchive } from '../../../hooks/useKioskSettingArchive';
+import { kioskSettingActions, VendingMachineDispatch } from '@/appState';
+import { ControlPanelProps } from '@/components/ControlPanel/ControlPanel';
+import { useKioskSettingArchive } from '@/features/kioskSettings/hooks/useKioskSettingArchive';
 import {
 	formDataToKioskSettingBasicUpdates,
 	KioskSettingBasicInfoFormData,
 	kioskSettingToFormModelValues,
 	useKioskSettingEdit,
-} from '../../../hooks/useKioskSettingEdit';
-import { KIOSK_SETTING_DETAIL_FIELDS, kioskSettingCrudService } from '../../../kioskSettingService';
-import { kioskSettingSchema } from '../../../schemas';
+} from '@/features/kioskSettings/hooks/useKioskSettingEdit';
+import { KIOSK_SETTING_DETAIL_FIELDS } from '@/features/kioskSettings/kioskSettingSlice';
+import { kioskSettingSchema } from '@/features/kioskSettings/schemas';
+
 import { KioskSetting } from '../../../types';
 import { useRegisterKioskSettingDetailTab } from '../kioskSettingDetailTabControl';
 import { useKioskSettingDetailPersistence } from './useKioskSettingDetailPersistence';
@@ -43,14 +45,14 @@ function buildBasicInfoActions(
 ): ControlPanelProps['actions'] {
 	const primary = !isEditing
 		? [{
-			label: translate('action.edit'),
+			label: translate('nikki.general.actions.edit'),
 			leftSection: <IconEdit size={16} />,
 			onClick: handleEdit,
 			type: 'button' as const,
 			variant: 'filled' as const,
 		}]
 		: [{
-			label: translate('action.save'),
+			label: translate('nikki.general.actions.save'),
 			leftSection: <IconDeviceFloppy size={16} />,
 			onClick: handleSave,
 			type: 'button' as const,
@@ -58,7 +60,7 @@ function buildBasicInfoActions(
 			disabled: isSubmitting,
 			loading: isSubmitting,
 		}, {
-			label: translate('action.cancel'),
+			label: translate('nikki.general.actions.cancel'),
 			leftSection: <IconX size={16} />,
 			onClick: handleCancel,
 			type: 'button' as const,
@@ -69,7 +71,7 @@ function buildBasicInfoActions(
 	const archived = Boolean(s.isArchived);
 	const archiveAction = archived
 		? {
-			label: translate('action.restore'),
+			label: translate('nikki.general.actions.restore'),
 			leftSection: <IconRestore size={16} />,
 			onClick: onRestore,
 			type: 'button' as const,
@@ -77,7 +79,7 @@ function buildBasicInfoActions(
 			disabled: isSubmitting || isEditing,
 		}
 		: {
-			label: translate('action.archive'),
+			label: translate('nikki.general.actions.archive'),
 			leftSection: <IconArchive size={16} />,
 			onClick: onArchive,
 			type: 'button' as const,
@@ -90,7 +92,7 @@ function buildBasicInfoActions(
 		...primary,
 		archiveAction,
 		{
-			label: translate('action.delete'),
+			label: translate('nikki.general.actions.delete'),
 			leftSection: <IconTrash size={16} />,
 			onClick: handleDelete,
 			type: 'button' as const,
@@ -102,15 +104,15 @@ function buildBasicInfoActions(
 }
 
 type UseKioskSettingBasicInfoTabArgs = {
-	setting: KioskSetting,
+	setting: KioskSetting;
 };
 
 export function useKioskSettingBasicInfoTab({ setting }: UseKioskSettingBasicInfoTabArgs) {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const [isEditing, setIsEditing] = useState(false);
 	const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
 	const [formResetNonce, setFormResetNonce] = useState(0);
-	const { dispatchMethod: refetchSetting } = useServiceLayer(kioskSettingCrudService.getById);
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
 
 	const closeDeleteModal = useCallback(() => setIsOpenDeleteModal(false), []);
 
@@ -120,9 +122,12 @@ export function useKioskSettingBasicInfoTab({ setting }: UseKioskSettingBasicInf
 
 	const onArchiveSuccess = useCallback(() => {
 		if (setting.id) {
-			refetchSetting({ id: setting.id, fields: KIOSK_SETTING_DETAIL_FIELDS });
+			dispatch(kioskSettingActions.getKioskSetting({
+				id: setting.id,
+				fields: KIOSK_SETTING_DETAIL_FIELDS,
+			}));
 		}
-	}, [setting.id, refetchSetting]);
+	}, [setting.id, dispatch]);
 
 	const {
 		handleConfirmArchive,
@@ -137,12 +142,15 @@ export function useKioskSettingBasicInfoTab({ setting }: UseKioskSettingBasicInf
 		onUpdateSuccess: () => {
 			setIsEditing(false);
 			if (setting.id) {
-				refetchSetting({ id: setting.id, fields: KIOSK_SETTING_DETAIL_FIELDS });
+				dispatch(kioskSettingActions.getKioskSetting({
+					id: setting.id,
+					fields: KIOSK_SETTING_DETAIL_FIELDS,
+				}));
 			}
 		},
 	});
 
-	const modelSchema = asLegacyModelSchema(kioskSettingSchema);
+	const modelSchema = kioskSettingSchema as ModelSchema;
 
 	const onFormSubmit = useCallback((data: KioskSettingBasicInfoFormData) => {
 		handleSubmit(formDataToKioskSettingBasicUpdates(data));

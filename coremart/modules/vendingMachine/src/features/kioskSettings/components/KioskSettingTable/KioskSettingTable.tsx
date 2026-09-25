@@ -11,10 +11,11 @@ import { TFunction } from 'i18next';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { ArchivedStatusBadge } from '../../../../components/ArchivedStatusBadge';
+import { ArchivedStatusBadge } from '@/components/ArchivedStatusBadge';
 import { NameCell, TableAction,
-	TableContainer, TextCell, TablePagination, type TableActionItem } from '../../../../components/Table';
-import { type TablePaginationProps } from '../../../../components/Table';
+	TableContainer, TextCell, TablePagination, type TableActionItem } from '@/components/Table';
+import { type TablePaginationProps } from '@/components/Table';
+
 import { KioskSetting } from '../../types';
 
 
@@ -46,7 +47,7 @@ export function getKioskSettingTableActions(
 	const defaultActions: (TableActionItem & { active?: boolean })[] = [
 		{
 			key: KIOSK_SETTING_ACTIONS.PREVIEW,
-			label: translate('action.preview'),
+			label: translate('nikki.general.actions.preview'),
 			icon: <IconLayoutSidebarRightExpand size={20} stroke={1.6} />,
 			onClick: () => actions[KIOSK_SETTING_ACTIONS.PREVIEW]?.(setting),
 			color: 'gray',
@@ -54,7 +55,7 @@ export function getKioskSettingTableActions(
 		},
 		{
 			key: KIOSK_SETTING_ACTIONS.VIEW_DETAIL,
-			label: translate('action.viewDetails'),
+			label: translate('nikki.general.actions.viewDetail'),
 			icon: <IconEye size={16} />,
 			onClick: () => actions[KIOSK_SETTING_ACTIONS.VIEW_DETAIL]?.(setting),
 			color: 'blue',
@@ -62,7 +63,7 @@ export function getKioskSettingTableActions(
 		},
 		{
 			key: KIOSK_SETTING_ACTIONS.ARCHIVE,
-			label: translate('action.archive'),
+			label: translate('nikki.general.actions.archive'),
 			icon: <IconArchive size={16} />,
 			onClick: () => actions[KIOSK_SETTING_ACTIONS.ARCHIVE]?.(setting),
 			color: 'orange',
@@ -70,7 +71,7 @@ export function getKioskSettingTableActions(
 		},
 		{
 			key: KIOSK_SETTING_ACTIONS.RESTORE,
-			label: translate('action.restore'),
+			label: translate('nikki.general.actions.restore'),
 			icon: <IconRestore size={16} />,
 			onClick: () => actions[KIOSK_SETTING_ACTIONS.RESTORE]?.(setting),
 			color: 'blue',
@@ -78,7 +79,7 @@ export function getKioskSettingTableActions(
 		},
 		{
 			key: KIOSK_SETTING_ACTIONS.DELETE,
-			label: translate('action.delete'),
+			label: translate('nikki.general.actions.delete'),
 			icon: <IconTrash size={16} />,
 			onClick: () => actions[KIOSK_SETTING_ACTIONS.DELETE]?.(setting),
 			color: 'red',
@@ -92,7 +93,7 @@ function renderActionsHeader(
 	_columnName: string,
 	translate: (key: string) => string,
 ) {
-	return <Text fw={600} fz='sm' ta='end'>{translate('action.title')}</Text>;
+	return <Text fw={600} fz='sm' ta='end'>{translate('nikki.general.actions.title')}</Text>;
 }
 
 export const KioskSettingTable: React.FC<KioskSettingTableProps> = ({
@@ -103,7 +104,7 @@ export const KioskSettingTable: React.FC<KioskSettingTableProps> = ({
 	actions,
 	pagination,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const colRenderers: React.ComponentProps<typeof AutoTable>['columnRenderers'] = {
 		code: (row) => <TextCell content={row.code as string} />,
@@ -117,7 +118,7 @@ export const KioskSettingTable: React.FC<KioskSettingTableProps> = ({
 				actions={
 					getKioskSettingTableActions(row as unknown as KioskSetting, actions, translate)
 				}
-				overflowMenuLabel={translate('action.title')}
+				overflowMenuLabel={translate('nikki.general.actions.title')}
 			/>
 		),
 	};
@@ -133,7 +134,6 @@ export const KioskSettingTable: React.FC<KioskSettingTableProps> = ({
 				footer={<TablePagination {...pagination} />}
 			>
 				<AutoTable
-					translationNs='vending_machine'
 					columns={columns}
 					data={data}
 					schema={schema}

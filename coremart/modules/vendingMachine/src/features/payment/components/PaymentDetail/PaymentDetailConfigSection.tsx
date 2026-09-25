@@ -17,9 +17,9 @@ import { useTranslation } from 'react-i18next';
 import {
 	paymentConfigToRows,
 	type PaymentConfigRow,
-} from '../../utils/paymentConfigRows';
+} from '@/features/payment/utils/paymentConfigRows';
 
-import type { CustomFieldValueType, PaymentMethod } from '../../types';
+import type { CustomFieldValueType, PaymentMethod } from '@/features/payment/types';
 
 
 export interface PaymentDetailConfigSectionProps {
@@ -42,7 +42,7 @@ export const PaymentDetailConfigSection: React.FC<PaymentDetailConfigSectionProp
 	configRows,
 	onConfigRowsChange,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const isReadOnly = mode === 'view';
 	const rows = isReadOnly ? paymentConfigToRows(config) : configRows;
 
@@ -58,13 +58,13 @@ export const PaymentDetailConfigSection: React.FC<PaymentDetailConfigSectionProp
 		}
 	}, [isReadOnly]);
 
-	const valueTypeOptions: Array<{ value: CustomFieldValueType, label: string }> = [
-		{ value: 'string', label: translate('payment.custom_field_types.string') },
-		{ value: 'number', label: translate('payment.custom_field_types.number') },
-		{ value: 'password', label: translate('payment.custom_field_types.password') },
-		{ value: 'email', label: translate('payment.custom_field_types.email') },
-		{ value: 'url', label: translate('payment.custom_field_types.url') },
-		{ value: 'date', label: translate('payment.custom_field_types.date') },
+	const valueTypeOptions: Array<{ value: CustomFieldValueType; label: string }> = [
+		{ value: 'string', label: translate('coremart.vendingMachine.payment.customFieldTypes.string') },
+		{ value: 'number', label: translate('coremart.vendingMachine.payment.customFieldTypes.number') },
+		{ value: 'password', label: translate('coremart.vendingMachine.payment.customFieldTypes.password') },
+		{ value: 'email', label: translate('coremart.vendingMachine.payment.customFieldTypes.email') },
+		{ value: 'url', label: translate('coremart.vendingMachine.payment.customFieldTypes.url') },
+		{ value: 'date', label: translate('coremart.vendingMachine.payment.customFieldTypes.date') },
 	];
 
 	const handleAddRow = () => {
@@ -86,16 +86,16 @@ export const PaymentDetailConfigSection: React.FC<PaymentDetailConfigSectionProp
 	return (
 		<Box>
 			<Text size='sm' c='dimmed' mb={3} fw={500}>
-				{translate('payment.fields.custom_fields')}
+				{translate('coremart.vendingMachine.payment.fields.customFields')}
 			</Text>
 
 			{rows.length > 0 && (
 				<Table striped highlightOnHover mb='md'>
 					<Table.Thead>
 						<Table.Tr>
-							<Table.Th>{translate('payment.fields.custom_field_key')}</Table.Th>
-							<Table.Th>{translate('payment.fields.custom_field_value')}</Table.Th>
-							<Table.Th>{translate('payment.fields.custom_field_type')}</Table.Th>
+							<Table.Th>{translate('coremart.vendingMachine.payment.fields.customFieldKey')}</Table.Th>
+							<Table.Th>{translate('coremart.vendingMachine.payment.fields.customFieldValue')}</Table.Th>
+							<Table.Th>{translate('coremart.vendingMachine.payment.fields.customFieldType')}</Table.Th>
 							<Table.Th style={{ width: 50 }} />
 						</Table.Tr>
 					</Table.Thead>
@@ -117,7 +117,7 @@ export const PaymentDetailConfigSection: React.FC<PaymentDetailConfigSectionProp
 										size='xs'
 										disabled={isReadOnly}
 										onClick={() => handleRemoveRow(index)}
-										aria-label={translate('action.delete')}
+										aria-label={translate('nikki.general.actions.delete')}
 									>
 										<IconTrash size={14} />
 									</Button>
@@ -130,21 +130,21 @@ export const PaymentDetailConfigSection: React.FC<PaymentDetailConfigSectionProp
 
 			{rows.length === 0 && (
 				<Text size='sm' c='dimmed' mb='sm'>
-					{translate('payment.messages.no_custom_fields')}
+					{translate('coremart.vendingMachine.payment.messages.no_custom_fields')}
 				</Text>
 			)}
 
 			<Stack gap='xs' mt={rows.length > 0 ? 'md' : 0}>
 				<Group gap='xs' align='flex-end'>
 					<TextInput
-						placeholder={translate('payment.fields.custom_field_key')}
+						placeholder={translate('coremart.vendingMachine.payment.fields.customFieldKey')}
 						value={newKey}
 						onChange={(e) => setNewKey(e.currentTarget.value)}
 						readOnly={isReadOnly}
 						style={{ flex: 1 }}
 					/>
 					<Select
-						placeholder={translate('payment.fields.custom_field_type')}
+						placeholder={translate('coremart.vendingMachine.payment.fields.customFieldType')}
 						value={newType}
 						onChange={(v) => setNewType((v || 'string') as CustomFieldValueType)}
 						data={valueTypeOptions}
@@ -154,7 +154,7 @@ export const PaymentDetailConfigSection: React.FC<PaymentDetailConfigSectionProp
 				</Group>
 				<Group gap='xs' align='flex-end'>
 					<TextInput
-						placeholder={translate('payment.fields.custom_field_value')}
+						placeholder={translate('coremart.vendingMachine.payment.fields.customFieldValue')}
 						value={newValue}
 						onChange={(e) => setNewValue(e.currentTarget.value)}
 						type={newType === 'password' ? 'password' : newType === 'number' ? 'number' : 'text'}
@@ -165,7 +165,7 @@ export const PaymentDetailConfigSection: React.FC<PaymentDetailConfigSectionProp
 						onClick={handleAddRow}
 						disabled={isReadOnly || !newKey.trim() || !newValue.trim()}
 					>
-						{translate('action.add')}
+						{translate('nikki.general.actions.add')}
 					</Button>
 				</Group>
 			</Stack>

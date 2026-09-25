@@ -4,8 +4,8 @@ import { IconPalette, IconSearch } from '@tabler/icons-react';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { mockThemes } from '../../features/themes/mockThemes';
-import { Theme } from '../../features/themes/types';
+import { mockThemes } from '@/features/themes/mockThemes';
+import { Theme } from '@/features/themes/types';
 
 
 export interface ThemeSelectModalProps {
@@ -20,7 +20,7 @@ export const ThemeSelectModal: React.FC<ThemeSelectModalProps> = ({
 	onClose,
 	onSelectTheme,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const [themes, setThemes] = useState<Theme[]>([]);
 	const [selectedTheme, setSelectedTheme] = useState<Theme | undefined>();
 	const [searchQuery, setSearchQuery] = useState('');
@@ -65,13 +65,13 @@ export const ThemeSelectModal: React.FC<ThemeSelectModalProps> = ({
 		<Modal
 			opened={opened}
 			onClose={handleCancel}
-			title={translate('events.select_theme.title')}
+			title={translate('coremart.vendingMachine.events.selectTheme.title')}
 			size='xl'
 		>
 			<Stack gap='md'>
 				{/* Search */}
 				<TextInput
-					placeholder={translate('events.select_theme.search_placeholder')}
+					placeholder={translate('coremart.vendingMachine.events.selectTheme.searchPlaceholder')}
 					leftSection={<IconSearch size={16} />}
 					value={searchQuery}
 					onChange={(e) => setSearchQuery(e.currentTarget.value)}
@@ -81,7 +81,7 @@ export const ThemeSelectModal: React.FC<ThemeSelectModalProps> = ({
 				<ScrollArea h={400}>
 					{filteredThemes.length === 0 ? (
 						<Text size='sm' c='dimmed' ta='center' py='md'>
-							{translate('events.select_theme.no_themes')}
+							{translate('coremart.vendingMachine.events.selectTheme.noThemes')}
 						</Text>
 					) : (
 						<SimpleGrid cols={2} spacing='md'>
@@ -138,10 +138,10 @@ export const ThemeSelectModal: React.FC<ThemeSelectModalProps> = ({
 				{/* Actions */}
 				<Group justify='flex-end' gap='xs'>
 					<Button variant='subtle' onClick={handleCancel}>
-						{translate('action.cancel')}
+						{translate('nikki.general.actions.cancel')}
 					</Button>
 					<Button onClick={handleConfirm} disabled={!selectedTheme}>
-						{translate('action.confirm')}
+						{translate('nikki.general.actions.confirm')}
 					</Button>
 				</Group>
 			</Stack>

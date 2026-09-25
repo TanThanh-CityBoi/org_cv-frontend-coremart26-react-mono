@@ -117,19 +117,19 @@ export interface KioskWarning {
 }
 
 export type ConnectionHistory = {
-	status: ConnectionStatus,
-	createdAt: string,
+	status: ConnectionStatus;
+	createdAt: string;
 };
 
 export type KioskConnection = {
-	createdAt?: string,
-	etag?: string,
-	history?: ConnectionHistory[],
-	id: string,
-	kioskRef?: string,
-	lastPing?: string,
-	lastStatus?: ConnectionStatus,
-	scopeType?: string,
+	createdAt?: string;
+	etag?: string;
+	history?: ConnectionHistory[];
+	id: string;
+	kioskRef?: string;
+	lastPing?: string;
+	lastStatus?: ConnectionStatus;
+	scopeType?: string;
 };
 
 
@@ -209,34 +209,34 @@ export interface KioskActivityLog {
 
 
 export type KioskLog = {
-	id: string,
-	createdAt: string,
-	logType: KioskActivityLogType,
-	kioskRef: string,
-	message?: string,
-	payload?: string,
+	id: string;
+	createdAt: string;
+	logType: KioskActivityLogType;
+	kioskRef: string;
+	message?: string;
+	payload?: string;
 };
 
 
 
 export type KioskState = {
-	bucketTime: string,
-	createdAt: string,
-	current: string,
-	energy: string,
-	energyDelta: string,
-	etag: string,
-	homeSwitch: string,
-	humidity: string,
-	id: string,
-	kioskRef: string,
-	outputDoorSwitch: string,
-	outputSwitch: string,
-	power: string,
-	scopeType: string,
-	temperature: string,
-	unidentifiedSwitch: string,
-	voltage: number,
+	bucketTime: string;
+	createdAt: string;
+	current: string;
+	energy: string;
+	energyDelta: string;
+	etag: string;
+	homeSwitch: string;
+	humidity: string;
+	id: string;
+	kioskRef: string;
+	outputDoorSwitch: string;
+	outputSwitch: string;
+	power: string;
+	scopeType: string;
+	temperature: string;
+	unidentifiedSwitch: string;
+	voltage: number;
 };
 
 // "kiosk_state": {
@@ -258,63 +258,3 @@ export type KioskState = {
 //     "unidentified_switch": "00",
 //     "voltage": 202
 //   },
-
-//* ─── Kiosk stock wire types ───────────────────────────────────────────────
-//* Relocated from the deleted `kioskService.ts`; `KioskStockService` owns these calls now.
-
-/** POST …/kiosks/:kioskId/kiosk-stocks (Bruno `Kiosk Stock - Create`). */
-export type CreateKioskStockBody = {
-	productRef: string,
-	sortIndex: number,
-	sellPrice: string,
-	warningQuantity?: number,
-};
-
-/** PUT …/kiosks/:kioskId/kiosk-stocks/:id (Bruno `Kiosk Stock - Update`). */
-export type UpdateKioskStockBody = {
-	etag: string,
-	sortIndex: number,
-	sellPrice: string,
-	warningQuantity?: number,
-};
-
-/**
- * [PATCH] …/kiosks/:kioskId/positions/upsert item (wire: snake_case, e.g. stock_ref, is_enabled).
- * Cleared position: only row+col, other fields null.
- */
-export type KioskPositionUpdateItem = {
-	row: string,
-	col: number,
-	stockRef: string | null,
-	quantity?: number,
-	maxQuantity?: number,
-	isEnabled?: boolean,
-};
-
-/** [PATCH] …/kiosks/:kioskId/kiosk-stocks/bulk body item. */
-export type BulkUpdateKioskStockItem = {
-	id: string,
-	etag: string,
-	sortIndex: number,
-	warningQuantity?: number,
-};
-
-/** Matches Bruno `Kiosk Stock - Replace` body (`stocks` → snake_case on the wire). */
-export type KioskStockReplacePosition = {
-	row: string,
-	col: number,
-	quantity: number,
-	maxQuantity: number,
-	status: 'enable' | 'disable',
-};
-
-export type KioskStockReplaceLine = {
-	productRef: string,
-	sortIndex: number,
-	sellPrice: string,
-	positions: KioskStockReplacePosition[],
-};
-
-export type KioskStockReplaceRequest = {
-	stocks: KioskStockReplaceLine[],
-};

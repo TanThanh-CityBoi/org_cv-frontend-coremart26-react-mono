@@ -1,7 +1,7 @@
 import { Paper, Stack } from '@mantine/core';
 import { GLOBAL_CONTEXT_SLUG } from '@nikkierp/shell/constants';
-import { useActiveOrgModule } from '@nikkierp/shell/routing';
 import { useActiveOrgWithDetails } from '@nikkierp/shell/userContext';
+import { useActiveOrgModule } from '@nikkierp/ui/appState/routingSlice';
 import { ConfirmModal, Headers, Actions } from '@nikkierp/ui/components';
 import { useMicroAppSelector, useMicroAppDispatch } from '@nikkierp/ui/microApp';
 import { ModelSchema } from '@nikkierp/ui/model';
@@ -16,9 +16,9 @@ import {
 	selectGroupList,
 	selectRoleState,
 	selectUserList,
-} from '../../appState';
-import { RoleTable, roleSchema, useRoleDelete } from '../../features/roles';
-import { useAuthorizePermissions } from '../../hooks/useAuthorizePermissions';
+} from '@/appState';
+import { RoleTable, roleSchema, useRoleDelete } from '@/features/roles';
+import { useAuthorizePermissions } from '@/hooks/useAuthorizePermissions';
 
 
 // eslint-disable-next-line max-lines-per-function

@@ -1,16 +1,18 @@
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+import { ReduxActionState } from '@nikkierp/ui/appState';
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
 import dayjs from 'dayjs';
 import { useCallback, useEffect, useMemo } from 'react';
 
-import { ReportTimeQuery } from '../../../../types';
-import { operationReportService } from '../operationReportService';
+import { operationReportActions, selectOperationalStats, VendingMachineDispatch } from '@/appState';
+import { ReportTimeQuery } from '@/types';
+
 import { OperationStats } from '../type';
 
 
 
 type OperationStatsFilters = {
-	fromDate: string,
-	toDate: string,
+	fromDate: string;
+	toDate: string;
 };
 
 
@@ -28,23 +30,23 @@ const operationStatsFiltersToBaseQuery = (filters: OperationStatsFilters): Repor
 
 
 export function useOperationStats( filters: OperationStatsFilters = defaultFilters ) {
-	const { dispatchMethod, result } = useServiceLayer<OperationStats>(
-		operationReportService.getOperationalStats,
-	);
+	const dispatch = useMicroAppDispatch() as VendingMachineDispatch;
+	const operationalStats: ReduxActionState<OperationStats> = useMicroAppSelector(selectOperationalStats);
 	const query = useMemo(() => operationStatsFiltersToBaseQuery(filters), [filters]);
 
 	const refresh = useCallback(() => {
-		dispatchMethod(query);
-	}, [dispatchMethod, query]);
+		if (!query) return;
+		dispatch(operationReportActions.fetchOperationalStats(query));
+	}, [dispatch, query]);
 
 	useEffect(() => {
 		refresh();
 	}, [refresh]);
 
-	const status = result.isPending ? 'pending' : 'success';
-	const data = result.data ?? undefined;
-	const error = result.error;
-	const isLoading = (result.isPending || result.doneAt == null) && !data;
+	const status = operationalStats.status;
+	const data = operationalStats.data ;
+	const error = operationalStats.error;
+	const isLoading = (status === 'pending' || status === 'idle') && !data;
 
 	return {
 		data,

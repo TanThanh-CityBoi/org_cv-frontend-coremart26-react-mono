@@ -80,21 +80,21 @@ export interface Event {
 }
 
 export type EventCreateFormData = {
-	code: string,
-	name: string,
-	description?: string,
-	startTime: string,
-	endTime: string,
-	dailyStartTime: string,
-	dailyEndTime: string,
-	isAllDay: boolean,
-	shoppingScreenPlaylistRef?: string | null,
-	waitingScreenPlaylistRef?: string | null,
-	themeRef?: string | null,
-	gameRef?: string | null,
+	code: string;
+	name: string;
+	description?: string;
+	startTime: string;
+	endTime: string;
+	dailyStartTime: string;
+	dailyEndTime: string;
+	isAllDay: boolean;
+	shoppingScreenPlaylistRef?: string | null;
+	waitingScreenPlaylistRef?: string | null;
+	themeRef?: string | null;
+	gameRef?: string | null;
 };
 
-export type EventUpdateFormData = { id: string, etag: string } & Partial<
+export type EventUpdateFormData = { id: string; etag: string } & Partial<
 	Omit<Event, 'id' | 'etag' | 'createdAt' | 'kiosks' | 'theme' | 'game' |
 		'shoppingScreenPlaylist' | 'waitingScreenPlaylist' | 'stocks'>
 >;

@@ -5,9 +5,9 @@ import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import { useTranslation } from 'react-i18next';
 
-import { REPORT_PALETTE_BORDERS } from '../../../../../components/reportChartTheme';
-import { REPORT_PALETTE_FILLS } from '../../../../../components/reportChartTheme';
-import { ConnectionStatus } from '../../../../kiosks/types';
+import { REPORT_PALETTE_BORDERS } from '@/components/reportChartTheme';
+import { REPORT_PALETTE_FILLS } from '@/components/reportChartTheme';
+import { ConnectionStatus } from '@/features/kiosks/types';
 import { KioskStats } from '../../type';
 
 
@@ -21,13 +21,13 @@ const getChartData = (connectionStatus: KioskStats['connectionStatus'], translat
 
 	return{
 		labels: [
-			translate('overview.connection.fast'),
-			translate('overview.connection.slow'),
-			translate('overview.connection.lost'),
+			translate('coremart.vendingMachine.overview.connection.fast'),
+			translate('coremart.vendingMachine.overview.connection.slow'),
+			translate('coremart.vendingMachine.overview.connection.lost'),
 		],
 		datasets: [
 			{
-				label: translate('overview.connection.status'),
+				label: translate('coremart.vendingMachine.overview.connection.status'),
 				data: [fastCount, slowCount, disconnectedCount],
 				backgroundColor: [
 					REPORT_PALETTE_FILLS.emerald,
@@ -51,7 +51,7 @@ interface ConnectionStatusChartProps {
 }
 
 export function ConnectionStatusChart({ data, h = '100%' }: ConnectionStatusChartProps): React.ReactElement {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const chartData = getChartData(data ?? [], translate);
 
 	const options = {
@@ -88,7 +88,7 @@ export function ConnectionStatusChart({ data, h = '100%' }: ConnectionStatusChar
 	return (
 		<Card shadow='sm' padding='sm' radius='md' withBorder h={h}>
 			<Title order={4} mb='xs' fz='sm'>
-				{translate('overview.connection.status')}
+				{translate('coremart.vendingMachine.overview.connection.status')}
 			</Title>
 			<Box h={h} pos='relative'>
 				<Doughnut data={chartData} options={options} />

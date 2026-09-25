@@ -1,6 +1,6 @@
 import { camelToSnakeCase } from '@nikkierp/common/utils';
 
-import { SearchGraph, SearchNode, SearchOperator } from '../../types';
+import { SearchGraph, SearchNode, SearchOperator } from '@/types';
 
 
 interface BaseSimpleFilter {

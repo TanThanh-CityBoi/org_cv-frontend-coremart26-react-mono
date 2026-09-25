@@ -4,7 +4,7 @@ import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import { useTranslation } from 'react-i18next';
 
-import { KIOSK_TYPES } from '../../../../kioskModels/types';
+import { KIOSK_TYPES } from '@/features/kioskModels/types';
 import { KioskStats } from '../../type';
 
 
@@ -16,20 +16,19 @@ interface MachineTypeChartProps {
 }
 
 export function MachineTypeChart({ data, h = '100%' }: MachineTypeChartProps): React.ReactElement {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
-	const dropProductCount = data
-		?.find((goodsCollector) => goodsCollector.value === KIOSK_TYPES.NON_ELEVATOR)?.count ?? 0;
+	const dropProductCount = data?.find((goodsCollector) => goodsCollector.value === KIOSK_TYPES.NON_ELEVATOR)?.count ?? 0;
 	const elevatorCount = data?.find((goodsCollector) => goodsCollector.value === KIOSK_TYPES.ELEVATOR)?.count ?? 0;
 
 	const chartData = {
 		labels: [
-			translate('overview.machine_type.drop_product'),
-			translate('overview.machine_type.elevator'),
+			translate('coremart.vendingMachine.overview.machineType.dropProduct'),
+			translate('coremart.vendingMachine.overview.machineType.elevator'),
 		],
 		datasets: [
 			{
-				label: translate('overview.machine_type.distribution'),
+				label: translate('coremart.vendingMachine.overview.machineType.distribution'),
 				data: [dropProductCount, elevatorCount],
 				backgroundColor: [
 					'rgba(34, 197, 94, 0.8)', // green
@@ -78,7 +77,7 @@ export function MachineTypeChart({ data, h = '100%' }: MachineTypeChartProps): R
 	return (
 		<Card shadow='sm' padding='sm' radius='md' withBorder h={h}>
 			<Title order={4} mb='xs' fz='sm'>
-				{translate('overview.machine_type.distribution')}
+				{translate('coremart.vendingMachine.overview.machineType.distribution')}
 			</Title>
 			<Box h={h} pos='relative'>
 				<Doughnut data={chartData} options={options} />

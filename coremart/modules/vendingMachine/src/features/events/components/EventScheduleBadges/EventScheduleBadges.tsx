@@ -2,24 +2,25 @@ import { Group, MantineSize } from '@mantine/core';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { ArchivedStatusBadge } from '../../../../components/ArchivedStatusBadge';
-import { StatusBadge } from '../../../../components/StatusBadge';
+import { ArchivedStatusBadge } from '@/components/ArchivedStatusBadge';
+import { StatusBadge } from '@/components/StatusBadge';
+
 import { deriveEventRunPhase, type Event, type EventRunPhase } from '../../types';
 
 
-const RUN_PHASE_META: Record<EventRunPhase, { color: string, labelKey: string }> = {
-	upcoming: { color: 'yellow', labelKey: 'events.run_phase.upcoming' },
-	ongoing: { color: 'green', labelKey: 'events.run_phase.ongoing' },
-	ended: { color: 'gray', labelKey: 'events.run_phase.ended' },
+const RUN_PHASE_META: Record<EventRunPhase, { color: string; labelKey: string }> = {
+	upcoming: { color: 'yellow', labelKey: 'coremart.vendingMachine.events.runPhase.upcoming' },
+	ongoing: { color: 'green', labelKey: 'coremart.vendingMachine.events.runPhase.ongoing' },
+	ended: { color: 'gray', labelKey: 'coremart.vendingMachine.events.runPhase.ended' },
 };
 
 export type EventRunPhaseBadgeProps = {
-	phase: EventRunPhase,
-	size?: MantineSize,
+	phase: EventRunPhase;
+	size?: MantineSize;
 };
 
 export const EventRunPhaseBadge: React.FC<EventRunPhaseBadgeProps> = ({ phase, size = 'sm' }) => {
-	const { t } = useTranslation('vending_machine');
+	const { t } = useTranslation();
 	const meta = RUN_PHASE_META[phase];
 	return (
 		<StatusBadge color={meta.color} size={size}>
@@ -29,10 +30,10 @@ export const EventRunPhaseBadge: React.FC<EventRunPhaseBadgeProps> = ({ phase, s
 };
 
 export type EventArchiveAndScheduleBadgesProps = {
-	event: Pick<Event, 'startTime' | 'endTime' | 'isArchived'>,
-	size?: MantineSize,
-	gap?: 'xs' | 'sm' | 'md',
-	wrap?: boolean,
+	event: Pick<Event, 'startTime' | 'endTime' | 'isArchived'>;
+	size?: MantineSize;
+	gap?: 'xs' | 'sm' | 'md';
+	wrap?: boolean;
 };
 
 /** Archive state (`isArchived`) + schedule phase (start/end vs now). */

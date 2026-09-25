@@ -1,16 +1,16 @@
 import { Stack } from '@mantine/core';
 import { FormFieldProvider, FormStyleProvider } from '@nikkierp/ui/components';
+import { ModelSchema } from '@nikkierp/ui/model';
 import { IconArrowLeft, IconDeviceFloppy, IconX } from '@tabler/icons-react';
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
-import { asLegacyModelSchema } from '../../common/helpers';
-import { ControlPanel } from '../../components';
-import { ControlPanelProps } from '../../components/ControlPanel/ControlPanel';
-import { PageContainer } from '../../components/PageContainer';
-import { KIOSK_TYPES, KioskModelCreateFormData, KioskModelFormFields, useKioskModelCreate } from '../../features/kioskModels';
-import { kioskModelCreateSchema } from '../../features/kioskModels/schemas';
+import { ControlPanel } from '@/components';
+import { ControlPanelProps } from '@/components/ControlPanel/ControlPanel';
+import { PageContainer } from '@/components/PageContainer';
+import { KIOSK_TYPES, KioskModelCreateFormData, KioskModelFormFields, useKioskModelCreate } from '@/features/kioskModels';
+import { kioskModelCreateSchema } from '@/features/kioskModels/schemas';
 
 
 const FORM_ID = 'kiosk-model-create-form';
@@ -21,9 +21,9 @@ const defaultFormValues: Partial<KioskModelCreateFormData> = {
 };
 
 export const KioskModelCreatePage: React.FC = () => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
-	const schema = asLegacyModelSchema(kioskModelCreateSchema);
+	const schema = kioskModelCreateSchema as ModelSchema;
 	const { isSubmitting, handleCancel, handleSubmit } = useKioskModelCreate();
 	const { breadcrumbs, actions } = useKioskModelCreatePageConfig({
 		handleCancel,
@@ -32,7 +32,7 @@ export const KioskModelCreatePage: React.FC = () => {
 
 	return (
 		<PageContainer
-			documentTitle={translate('kiosk_models.title_create')}
+			documentTitle={translate('coremart.vendingMachine.kioskModels.title_create')}
 			breadcrumbs={breadcrumbs}
 			sections={[<ControlPanel key='control-panel' actions={actions} />]}
 		>
@@ -68,23 +68,23 @@ function useKioskModelCreatePageConfig({
 	isSubmitting,
 }: UseKioskModelCreatePageConfigProps) {
 	const navigate = useNavigate();
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const breadcrumbs = useMemo(() => [
-		{ title: translate('title'), href: '../overview' },
-		{ title: translate('kiosk_models.title'), href: '../kiosk-models' },
-		{ title: translate('kiosk_models.title_create'), href: '#' },
+		{ title: translate('coremart.vendingMachine.title'), href: '../overview' },
+		{ title: translate('coremart.vendingMachine.kioskModels.title'), href: '../kiosk-models' },
+		{ title: translate('coremart.vendingMachine.kioskModels.title_create'), href: '#' },
 	], [translate]);
 
 	const actions = useMemo<ControlPanelProps['actions']>(() => [
 		{
-			label: translate('action.back'),
+			label: translate('nikki.general.actions.back'),
 			onClick: () => navigate('../kiosk-models'),
 			leftSection: <IconArrowLeft size={16} />,
 			variant: 'outline' as const,
 		},
 		{
-			label: translate('action.create'),
+			label: translate('nikki.general.actions.create'),
 			leftSection: <IconDeviceFloppy size={16} />,
 			variant: 'filled' as const,
 			type: 'submit' as const,
@@ -92,7 +92,7 @@ function useKioskModelCreatePageConfig({
 			loading: isSubmitting,
 		},
 		{
-			label: translate('action.cancel'),
+			label: translate('nikki.general.actions.cancel'),
 			leftSection: <IconX size={16} />,
 			onClick: handleCancel,
 			variant: 'outline' as const,

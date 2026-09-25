@@ -6,6 +6,7 @@ import {
 } from '@nikkierp/common/utils';
 
 
+import { buildFieldsQuery, buildSearchParams } from '@/common/helpers';
 
 import { getKioskMediaStreamUrl, kioskMediaService } from './kioskMediaService';
 import {
@@ -19,7 +20,6 @@ import {
 	type PlaylistMediaRow,
 } from './types';
 import { probeVideoDurationSec } from './videoProbe';
-import { buildFieldsQuery, buildSearchParams } from '../../common/helpers';
 
 import type {
 	PagedSearchResponse,
@@ -28,7 +28,7 @@ import type {
 	RestDeleteResponse,
 	SearchParams,
 	RestUpdateResponse,
-} from '../../types';
+} from '@/types';
 
 
 
@@ -84,9 +84,9 @@ export const mediaPlaylistService = {
 	},
 
 	async createPlaylist(body: {
-		name: string,
-		scopeType: ResourceScopeType,
-		scopeRef?: string | null,
+		name: string;
+		scopeType: ResourceScopeType;
+		scopeRef?: string | null;
 	}): Promise<RestCreateResponse> {
 		const cleaned = cleanEmptyString(body as object);
 		const result = await request.post<any>(PLAYLIST_BASE_PATH, { json: camelToSnakeObject(cleaned) });
@@ -107,7 +107,7 @@ export const mediaPlaylistService = {
 		return snakeToCamelObject(result) as RestDeleteResponse;
 	},
 
-	async setPlaylistArchived(id: string, body: { etag: string, isArchived: boolean }): Promise<RestArchiveResponse> {
+	async setPlaylistArchived(id: string, body: { etag: string; isArchived: boolean }): Promise<RestArchiveResponse> {
 		const result = await request.post<any>(`${PLAYLIST_BASE_PATH}/${id}/archived`, {
 			json: camelToSnakeObject(body),
 		});
@@ -195,9 +195,9 @@ export const mediaPlaylistService = {
 	getKioskMediaStreamUrl,
 
 	async createMediaPlaylist(payload: {
-		name: string,
-		scopeType?: ResourceScopeType,
-		scopeRef?: string | null,
+		name: string;
+		scopeType?: ResourceScopeType;
+		scopeRef?: string | null;
 	}): Promise<Playlist> {
 		const created = await mediaPlaylistService.createPlaylist({
 			name: payload.name,

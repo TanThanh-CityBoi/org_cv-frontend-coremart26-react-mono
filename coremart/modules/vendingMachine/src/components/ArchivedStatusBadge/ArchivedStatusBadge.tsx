@@ -6,11 +6,11 @@ import { StatusBadge } from '../StatusBadge';
 
 
 export const ArchivedStatusBadge: React.FC<{ isArchived: boolean, size?: MantineSize }> = ({ isArchived, size = 'sm' }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const statusInfo = isArchived
-		? { color: 'orange', label: translate('status.archived') }
-		: { color: 'green', label: translate('status.active') };
+		? { color: 'orange', label: translate('nikki.general.status.archived') }
+		: { color: 'green', label: translate('nikki.general.status.active') };
 
 	return <StatusBadge color={statusInfo.color} size={size}>{statusInfo.label}</StatusBadge>;
 };

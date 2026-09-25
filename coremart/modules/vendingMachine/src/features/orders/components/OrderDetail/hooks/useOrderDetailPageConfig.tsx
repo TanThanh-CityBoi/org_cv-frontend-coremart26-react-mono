@@ -3,15 +3,16 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
-import { ControlPanelActionItem } from '../../../../../components/ControlPanel';
+import { ControlPanelActionItem } from '@/components/ControlPanel';
+
 import { VdOrder } from '../../../types';
 
 
 type UseOrderDetailPageConfigArgs = {
-	order?: VdOrder,
-	onRefund: () => void,
-	onInvoice: () => void,
-	onHistory: () => void,
+	order?: VdOrder;
+	onRefund: () => void;
+	onInvoice: () => void;
+	onHistory: () => void;
 };
 
 export const useOrderDetailPageConfig = ({
@@ -21,12 +22,12 @@ export const useOrderDetailPageConfig = ({
 	onHistory,
 }: UseOrderDetailPageConfigArgs) => {
 	const navigate = useNavigate();
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const breadcrumbs = useMemo(
 		() => [
-			{ title: translate('title'), href: '../overview' },
-			{ title: translate('menu.orders'), href: '../reports/orders' },
+			{ title: translate('coremart.vendingMachine.title'), href: '../overview' },
+			{ title: translate('coremart.vendingMachine.menu.orders'), href: '../reports/orders' },
 			{ title: order?.orderCode || '—', href: '#' },
 		],
 		[translate, order?.orderCode],
@@ -35,27 +36,27 @@ export const useOrderDetailPageConfig = ({
 	const actions = useMemo<ControlPanelActionItem[]>(
 		() => [
 			{
-				label: translate('action.back'),
+				label: translate('nikki.general.actions.back'),
 				onClick: () => navigate('../reports/orders'),
 				leftSection: <IconArrowLeft size={16} />,
 				variant: 'outline',
 			},
 			{
-				label: translate('orders.actions.refund'),
+				label: translate('coremart.vendingMachine.orders.actions.refund'),
 				onClick: onRefund,
 				leftSection: <IconReceiptRefund size={16} />,
 				variant: 'outline',
 				color: 'orange',
 			},
 			{
-				label: translate('orders.actions.invoice'),
+				label: translate('coremart.vendingMachine.orders.actions.invoice'),
 				onClick: onInvoice,
 				leftSection: <IconFileInvoice size={16} />,
 				variant: 'outline',
 				color: 'teal',
 			},
 			{
-				label: translate('orders.actions.history'),
+				label: translate('coremart.vendingMachine.orders.actions.history'),
 				onClick: onHistory,
 				leftSection: <IconHistory size={16} />,
 				variant: 'outline',

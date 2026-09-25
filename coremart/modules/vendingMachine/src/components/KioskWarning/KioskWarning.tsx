@@ -3,7 +3,7 @@ import { IconAlertTriangle } from '@tabler/icons-react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import type { KioskWarning as KioskWarningModel } from '../../features/kiosks';
+import type { KioskWarning as KioskWarningModel } from '@/features/kiosks';
 
 
 const severityColors = {
@@ -16,14 +16,14 @@ const severityColors = {
 const severityOrder = { low: 1, medium: 2, high: 3, critical: 4 };
 
 export type KioskWarningProps = {
-	warnings?: KioskWarningModel[] | null,
+	warnings?: KioskWarningModel[] | null;
 	/**
 	 * When there are no warnings: `undefined` shows `'--'` (table cells).
 	 * Pass `null` to render nothing (e.g. grid chips row).
 	 */
-	emptyContent?: React.ReactNode,
+	emptyContent?: React.ReactNode;
 	/** Table column uses Stack wrapper for vertical alignment; grid often omits it. */
-	wrapWithStack?: boolean,
+	wrapWithStack?: boolean;
 };
 
 export const KioskWarning: React.FC<KioskWarningProps> = ({
@@ -31,7 +31,7 @@ export const KioskWarning: React.FC<KioskWarningProps> = ({
 	emptyContent,
 	wrapWithStack = true,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const list = warnings ?? [];
 
 	if (list.length === 0) {
@@ -46,7 +46,7 @@ export const KioskWarning: React.FC<KioskWarningProps> = ({
 	const tooltipContent = (
 		<Stack gap='xs' style={{ maxWidth: 300 }}>
 			<Text size='sm' fw={500}>
-				{translate('kiosk.warnings.title')} ({warningCount})
+				{translate('coremart.vendingMachine.kiosk.warnings.title')} ({warningCount})
 			</Text>
 			{list.slice(0, 5).map((warning) => (
 				<Group key={warning.id} gap='xs' align='flex-start'>
@@ -62,7 +62,7 @@ export const KioskWarning: React.FC<KioskWarningProps> = ({
 			))}
 			{list.length > 5 && (
 				<Text size='xs' c='dimmed' ta='center'>
-					{translate('kiosk.warnings.more', { count: list.length - 5 })}
+					{translate('coremart.vendingMachine.kiosk.warnings.more', { count: list.length - 5 })}
 				</Text>
 			)}
 		</Stack>

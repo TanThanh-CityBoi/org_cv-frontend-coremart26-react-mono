@@ -11,7 +11,7 @@ import { TFunction } from 'i18next';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { ArchivedStatusBadge } from '../../../../components/ArchivedStatusBadge';
+import { ArchivedStatusBadge } from '@/components/ArchivedStatusBadge';
 import {
 	NameCell,
 	TableAction,
@@ -20,7 +20,8 @@ import {
 	type TableActionItem,
 	TablePagination,
 	type TablePaginationProps,
-} from '../../../../components/Table';
+} from '@/components/Table';
+
 import { deriveEventRunPhase, type Event } from '../../types';
 import { EventRunPhaseBadge } from '../EventScheduleBadges';
 
@@ -55,7 +56,7 @@ export function getEventTableActions(
 	const defaults: (TableActionItem & { active?: boolean })[] = [
 		{
 			key: EVENT_ACTIONS.PREVIEW,
-			label: translate('action.preview'),
+			label: translate('nikki.general.actions.preview'),
 			icon: <IconLayoutSidebarRightExpand size={20} stroke={1.6} />,
 			onClick: () => actions[EVENT_ACTIONS.PREVIEW]?.(event),
 			color: 'gray',
@@ -63,7 +64,7 @@ export function getEventTableActions(
 		},
 		{
 			key: EVENT_ACTIONS.VIEW_DETAIL,
-			label: translate('action.viewDetails'),
+			label: translate('nikki.general.actions.viewDetail'),
 			icon: <IconEye size={16} />,
 			onClick: () => actions[EVENT_ACTIONS.VIEW_DETAIL]?.(event),
 			color: 'blue',
@@ -71,7 +72,7 @@ export function getEventTableActions(
 		},
 		{
 			key: EVENT_ACTIONS.ARCHIVE,
-			label: translate('action.archive'),
+			label: translate('nikki.general.actions.archive'),
 			icon: <IconArchive size={16} />,
 			onClick: () => actions[EVENT_ACTIONS.ARCHIVE]?.(event),
 			color: 'orange',
@@ -79,7 +80,7 @@ export function getEventTableActions(
 		},
 		{
 			key: EVENT_ACTIONS.RESTORE,
-			label: translate('action.restore'),
+			label: translate('nikki.general.actions.restore'),
 			icon: <IconRestore size={16} />,
 			onClick: () => actions[EVENT_ACTIONS.RESTORE]?.(event),
 			color: 'blue',
@@ -87,7 +88,7 @@ export function getEventTableActions(
 		},
 		{
 			key: EVENT_ACTIONS.DELETE,
-			label: translate('action.delete'),
+			label: translate('nikki.general.actions.delete'),
 			icon: <IconTrash size={16} />,
 			onClick: () => actions[EVENT_ACTIONS.DELETE]?.(event),
 			color: 'red',
@@ -101,7 +102,7 @@ function renderActionsHeader(
 	_columnName: string,
 	translate: (key: string) => string,
 ) {
-	return <Text fw={600} fz='sm' ta='end'>{translate('action.title')}</Text>;
+	return <Text fw={600} fz='sm' ta='end'>{translate('nikki.general.actions.title')}</Text>;
 }
 
 function renderDateCell(row: Record<string, unknown>, field: keyof Event | string) {
@@ -119,7 +120,7 @@ export const EventTable: React.FC<EventTableProps> = ({
 	actions,
 	pagination,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const columnRenderers: React.ComponentProps<typeof AutoTable>['columnRenderers'] = {
 		code: (row) => <TextCell content={row.code as string} />,
@@ -146,7 +147,7 @@ export const EventTable: React.FC<EventTableProps> = ({
 		actions: (row) => (
 			<TableAction
 				actions={getEventTableActions(row as unknown as Event, actions, translate)}
-				overflowMenuLabel={translate('action.title')}
+				overflowMenuLabel={translate('nikki.general.actions.title')}
 			/>
 		),
 	};
@@ -159,7 +160,6 @@ export const EventTable: React.FC<EventTableProps> = ({
 		<Box pos='relative'>
 			<TableContainer minWidth={500} footer={<TablePagination {...pagination} />}>
 				<AutoTable
-					translationNs='vending_machine'
 					columns={columns}
 					data={data}
 					schema={schema}

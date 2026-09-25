@@ -18,7 +18,7 @@ export const useKioskMediaDelete = ({
 	onDeleteError = () => {},
 }: UseKioskMediaDeleteProps = {}) => {
 	const { notification } = useUIState();
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
 	const [mediaToDelete, setMediaToDelete] = useState<KioskMedia | null>(null);
@@ -46,8 +46,8 @@ export const useKioskMediaDelete = ({
 		try {
 			await kioskMediaService.deleteKioskMedia(deletedId);
 			notification.showInfo(
-				translate('kiosk_media.messages.delete_success'),
-				translate('messages.success'),
+				translate('coremart.vendingMachine.kioskMedia.messages.delete_success'),
+				translate('nikki.general.messages.success'),
 			);
 			resetDeleteModal();
 			onDeleteSuccess(deletedId);
@@ -55,8 +55,8 @@ export const useKioskMediaDelete = ({
 		catch (e: unknown) {
 			const msg = e instanceof Error ? e.message : String(e);
 			notification.showError(
-				msg || translate('errors.deleteFailed'),
-				translate('messages.error'),
+				msg || translate('nikki.general.errors.delete_failed'),
+				translate('nikki.general.messages.error'),
 			);
 			onDeleteError();
 		}

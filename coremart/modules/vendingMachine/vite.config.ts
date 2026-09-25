@@ -13,7 +13,7 @@ export default defineConfig({
 		outDir: 'dist',
 		lib: {
 			entry: path.resolve(__dirname, 'src/index.tsx'),
-			fileName: 'coreapp-vending-machine-[hash]',
+			fileName: 'nikkiapp-authorize-[hash]',
 			formats: ['es'],
 		},
 		rollupOptions: {
@@ -31,20 +31,7 @@ export default defineConfig({
 	},
 	plugins: [
 		tsconfigPaths(),
-		// Service classes are annotated with TC39 decorators (`@storeService`). Oxc, the
-		// default transformer, does not implement them: it passes the decorator through
-		// verbatim and emits `export @storeService(...) class ...`, which no browser can
-		// parse ("Unexpected token 'export'"). Routing these files through Babel with the
-		// decorators plugin compiles them away. `version: '2023-11'` is the stage-3
-		// standard semantics the runtime `storeService` is written against, not the
-		// legacy `experimentalDecorators` form.
-		react({
-			babel: {
-				plugins: [
-					['@babel/plugin-proposal-decorators', { version: '2023-11' }],
-				],
-			},
-		}),
+		react(),
 		tailwindcssVite(),
 	],
 	resolve: {

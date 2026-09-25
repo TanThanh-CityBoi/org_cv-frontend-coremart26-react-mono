@@ -2,6 +2,7 @@ import { Divider, Group, Stack, Text } from '@mantine/core';
 import React from 'react';
 
 import { ModelSchema } from '../../model';
+import { extractLabel } from '../form';
 
 
 export interface DetailViewProps {
@@ -47,7 +48,7 @@ export const DetailView: React.FC<DetailViewProps> = ({
 						{index > 0 && <Divider />}
 						<div>
 							<Text size='sm' c='dimmed' mb='xs'>
-								{(field.label || fieldName) as any}
+								{extractLabel(field.label || fieldName)}
 							</Text>
 							{field.type === 'string' ? (
 								<Text size='sm'>{String(value || '—')}</Text>

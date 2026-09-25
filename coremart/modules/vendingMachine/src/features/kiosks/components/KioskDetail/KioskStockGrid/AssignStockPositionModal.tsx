@@ -7,9 +7,9 @@ import { useCallback, useEffect, useState, type FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
 
-import { buildCellItemFromKioskStock } from './kioskStock.helpers';
-import { getLocalizedName } from '../../../../../common/helpers';
+import { getLocalizedName } from '@/common/helpers';
 
+import { buildCellItemFromKioskStock } from './kioskStock.helpers';
 
 import type { CellStockItem, KioskStock, KioskStockRow } from './kioskStock.types';
 
@@ -18,20 +18,20 @@ const DEFAULT_QUANTITY = 5;
 const DEFAULT_MAX = 5;
 
 export type AssignStockPositionModalProps = {
-	opened: boolean,
-	onClose: () => void,
+	opened: boolean;
+	onClose: () => void;
 	/** Kiosk shelf row (e.g. A). */
-	row: KioskStockRow,
+	row: KioskStockRow;
 	/** Column as string (e.g. "1"). */
-	col: string,
-	stocks: KioskStock[],
+	col: string;
+	stocks: KioskStock[];
 	/** When user confirms selection + quantities. */
-	onAssign: (cell: CellStockItem) => void,
+	onAssign: (cell: CellStockItem) => void;
 };
 
 export const AssignStockPositionModal: FC<AssignStockPositionModalProps> = (props) => {
 	const { opened, onClose, row, col, stocks, onAssign } = props;
-	const { t, i18n } = useTranslation('vending_machine');
+	const { t, i18n } = useTranslation();
 
 	const [selectedStockId, setSelectedStockId] = useState<string | null>(null);
 	const [quantity, setQuantity] = useState(DEFAULT_QUANTITY);
@@ -68,19 +68,19 @@ export const AssignStockPositionModal: FC<AssignStockPositionModalProps> = (prop
 		<Modal
 			opened={opened}
 			onClose={onClose}
-			title={t('kiosk.stocks.assign.title', { defaultValue: 'Assign stock to cell' })}
+			title={t('coremart.vendingMachine.kiosk.stocks.assign.title', { defaultValue: 'Assign stock to cell' })}
 			centered
 			size='xl'
 		>
 			<Stack gap='md'>
 				<Text size='sm' c='dimmed'>
-					{row}{col} — {t('kiosk.stocks.assign.hint',
+					{row}{col} — {t('coremart.vendingMachine.kiosk.stocks.assign.hint',
 						{ defaultValue: 'Select a line, set quantities, then assign.' })}
 				</Text>
 				<ScrollArea h={360} type='auto'>
 					{stocks.length === 0 ? (
 						<Text c='dimmed' ta='center' py='xl'>
-							{t('kiosk.stocks.assign.empty', { defaultValue: 'No kiosk stock lines available.' })}
+							{t('coremart.vendingMachine.kiosk.stocks.assign.empty', { defaultValue: 'No kiosk stock lines available.' })}
 						</Text>
 					) : (
 						<SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing='md'>
@@ -135,14 +135,14 @@ export const AssignStockPositionModal: FC<AssignStockPositionModalProps> = (prop
 				</ScrollArea>
 				<Group grow align='flex-end'>
 					<NumberInput
-						label={t('kiosk.stocks.fields.quantity', { defaultValue: 'Quantity' })}
+						label={t('coremart.vendingMachine.kiosk.stocks.fields.quantity', { defaultValue: 'Quantity' })}
 						min={0}
 						max={maxQuantity}
 						value={quantity}
 						onChange={(v) => setQuantity(typeof v === 'number' ? v : 0)}
 					/>
 					<NumberInput
-						label={t('kiosk.stocks.fields.max_quantity', { defaultValue: 'Max quantity' })}
+						label={t('coremart.vendingMachine.kiosk.stocks.fields.maxQuantity', { defaultValue: 'Max quantity' })}
 						min={0}
 						value={maxQuantity}
 						onChange={(v) => {
@@ -153,13 +153,13 @@ export const AssignStockPositionModal: FC<AssignStockPositionModalProps> = (prop
 				</Group>
 				<Group justify='flex-end' gap='sm' mt='sm'>
 					<Button variant='default' onClick={onClose}>
-						{t('action.cancel', { defaultValue: 'Cancel' })}
+						{t('nikki.general.actions.cancel', { defaultValue: 'Cancel' })}
 					</Button>
 					<Button
 						onClick={handleSubmit}
 						disabled={!selectedStockId}
 					>
-						{t('action.add', { defaultValue: 'Assign' })}
+						{t('nikki.general.actions.add', { defaultValue: 'Assign' })}
 					</Button>
 				</Group>
 			</Stack>

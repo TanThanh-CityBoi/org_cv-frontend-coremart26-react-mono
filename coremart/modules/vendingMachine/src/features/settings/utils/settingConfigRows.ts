@@ -1,6 +1,6 @@
 export type SettingConfigRow = {
-	key: string,
-	value: string,
+	key: string;
+	value: string;
 };
 
 export function settingConfigToRows(config?: Record<string, unknown> | null): SettingConfigRow[] {

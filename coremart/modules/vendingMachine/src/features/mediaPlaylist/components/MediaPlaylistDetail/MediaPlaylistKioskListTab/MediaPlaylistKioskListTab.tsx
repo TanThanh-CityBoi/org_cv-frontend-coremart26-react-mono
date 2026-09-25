@@ -2,14 +2,15 @@ import { Loader, Stack, Text } from '@mantine/core';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useClientPagination } from '@/common/hooks';
+import { kioskService } from '@/features/kiosks/kioskService';
+import { Playlist } from '@/features/mediaPlaylist/types';
+import { SearchGraph, SearchOperator } from '@/types';
+
 import { MediaPlaylistKioskTable } from './MediaPlaylistKioskTable';
-import { useClientPagination } from '../../../../../common/hooks';
-import { SearchGraph, SearchOperator } from '../../../../../types';
-import { kioskCrudService } from '../../../../kiosks/kioskService';
-import { Playlist } from '../../../types';
 import { useRegisterMediaPlaylistDetailTab } from '../mediaPlaylistDetailTabControl';
 
-import type { Kiosk } from '../../../../kiosks/types';
+import type { Kiosk } from '@/features/kiosks/types';
 
 
 function buildPlaylistKioskSearchGraph(playlistId: string): SearchGraph {
@@ -22,7 +23,7 @@ function buildPlaylistKioskSearchGraph(playlistId: string): SearchGraph {
 }
 
 function usePlaylistKioskListData(playlistId: string) {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const [items, setItems] = useState<Kiosk[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
@@ -31,22 +32,21 @@ function usePlaylistKioskListData(playlistId: string) {
 		let cancelled = false;
 		setIsLoading(true);
 		setError(null);
-		// Called imperatively, not through `useServiceLayer`: this tab keeps its own local list.
-		void kioskCrudService
-			.search({
+		void kioskService
+			.searchKiosks({
 				page: 0,
 				size: 500,
 				graph: buildPlaylistKioskSearchGraph(playlistId),
 			})
 			.then((res) => {
-				if (!cancelled) setItems((res.data?.items ?? []) as Kiosk[]);
+				if (!cancelled) setItems(res.items ?? []);
 			})
-			.catch((e: unknown) => {
+			.catch((e) => {
 				if (!cancelled) {
 					setError(
 						e instanceof Error
 							? e.message
-							: translate('media_playlist.kiosk_list.load_error'),
+							: translate('coremart.vendingMachine.mediaPlaylist.kioskList.loadError'),
 					);
 				}
 			})

@@ -1,10 +1,10 @@
 import dayjs from 'dayjs';
 import { TFunction } from 'i18next';
 
-import { formatTimeQuery, getDate } from '../../common/helpers/format-time';
+import { formatTimeQuery, getDate } from '@/common/helpers/format-time';
 
-import type { BaseReportQuery, GroupTime, ListReportQuery, PageQuery, RevenueReportByOrderTimeQuery, SortDirection, SortQuery } from '../../types';
-import type { RevenueReportFilters } from './business/components/RevenueReportSwitcher/type';
+import type { RevenueReportFilters } from '@/features/reports/business/components/RevenueReportSwitcher/type';
+import type { BaseReportQuery, GroupTime, ListReportQuery, PageQuery, RevenueReportByOrderTimeQuery, SortDirection, SortQuery } from '@/types';
 import type { DatesRangeValue, DateValue } from '@mantine/dates';
 
 
@@ -40,10 +40,10 @@ export function revenueFiltersToBaseQuery(filters: RevenueReportFilters): BaseRe
 }
 
 type ListConvertParams = {
-	filters: RevenueReportFilters,
-	pageQuery?: PageQuery,
-	sortBy?: SortBy | null,
-	download?: boolean,
+	filters: RevenueReportFilters;
+	pageQuery?: PageQuery;
+	sortBy?: SortBy | null;
+	download?: boolean;
 };
 export function revenueReportListQuery({
 	filters,
@@ -72,15 +72,15 @@ export function revenueReportListQuery({
 }
 
 type SortBy = {
-	[key: string]: SortDirection,
+	[key: string]: SortDirection;
 };
 
 type OrderTimeConvertParams = {
-	filters: RevenueReportFilters,
-	pageQuery?: PageQuery,
-	download?: boolean,
-	groupTime?: GroupTime,
-	sortBy?: SortBy | null,
+	filters: RevenueReportFilters;
+	pageQuery?: PageQuery;
+	download?: boolean;
+	groupTime?: GroupTime;
+	sortBy?: SortBy | null;
 };
 export function revenueReportByOrderTimeQuery({
 	filters,
@@ -109,13 +109,12 @@ export function formatOrderTimeLabel(
 	if (!date) return orderTime;
 
 	const groupTimeFormat: Record<GroupTime, string> = {
-		hour: 'HH:mm DD-MM-YYYY',
 		day: 'DD-MM-YYYY',
 		month: 'MM-YYYY',
 		year: 'YYYY',
 	};
 
-	return translate('reports.revenue_report.row_date_label', {
+	return translate('coremart.vendingMachine.reports.revenueReport.rowDateLabel', {
 		shortDate: dayjs(date).locale(i18nLanguage).format(groupTimeFormat[groupTime] ?? 'DD-MM-YYYY'),
 	});
 }

@@ -6,7 +6,7 @@ import type {
 	KioskStockPosition,
 	KioskStockRow,
 } from './kioskStock.types';
-import type { KioskPositionUpdateItem } from '../../../types';
+import type { KioskPositionUpdateItem } from '@/features/kiosks/kioskService';
 
 
 
@@ -43,7 +43,7 @@ export const ROW_LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 export const getCellKey = (row: string, col: string | number): string => `${row}-${col}`;
 
 /** Parse `getCellKey` output into row and numeric column. */
-export function parseCellKey(cellKey: string /** 'row-col' */): { row: string | null, col: number | null } {
+export function parseCellKey(cellKey: string /** 'row-col' */): { row: string | null; col: number | null } {
 	const [row, col] = cellKey.split('-');
 	if (!row || !col || Number.isNaN(Number(col))) {
 		return { row: null, col: null };
@@ -154,10 +154,10 @@ export const computeKioskStockListToMap = (kioskStocks: KioskStock[]): KioskStoc
 /** @deprecated Use `computeUpdatePosition` instead. */
 type UpdatePosition = Pick<KioskStockPosition, 'row' | 'col' | 'quantity' | 'maxQuantity'> & { status: 'enable' | 'disable' };
 type UpdateStockPayload = {
-	productRef: string,
-	sortIndex: number,
-	sellPrice: string,
-	positions: UpdatePosition[],
+	productRef: string;
+	sortIndex: number;
+	sellPrice: string;
+	positions: UpdatePosition[];
 }[];
 export function computeGridToUpdateStocks(grid: KioskStockGridMap, stockList: KioskStockListMap): UpdateStockPayload {
 	const gridCellbyProduct = new Map<string, CellStockItem[]>();

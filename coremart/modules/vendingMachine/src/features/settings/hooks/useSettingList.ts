@@ -1,22 +1,27 @@
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
 import React from 'react';
 
-import { usePaginationWithTotal } from '../../../common/hooks';
-import { SearchGraph } from '../../../types';
-import { settingStoreService } from '../settingStoreService';
+import { VendingMachineDispatch, settingActions, selectSettingList } from '@/appState';
+import { usePagination } from '@/common/hooks';
+import { SearchGraph, SearchParams } from '@/types';
+
 import { Setting } from '../types';
 
 
-type SearchResponse = { items: Setting[], total: number };
-
 export function useSettingList({ graph }: { graph?: SearchGraph } = {}) {
-	const { dispatchMethod, result } = useServiceLayer<SearchResponse>(settingStoreService.search);
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
+	const list = useMicroAppSelector(selectSettingList);
 
 	const fetchList = React.useCallback((targetPage: number, size: number, searchGraph?: SearchGraph) => {
-		dispatchMethod({ page: targetPage - 1, size, graph: searchGraph });
-	}, [dispatchMethod]);
+		const params: SearchParams<Setting> = {
+			page: targetPage - 1,
+			size,
+			graph: searchGraph,
+		};
+		dispatch(settingActions.listSettings(params));
+	}, [dispatch]);
 
-	const pagination = usePaginationWithTotal(fetchList, result.data?.total ?? 0, { graph });
+	const pagination = usePagination(fetchList, selectSettingList, { graph });
 	const { page, pageSize } = pagination;
 
 	React.useEffect(() => {
@@ -27,10 +32,10 @@ export function useSettingList({ graph }: { graph?: SearchGraph } = {}) {
 		fetchList(page, pageSize, graph);
 	}, [fetchList, page, pageSize, graph]);
 
-	const settings = result.data?.items ?? [];
-	const status = result.isPending ? 'pending' : 'success';
-	const isLoading = !settings.length && (result.isPending || result.doneAt == null);
-	const isEmpty = !settings.length && !result.isPending && result.doneAt != null;
+	const settings = list.items ?? [];
+	const status = list.status;
+	const isLoading = !settings.length && (status === 'pending' || status === 'idle');
+	const isEmpty = !settings.length && status !== 'idle' && status !== 'pending';
 
 	return {
 		settings,

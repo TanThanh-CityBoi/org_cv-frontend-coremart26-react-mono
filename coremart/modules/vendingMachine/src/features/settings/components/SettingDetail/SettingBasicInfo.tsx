@@ -3,17 +3,18 @@ import { ConfirmModal, FormFieldProvider, FormStyleProvider } from '@nikkierp/ui
 import React, { useCallback, useLayoutEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 
-import { SettingConfigSection } from './SettingConfigSection';
-import { Setting } from '../../types';
+import { Setting } from '@/features/settings/types';
 import {
 	settingConfigToRows,
 	settingRowsToConfig,
 	type SettingConfigRow,
-} from '../../utils/settingConfigRows';
+} from '@/features/settings/utils/settingConfigRows';
+
+import { SettingConfigSection } from './SettingConfigSection';
 import { SettingFormFields } from '../SettingFormFields/SettingFormFields';
 
 import type { SettingFormProps } from './hooks/types';
-import type { SettingCreateFormData } from '../../hooks/useSettingCreate';
+import type { SettingCreateFormData } from '@/features/settings/hooks/useSettingCreate';
 
 
 export interface SettingBasicInfoProps {
@@ -22,20 +23,20 @@ export interface SettingBasicInfoProps {
 }
 
 const SettingBasicInfoAuditDates: React.FC<{ setting: Setting }> = ({ setting }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	return (
 		<React.Fragment>
 			<Divider my={3} />
 			<Box>
 				<Text size='sm' c='dimmed' mb={3}>
-					{translate('settings.fields.created_at')}
+					{translate('coremart.vendingMachine.settings.fields.createdAt')}
 				</Text>
 				<Text size='sm'>{new Date(setting.createdAt).toLocaleString()}</Text>
 			</Box>
 			{setting.updatedAt && (
 				<Box mt='xs'>
 					<Text size='sm' c='dimmed' mb={3}>
-						{translate('settings.fields.updated_at')}
+						{translate('coremart.vendingMachine.settings.fields.updatedAt')}
 					</Text>
 					<Text size='sm'>{new Date(setting.updatedAt).toLocaleString()}</Text>
 				</Box>
@@ -45,7 +46,7 @@ const SettingBasicInfoAuditDates: React.FC<{ setting: Setting }> = ({ setting })
 };
 
 export const SettingBasicInfo: React.FC<SettingBasicInfoProps> = ({ setting, formProps }) => {
-	const { t } = useTranslation('vending_machine');
+	const { t } = useTranslation();
 	const {
 		formId, isEditing, isSubmitting, modelSchema, modelValue, onFormSubmit,
 		closeDeleteModal, confirmDelete, isOpenDeleteModal,
@@ -111,16 +112,16 @@ export const SettingBasicInfo: React.FC<SettingBasicInfoProps> = ({ setting, for
 			</Stack>
 
 			<ConfirmModal
-				title={t('messages.delete.confirm')}
+				title={t('nikki.general.messages.delete_confirm')}
 				opened={isOpenDeleteModal}
 				onClose={closeDeleteModal}
 				onConfirm={confirmDelete}
 				message={<Trans
-					i18nKey='settings.messages.delete_confirm'
+					i18nKey='coremart.vendingMachine.settings.messages.delete_confirm'
 					values={{ name: setting?.name || '' }}
 					components={{ strong: <strong /> }}
 				/>}
-				confirmLabel={t('action.delete')}
+				confirmLabel={t('nikki.general.actions.delete')}
 				confirmColor='red'
 			/>
 		</React.Fragment>

@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { GamePreviewCard } from './GamePreviewCard';
 import { GameSelectModal } from './GameSelectModal';
 
-import type { Game } from '../../features/games/types';
+import type { Game } from '@/features/games/types';
 
 
 export interface GameSelectProps {
@@ -22,13 +22,13 @@ export const GameSelect: React.FC<GameSelectProps> = ({
 	onRemove,
 	isEditing,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const [modalOpened, setModalOpened] = useState(false);
 
 	return (
 		<div>
 			<Text size='sm' c='dimmed' mb={3} fw={500}>
-				{translate('events.fields.game')}
+				{translate('coremart.vendingMachine.events.fields.game')}
 			</Text>
 			{value ? (
 				<GamePreviewCard
@@ -42,7 +42,7 @@ export const GameSelect: React.FC<GameSelectProps> = ({
 						<Group gap='xs'>
 							<IconDeviceGamepad2 size={30} color='var(--mantine-color-gray-7)' />
 							<Text size='sm' c='dimmed'>
-								{translate('events.messages.no_game')}
+								{translate('coremart.vendingMachine.events.messages.no_game')}
 							</Text>
 						</Group>
 						{isEditing && (
@@ -51,7 +51,7 @@ export const GameSelect: React.FC<GameSelectProps> = ({
 								leftSection={<IconPlus size={14} />}
 								onClick={() => setModalOpened(true)}
 							>
-								{translate('events.select_game.select_game')}
+								{translate('coremart.vendingMachine.events.selectGame.selectGame')}
 							</Button>
 						)}
 					</Group>

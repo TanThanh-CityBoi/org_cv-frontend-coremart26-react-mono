@@ -4,19 +4,20 @@ import { TFunction } from 'i18next';
 import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { CardActionMenu } from '../../../../components';
-import { ArchivedStatusBadge } from '../../../../components/ArchivedStatusBadge';
-import { TablePagination } from '../../../../components/Table';
-import { type TablePaginationProps } from '../../../../components/Table';
+import { CardActionMenu } from '@/components';
+import { ArchivedStatusBadge } from '@/components/ArchivedStatusBadge';
+import { TablePagination } from '@/components/Table';
+import { type TablePaginationProps } from '@/components/Table';
+
 import { KioskModel } from '../../types';
 import { getKioskModelTableActions, type KioskModelTableActions } from '../KioskModelTable';
 
 
 type KioskModelGridCardProps = {
-	model: KioskModel,
-	cardActions: KioskModelTableActions,
-	onPreview?: (model: KioskModel) => void,
-	translate: TFunction,
+	model: KioskModel;
+	cardActions: KioskModelTableActions;
+	onPreview?: (model: KioskModel) => void;
+	translate: TFunction;
 };
 
 function KioskModelGridCard({ model, cardActions, onPreview, translate }: KioskModelGridCardProps) {
@@ -68,7 +69,7 @@ function KioskModelGridCard({ model, cardActions, onPreview, translate }: KioskM
 				</Group>
 
 				<Text size='xs' c='dimmed'>
-					{translate('kiosk_models.fields.created_at')}: {new Date(model.createdAt).toLocaleDateString()}
+					{translate('coremart.vendingMachine.kioskModels.fields.createdAt')}: {new Date(model.createdAt).toLocaleDateString()}
 				</Text>
 			</Stack>
 		</Card>
@@ -88,15 +89,15 @@ export const KioskModelGridView: React.FC<KioskModelGridViewProps> = ({
 	actions = {},
 	pagination,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const { preview: onPreview, ...cardActions } = actions;
 
 	if (isLoading) {
-		return <Text c='dimmed'>{translate('messages.loading')}</Text>;
+		return <Text c='dimmed'>{translate('nikki.general.messages.loading')}</Text>;
 	}
 
 	if (models.length === 0) {
-		return <Text c='dimmed'>{translate('kiosk_models.messages.no_models')}</Text>;
+		return <Text c='dimmed'>{translate('coremart.vendingMachine.kioskModels.messages.no_models')}</Text>;
 	}
 
 	return (

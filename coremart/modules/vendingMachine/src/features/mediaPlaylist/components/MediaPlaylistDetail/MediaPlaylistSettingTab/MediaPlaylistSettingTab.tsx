@@ -2,32 +2,33 @@
 import { Box, Center, Divider, Grid, Stack, TextInput } from '@mantine/core';
 import { useShellEnvVars } from '@nikkierp/shell/config';
 import { useUIState } from '@nikkierp/shell/contexts';
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 
-import { useMediaPlaylistSettingTab } from './useMediaPlaylistSettingTab';
-import { mediaPlaylistCrudService } from '../../../mediaPlaylistCrudService';
+import { mediaPlaylistActions, selectUpdateMediaPlaylist, VendingMachineDispatch } from '@/appState';
+import { MediaGalleryModal } from '@/features/mediaPlaylist/components/MediaGalleryModal';
+import { MediaList } from '@/features/mediaPlaylist/components/MediaList';
+import { MediaPlaylistDetailModals } from '@/features/mediaPlaylist/components/MediaPlaylistDetailModals/MediaPlaylistDetailModals';
+import { MediaPlaylistPreviewHorizontal } from '@/features/mediaPlaylist/components/MediaPlaylistPreviewHorizontal';
+import { MediaPlaylistPreviewVertical } from '@/features/mediaPlaylist/components/MediaPlaylistPreviewVertical';
+import { PlaylistDurationTimeline } from '@/features/mediaPlaylist/components/PlaylistDurationTimeline';
 import {
 	mediaPlaylistService,
 	playlistMediaRowsToReplaceItems,
 	playlistRowsFromGallerySelection,
-} from '../../../mediaPlaylistService';
-import { playStatesClose, playlistSegmentStartSec, stateAfterClipFinished } from '../../../playlistPlaybackMath';
+} from '@/features/mediaPlaylist/mediaPlaylistService';
+import { playStatesClose, playlistSegmentStartSec, stateAfterClipFinished } from '@/features/mediaPlaylist/playlistPlaybackMath';
 import {
 	type GalleryMedia,
 	type Playlist,
 	type PlaylistKioskMediaReplaceItem,
 	type PlaylistMediaPlayState,
 	type PlaylistMediaRow,
-} from '../../../types';
-import { MediaGalleryModal } from '../../MediaGalleryModal';
-import { MediaList } from '../../MediaList';
-import { MediaPlaylistDetailModals } from '../../MediaPlaylistDetailModals/MediaPlaylistDetailModals';
-import { MediaPlaylistPreviewHorizontal } from '../../MediaPlaylistPreviewHorizontal';
-import { MediaPlaylistPreviewVertical } from '../../MediaPlaylistPreviewVertical';
-import { PlaylistDurationTimeline } from '../../PlaylistDurationTimeline';
+} from '@/features/mediaPlaylist/types';
+
+import { useMediaPlaylistSettingTab } from './useMediaPlaylistSettingTab';
 
 
 function playlistReplacePayloadEqual(a: PlaylistKioskMediaReplaceItem[], b: PlaylistKioskMediaReplaceItem[]): boolean {
@@ -52,10 +53,9 @@ function clonePlaylistMediaRows(rows: PlaylistMediaRow[]): PlaylistMediaRow[] {
 }
 
 export const MediaPlaylistSettingTab: React.FC<{ playlist: Playlist }> = ({ playlist }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const { notification } = useUIState();
-	const { dispatchMethod: refetchPlaylist } = useServiceLayer(mediaPlaylistCrudService.getById);
-	const { dispatchMethod: updatePlaylist } = useServiceLayer(mediaPlaylistCrudService.update);
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
 	const [galleryModalOpened, setGalleryModalOpened] = useState(false);
 
 	const [playlistMedia, setPlaylistMedia] = useState<PlaylistMediaRow[]>([]);
@@ -103,22 +103,64 @@ export const MediaPlaylistSettingTab: React.FC<{ playlist: Playlist }> = ({ play
 	}, [envVars.BASE_API_URL]);
 
 	const savedPlaylistMediaRef = useRef<PlaylistMediaRow[]>([]);
+	const updateOutcome = useMicroAppSelector(selectUpdateMediaPlaylist);
+	const updateRequestIdRef = useRef<string | null>(null);
+	const pendingPersistPlaylistIdRef = useRef<string | null>(null);
+	const pendingPersistRowsRef = useRef<PlaylistMediaRow[] | null>(null);
 	const setIsEditingRef = useRef<(value: boolean) => void>(() => {});
 
 	const finishPersistSuccess = useCallback(
 		async (playlistId: string, rowsSnapshot: PlaylistMediaRow[]) => {
-			refetchPlaylist({ id: playlistId });
+			dispatch(mediaPlaylistActions.getMediaPlaylist(playlistId));
 			await reloadMediaRows(playlistId);
 			savedPlaylistMediaRef.current = clonePlaylistMediaRows(rowsSnapshot);
 			setIsEditingRef.current(false);
 			notification.showInfo(
-				translate('media_playlist.messages.update_success'),
-				translate('messages.success'),
+				translate('coremart.vendingMachine.mediaPlaylist.messages.update_success'),
+				translate('nikki.general.messages.success'),
 			);
 			setIsSavingMedia(false);
 		},
-		[refetchPlaylist, reloadMediaRows, notification, translate],
+		[dispatch, reloadMediaRows, notification, translate],
 	);
+
+	useEffect(() => {
+		const requestId = updateOutcome.requestId;
+		const matchesDispatch = requestId != null && requestId === updateRequestIdRef.current;
+		if (!matchesDispatch) return;
+
+		if (updateOutcome.status === 'success') {
+			updateRequestIdRef.current = null;
+
+			const pid = pendingPersistPlaylistIdRef.current;
+			const rows = pendingPersistRowsRef.current;
+
+			pendingPersistPlaylistIdRef.current = null;
+			pendingPersistRowsRef.current = null;
+
+			dispatch(mediaPlaylistActions.resetUpdateMediaPlaylist());
+			if (pid != null && rows != null) {
+				void finishPersistSuccess(pid, rows);
+			}
+			else {
+				setIsSavingMedia(false);
+			}
+			return;
+		}
+
+		if (updateOutcome.status === 'error') {
+			updateRequestIdRef.current = null;
+			pendingPersistPlaylistIdRef.current = null;
+			pendingPersistRowsRef.current = null;
+
+			dispatch(mediaPlaylistActions.resetUpdateMediaPlaylist());
+			notification.showError(
+				updateOutcome.error ?? translate('nikki.general.errors.update_failed'),
+				translate('nikki.general.messages.error'),
+			);
+			setIsSavingMedia(false);
+		}
+	}, [dispatch, notification, translate, finishPersistSuccess, updateOutcome]);
 
 	const handlePersist = useCallback(() => {
 		void (async () => {
@@ -132,16 +174,16 @@ export const MediaPlaylistSettingTab: React.FC<{ playlist: Playlist }> = ({ play
 
 			if (!nameChanged && !mediaChanged) {
 				notification.showInfo(
-					translate('messages.no.changes'),
-					translate('messages.success'),
+					translate('nikki.general.messages.no_changes'),
+					translate('nikki.general.messages.success'),
 				);
 				return;
 			}
 
 			if (nameChanged && !nameTrim) {
 				notification.showError(
-					translate('media_playlist.messages.name_required'),
-					translate('messages.error'),
+					translate('coremart.vendingMachine.mediaPlaylist.messages.name_required'),
+					translate('nikki.general.messages.error'),
 				);
 				return;
 			}
@@ -157,30 +199,31 @@ export const MediaPlaylistSettingTab: React.FC<{ playlist: Playlist }> = ({ play
 				}
 
 				if (nameChanged) {
-					// Awaited directly: `dispatchMethod` returns the thunk promise, so the
-					// deferred requestId/pending-rows refs the slice version needed are gone.
-					const { clientErrors } = await updatePlaylist({
-						id: etagSource.id,
-						etag: etagSource.etag,
-						name: nameTrim,
-					}).unwrap();
-					if (clientErrors.length > 0) {
-						notification.showError(clientErrors[0].message, translate('messages.error'));
-						setIsSavingMedia(false);
-						return;
-					}
+					pendingPersistPlaylistIdRef.current = playlist.id;
+					pendingPersistRowsRef.current = clonePlaylistMediaRows(playlistMedia);
+					const action = dispatch(
+						mediaPlaylistActions.updateMediaPlaylist({
+							id: etagSource.id,
+							etag: etagSource.etag,
+							updates: { name: nameTrim },
+						}),
+					);
+					updateRequestIdRef.current = action.requestId ?? null;
+					return;
 				}
 
 				await finishPersistSuccess(playlist.id, playlistMedia);
 			}
 			catch (e) {
+				pendingPersistPlaylistIdRef.current = null;
+				pendingPersistRowsRef.current = null;
 				const message =
-					e instanceof Error ? e.message : translate('errors.updateFailed');
-				notification.showError(message, translate('messages.error'));
+					e instanceof Error ? e.message : translate('nikki.general.errors.update_failed');
+				notification.showError(message, translate('nikki.general.messages.error'));
 				setIsSavingMedia(false);
 			}
 		})();
-	}, [playlist, playlistMedia, draftName, updatePlaylist, notification, translate, finishPersistSuccess]);
+	}, [playlist, playlistMedia, draftName, dispatch, notification, translate, finishPersistSuccess]);
 
 	const {
 		isEditing,
@@ -289,13 +332,13 @@ export const MediaPlaylistSettingTab: React.FC<{ playlist: Playlist }> = ({ play
 
 	return (
 		<>
-			<Grid columns={12} gap='md' align='flex-start'>
+			<Grid columns={12} gutter='md' align='flex-start'>
 				<Grid.Col span={{ base: 12, md: 7 }}>
 					<Stack px={0} bdrs='md' justify={'space-between'} h={{ base: 'max-content', md: 620 }} gap={'sm'}>
 						<Stack gap={'sm'}>
 							<Box>
 								<TextInput
-									label={translate('media_playlist.fields.name')}
+									label={translate('coremart.vendingMachine.mediaPlaylist.fields.name')}
 									key={formResetNonce}
 									value={draftName}
 									onChange={(e) => setDraftName(e.currentTarget.value)}

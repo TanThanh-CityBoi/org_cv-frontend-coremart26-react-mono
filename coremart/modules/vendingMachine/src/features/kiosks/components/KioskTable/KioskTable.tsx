@@ -11,10 +11,10 @@ import { TFunction } from 'i18next';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { AddressLink } from '../../../../components/Address';
-import { ArchivedStatusBadge } from '../../../../components/ArchivedStatusBadge';
-import { KioskConnectionStatus } from '../../../../components/KioskConnectionStatus';
-import { KioskModeStatusBadge } from '../../../../components/KioskModeStatusBadge';
+import { AddressLink } from '@/components/Address';
+import { ArchivedStatusBadge } from '@/components/ArchivedStatusBadge';
+import { KioskConnectionStatus } from '@/components/KioskConnectionStatus';
+import { KioskModeStatusBadge } from '@/components/KioskModeStatusBadge';
 import {
 	KioskStateCurrent,
 	KioskStateEnergy,
@@ -23,10 +23,11 @@ import {
 	KioskStateOutputSwitch,
 	KioskStatePower,
 	KioskStateTemperature,
-} from '../../../../components/KioskState';
-import { KioskWarning } from '../../../../components/KioskWarning';
-import { NameCell, TableAction, TableContainer, TablePagination, type TableActionItem, TextCell } from '../../../../components/Table';
-import { type TablePaginationProps } from '../../../../components/Table';
+} from '@/components/KioskState';
+import { KioskWarning } from '@/components/KioskWarning';
+import { NameCell, TableAction, TableContainer, TablePagination, type TableActionItem, TextCell } from '@/components/Table';
+import { type TablePaginationProps } from '@/components/Table';
+
 import { Kiosk, KioskConnection, KioskMode } from '../../types';
 
 
@@ -59,7 +60,7 @@ export function getKioskTableActions(
 	const defaultActions: (TableActionItem & { active?: boolean })[] = [
 		{
 			key: KIOSK_ACTIONS.PREVIEW,
-			label: translate('action.preview'),
+			label: translate('nikki.general.actions.preview'),
 			icon: <IconLayoutSidebarRightExpand size={20} stroke={1.6} />,
 			onClick: () => actions[KIOSK_ACTIONS.PREVIEW]?.(kiosk),
 			color: 'gray',
@@ -67,7 +68,7 @@ export function getKioskTableActions(
 		},
 		{
 			key: KIOSK_ACTIONS.VIEW_DETAIL,
-			label: translate('action.viewDetails'),
+			label: translate('nikki.general.actions.viewDetail'),
 			icon: <IconEye size={16} />,
 			onClick: () => actions[KIOSK_ACTIONS.VIEW_DETAIL]?.(kiosk),
 			color: 'blue',
@@ -75,7 +76,7 @@ export function getKioskTableActions(
 		},
 		{
 			key: KIOSK_ACTIONS.ARCHIVE,
-			label: translate('action.archive'),
+			label: translate('nikki.general.actions.archive'),
 			icon: <IconArchive size={16} />,
 			onClick: () => actions[KIOSK_ACTIONS.ARCHIVE]?.(kiosk),
 			color: 'orange',
@@ -83,7 +84,7 @@ export function getKioskTableActions(
 		},
 		{
 			key: KIOSK_ACTIONS.RESTORE,
-			label: translate('action.restore'),
+			label: translate('nikki.general.actions.restore'),
 			icon: <IconRestore size={16} />,
 			onClick: () => actions[KIOSK_ACTIONS.RESTORE]?.(kiosk),
 			color: 'blue',
@@ -91,7 +92,7 @@ export function getKioskTableActions(
 		},
 		{
 			key: KIOSK_ACTIONS.DELETE,
-			label: translate('action.delete'),
+			label: translate('nikki.general.actions.delete'),
 			icon: <IconTrash size={16} />,
 			onClick: () => actions[KIOSK_ACTIONS.DELETE]?.(kiosk),
 			color: 'red',
@@ -105,7 +106,7 @@ function renderActionsHeader(
 	_columnName: string,
 	translate: (key: string) => string,
 ) {
-	return <Text fw={600} fz='sm' ta={'end'}>{translate('action.title')}</Text>;
+	return <Text fw={600} fz='sm' ta={'end'}>{translate('nikki.general.actions.title')}</Text>;
 }
 
 export const KioskTable: React.FC<KioskTableProps> = ({
@@ -116,7 +117,7 @@ export const KioskTable: React.FC<KioskTableProps> = ({
 	actions,
 	pagination,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const colRenderers: React.ComponentProps<typeof AutoTable>['columnRenderers'] = {
 		code: (row) => <TextCell content={row.code as string} />,
@@ -142,7 +143,7 @@ export const KioskTable: React.FC<KioskTableProps> = ({
 		actions: (row) => (
 			<TableAction
 				actions={getKioskTableActions( row as unknown as Kiosk, actions, translate)}
-				overflowMenuLabel={translate('action.title')}
+				overflowMenuLabel={translate('nikki.general.actions.title')}
 			/>
 		),
 	};
@@ -154,7 +155,6 @@ export const KioskTable: React.FC<KioskTableProps> = ({
 		<Box pos='relative'>
 			<TableContainer minWidth={1200} footer={<TablePagination {...pagination} />}>
 				<AutoTable
-					translationNs='vending_machine'
 					columns={columns}
 					data={data}
 					schema={schema}

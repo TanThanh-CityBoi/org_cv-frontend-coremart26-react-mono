@@ -4,10 +4,10 @@ import { Trans, useTranslation } from 'react-i18next';
 
 
 export type DeleteKioskMediaModalProps = {
-	opened: boolean,
-	onClose: () => void,
-	onConfirm: () => void,
-	name: string,
+	opened: boolean;
+	onClose: () => void;
+	onConfirm: () => void;
+	name: string;
 };
 
 export const DeleteKioskMediaModal: React.FC<DeleteKioskMediaModalProps> = ({
@@ -16,22 +16,22 @@ export const DeleteKioskMediaModal: React.FC<DeleteKioskMediaModalProps> = ({
 	onConfirm,
 	name,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	return (
 		<ConfirmModal
-			title={translate('messages.delete.confirm')}
+			title={translate('nikki.general.messages.delete_confirm')}
 			opened={opened}
 			onClose={onClose}
 			onConfirm={onConfirm}
 			message={
 				<Trans
-					i18nKey='kiosk_media.messages.delete_confirm'
+					i18nKey='coremart.vendingMachine.kioskMedia.messages.delete_confirm'
 					values={{ name }}
 					components={{ strong: <strong /> }}
 				/>
 			}
-			confirmLabel={translate('action.delete')}
+			confirmLabel={translate('nikki.general.actions.delete')}
 			confirmColor='red'
 		/>
 	);

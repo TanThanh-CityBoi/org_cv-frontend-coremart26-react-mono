@@ -1,20 +1,20 @@
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+import { useMicroAppDispatch } from '@nikkierp/ui/microApp';
 import { IconDeviceFloppy, IconEdit, IconX } from '@tabler/icons-react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-
 import { KioskDetailTabs } from './types';
-import { ControlPanelProps } from '../../../../../components/ControlPanel';
-import { Game } from '../../../../games/types';
-import { KioskSetting } from '../../../../kioskSettings/types';
-import { Playlist } from '../../../../mediaPlaylist/types';
-import { Theme } from '../../../../themes/types';
-import { KioskUpdateFormData, useKioskEdit } from '../../../hooks';
-import { kioskCrudService } from '../../../kioskService';
-import { Kiosk, UIMode } from '../../../types';
-import { useRegisterKioskDetailTab } from '../kioskDetailTabControl';
 
+import { VendingMachineDispatch } from '@/appState';
+import { kioskActions } from '@/appState/kiosk';
+import { ControlPanelProps } from '@/components/ControlPanel';
+import { Game } from '@/features/games/types';
+import { useRegisterKioskDetailTab } from '@/features/kiosks/components/KioskDetail/kioskDetailTabControl';
+import { KioskUpdateFormData, useKioskEdit } from '@/features/kiosks/hooks';
+import { Kiosk, UIMode } from '@/features/kiosks/types';
+import { KioskSetting } from '@/features/kioskSettings/types';
+import { Playlist } from '@/features/mediaPlaylist/types';
+import { Theme } from '@/features/themes/types';
 
 
 export type KioskSettingFormData = Pick<
@@ -76,13 +76,13 @@ export function buildKioskSettingActions(
 ): ControlPanelProps['actions'] {
 	return [
 		...(!isEditing ? [{
-			label: translate('action.edit'),
+			label: translate('nikki.general.actions.edit'),
 			leftSection: <IconEdit size={16} />,
 			onClick: handleEdit,
 			type: 'button' as const,
 			variant: 'filled' as const,
 		}] : [{
-			label: translate('action.save'),
+			label: translate('nikki.general.actions.save'),
 			leftSection: <IconDeviceFloppy size={16} />,
 			onClick: handleSaveClick,
 			type: 'button' as const,
@@ -90,7 +90,7 @@ export function buildKioskSettingActions(
 			disabled: isSubmitting,
 			loading: isSubmitting,
 		}, {
-			label: translate('action.cancel'),
+			label: translate('nikki.general.actions.cancel'),
 			leftSection: <IconX size={16} />,
 			onClick: handleCancel,
 			type: 'button' as const,
@@ -101,27 +101,27 @@ export function buildKioskSettingActions(
 }
 
 export type UseKioskSettingTabReturn = {
-	isSubmitting: boolean,
-	isEditing: boolean,
-	setIsEditing: (v: boolean) => void,
-	setting: KioskSetting | null | undefined,
-	waitingScreenPlaylist: Playlist | null | undefined,
-	shoppingScreenPlaylist: Playlist | null | undefined,
-	theme: Theme | null | undefined,
-	game: Game | null | undefined,
-	uiMode: UIMode | null | undefined,
-	handleSettingChange: (next: KioskSetting | undefined) => void,
-	handleWaitingChange: (next: Playlist | undefined) => void,
-	handleShoppingChange: (next: Playlist | undefined) => void,
-	handleThemeChange: (next: Theme | undefined) => void,
-	handleGameChange: (next: Game | undefined) => void,
-	handleUIModeChange: (next: UIMode | undefined) => void,
+	isSubmitting: boolean;
+	isEditing: boolean;
+	setIsEditing: (v: boolean) => void;
+	setting: KioskSetting | null | undefined;
+	waitingScreenPlaylist: Playlist | null | undefined;
+	shoppingScreenPlaylist: Playlist | null | undefined;
+	theme: Theme | null | undefined;
+	game: Game | null | undefined;
+	uiMode: UIMode | null | undefined;
+	handleSettingChange: (next: KioskSetting | undefined) => void;
+	handleWaitingChange: (next: Playlist | undefined) => void;
+	handleShoppingChange: (next: Playlist | undefined) => void;
+	handleThemeChange: (next: Theme | undefined) => void;
+	handleGameChange: (next: Game | undefined) => void;
+	handleUIModeChange: (next: UIMode | undefined) => void;
 };
 
 
 export function useKioskSettingTab(kiosk: Kiosk): UseKioskSettingTabReturn {
-	const { t: translate } = useTranslation('vending_machine');
-	const { dispatchMethod: reloadKiosk } = useServiceLayer(kioskCrudService.getById);
+	const { t: translate } = useTranslation();
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
 
 	const [isEditing, setIsEditing] = useState(false);
 	const [kioskSettings, setKioskSettings] = useState<KioskSettingPickerValues>(pickerFromKiosk(kiosk));
@@ -136,7 +136,7 @@ export function useKioskSettingTab(kiosk: Kiosk): UseKioskSettingTabReturn {
 		onUpdateSuccess: () => {
 			setIsEditing(false);
 			if (kiosk.id) {
-				reloadKiosk({ id: kiosk.id });
+				dispatch(kioskActions.getKiosk(kiosk.id));
 			}
 		},
 	});

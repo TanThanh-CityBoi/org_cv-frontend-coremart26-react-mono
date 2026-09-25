@@ -1,24 +1,22 @@
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
 import { useEffect } from 'react';
 
-import { kioskCrudService } from '../../kiosks/kioskService';
-
-import type { Kiosk } from '../../kiosks/types';
+import { VendingMachineDispatch, kioskActions, selectKioskDetail } from '@/appState';
 
 
 export function useKioskName(kioskRef: string | undefined): string | undefined {
-	const { dispatchMethod, result } = useServiceLayer<Kiosk>(kioskCrudService.getById);
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
+	const detail = useMicroAppSelector(selectKioskDetail);
 
 	useEffect(() => {
 		if (kioskRef) {
-			dispatchMethod({ id: kioskRef });
+			dispatch(kioskActions.getKiosk(kioskRef));
 		}
-	}, [dispatchMethod, kioskRef]);
+	}, [dispatch, kioskRef]);
 
 	if (!kioskRef) return undefined;
-	// Guard on the id: the shared result may still hold a previously-fetched kiosk.
-	if (result.data?.id === kioskRef) {
-		return result.data.name;
+	if (detail.data?.id === kioskRef) {
+		return detail.data.name;
 	}
 	return undefined;
 }

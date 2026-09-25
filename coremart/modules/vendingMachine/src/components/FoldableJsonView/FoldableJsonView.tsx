@@ -48,7 +48,7 @@ function JsonLabelColon({ label }: { label: string | null }) {
 	);
 }
 
-type JsonPrimitiveLineProps = { label: string | null, value: unknown };
+type JsonPrimitiveLineProps = { label: string | null; value: unknown };
 
 function JsonPrimitiveLine({ label, value }: JsonPrimitiveLineProps) {
 	return (
@@ -59,7 +59,7 @@ function JsonPrimitiveLine({ label, value }: JsonPrimitiveLineProps) {
 	);
 }
 
-type JsonEmptyComplexProps = { label: string | null, isArr: boolean };
+type JsonEmptyComplexProps = { label: string | null; isArr: boolean };
 
 function JsonEmptyComplex({ label, isArr }: JsonEmptyComplexProps) {
 	return (
@@ -71,12 +71,12 @@ function JsonEmptyComplex({ label, isArr }: JsonEmptyComplexProps) {
 }
 
 type JsonExpandableBranchProps = {
-	label: string | null,
-	isArr: boolean,
-	entries: readonly (readonly [string, unknown])[],
-	preview: string,
-	depth: number,
-	defaultOpenDepth: number,
+	label: string | null;
+	isArr: boolean;
+	entries: readonly (readonly [string, unknown])[];
+	preview: string;
+	depth: number;
+	defaultOpenDepth: number;
 };
 
 function JsonExpandableBranch({
@@ -112,7 +112,7 @@ function JsonExpandableBranch({
 					)}
 				</Text>
 			</Group>
-			<Collapse expanded={open}>
+			<Collapse in={open}>
 				<Box
 					pl={28}
 					ml={10}
@@ -140,10 +140,10 @@ function JsonExpandableBranch({
 }
 
 type JsonNodeProps = {
-	label: string | null,
-	value: unknown,
-	depth: number,
-	defaultOpenDepth: number,
+	label: string | null;
+	value: unknown;
+	depth: number;
+	defaultOpenDepth: number;
 };
 
 function JsonNode({ label, value, depth, defaultOpenDepth }: JsonNodeProps) {
@@ -178,15 +178,15 @@ function JsonNode({ label, value, depth, defaultOpenDepth }: JsonNodeProps) {
 
 export type FoldableJsonViewProps = {
 	/** Raw API value or JSON string; arrays/objects render foldable. */
-	data: unknown,
+	data: unknown;
 	/** Nodes at depth &lt; this value start expanded (depth 0 = root). */
-	defaultOpenDepth?: number,
+	defaultOpenDepth?: number;
 	/** Show copy-to-clipboard control (top-right). @default true */
-	copyable?: boolean,
+	copyable?: boolean;
 	/** Accessible label for the copy control. */
-	copyAriaLabel?: string,
+	copyAriaLabel?: string;
 	/** Minimum height of the scroll area. @default 300 */
-	minHeight?: number,
+	minHeight?: number;
 };
 
 export const FoldableJsonView: React.FC<FoldableJsonViewProps> = ({

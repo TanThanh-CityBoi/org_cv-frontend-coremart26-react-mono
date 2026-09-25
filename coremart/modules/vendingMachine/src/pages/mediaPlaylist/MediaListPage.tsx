@@ -1,15 +1,16 @@
 import { Alert, Group, Loader, Stack } from '@mantine/core';
 import { useShellEnvVars } from '@nikkierp/shell/config';
+import { ModelSchema } from '@nikkierp/ui/model';
 import { IconPlus, IconRefresh } from '@tabler/icons-react';
 import React, { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
-import { asLegacyModelSchema } from '../../common/helpers';
-import { ControlPanel, type ViewMode } from '../../components';
-import { PageContainer } from '../../components/PageContainer';
-import { TablePagination } from '../../components/Table';
-import { type TablePaginationProps } from '../../components/Table';
+
+import { ControlPanel, type ViewMode } from '@/components';
+import { PageContainer } from '@/components/PageContainer';
+import { TablePagination } from '@/components/Table';
+import { type TablePaginationProps } from '@/components/Table';
 import {
 	ArchiveKioskMediaModal,
 	DeleteKioskMediaModal,
@@ -21,11 +22,11 @@ import {
 	useKioskMediaFilter,
 	useKioskMediaList,
 	useMediaListKioskMutations,
-} from '../../features/mediaPlaylist';
-import { KioskMediaGrid } from '../../features/mediaPlaylist/components/KioskMediaGrid';
-import { mapKioskMediaToGalleryMedia } from '../../features/mediaPlaylist/kioskMediaService';
+} from '@/features/mediaPlaylist';
+import { KioskMediaGrid } from '@/features/mediaPlaylist/components/KioskMediaGrid';
+import { mapKioskMediaToGalleryMedia } from '@/features/mediaPlaylist/kioskMediaService';
 
-import type { GalleryMedia, KioskMedia } from '../../features/mediaPlaylist/types';
+import type { GalleryMedia, KioskMedia } from '@/features/mediaPlaylist/types';
 
 
 const noopToggle = (_item: GalleryMedia) => {
@@ -64,7 +65,7 @@ function MediaListMainSection({
 				<KioskMediaTable
 					columns={['name', 'mediaType', 'isArchived', 'createdAt', 'actions']}
 					data={tableRows}
-					schema={asLegacyModelSchema(kioskMediaSchema)}
+					schema={kioskMediaSchema as ModelSchema}
 					isLoading={isLoadingList}
 					pagination={pagination}
 					tableActions={tableActions}
@@ -95,7 +96,7 @@ function MediaListMainSection({
 }
 
 function useMediaListPageState() {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const navigate = useNavigate();
 	const envVars = useShellEnvVars();
 	const baseApiUrl = envVars.BASE_API_URL;
@@ -121,8 +122,8 @@ function useMediaListPageState() {
 
 	const breadcrumbs = useMemo(
 		() => [
-			{ title: translate('title'), href: '../overview' },
-			{ title: translate('kiosk_media.title'), href: '#' },
+			{ title: translate('coremart.vendingMachine.title'), href: '../overview' },
+			{ title: translate('coremart.vendingMachine.kioskMedia.title'), href: '#' },
 		],
 		[translate],
 	);
@@ -141,7 +142,7 @@ function useMediaListPageState() {
 
 	const gridConfigError = useMemo(() => {
 		if (viewMode !== 'grid' || baseApiUrl) return null;
-		return translate('media_playlist.media.gallery.config_missing');
+		return translate('coremart.vendingMachine.mediaPlaylist.media.gallery.config_missing');
 	}, [viewMode, baseApiUrl, translate]);
 
 	const showEmpty =
@@ -181,7 +182,7 @@ function useMediaListPageState() {
 
 // eslint-disable-next-line max-lines-per-function -- page shell + modals + list/grid sections
 export const MediaListPage: React.FC = () => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const {
 		navigate,
 		baseApiUrl,
@@ -211,18 +212,18 @@ export const MediaListPage: React.FC = () => {
 
 	return (
 		<PageContainer
-			documentTitle={translate('kiosk_media.title')}
+			documentTitle={translate('coremart.vendingMachine.kioskMedia.title')}
 			breadcrumbs={breadcrumbs}
 			actionBar={
 				<ControlPanel
 					actions={[
 						{
-							label: translate('action.create'),
+							label: translate('nikki.general.actions.create'),
 							leftSection: <IconPlus size={16} />,
 							onClick: () => navigate('create'),
 						},
 						{
-							label: translate('action.refresh'),
+							label: translate('nikki.general.actions.refresh'),
 							leftSection: <IconRefresh size={16} />,
 							onClick: handleRefresh,
 							variant: 'outline',
@@ -236,8 +237,8 @@ export const MediaListPage: React.FC = () => {
 		>
 			<Stack gap='md'>
 				{error ? (
-					<Alert color='red' title={translate('messages.error')}>
-						{translate('kiosk_media.messages.load_failed', { message: error })}
+					<Alert color='red' title={translate('nikki.general.messages.error')}>
+						{translate('coremart.vendingMachine.kioskMedia.messages.load_failed', { message: error })}
 					</Alert>
 				) : null}
 				<MediaListMainSection
@@ -289,7 +290,7 @@ export const MediaListPage: React.FC = () => {
 					isSubmitting={kioskEdit.isSaving}
 				/>
 				{showEmpty ? (
-					<Alert color='gray'>{translate('kiosk_media.messages.empty')}</Alert>
+					<Alert color='gray'>{translate('coremart.vendingMachine.kioskMedia.messages.empty')}</Alert>
 				) : null}
 			</Stack>
 		</PageContainer>

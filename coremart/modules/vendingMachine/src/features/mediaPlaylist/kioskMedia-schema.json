@@ -3,28 +3,28 @@
 	"fields": {
 		"id": {
 			"type": "string",
-			"label": "{ \"$ref\": 'kiosk_media.fields.id' }",
+			"label": "{ \"$ref\": 'coremart.vendingMachine.kioskMedia.fields.id' }",
 			"hidden": true
 		},
 		"name": {
 			"type": "string",
-			"label": "{ \"$ref\": 'kiosk_media.fields.name' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.kioskMedia.fields.name' }"
 		},
 		"mediaType": {
 			"type": "string",
-			"label": "{ \"$ref\": 'kiosk_media.fields.media_type' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.kioskMedia.fields.mediaType' }"
 		},
 		"isArchived": {
 			"type": "boolean",
-			"label": "{ \"$ref\": 'kiosk_media.fields.status' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.kioskMedia.fields.status' }"
 		},
 		"createdAt": {
 			"type": "string",
-			"label": "{ \"$ref\": 'kiosk_media.fields.created_at' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.kioskMedia.fields.createdAt' }"
 		},
 		"actions": {
 			"type": "string",
-			"label": "{ \"$ref\": 'action.title' }",
+			"label": "{ \"$ref\": 'nikki.general.actions.title' }",
 			"hidden": true
 		}
 	}

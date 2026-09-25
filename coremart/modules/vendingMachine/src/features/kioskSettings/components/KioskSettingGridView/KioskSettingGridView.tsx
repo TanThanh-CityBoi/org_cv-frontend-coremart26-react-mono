@@ -4,19 +4,20 @@ import { TFunction } from 'i18next';
 import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { CardActionMenu } from '../../../../components';
-import { ArchivedStatusBadge } from '../../../../components/ArchivedStatusBadge';
-import { TablePagination } from '../../../../components/Table';
-import { type TablePaginationProps } from '../../../../components/Table';
+import { CardActionMenu } from '@/components';
+import { ArchivedStatusBadge } from '@/components/ArchivedStatusBadge';
+import { TablePagination } from '@/components/Table';
+import { type TablePaginationProps } from '@/components/Table';
+
 import { KioskSetting } from '../../types';
 import { getKioskSettingTableActions, type KioskSettingTableActions } from '../KioskSettingTable';
 
 
 type KioskSettingGridCardProps = {
-	setting: KioskSetting,
-	cardActions: KioskSettingTableActions,
-	onPreview?: (setting: KioskSetting) => void,
-	translate: TFunction,
+	setting: KioskSetting;
+	cardActions: KioskSettingTableActions;
+	onPreview?: (setting: KioskSetting) => void;
+	translate: TFunction;
 };
 
 function KioskSettingGridCard({ setting, cardActions, onPreview, translate }: KioskSettingGridCardProps) {
@@ -59,17 +60,17 @@ function KioskSettingGridCard({ setting, cardActions, onPreview, translate }: Ki
 
 				{setting.kiosks && setting.kiosks.length > 0 && (
 					<Text size='xs' c='dimmed'>
-						{translate('kiosk_settings.fields.kiosks')}: {setting.kiosks.length}
+						{translate('coremart.vendingMachine.kioskSettings.fields.kiosks')}: {setting.kiosks.length}
 					</Text>
 				)}
 				{setting.themeSetting && (
 					<Text size='xs' c='dimmed'>
-						{translate('kiosk_settings.fields.theme')}: {setting.themeSetting.name}
+						{translate('coremart.vendingMachine.kioskSettings.fields.theme')}: {setting.themeSetting.name}
 					</Text>
 				)}
 				{setting.gameSetting && (
 					<Text size='xs' c='dimmed'>
-						{translate('kiosk_settings.fields.game')}: {setting.gameSetting.name}
+						{translate('coremart.vendingMachine.kioskSettings.fields.game')}: {setting.gameSetting.name}
 					</Text>
 				)}
 
@@ -78,7 +79,7 @@ function KioskSettingGridCard({ setting, cardActions, onPreview, translate }: Ki
 				</Group>
 
 				<Text size='xs' c='dimmed'>
-					{translate('kiosk_settings.fields.created_at')}: {new Date(setting.createdAt).toLocaleDateString()}
+					{translate('coremart.vendingMachine.kioskSettings.fields.createdAt')}: {new Date(setting.createdAt).toLocaleDateString()}
 				</Text>
 			</Stack>
 		</Card>
@@ -98,16 +99,16 @@ export const KioskSettingGridView: React.FC<KioskSettingGridViewProps> = ({
 	actions = {},
 	pagination,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const { preview: onPreview, ...cardActions } = actions;
 	const resolvedPagination = pagination;
 
 	if (isLoading) {
-		return <Text c='dimmed'>{translate('messages.loading')}</Text>;
+		return <Text c='dimmed'>{translate('nikki.general.messages.loading')}</Text>;
 	}
 
 	if (settings.length === 0) {
-		return <Text c='dimmed'>{translate('kiosk_settings.messages.no_settings')}</Text>;
+		return <Text c='dimmed'>{translate('coremart.vendingMachine.kioskSettings.messages.no_settings')}</Text>;
 	}
 
 	return (

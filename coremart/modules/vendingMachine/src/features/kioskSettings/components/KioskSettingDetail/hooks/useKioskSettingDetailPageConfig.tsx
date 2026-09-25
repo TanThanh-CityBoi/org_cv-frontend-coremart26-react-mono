@@ -3,7 +3,8 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
-import { ControlPanelActionItem } from '../../../../../components/ControlPanel';
+import { ControlPanelActionItem } from '@/components/ControlPanel';
+
 import { KioskSetting } from '../../../types';
 import { KioskSettingDetailBasicInfo } from '../KioskSettingDetailBasicInfo';
 import { KioskSettingDetailKiosks } from '../KioskSettingDetailKiosks';
@@ -20,13 +21,13 @@ import type {
 
 
 type DetailTabConfig = {
-	id: KioskSettingDetailTabId,
-	title: string,
-	content: () => React.ReactNode,
+	id: KioskSettingDetailTabId;
+	title: string;
+	content: () => React.ReactNode;
 };
 
 const useKioskSettingDetailTabs = ({ setting }: { setting?: KioskSetting }): Array<DetailTabConfig> => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	return useMemo<Array<DetailTabConfig>>(() => {
 		if (!setting) {
@@ -35,17 +36,17 @@ const useKioskSettingDetailTabs = ({ setting }: { setting?: KioskSetting }): Arr
 		return [
 			{
 				id: 'basicInfo',
-				title: translate('kiosk_settings.tabs.basic_info'),
+				title: translate('coremart.vendingMachine.kioskSettings.tabs.basicInfo'),
 				content: () => <KioskSettingDetailBasicInfo key='basicInfo' setting={setting} />,
 			},
 			{
 				id: 'settings',
-				title: translate('kiosk_settings.tabs.settings'),
+				title: translate('coremart.vendingMachine.kioskSettings.tabs.settings'),
 				content: () => <KioskSettingDetailSettings key='settings' setting={setting} />,
 			},
 			{
 				id: 'kiosks',
-				title: translate('kiosk_settings.tabs.kiosks'),
+				title: translate('coremart.vendingMachine.kioskSettings.tabs.kiosks'),
 				content: () => <KioskSettingDetailKiosks key='kiosks' setting={setting} />,
 			},
 		];
@@ -54,12 +55,12 @@ const useKioskSettingDetailTabs = ({ setting }: { setting?: KioskSetting }): Arr
 
 const useTabActions = ({ activeTab }: { activeTab: KioskSettingDetailTabId }): ControlPanelActionItem[] => {
 	const navigate = useNavigate();
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const { registry } = useKioskSettingDetailTabControl();
 
 	const actions = useMemo<ControlPanelActionItem[]>(() => {
 		const baseActions = [{
-			label: translate('action.back'),
+			label: translate('nikki.general.actions.back'),
 			onClick: () => navigate('../kiosk-settings'),
 			leftSection: <IconArrowLeft size={16} />,
 			variant: 'outline',

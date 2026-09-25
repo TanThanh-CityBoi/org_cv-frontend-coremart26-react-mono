@@ -4,7 +4,8 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
-import { PreviewDrawer } from '../../../../components/PreviewDrawer';
+import { PreviewDrawer } from '@/components/PreviewDrawer';
+
 import { KioskDevice, KioskDeviceSpecification } from '../../types';
 
 
@@ -22,7 +23,7 @@ export const KioskDeviceDetailDrawer: React.FC<KioskDeviceDetailDrawerProps> = (
 	kioskDevice,
 	isLoading = false,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const navigate = useNavigate();
 	const [specifications, setSpecifications] = useState<KioskDeviceSpecification[]>(kioskDevice?.specifications || []);
 	const [newSpecKey, setNewSpecKey] = useState('');
@@ -35,21 +36,21 @@ export const KioskDeviceDetailDrawer: React.FC<KioskDeviceDetailDrawerProps> = (
 	}, [kioskDevice]);
 
 	const getStatusBadge = (status: string) => {
-		const statusMap: Record<string, { color: string, label: string }> = {
-			active: { color: 'green', label: translate('status.active') },
-			inactive: { color: 'gray', label: translate('status.inactive') },
+		const statusMap: Record<string, { color: string; label: string }> = {
+			active: { color: 'green', label: translate('nikki.general.status.active') },
+			inactive: { color: 'gray', label: translate('nikki.general.status.inactive') },
 		};
 		const statusInfo = statusMap[status] || { color: 'gray', label: status };
 		return <Badge color={statusInfo.color}>{statusInfo.label}</Badge>;
 	};
 
 	const getDeviceTypeBadge = (deviceType: string) => {
-		const typeMap: Record<string, { color: string, label: string }> = {
-			motor: { color: 'blue', label: translate('device.device_type.motor') },
-			pos: { color: 'cyan', label: translate('device.device_type.pos') },
-			screen: { color: 'purple', label: translate('device.device_type.screen') },
-			cpu: { color: 'orange', label: translate('device.device_type.cpu') },
-			router: { color: 'teal', label: translate('device.device_type.router') },
+		const typeMap: Record<string, { color: string; label: string }> = {
+			motor: { color: 'blue', label: translate('coremart.vendingMachine.device.deviceType.motor') },
+			pos: { color: 'cyan', label: translate('coremart.vendingMachine.device.deviceType.pos') },
+			screen: { color: 'purple', label: translate('coremart.vendingMachine.device.deviceType.screen') },
+			cpu: { color: 'orange', label: translate('coremart.vendingMachine.device.deviceType.cpu') },
+			router: { color: 'teal', label: translate('coremart.vendingMachine.device.deviceType.router') },
 		};
 		const typeInfo = typeMap[deviceType] || { color: 'gray', label: deviceType };
 		return <Badge color={typeInfo.color} variant='light'>{typeInfo.label}</Badge>;
@@ -89,7 +90,7 @@ export const KioskDeviceDetailDrawer: React.FC<KioskDeviceDetailDrawerProps> = (
 			<Stack gap='md'>
 				<div>
 					<Text size='sm' c='dimmed' mb='xs'>
-						{translate('device.fields.code')}
+						{translate('coremart.vendingMachine.device.fields.code')}
 					</Text>
 					<Text size='sm' fw={500}>{kioskDevice?.code}</Text>
 				</div>
@@ -98,7 +99,7 @@ export const KioskDeviceDetailDrawer: React.FC<KioskDeviceDetailDrawerProps> = (
 
 				<div>
 					<Text size='sm' c='dimmed' mb='xs'>
-						{translate('device.fields.name')}
+						{translate('coremart.vendingMachine.device.fields.name')}
 					</Text>
 					<Text size='sm'>{kioskDevice?.name}</Text>
 				</div>
@@ -108,7 +109,7 @@ export const KioskDeviceDetailDrawer: React.FC<KioskDeviceDetailDrawerProps> = (
 						<Divider />
 						<div>
 							<Text size='sm' c='dimmed' mb='xs'>
-								{translate('device.fields.description')}
+								{translate('coremart.vendingMachine.device.fields.description')}
 							</Text>
 							<Text size='sm'>{kioskDevice.description}</Text>
 						</div>
@@ -119,7 +120,7 @@ export const KioskDeviceDetailDrawer: React.FC<KioskDeviceDetailDrawerProps> = (
 
 				<div>
 					<Text size='sm' c='dimmed' mb='xs'>
-						{translate('device.fields.status')}
+						{translate('coremart.vendingMachine.device.fields.status')}
 					</Text>
 					{kioskDevice?.status ? getStatusBadge(kioskDevice.status) : null}
 				</div>
@@ -128,7 +129,7 @@ export const KioskDeviceDetailDrawer: React.FC<KioskDeviceDetailDrawerProps> = (
 
 				<div>
 					<Text size='sm' c='dimmed' mb='xs'>
-						{translate('device.fields.device_type')}
+						{translate('coremart.vendingMachine.device.fields.deviceType')}
 					</Text>
 					{kioskDevice?.deviceType ? getDeviceTypeBadge(kioskDevice.deviceType) : null}
 				</div>
@@ -137,14 +138,14 @@ export const KioskDeviceDetailDrawer: React.FC<KioskDeviceDetailDrawerProps> = (
 
 				<div>
 					<Text size='sm' c='dimmed' mb='xs' fw={500}>
-						{translate('device.fields.specifications')}
+						{translate('coremart.vendingMachine.device.fields.specifications')}
 					</Text>
 					{specifications.length > 0 ? (
 						<Table striped highlightOnHover>
 							<Table.Thead>
 								<Table.Tr>
-									<Table.Th>{translate('device.fields.spec_key')}</Table.Th>
-									<Table.Th>{translate('device.fields.spec_value')}</Table.Th>
+									<Table.Th>{translate('coremart.vendingMachine.device.fields.specKey')}</Table.Th>
+									<Table.Th>{translate('coremart.vendingMachine.device.fields.specValue')}</Table.Th>
 									<Table.Th style={{ width: 50 }}></Table.Th>
 								</Table.Tr>
 							</Table.Thead>
@@ -168,19 +169,19 @@ export const KioskDeviceDetailDrawer: React.FC<KioskDeviceDetailDrawerProps> = (
 							</Table.Tbody>
 						</Table>
 					) : (
-						<Text size='sm' c='dimmed'>{translate('device.messages.no_specifications')}</Text>
+						<Text size='sm' c='dimmed'>{translate('coremart.vendingMachine.device.messages.no_specifications')}</Text>
 					)}
 
 					<Stack gap='xs' mt='md'>
 						<Group gap='xs' align='flex-end'>
 							<TextInput
-								placeholder={translate('device.fields.spec_key')}
+								placeholder={translate('coremart.vendingMachine.device.fields.specKey')}
 								value={newSpecKey}
 								onChange={(e) => setNewSpecKey(e.currentTarget.value)}
 								style={{ flex: 1 }}
 							/>
 							<TextInput
-								placeholder={translate('device.fields.spec_value')}
+								placeholder={translate('coremart.vendingMachine.device.fields.specValue')}
 								value={newSpecValue}
 								onChange={(e) => setNewSpecValue(e.currentTarget.value)}
 								style={{ flex: 1 }}
@@ -190,7 +191,7 @@ export const KioskDeviceDetailDrawer: React.FC<KioskDeviceDetailDrawerProps> = (
 								onClick={handleAddSpecification}
 								disabled={!newSpecKey.trim() || !newSpecValue.trim()}
 							>
-								{translate('action.add')}
+								{translate('nikki.general.actions.add')}
 							</Button>
 						</Group>
 					</Stack>
@@ -200,7 +201,7 @@ export const KioskDeviceDetailDrawer: React.FC<KioskDeviceDetailDrawerProps> = (
 
 				<div>
 					<Text size='sm' c='dimmed' mb='xs'>
-						{translate('device.fields.created_at')}
+						{translate('coremart.vendingMachine.device.fields.createdAt')}
 					</Text>
 					<Text size='sm'>{kioskDevice?.createdAt ? new Date(kioskDevice.createdAt).toLocaleString() : '—'}</Text>
 				</div>

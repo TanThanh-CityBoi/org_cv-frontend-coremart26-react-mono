@@ -1,23 +1,23 @@
-import { get, unwrapResult, type Options } from '@nikkierp/common/request';
+import { get, type Options } from '@nikkierp/common/request';
 
 
 export type IdentityUserDto = {
-	id: string,
-	displayName: string,
-	email: string,
-	avatarUrl?: string,
-	[key: string]: unknown,
+	id: string;
+	displayName: string;
+	email: string;
+	avatarUrl?: string;
+	[key: string]: unknown;
 };
 
 export type ListResponse<T> = {
-	total: number,
-	items: T[],
+	total: number;
+	items: T[];
 };
 
 export type ListQuery = {
-	page?: number,
-	size?: number,
-	graph?: Record<string, unknown>,
+	page?: number;
+	size?: number;
+	graph?: Record<string, unknown>;
 };
 
 export async function listUsers(
@@ -31,6 +31,6 @@ export async function listUsers(
 			graph: graph ? JSON.stringify(graph) : undefined,
 		};
 	}
-	return unwrapResult(await get<ListResponse<IdentityUserDto>>('identity/users', options));
+	return get<ListResponse<IdentityUserDto>>('identity/users', options);
 }
 

@@ -13,18 +13,18 @@ export function formatRelativeTime(
 	const diffDays = now.diff(date, 'day');
 
 	if (diffMins < 1) {
-		return translate('time.just.now');
+		return translate('nikki.general.time.just_now');
 	}
 
 	if (diffMins < 60) {
-		return translate('time.minutes.ago', { count: diffMins });
+		return translate('nikki.general.time.minutes_ago', { count: diffMins });
 	}
 
 	if (diffHours < 24) {
-		return translate('time.hours.ago', { count: diffHours });
+		return translate('nikki.general.time.hours_ago', { count: diffHours });
 	}
 
-	return translate('time.days.ago', { count: diffDays });
+	return translate('nikki.general.time.days_ago', { count: diffDays });
 }
 
 export function formatDateTime(dateString: string): string {

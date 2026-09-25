@@ -4,9 +4,9 @@ import dayjs from 'dayjs';
 import React, { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { fmtCurrency, i18nToLocalizedKey, LanguageCode } from '../../common/helpers';
-import { PageContainer } from '../../components/PageContainer';
-import { presetToRange, presetToGroupTime, type TimeRangePreset, type TimeRangePresetRange } from '../../components/RangePicker';
+import { fmtCurrency, i18nToLocalizedKey, LanguageCode } from '@/common/helpers';
+import { PageContainer } from '@/components/PageContainer';
+import { presetToRange, presetToGroupTime, type TimeRangePreset, type TimeRangePresetRange } from '@/components/RangePicker';
 import {
 	PaymentMethodStackedBarChart,
 	RecentActivities,
@@ -27,7 +27,7 @@ import {
 	ProductCategoryRevenue,
 	useRevenueReportByCategory,
 	useRevenueReportByPaymentMethod,
-} from '../../features/reports/business';
+} from '@/features/reports/business';
 
 
 // Mock data - in a real app, this would come from API calls
@@ -88,7 +88,7 @@ function sectionOn(map: Record<string, boolean>, id: string): boolean {
 
 
 const GreetingSection = () => {
-	const { t: translate, i18n } = useTranslation('vending_machine');
+	const { t: translate, i18n } = useTranslation();
 	const overviewfilters: RevenueReportFilters = useMemo(() => ({
 		reportType: REVENUE_REPORT_TYPE.OVERVIEW,
 		dateRange: [dayjs().startOf('day').toDate(), dayjs().endOf('day').toDate()],
@@ -100,8 +100,8 @@ const GreetingSection = () => {
 	const greeting = useMemo(() => {
 		const hour = dayjs().hour();
 		const timeOfDay = hour < 12 ? 'morning' : hour < 18 ? 'afternoon' : 'evening';
-		const timeOfDayLabel = translate(`common.time_of_day.${timeOfDay}`);
-		return translate('reports.business.welcome_card.greeting', { timeOfDay: timeOfDayLabel });
+		const timeOfDayLabel = translate(`coremart.vendingMachine.common.timeOfDay.${timeOfDay}`);
+		return translate('coremart.vendingMachine.reports.business.welcomeCard.greeting', { timeOfDay: timeOfDayLabel });
 	}, [i18n.language]);
 
 	return (
@@ -124,7 +124,7 @@ const GreetingSection = () => {
 const TIME_SERIES_DEFAULT_PRESET: TimeRangePreset = 'this_month';
 
 const RevenueByTimeSeriesSection = () => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const [activePreset, setActivePreset] = useState<TimeRangePreset>(TIME_SERIES_DEFAULT_PRESET);
 	const [dateRange, setDateRange] = useState<TimeRangePresetRange>(() => presetToRange(TIME_SERIES_DEFAULT_PRESET));
 
@@ -160,8 +160,8 @@ const RevenueByTimeSeriesSection = () => {
 			pagination={chartPagination}
 			isLoading={chartIsLoading}
 			groupTime={timeSeriesChartGroupTime}
-			title={translate('reports.revenue_report.chart.revenue_overview')}
-			subtitle={translate('reports.revenue_report.chart.revenue_overview_hint')}
+			title={translate('coremart.vendingMachine.reports.revenueReport.chart.revenueOverview')}
+			subtitle={translate('coremart.vendingMachine.reports.revenueReport.chart.revenueOverviewHint')}
 		/>
 	);
 };
@@ -200,7 +200,7 @@ const RevenueByHourSection = () => {
 const KIOSK_DEFAULT_PRESET: TimeRangePreset = 'this_month';
 
 const RevenueByKioskSection = () => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const [activePreset, setActivePreset] = useState<TimeRangePreset>(KIOSK_DEFAULT_PRESET);
 	const [dateRange, setDateRange] = useState<TimeRangePresetRange>(() => presetToRange(KIOSK_DEFAULT_PRESET));
 
@@ -225,8 +225,8 @@ const RevenueByKioskSection = () => {
 			defaultPreset={KIOSK_DEFAULT_PRESET}
 			onFilterChange={handleFilterChange}
 			data={kioskRevenueChartItems ?? []}
-			title={translate('reports.revenue_by_kiosk.top_kiosks')}
-			description={translate('reports.revenue_by_kiosk.top_kiosks_description')}
+			title={translate('coremart.vendingMachine.reports.revenueByKiosk.topKiosks')}
+			description={translate('coremart.vendingMachine.reports.revenueByKiosk.topKiosksDescription')}
 		/>
 	);
 };
@@ -234,7 +234,7 @@ const RevenueByKioskSection = () => {
 const PRODUCT_TABLE_DEFAULT_PRESET: TimeRangePreset = 'this_month';
 
 const ProductRevenueTableSection = () => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const [activePreset, setActivePreset] = useState<TimeRangePreset>(PRODUCT_TABLE_DEFAULT_PRESET);
 	const [dateRange, setDateRange] = useState<TimeRangePresetRange>(() => presetToRange(PRODUCT_TABLE_DEFAULT_PRESET));
 
@@ -263,8 +263,8 @@ const ProductRevenueTableSection = () => {
 			activePreset={activePreset}
 			defaultPreset={PRODUCT_TABLE_DEFAULT_PRESET}
 			onFilterChange={handleFilterChange}
-			title={translate('reports.revenue_by_product.top_products_table_title')}
-			description={translate('reports.revenue_by_product.top_products_table_description')}
+			title={translate('coremart.vendingMachine.reports.revenueByProduct.topProductsTableTitle')}
+			description={translate('coremart.vendingMachine.reports.revenueByProduct.topProductsTableDescription')}
 			items={topProductsTableItems}
 			pagination={topProductsTablePagination}
 			isLoading={topProductsTableIsLoading}
@@ -342,7 +342,7 @@ const PaymentMethodRevenueSection = () => {
 };
 
 export function BusinessOverviewPage(): React.ReactElement {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const [sectionVisibility, _setSectionVisibility] = useState<Record<string, boolean>>({
 		summaryCards: true,
 		hourlyKiosk: true,
@@ -352,7 +352,7 @@ export function BusinessOverviewPage(): React.ReactElement {
 	});
 
 	return (
-		<PageContainer documentTitle={translate('reports.revenue.title')}>
+		<PageContainer documentTitle={translate('coremart.vendingMachine.reports.revenue.title')}>
 			<Stack gap='md'>
 				{sectionOn(sectionVisibility, 'summaryCards') && (
 					<Grid>

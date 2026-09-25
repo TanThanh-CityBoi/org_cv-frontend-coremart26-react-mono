@@ -7,5 +7,3 @@ export * from './getLocalizedName';
 export * from './formartNumber';
 export * from './download';
 export * from './kiosk-connection';
-export * from './legacyModelSchema';
-export * from './mapEnv';

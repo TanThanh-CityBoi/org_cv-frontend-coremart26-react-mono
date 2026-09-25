@@ -4,17 +4,18 @@ import { TFunction } from 'i18next';
 import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { getCurrentConnectionStatus, getDate } from '../../../../common/helpers';
-import { CardActionMenu } from '../../../../components';
-import { AddressLink } from '../../../../components/Address';
-import { ArchivedStatusBadge } from '../../../../components/ArchivedStatusBadge';
-import { KioskConnectionStatus } from '../../../../components/KioskConnectionStatus';
-import { KioskModeStatusBadge } from '../../../../components/KioskModeStatusBadge';
-import { KioskStateMetricsSummary } from '../../../../components/KioskState';
-import { KioskWarning } from '../../../../components/KioskWarning';
-import { TablePagination } from '../../../../components/Table';
-import { type TablePaginationProps } from '../../../../components/Table';
-import { TextLink } from '../../../../components/Text';
+import { getCurrentConnectionStatus } from '@/common/helpers';
+import { CardActionMenu } from '@/components';
+import { AddressLink } from '@/components/Address';
+import { ArchivedStatusBadge } from '@/components/ArchivedStatusBadge';
+import { KioskConnectionStatus } from '@/components/KioskConnectionStatus';
+import { KioskModeStatusBadge } from '@/components/KioskModeStatusBadge';
+import { KioskStateMetricsSummary } from '@/components/KioskState';
+import { KioskWarning } from '@/components/KioskWarning';
+import { TablePagination } from '@/components/Table';
+import { type TablePaginationProps } from '@/components/Table';
+import { TextLink } from '@/components/Text';
+
 import { ConnectionStatus, Kiosk } from '../../types';
 import { getKioskTableActions, type KioskTableActions } from '../KioskTable';
 
@@ -64,10 +65,10 @@ export function getWarningStyle(severity: 'low' | 'medium' | 'high' | 'critical'
 }
 
 type KioskGridCardProps = {
-	kiosk: Kiosk,
-	cardActions: KioskTableActions,
-	onClick?: (kiosk: Kiosk) => void,
-	translate: TFunction,
+	kiosk: Kiosk;
+	cardActions: KioskTableActions;
+	onClick?: (kiosk: Kiosk) => void;
+	translate: TFunction;
 };
 
 function KioskGridCard({ kiosk, cardActions, onClick, translate }: KioskGridCardProps) {
@@ -130,7 +131,7 @@ function KioskGridCard({ kiosk, cardActions, onClick, translate }: KioskGridCard
 				<Divider />
 
 				<Text size='xs' c='dimmed'>
-					{translate('kiosk.fields.created_at')}: {getDate(kiosk.createdAt)?.toLocaleDateString() ?? '—'}
+					{translate('coremart.vendingMachine.kiosk.fields.createdAt')}: {new Date(kiosk.createdAt).toLocaleDateString()}
 				</Text>
 			</Stack>
 		</Card>
@@ -147,15 +148,15 @@ export interface KioskGridViewProps {
 export const KioskGridView: React.FC<KioskGridViewProps> = ({
 	kiosks, isLoading = false, actions = {}, pagination,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const { preview: _onPreview, ...cardActions } = actions;
 
 	if (isLoading) {
-		return <Text c='dimmed'>{translate('messages.loading')}</Text>;
+		return <Text c='dimmed'>{translate('nikki.general.messages.loading')}</Text>;
 	}
 
 	if (kiosks.length === 0) {
-		return <Text c='dimmed'>{translate('kiosk.messages.no_kiosks')}</Text>;
+		return <Text c='dimmed'>{translate('coremart.vendingMachine.kiosk.messages.no_kiosks')}</Text>;
 	}
 
 	return (

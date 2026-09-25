@@ -12,20 +12,20 @@ import {
 	REPORT_PALETTE_BORDERS,
 	REPORT_PALETTE_FILLS,
 	reportPaletteKeyAt,
-} from '../../../../../components/reportChartTheme';
+} from '@/components/reportChartTheme';
 
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export type InventoryCategorySlice = {
-	key: string,
-	label: string,
-	qty: number,
+	key: string;
+	label: string;
+	qty: number;
 };
 
 type InventoryCategoryDonutChartProps = {
-	title: string,
-	slices: InventoryCategorySlice[],
+	title: string;
+	slices: InventoryCategorySlice[];
 };
 
 export function InventoryCategoryDonutChart({ title, slices }: InventoryCategoryDonutChartProps): React.ReactElement {
@@ -67,7 +67,7 @@ export function InventoryCategoryDonutChart({ title, slices }: InventoryCategory
 				},
 				tooltip: {
 					callbacks: {
-						label: (context: { label?: string, parsed?: number, dataset?: { data: number[] } }) => {
+						label: (context: { label?: string; parsed?: number; dataset?: { data: number[] } }) => {
 							const label = context.label ?? '';
 							const value = context.parsed ?? 0;
 							const total = (context.dataset?.data ?? []).reduce((a: number, b: number) => a + b, 0);

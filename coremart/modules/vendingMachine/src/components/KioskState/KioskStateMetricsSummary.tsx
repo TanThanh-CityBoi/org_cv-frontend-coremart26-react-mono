@@ -3,6 +3,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 
+import { formatDateTime, getDate } from '@/common/helpers';
 
 import { getKioskState } from './kioskState.helpers';
 import { KioskStateCurrent } from './KioskStateCurrent';
@@ -11,14 +12,13 @@ import { KioskStateHumidity } from './KioskStateHumidity';
 import { KioskStateOutputDoorSwitch } from './KioskStateOutputDoorSwitch';
 import { KioskStatePower } from './KioskStatePower';
 import { KioskStateTemperature } from './KioskStateTemperature';
-import { formatDateTime, getDate } from '../../common/helpers';
 
-import type { Kiosk } from '../../features/kiosks/types';
+import type { Kiosk } from '@/features/kiosks/types';
 
 
 type KioskStateMetricLineProps = {
-	label: string,
-	children: React.ReactNode,
+	label: string;
+	children: React.ReactNode;
 };
 
 function KioskStateMetricLine({ label, children }: KioskStateMetricLineProps) {
@@ -31,37 +31,37 @@ function KioskStateMetricLine({ label, children }: KioskStateMetricLineProps) {
 }
 
 export type KioskStateMetricsSummaryProps = {
-	kiosk?: Kiosk | null,
+	kiosk?: Kiosk | null;
 };
 
 /** Compact telemetry block for grid cards and similar list layouts. */
 export const KioskStateMetricsSummary: React.FC<KioskStateMetricsSummaryProps> = ({ kiosk }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const bucketTime = getKioskState(kiosk)?.bucketTime;
 	const reportTime = getDate(bucketTime ?? '') ? formatDateTime(bucketTime ?? '') : null;
-	const reportTimeLabel = `${translate('kiosk.state.updated_at')}: ${reportTime}`;
-	const tooltipLabel = reportTime ? reportTimeLabel : translate('kiosk.state.no_data');
+	const reportTimeLabel = `${translate('coremart.vendingMachine.kiosk.state.updatedAt')}: ${reportTime}`;
+	const tooltipLabel = reportTime ? reportTimeLabel : translate('coremart.vendingMachine.kiosk.state.noData');
 
 	return (
 		<Tooltip label={tooltipLabel} position='left-start' withArrow multiline>
 			<SimpleGrid cols={2} spacing='xs'>
-				<KioskStateMetricLine label={translate('kiosk.state.temperature')}>
+				<KioskStateMetricLine label={translate('coremart.vendingMachine.kiosk.state.temperature')}>
 					<KioskStateTemperature kiosk={kiosk} size='xs' fw={500} />
 				</KioskStateMetricLine>
-				<KioskStateMetricLine label={translate('kiosk.state.humidity')}>
+				<KioskStateMetricLine label={translate('coremart.vendingMachine.kiosk.state.humidity')}>
 					<KioskStateHumidity kiosk={kiosk} size='xs' fw={500} />
 				</KioskStateMetricLine>
-				<KioskStateMetricLine label={translate('kiosk.state.current')}>
+				<KioskStateMetricLine label={translate('coremart.vendingMachine.kiosk.state.current')}>
 					<KioskStateCurrent kiosk={kiosk} size='xs' fw={500} />
 				</KioskStateMetricLine>
-				<KioskStateMetricLine label={translate('kiosk.state.energy')}>
+				<KioskStateMetricLine label={translate('coremart.vendingMachine.kiosk.state.energy')}>
 					<KioskStateEnergy kiosk={kiosk} size='xs' fw={500} />
 				</KioskStateMetricLine>
-				<KioskStateMetricLine label={translate('kiosk.state.power')}>
+				<KioskStateMetricLine label={translate('coremart.vendingMachine.kiosk.state.power')}>
 					<KioskStatePower kiosk={kiosk} size='xs' fw={500} />
 				</KioskStateMetricLine>
-				<KioskStateMetricLine label={translate('kiosk.state.output_door_switch')}>
+				<KioskStateMetricLine label={translate('coremart.vendingMachine.kiosk.state.outputDoorSwitch')}>
 					<KioskStateOutputDoorSwitch kiosk={kiosk} size='xs' />
 				</KioskStateMetricLine>
 			</SimpleGrid>

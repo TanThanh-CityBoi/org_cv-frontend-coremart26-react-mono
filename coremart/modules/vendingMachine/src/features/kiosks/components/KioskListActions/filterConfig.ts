@@ -1,4 +1,5 @@
-import { FilterGroupConfig } from '../../../../components/FilterGroup';
+import { FilterGroupConfig } from '@/components/FilterGroup';
+
 import { ConnectionStatus, KioskMode, KioskStatus } from '../../types';
 
 

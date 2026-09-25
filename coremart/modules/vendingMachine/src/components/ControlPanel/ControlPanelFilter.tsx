@@ -29,9 +29,9 @@ export interface ControlPanelFilterProps extends React.ComponentProps<typeof Gro
 
 	/** @deprecated Use a filter with type='search' in filters[] instead */
 	search?: {
-		value?: string,
-		onChange?: (value: string) => void,
-		placeholder?: string,
+		value?: string;
+		onChange?: (value: string) => void;
+		placeholder?: string;
 	};
 }
 
@@ -42,11 +42,11 @@ function isSearchFilter(filter: ControlPanelFilterConfig): filter is ControlPane
 }
 
 type DebouncedSearchTextInputProps = {
-	value: string,
-	onChange: (value: string) => void,
-	placeholder?: string,
-	minWidth?: number,
-	clearable?: boolean,
+	value: string;
+	onChange: (value: string) => void;
+	placeholder?: string;
+	minWidth?: number;
+	clearable?: boolean;
 };
 
 const DebouncedSearchTextInput: React.FC<DebouncedSearchTextInputProps> = ({
@@ -56,7 +56,7 @@ const DebouncedSearchTextInput: React.FC<DebouncedSearchTextInputProps> = ({
 	minWidth = 250,
 	clearable = true,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const [localValue, setLocalValue] = React.useState(value);
 	const onChangeRef = React.useRef(onChange);
 	onChangeRef.current = onChange;
@@ -75,7 +75,7 @@ const DebouncedSearchTextInput: React.FC<DebouncedSearchTextInputProps> = ({
 
 	return (
 		<TextInput
-			placeholder={placeholder || translate('search.placeholder')}
+			placeholder={placeholder || translate('nikki.general.search.placeholder')}
 			leftSection={<IconSearch size={16} />}
 			value={localValue}
 			onChange={(e) => {
@@ -101,10 +101,10 @@ const SearchFilterItem: React.FC<{ filter: ControlPanelSearchFilter }> = ({ filt
 );
 
 const SelectFilterItem: React.FC<{ filter: ControlPanelOptionFilter }> = ({ filter }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	return (
 		<Select
-			placeholder={filter.placeholder || translate('search.filterStatus')}
+			placeholder={filter.placeholder || translate('nikki.general.filters.status')}
 			data={filter.options}
 			value={filter.value[0] ?? null}
 			onChange={(val) => filter.onChange(val ? [val] : [])}
@@ -117,10 +117,10 @@ const SelectFilterItem: React.FC<{ filter: ControlPanelOptionFilter }> = ({ filt
 };
 
 const MultiSelectFilterItem: React.FC<{ filter: ControlPanelOptionFilter }> = ({ filter }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	return (
 		<MultiSelect
-			placeholder={filter.placeholder || translate('search.filterStatus')}
+			placeholder={filter.placeholder || translate('nikki.general.filters.status')}
 			data={filter.options}
 			value={filter.value}
 			onChange={(value) => filter.onChange(value)}
@@ -147,7 +147,7 @@ const DateRangeFilterItem: React.FC<{ filter: ControlPanelDateRangeFilter }> = (
 };
 
 const TimeSlotFilterItem: React.FC<{ filter: ControlPanelTimeSlotFilter }> = ({ filter }) => {
-	const patch = (partial: Partial<{ from: string | null, to: string | null }>) => {
+	const patch = (partial: Partial<{ from: string | null; to: string | null }>) => {
 		filter.onChange({
 			from: partial.from !== undefined ? partial.from : filter.value.from,
 			to: partial.to !== undefined ? partial.to : filter.value.to,

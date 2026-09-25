@@ -1,12 +1,10 @@
 import { Box, Button, Image, Menu } from '@mantine/core';
-import { testAttrs } from '@nikkierp/common/utils';
 import enIcon from '@nikkierp/ui/assets/icons/en.png';
 import viIcon from '@nikkierp/ui/assets/icons/vi.png';
 import { IconChevronDown } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 
 
-const TEST_ID = 'shell.langSwitch';
 
 export const LangSwitchDropdown: React.FC = () => {
 	const { i18n } = useTranslation();
@@ -24,7 +22,6 @@ export const LangSwitchDropdown: React.FC = () => {
 			key={language.value}
 			onClick={() => changeLang(language.value)}
 			leftSection={language.icon}
-			{...testAttrs(TEST_ID, 'option', language.value)}
 		>
 			{language.label}
 		</Menu.Item>
@@ -35,7 +32,7 @@ export const LangSwitchDropdown: React.FC = () => {
 	return (
 		<Menu shadow='md' width={150} position='bottom-end'>
 			<Menu.Target>
-				<Button px={'xs'} variant='default' h={35} {...testAttrs(TEST_ID, 'trigger')}>
+				<Button px={'xs'} variant='default' h={35}>
 					<Box w={24} h={20} p={0} mx={3}>{ selectedLang?.icon }</Box>
 					<IconChevronDown size={14} color='var(--mantine-color-gray-7)' />
 				</Button>

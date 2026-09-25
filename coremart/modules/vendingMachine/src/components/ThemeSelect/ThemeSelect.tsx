@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { ThemePreviewCard } from './ThemePreviewCard';
 import { ThemeSelectModal } from './ThemeSelectModal';
 
-import type { Theme } from '../../features/themes/types';
+import type { Theme } from '@/features/themes/types';
 
 
 export interface ThemeSelectProps {
@@ -22,13 +22,13 @@ export const ThemeSelect: React.FC<ThemeSelectProps> = ({
 	onChange,
 	onRemove,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const [modalOpened, setModalOpened] = useState(false);
 
 	return (
 		<div>
 			<Text size='sm' c='dimmed' mb={3} fw={500}>
-				{translate('events.fields.theme')}
+				{translate('coremart.vendingMachine.events.fields.theme')}
 			</Text>
 			{value ? (
 				<ThemePreviewCard
@@ -42,7 +42,7 @@ export const ThemeSelect: React.FC<ThemeSelectProps> = ({
 						<Group gap='xs'>
 							<IconPalette size={30} color='var(--mantine-color-gray-7)' />
 							<Text size='sm' c='dimmed'>
-								{translate('events.messages.no_theme')}
+								{translate('coremart.vendingMachine.events.messages.no_theme')}
 							</Text>
 						</Group>
 						{isEditing && (
@@ -51,7 +51,7 @@ export const ThemeSelect: React.FC<ThemeSelectProps> = ({
 								leftSection={<IconPlus size={14} />}
 								onClick={() => setModalOpened(true)}
 							>
-								{translate('events.select_theme.select_theme')}
+								{translate('coremart.vendingMachine.events.selectTheme.selectTheme')}
 							</Button>
 						)}
 					</Group>

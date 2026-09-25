@@ -17,7 +17,7 @@ export const SortSection: React.FC<SortSectionProps> = ({
 	sortState,
 	onSortChange,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	if (!sortConfigs || sortConfigs.length === 0) return null;
 
@@ -26,7 +26,7 @@ export const SortSection: React.FC<SortSectionProps> = ({
 			<Group gap='xs' mb='xs'>
 				<IconSortAscending size={16} style={{ color: '#339af0' }} />
 				<Text size='sm' fw={500}>
-					{translate('search.sort')}
+					{translate('nikki.general.sort.title')}
 				</Text>
 			</Group>
 			<Stack gap='xs'>
@@ -41,8 +41,8 @@ export const SortSection: React.FC<SortSectionProps> = ({
 								<Select
 									placeholder={sortConfig.label}
 									data={[
-										{ value: 'asc', label: translate('search.sortAscending') },
-										{ value: 'desc', label: translate('search.sortDescending') },
+										{ value: 'asc', label: translate('nikki.general.sort.asc') },
+										{ value: 'desc', label: translate('nikki.general.sort.desc') },
 									]}
 									value={sortValue?.direction || null}
 									onChange={(value) => {

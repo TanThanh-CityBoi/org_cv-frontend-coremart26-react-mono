@@ -5,14 +5,14 @@ import { useTranslation } from 'react-i18next';
 
 
 export const PaymentNotFound: React.FC = () => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	return (
 		<Center h='100%' w='100%' p='xl' bg='gray.0'>
 			<Stack align='center' gap='md'>
 				<IconAlertCircle size={48} color='red' />
-				<Title order={4}>{translate('payment.messages.not_found.title')}</Title>
-				<Text c='dimmed'>{translate('payment.messages.not_found.message')}</Text>
+				<Title order={4}>{translate('coremart.vendingMachine.payment.messages.not_found.title')}</Title>
+				<Text c='dimmed'>{translate('coremart.vendingMachine.payment.messages.not_found.message')}</Text>
 			</Stack>
 		</Center>
 	);

@@ -1,27 +1,26 @@
 import { Combobox, TextInput, useCombobox } from '@mantine/core';
 import { useId } from '@mantine/hooks';
-import { BaseFieldWrapper } from '@nikkierp/ui/components';
-import { useFieldData, useFormField } from '@nikkierp/ui/components';
-import { useLocalize } from '@nikkierp/ui/i18n';
 import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
+import { BaseFieldWrapper } from '@nikkierp/ui/components';
+import { useFieldData, useFormField } from '@nikkierp/ui/components';
 
 
-export type SearchableSelectOption = { value: string, label: string };
+export type SearchableSelectOption = { value: string; label: string };
 
 export type SearchableSelectFieldProps = {
-	name: string,
-	options: SearchableSelectOption[],
-	searchValue: string,
-	onSearchChange: (value: string) => void,
-	readOnly?: boolean,
-	disabled?: boolean,
+	name: string;
+	options: SearchableSelectOption[];
+	searchValue: string;
+	onSearchChange: (value: string) => void;
+	readOnly?: boolean;
+	disabled?: boolean;
 	/** Label when the value is not present in `options` (for example entity name before the list loads). */
-	fallbackLabel?: string,
-	placeholder?: string,
-	emptyMessage?: string,
-	formDefaultValue?: string | null,
+	fallbackLabel?: string;
+	placeholder?: string;
+	emptyMessage?: string;
+	formDefaultValue?: string | null;
 };
 
 function findOption(
@@ -47,9 +46,7 @@ export function SearchableSelectField({
 	const inputId = useId();
 	const { control } = useFormField();
 	const fieldData = useFieldData(name);
-	const { t: translate } = useTranslation('vending_machine');
-	// Schema labels are `{ $ref }` lang-json, not plain keys: i18next would stringify them.
-	const localize = useLocalize('vending_machine');
+	const { t: translate } = useTranslation();
 	const combobox = useCombobox({
 		onDropdownClose: () => combobox.resetSelectedOption(),
 	});
@@ -59,15 +56,15 @@ export function SearchableSelectField({
 	}
 
 	const resolvedPlaceholder =
-		placeholder ?? (fieldData.placeholder ? localize(fieldData.placeholder) : translate('search.placeholder'));
+		placeholder ?? translate(fieldData.placeholder ?? 'nikki.general.search.placeholder');
 
 	return (
 		<BaseFieldWrapper
 			inputId={inputId}
-			label={localize(fieldData.label)}
-			description={localize(fieldData.description)}
+			label={translate(fieldData.label)}
+			description={translate(fieldData.description ?? '')}
 			isRequired={fieldData.isRequired}
-			error={fieldData.error ? translate(fieldData.error) : ''}
+			error={translate(fieldData.error ?? '')}
 		>
 			<Controller
 				name={name}

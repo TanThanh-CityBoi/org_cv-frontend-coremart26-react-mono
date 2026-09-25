@@ -1,16 +1,16 @@
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+import { useMicroAppDispatch } from '@nikkierp/ui/microApp';
 import { IconDeviceFloppy, IconEdit, IconX } from '@tabler/icons-react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { ControlPanelProps } from '../../../../../components/ControlPanel';
-import { Game } from '../../../../games/types';
-import { Playlist } from '../../../../mediaPlaylist/types';
-import { Theme } from '../../../../themes/types';
-import { eventCrudService } from '../../../eventService';
-import { EventUpdateFormData, useEventEdit } from '../../../hooks/useEventEdit';
-import { Event } from '../../../types';
-import { useRegisterEventDetailTab } from '../eventDetailTabControl';
+import { eventActions, VendingMachineDispatch } from '@/appState';
+import { ControlPanelProps } from '@/components/ControlPanel';
+import { useRegisterEventDetailTab } from '@/features/events/components/EventDetail/eventDetailTabControl';
+import { EventUpdateFormData, useEventEdit } from '@/features/events/hooks/useEventEdit';
+import { Event } from '@/features/events/types';
+import { Game } from '@/features/games/types';
+import { Playlist } from '@/features/mediaPlaylist/types';
+import { Theme } from '@/features/themes/types';
 
 
 export type EventUiFormData = Pick<
@@ -61,13 +61,13 @@ export function buildEventUiTabActions(
 ): ControlPanelProps['actions'] {
 	return [
 		...(!isEditing ? [{
-			label: translate('action.edit'),
+			label: translate('nikki.general.actions.edit'),
 			leftSection: <IconEdit size={16} />,
 			onClick: handleEdit,
 			type: 'button' as const,
 			variant: 'filled' as const,
 		}] : [{
-			label: translate('action.save'),
+			label: translate('nikki.general.actions.save'),
 			leftSection: <IconDeviceFloppy size={16} />,
 			onClick: handleSaveClick,
 			type: 'button' as const,
@@ -75,7 +75,7 @@ export function buildEventUiTabActions(
 			disabled: isSubmitting,
 			loading: isSubmitting,
 		}, {
-			label: translate('action.cancel'),
+			label: translate('nikki.general.actions.cancel'),
 			leftSection: <IconX size={16} />,
 			onClick: handleCancel,
 			type: 'button' as const,
@@ -86,22 +86,22 @@ export function buildEventUiTabActions(
 }
 
 export type UseEventUiTabReturn = {
-	isSubmitting: boolean,
-	isEditing: boolean,
-	setIsEditing: (v: boolean) => void,
-	theme: Theme | null | undefined,
-	game: Game | null | undefined,
-	waitingScreenPlaylist: Playlist | null | undefined,
-	shoppingScreenPlaylist: Playlist | null | undefined,
-	handleThemeChange: (next: Theme | undefined) => void,
-	handleGameChange: (next: Game | undefined) => void,
-	handleWaitingChange: (next: Playlist | undefined) => void,
-	handleShoppingChange: (next: Playlist | undefined) => void,
+	isSubmitting: boolean;
+	isEditing: boolean;
+	setIsEditing: (v: boolean) => void;
+	theme: Theme | null | undefined;
+	game: Game | null | undefined;
+	waitingScreenPlaylist: Playlist | null | undefined;
+	shoppingScreenPlaylist: Playlist | null | undefined;
+	handleThemeChange: (next: Theme | undefined) => void;
+	handleGameChange: (next: Game | undefined) => void;
+	handleWaitingChange: (next: Playlist | undefined) => void;
+	handleShoppingChange: (next: Playlist | undefined) => void;
 };
 
 export function useEventUiTab(event: Event): UseEventUiTabReturn {
-	const { t: translate } = useTranslation('vending_machine');
-	const { dispatchMethod: refetchEvent } = useServiceLayer(eventCrudService.getById);
+	const { t: translate } = useTranslation();
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
 
 	const [isEditing, setIsEditing] = useState(false);
 	const [pickerValues, setPickerValues] = useState<EventUiPickerValues>(pickerFromEvent(event));
@@ -116,7 +116,7 @@ export function useEventUiTab(event: Event): UseEventUiTabReturn {
 		onUpdateSuccess: () => {
 			setIsEditing(false);
 			if (event.id) {
-				refetchEvent({ id: event.id });
+				dispatch(eventActions.getEvent(event.id));
 			}
 		},
 	});

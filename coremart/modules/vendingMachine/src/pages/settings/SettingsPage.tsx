@@ -1,12 +1,12 @@
 import { TablePaginationProps } from '@nikkierp/ui/components';
+import { ModelSchema } from '@nikkierp/ui/model';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
-import { asLegacyModelSchema } from '../../common/helpers';
-import { ControlPanel } from '../../components';
-import { ControlPanelViewModeProps } from '../../components/ControlPanel/ControlPanelViewMode';
-import { PageContainer } from '../../components/PageContainer';
+import { ControlPanel } from '@/components';
+import { ControlPanelViewModeProps } from '@/components/ControlPanel/ControlPanelViewMode';
+import { PageContainer } from '@/components/PageContainer';
 import {
 	ArchiveSettingModal,
 	DeleteSettingModal,
@@ -21,7 +21,7 @@ import {
 	useSettingListPageActions,
 	useSettingListPageConfig,
 	useSettingListPageContext,
-} from '../../features/settings';
+} from '@/features/settings';
 
 
 export const SettingsPage: React.FC = () => {
@@ -33,7 +33,7 @@ export const SettingsPage: React.FC = () => {
 };
 
 const SettingsPageContent: React.FC = () => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const { filter, list: { settings, pagination, isLoading, isEmpty } } = useSettingListPageContext();
 	const { breadcrumbs, actions, viewModeConfig } = useSettingListPageConfig();
 	const { preview, delete: deleteSetting, archive } = useSettingListPageActions();
@@ -63,7 +63,7 @@ const SettingsPageContent: React.FC = () => {
 					viewMode={viewModeConfig as ControlPanelViewModeProps}
 				/>,
 			]}
-			documentTitle={translate('settings.title')}
+			documentTitle={translate('coremart.vendingMachine.settings.title')}
 		>
 			<SettingList
 				isLoading={isLoading}
@@ -141,7 +141,7 @@ const SettingList: React.FC<SettingListProps> = ({
 					isLoading={isLoading}
 					columns={tableColumns}
 					data={settings as unknown as Record<string, unknown>[]}
-					schema={asLegacyModelSchema(settingSchema)}
+					schema={settingSchema as ModelSchema}
 					actions={actions}
 					pagination={pagination}
 				/>

@@ -1,40 +1,38 @@
 /* eslint-disable max-lines-per-function */
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
 import { type TablePaginationProps } from '@nikkierp/ui/components';
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
 import { TFunction } from 'i18next';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { usePaginationWithTotal } from '../../../common/hooks';
-import { SearchGraph } from '../../../types';
-// The enum, not the `'asc' | 'desc'` type alias the `@/types` barrel re-exports under the same name.
-import { SortDirection } from '../../../types/search-graph';
 import {
-	DEFAULT_EVENT_AVAILABLE_PAGE_SIZE,
-	eventAvailableProductService,
-} from '../eventAvailableProductStoreService';
+	VendingMachineDispatch,
+	eventAvailableProductActions,
+	selectEventAvailableProductList,
+} from '@/appState';
+import { usePagination } from '@/common/hooks';
+import { SearchGraph } from '@/types';
 
-import type { KioskProduct } from '../../kioskProducts/type';
+import { DEFAULT_EVENT_AVAILABLE_PAGE_SIZE } from '../eventAvailableProductSlice';
 
 
 const PAGE_SIZES = [5, 10, 15] as const;
-
-type SearchResponse = { items: KioskProduct[], total: number };
 
 function usePageSizeOptions(translate: TFunction): TablePaginationProps['pageSizeOptions'] {
 	return useMemo(
 		() =>
 			PAGE_SIZES.map((n) => ({
 				value: String(n),
-				label: translate('datatable.pageSize', { count: n }),
+				label: translate('nikki.general.pagination.page_size', { count: n }),
 			})),
 		[translate],
 	);
 }
 
 export function useAvailableProductForEvent(eventId: string | undefined, graph?: SearchGraph) {
-	const { dispatchMethod, result } = useServiceLayer<SearchResponse>(eventAvailableProductService.search);
-	const { t: translate } = useTranslation('vending_machine');
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
+	const list = useMicroAppSelector(selectEventAvailableProductList);
+	const { t: translate } = useTranslation();
 	const pageSizeOptions = usePageSizeOptions(translate);
 
 	const fetchList = useCallback(
@@ -42,14 +40,16 @@ export function useAvailableProductForEvent(eventId: string | undefined, graph?:
 			if (!eventId) {
 				return;
 			}
-			dispatchMethod({
-				eventId,
-				page: targetPage - 1,
-				size,
-				graph: { order: [['created_at', SortDirection.DESC]], ...(searchGraph ?? {}) },
-			});
+			dispatch(
+				eventAvailableProductActions.searchEventAvailableProducts({
+					eventId,
+					page: targetPage - 1,
+					size,
+					graph: searchGraph,
+				}),
+			);
 		},
-		[dispatchMethod, eventId],
+		[dispatch, eventId],
 	);
 
 	const resetKey = useMemo(
@@ -57,7 +57,7 @@ export function useAvailableProductForEvent(eventId: string | undefined, graph?:
 		[eventId, graph],
 	);
 
-	const paginationCtrl = usePaginationWithTotal(fetchList, result.data?.total ?? 0, {
+	const paginationCtrl = usePagination(fetchList, selectEventAvailableProductList, {
 		graph,
 		fallbackPageSize: DEFAULT_EVENT_AVAILABLE_PAGE_SIZE,
 		resetPageKey: resetKey,
@@ -88,14 +88,14 @@ export function useAvailableProductForEvent(eventId: string | undefined, graph?:
 		[paginationCtrl, pageSizeOptions],
 	);
 
-	const products = result.data?.items ?? [];
-	const status = result.isPending ? 'pending' : 'success';
-	const isLoading = Boolean(eventId) && (result.isPending || (result.doneAt == null && !products.length));
+	const products = list.items ?? [];
+	const status = list.status;
+	const isLoading = Boolean(eventId) && (status === 'pending' || (status === 'idle' && !products.length));
 
 	return {
 		products,
 		status,
-		listError: result.error,
+		listError: list.error,
 		isLoading,
 		handleRefresh,
 		pagination,

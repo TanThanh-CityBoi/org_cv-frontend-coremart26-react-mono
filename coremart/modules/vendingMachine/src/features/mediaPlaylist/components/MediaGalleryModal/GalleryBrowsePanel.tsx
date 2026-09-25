@@ -9,11 +9,12 @@ import { IconRefresh } from '@tabler/icons-react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { ControlPanel } from '@/components';
+import { ControlPanelFilterConfig } from '@/components/ControlPanel/types';
+import { TablePagination } from '@/components/Table';
+import { type TablePaginationProps } from '@/components/Table';
+
 import { GalleryMediaListTable } from './GalleryMediaListTable';
-import { ControlPanel } from '../../../../components';
-import { ControlPanelFilterConfig } from '../../../../components/ControlPanel/types';
-import { TablePagination } from '../../../../components/Table';
-import { type TablePaginationProps } from '../../../../components/Table';
 import { KioskMediaGrid } from '../KioskMediaGrid';
 
 import type { GalleryMedia } from '../../types';
@@ -53,7 +54,7 @@ export const GalleryBrowsePanel: React.FC<GalleryBrowsePanelProps> = ({
 	alreadyInPlaylistLabel,
 	onToggleMedia,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	return (
 		<Group align='flex-start' gap='md' wrap='nowrap'>
@@ -62,7 +63,7 @@ export const GalleryBrowsePanel: React.FC<GalleryBrowsePanelProps> = ({
 					filters={filters.filter((f) => f.key !== 'isArchived')}
 					actions={[
 						{
-							label: translate('action.refresh'),
+							label: translate('nikki.general.actions.refresh'),
 							leftSection: <IconRefresh size={16} />,
 							onClick: onRefresh,
 							variant: 'outline',
@@ -97,9 +98,9 @@ export const GalleryBrowsePanel: React.FC<GalleryBrowsePanelProps> = ({
 							items={filteredMedia}
 							selectedIds={selectedIds}
 							selectedMediaIdsInPlaylist={selectedMediaIdsInPlaylist}
-							previewLabel={translate('media_playlist.media.fields.preview')}
-							nameLabel={translate('media_playlist.media.fields.name')}
-							sizeLabel={translate('media_playlist.media.fields.size')}
+							previewLabel={translate('coremart.vendingMachine.mediaPlaylist.media.fields.preview')}
+							nameLabel={translate('coremart.vendingMachine.mediaPlaylist.media.fields.name')}
+							sizeLabel={translate('coremart.vendingMachine.mediaPlaylist.media.fields.size')}
 							alreadyInPlaylistLabel={alreadyInPlaylistLabel}
 							onToggle={onToggleMedia}
 						/>

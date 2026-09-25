@@ -1,30 +1,30 @@
 /* eslint-disable max-lines-per-function */
 import { Anchor, Stack, Title } from '@mantine/core';
 import { DateValue, DatesRangeValue } from '@mantine/dates';
+import { ModelSchema } from '@nikkierp/ui/model';
 import dayjs from 'dayjs';
 import React, { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useSearchParams } from 'react-router';
 
-import { asLegacyModelSchema } from '../../common/helpers';
-import { StickyFilterBar, type ControlPanelFilterConfig } from '../../components';
-import { controlPanelToSearchGraph } from '../../components/ControlPanel/controlPanelToSearchGraph';
-import { PageContainer } from '../../components/PageContainer';
-import { ORDER_TABLE_COLUMNS, orderSchema, OrderTable, useOrderList } from '../../features/orders';
-import { ProductRevenueTable } from '../../features/reports/business/components/RevenueReportByProduct';
-import { RevenueReportFilters } from '../../features/reports/business/components/RevenueReportSwitcher/type';
-import { useRevenueReportByProduct } from '../../features/reports/business/hooks/useRevenueReportQueries';
+import { StickyFilterBar, type ControlPanelFilterConfig } from '@/components';
+import { controlPanelToSearchGraph } from '@/components/ControlPanel/controlPanelToSearchGraph';
+import { PageContainer } from '@/components/PageContainer';
+import { ORDER_TABLE_COLUMNS, orderSchema, OrderTable, useOrderList } from '@/features/orders';
+import { ProductRevenueTable } from '@/features/reports/business/components/RevenueReportByProduct';
+import { RevenueReportFilters } from '@/features/reports/business/components/RevenueReportSwitcher/type';
+import { useRevenueReportByProduct } from '@/features/reports/business/hooks/useRevenueReportQueries';
 
 
 
 type KioskRevenueDetailBodyProps = {
-	filters: Pick<RevenueReportFilters, 'dateRange' | 'timeSlot' | 'kioskIds'>,
+	filters: Pick<RevenueReportFilters, 'dateRange' | 'timeSlot' | 'kioskIds'>;
 };
 
 function KioskRevenueDetailBody({
 	filters,
 }: KioskRevenueDetailBodyProps): React.ReactElement {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const {
 		items: productTableItems,
@@ -63,10 +63,10 @@ function KioskRevenueDetailBody({
 	return (
 		<Stack gap='lg'>
 			<OrderTable
-				tableTitle={translate('reports.revenue_report.kiosk_revenue_detail.orders_section')}
+				tableTitle={translate('coremart.vendingMachine.reports.revenueReport.kioskRevenueDetail.ordersSection')}
 				columns={[...ORDER_TABLE_COLUMNS.filter((column) => column !== 'actions')]}
 				data={orderItems}
-				schema={asLegacyModelSchema(orderSchema)}
+				schema={orderSchema as ModelSchema}
 				actions={{}}
 				isLoading={orderIsLoading}
 				pagination={orderPagination}
@@ -79,7 +79,7 @@ function KioskRevenueDetailBody({
 			/>
 
 			<ProductRevenueTable
-				title={translate('reports.revenue_report.kiosk_revenue_detail.product_revenue_section')}
+				title={translate('coremart.vendingMachine.reports.revenueReport.kioskRevenueDetail.productRevenueSection')}
 				items={productTableItems}
 				pagination={productTablePagination}
 				isLoading={productTableIsLoading}
@@ -91,7 +91,7 @@ function KioskRevenueDetailBody({
 }
 
 export const KioskRevenueDetailPage: React.FC = () => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const [searchParams] = useSearchParams();
 	const kioskRef = searchParams.get('id')?.trim() ?? '';
 
@@ -101,12 +101,12 @@ export const KioskRevenueDetailPage: React.FC = () => {
 	], []);
 
 	const [draftDateRange, setDraftDateRange] = useState<DatesRangeValue<DateValue> | undefined>(defaultRange);
-	const [draftTimeSlot, setDraftTimeSlot] = useState<{ from: string | null, to: string | null }>({
+	const [draftTimeSlot, setDraftTimeSlot] = useState<{ from: string | null; to: string | null }>({
 		from: null,
 		to: null,
 	});
 	const [appliedDateRange, setAppliedDateRange] = useState<DatesRangeValue<DateValue> | undefined>(defaultRange);
-	const [appliedTimeSlot, setAppliedTimeSlot] = useState<{ from: string | null, to: string | null }>({
+	const [appliedTimeSlot, setAppliedTimeSlot] = useState<{ from: string | null; to: string | null }>({
 		from: null,
 		to: null,
 	});
@@ -117,7 +117,7 @@ export const KioskRevenueDetailPage: React.FC = () => {
 			type: 'dateRange',
 			value: draftDateRange,
 			onChange: setDraftDateRange,
-			placeholder: translate('common.date_picker.select_date_range'),
+			placeholder: translate('coremart.vendingMachine.common.datePicker.selectDateRange'),
 			clearable: true,
 		},
 		{
@@ -142,8 +142,8 @@ export const KioskRevenueDetailPage: React.FC = () => {
 
 	const breadcrumbs = useMemo(
 		() => [
-			{ title: translate('title'), href: '../overview' },
-			{ title: translate('menu.revenue_report'), href: '../reports/revenue' },
+			{ title: translate('coremart.vendingMachine.title'), href: '../overview' },
+			{ title: translate('coremart.vendingMachine.menu.revenue_report'), href: '../reports/revenue' },
 			{ title: kioskRef, href: '#' },
 		],
 		[kioskRef, translate],
@@ -152,7 +152,7 @@ export const KioskRevenueDetailPage: React.FC = () => {
 	if (!kioskRef) {
 		return (
 			<PageContainer
-				documentTitle={translate('reports.revenue.title')}
+				documentTitle={translate('coremart.vendingMachine.reports.revenue.title')}
 				breadcrumbs={breadcrumbs}
 				isNotFound
 			/>
@@ -161,7 +161,7 @@ export const KioskRevenueDetailPage: React.FC = () => {
 
 	return (
 		<PageContainer
-			documentTitle={translate('reports.revenue_report.kiosk_revenue_detail.page_title', {
+			documentTitle={translate('coremart.vendingMachine.reports.revenueReport.kioskRevenueDetail.pageTitle', {
 				name: kioskRef,
 			})}
 			breadcrumbs={breadcrumbs}
@@ -176,10 +176,10 @@ export const KioskRevenueDetailPage: React.FC = () => {
 								c='blue'
 								underline='hover'
 							>
-								{translate('reports.revenue_report.kiosk_revenue_detail.back_to_revenue_report')}
+								{translate('coremart.vendingMachine.reports.revenueReport.kioskRevenueDetail.backToRevenueReport')}
 							</Anchor>
 							<Title fz='xl' fw={700} textWrap='nowrap'>
-								{translate('reports.revenue_report.kiosk_revenue_detail.kiosk_heading', {
+								{translate('coremart.vendingMachine.reports.revenueReport.kioskRevenueDetail.kioskHeading', {
 									name: 'kioskName',
 								})}
 							</Title>

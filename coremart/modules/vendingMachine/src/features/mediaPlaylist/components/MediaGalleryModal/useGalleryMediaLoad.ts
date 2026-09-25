@@ -4,8 +4,8 @@ import React from 'react';
 import { useKioskMediaFilter, useKioskMediaList } from '../../hooks';
 import { mapKioskMediaToGalleryMedia } from '../../kioskMediaService';
 
-import type { ControlPanelFilterConfig } from '../../../../components/ControlPanel/types';
 import type { GalleryMedia } from '../../types';
+import type { ControlPanelFilterConfig } from '@/components/ControlPanel/types';
 import type { TablePaginationProps } from '@nikkierp/ui/components';
 import type { TFunction } from 'i18next';
 
@@ -17,10 +17,10 @@ function resolveGalleryError(
 	translate: TFunction,
 ): string | null {
 	if (opened && !baseApiUrl) {
-		return translate('media_playlist.media.gallery.config_missing');
+		return translate('coremart.vendingMachine.mediaPlaylist.media.gallery.config_missing');
 	}
 	if (error) {
-		return translate('media_playlist.media.gallery.load_failed', { message: error });
+		return translate('coremart.vendingMachine.mediaPlaylist.media.gallery.load_failed', { message: error });
 	}
 	return null;
 }
@@ -30,14 +30,14 @@ export function useGalleryMediaLoad(
 	baseApiUrl: string | undefined,
 	translate: TFunction,
 ): {
-	media: GalleryMedia[],
-	loadingGallery: boolean,
-	galleryError: string | null,
-	filters: ControlPanelFilterConfig[],
-	pagination: TablePaginationProps,
-	handleRefresh: () => void,
-	refreshLoading: boolean,
-	totalItems: number,
+	media: GalleryMedia[];
+	loadingGallery: boolean;
+	galleryError: string | null;
+	filters: ControlPanelFilterConfig[];
+	pagination: TablePaginationProps;
+	handleRefresh: () => void;
+	refreshLoading: boolean;
+	totalItems: number;
 } {
 	const { filters, graph, resetSearch } = useKioskMediaFilter();
 	const listEnabled = opened && !!baseApiUrl;

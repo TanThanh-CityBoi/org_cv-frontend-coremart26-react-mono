@@ -4,11 +4,11 @@ import { IconCreditCard } from '@tabler/icons-react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { ArchivedStatusBadge } from '../../../../components/ArchivedStatusBadge';
-import { TableAction } from '../../../../components/Table';
 import { PaymentMethod } from '../../types';
 import { getPaymentTableActions, PaymentTableActions } from '../PaymentTable';
 
+import { ArchivedStatusBadge } from '@/components/ArchivedStatusBadge';
+import { TableAction } from '@/components/Table';
 
 
 
@@ -24,15 +24,15 @@ export const PaymentGridView: React.FC<PaymentGridViewProps> = ({
 	isLoading = false,
 	actions = {},
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const { view: onViewDetail, ...cardActions } = actions;
 
 	if (isLoading) {
-		return <Text c='dimmed'>{translate('messages.loading')}</Text>;
+		return <Text c='dimmed'>{translate('nikki.general.messages.loading')}</Text>;
 	}
 
 	if (payments.length === 0) {
-		return <Text c='dimmed'>{translate('payment.messages.no_payments')}</Text>;
+		return <Text c='dimmed'>{translate('coremart.vendingMachine.payment.messages.no_payments')}</Text>;
 	}
 
 	return (
@@ -74,7 +74,7 @@ export const PaymentGridView: React.FC<PaymentGridViewProps> = ({
 							</Group>
 							<TableAction
 								actions={getPaymentTableActions(payment, cardActions, translate)}
-								overflowMenuLabel={translate('action.title')}
+								overflowMenuLabel={translate('nikki.general.actions.title')}
 							/>
 						</Group>
 
@@ -83,7 +83,7 @@ export const PaymentGridView: React.FC<PaymentGridViewProps> = ({
 						</Group>
 
 						<Text size='xs' c='dimmed'>
-							{translate('payment.fields.created_at')}: {new Date(payment.createdAt).toLocaleDateString()}
+							{translate('coremart.vendingMachine.payment.fields.createdAt')}: {new Date(payment.createdAt).toLocaleDateString()}
 						</Text>
 					</Stack>
 				</Card>

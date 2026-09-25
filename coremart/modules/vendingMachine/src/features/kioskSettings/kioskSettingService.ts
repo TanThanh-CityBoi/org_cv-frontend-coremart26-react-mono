@@ -1,83 +1,121 @@
-import { storeAsyncMethod, storeService } from '@nikkierp/ui/appState/store';
-
-import { KioskSetting } from './types';
-import { OrgScopedCrudService } from '../../common/service';
-import { KIOSK_SETTING_SCHEMA_NAME, VENDING_MACHINE_MODULE } from '../../constants';
-import { vendingMachineStore } from '../../store';
-
-import type { ServiceResult } from '@nikkierp/common/commandBus';
-import type * as dyn from '@nikkierp/common/dynamicModel';
-
-
-
-/** Default list page size. Moved here from `kioskSettingSlice.ts` when that slice was deleted. */
-export const KIOSK_SETTING_DEFAULT_PAGE_SIZE = 10;
-
 /**
- * Fields the detail page requests.
- *
- * Moved here from `kioskSettingSlice.ts` when that slice was deleted — it is a property of
- * the resource, not of the Redux plumbing that used to fetch it.
+ * Bruno: `CoreMart26 - API/VendingMachine/Kiosk Setting/*`.
+ * `/v1/vending-machine/kiosk-settings` — search, create, get, update, delete, exists, archived.
  */
-export const KIOSK_SETTING_DETAIL_FIELDS: Array<keyof KioskSetting> = [
-	'id',
-	'etag',
-	'code',
-	'name',
-	'description',
-	'isArchived',
-	'config',
-	'shoppingScreenPlaylistRef',
-	'waitingScreenPlaylistRef',
-	'themeRef',
-	'gameRef',
-	'scopeType',
-	'shoppingScreenPlaylistSetting',
-	'waitingScreenPlaylistSetting',
-	'themeSetting',
-	'gameSetting',
-	'createdAt',
-	'updatedAt',
-];
+
+import * as request from '@nikkierp/common/request';
+import {
+	camelToSnakeObject,
+	cleanEmptyString,
+	snakeToCamelObject,
+} from '@nikkierp/common/utils';
+import { HTTPError } from 'ky';
+
+import { buildFieldsQuery, buildSearchParams } from '@/common/helpers';
+
+import type { KioskSettingCreatePayload, KioskSettingUpdatePayload } from './hooks/kioskSettingPayloads';
+import type { KioskSetting } from './types';
+import type {
+	PagedSearchResponse,
+	RestArchiveResponse,
+	RestCreateResponse,
+	RestDeleteResponse,
+	RestUpdateResponse,
+	SearchParams,
+} from '@/types';
 
 
-/**
- * CRUD over `vending_machine_kiosk_setting`, plus kiosk assignment.
- *
- * The ten CRUD operations come from {@link OrgScopedCrudService} by inheritance.
- *
- * ⚠ `manageKiosks` posts to `{base}/:id/manage-kiosk`, matching what the legacy
- * `kioskSettingService` did. **That route is not in `transport/restful/index.go`** — the only
- * `manage-*` routes there are `/kiosks/:id/manage-events` and `/kiosks/:id/manage-payments`.
- * It is wired here on the explicit assumption that the endpoint exists (or will); if kiosk
- * assignment 404s, this is the first place to look, not the calling hook.
- *
- * Named `kioskSettingCrudService` for the duration of the migration: the legacy object literal
- * in `kioskSettingService.ts` still owns the plain name. Rename once that file is gone.
- */
-@storeService('KioskSettingService', vendingMachineStore)
-export class KioskSettingService extends OrgScopedCrudService {
-	public constructor() {
-		super({ moduleName: VENDING_MACHINE_MODULE, schemaName: KIOSK_SETTING_SCHEMA_NAME });
-	}
+const BASE_PATH = 'vending-machine/kiosk-settings';
 
-	/**
-	 * Assigns/unassigns kiosks to the setting identified by `settingId`.
-	 *
-	 * `manageM2m` builds `{base}/{path}` and interpolates no id of its own, so the id is
-	 * folded into the path here — giving `kiosk-settings/{settingId}/manage-kiosk`, which is
-	 * what the legacy `kioskSettingService.manageKioskSettingKiosks` posted to.
-	 *
-	 * Annotated because an added method carries no inherited annotation — without
-	 * `@storeAsyncMethod` it would be an ordinary helper with no presence in the slice.
-	 */
-	@storeAsyncMethod
-	public manageKiosks(
-		request: dyn.RestManageM2mRequest & { settingId: string },
-	): Promise<ServiceResult<dyn.RestMutateResponse>> {
-		const { settingId, ...body } = request;
-		return this.manageM2m(body, `${encodeURIComponent(settingId)}/manage-kiosk`);
-	}
-}
+export type KioskSettingArchivePayload = { etag: string; isArchived: boolean };
 
-export const kioskSettingCrudService = new KioskSettingService();
+/** Bruno `Kiosk Setting - Exists` → `dyn.ExistsResultData`. */
+export type KioskSettingExistsResult = {
+	existing: string[];
+	notExisting: string[];
+};
+
+export const kioskSettingService = {
+	basePath: BASE_PATH,
+
+	async searchKioskSettings(params?: SearchParams<KioskSetting>): Promise<PagedSearchResponse<KioskSetting>> {
+		const result = await request.get<unknown>(BASE_PATH, {
+			searchParams: buildSearchParams<KioskSetting>({
+				...params,
+				page: params?.page ?? 0,
+				size: params?.size ?? 10,
+				extra: { ...params?.extra },
+			}),
+		});
+		return snakeToCamelObject(result) as PagedSearchResponse<KioskSetting>;
+	},
+
+	async getKioskSetting(
+		id: string,
+		fields?: Array<keyof KioskSetting>,
+	): Promise<KioskSetting | undefined> {
+		const client = request.ky();
+		if (!client) throw new Error('Must call initRequestMaker() before sending requests');
+		try {
+			const result = await client.get(`${BASE_PATH}/${encodeURIComponent(id)}`, {
+				searchParams: buildFieldsQuery<KioskSetting>(fields ?? []),
+			}).json<Record<string, unknown>>();
+			return snakeToCamelObject(result) as KioskSetting;
+		}
+		catch (err) {
+			if (err instanceof HTTPError && err.response.status === 404) return undefined;
+			throw err;
+		}
+	},
+
+	async createKioskSetting(body: KioskSettingCreatePayload): Promise<RestCreateResponse> {
+		const cleanedBody = cleanEmptyString(body);
+		const snakeBody = camelToSnakeObject(cleanedBody);
+		const result = await request.post<unknown>(BASE_PATH, { json: snakeBody });
+		return snakeToCamelObject(result) as RestCreateResponse;
+	},
+
+	async updateKioskSetting(payload: KioskSettingUpdatePayload): Promise<RestUpdateResponse> {
+		const cleanedBody = cleanEmptyString(payload.body);
+		const snakeBody = camelToSnakeObject(cleanedBody);
+		const result = await request.put<unknown>(
+			`${BASE_PATH}/${encodeURIComponent(payload.id)}`,
+			{ json: snakeBody },
+		);
+		return snakeToCamelObject(result) as RestUpdateResponse;
+	},
+
+	async deleteKioskSetting(id: string): Promise<RestDeleteResponse> {
+		const result = await request.del<unknown>(`${BASE_PATH}/${encodeURIComponent(id)}`);
+		return snakeToCamelObject(result) as RestDeleteResponse;
+	},
+
+	async setArchivedKioskSetting(id: string, body: KioskSettingArchivePayload): Promise<RestArchiveResponse> {
+		const snakeBody = camelToSnakeObject({ etag: body.etag, isArchived: body.isArchived });
+		const result = await request.post<unknown>(
+			`${BASE_PATH}/${encodeURIComponent(id)}/archived`,
+			{ json: snakeBody },
+		);
+		return snakeToCamelObject(result) as RestArchiveResponse;
+	},
+
+	/** Bruno `Kiosk Setting - Manage Kiosk` → `POST …/kiosk-settings/:id/manage-kiosk`. */
+	async manageKioskSettingKiosks(
+		settingId: string,
+		body: { add: string[]; remove: string[] },
+	): Promise<RestUpdateResponse> {
+		const snakeBody = camelToSnakeObject(body);
+		const result = await request.post<unknown>(
+			`${BASE_PATH}/${encodeURIComponent(settingId)}/manage-kiosk`,
+			{ json: snakeBody },
+		);
+		return snakeToCamelObject(result) as RestUpdateResponse;
+	},
+
+	async kioskSettingExists(ids: string[]): Promise<KioskSettingExistsResult> {
+		const result = await request.post<unknown>(`${BASE_PATH}/exists`, {
+			json: { ids },
+		});
+		return snakeToCamelObject(result) as KioskSettingExistsResult;
+	},
+};

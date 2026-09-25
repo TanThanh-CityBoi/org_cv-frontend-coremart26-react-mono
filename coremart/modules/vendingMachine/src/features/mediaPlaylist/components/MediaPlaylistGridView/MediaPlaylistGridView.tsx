@@ -4,10 +4,11 @@ import { TFunction } from 'i18next';
 import React, { useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { CardActionMenu } from '../../../../components';
-import { ArchivedStatusBadge } from '../../../../components/ArchivedStatusBadge';
-import { TablePagination } from '../../../../components/Table';
-import { type TablePaginationProps } from '../../../../components/Table';
+import { CardActionMenu } from '@/components';
+import { ArchivedStatusBadge } from '@/components/ArchivedStatusBadge';
+import { TablePagination } from '@/components/Table';
+import { type TablePaginationProps } from '@/components/Table';
+
 import { type Playlist } from '../../types';
 import { getMediaPlaylistTableActions, type MediaPlaylistTableActions } from '../MediaPlaylistTable';
 
@@ -20,10 +21,10 @@ export interface MediaPlaylistGridViewProps {
 }
 
 type MediaPlaylistGridCardProps = {
-	playlist: Playlist,
-	cardActions: MediaPlaylistTableActions,
-	onClick?: (playlist: Playlist) => void,
-	translate: TFunction,
+	playlist: Playlist;
+	cardActions: MediaPlaylistTableActions;
+	onClick?: (playlist: Playlist) => void;
+	translate: TFunction;
 };
 
 function MediaPlaylistGridCard({ playlist, cardActions, onClick, translate }: MediaPlaylistGridCardProps) {
@@ -82,7 +83,7 @@ function MediaPlaylistGridCard({ playlist, cardActions, onClick, translate }: Me
 				</Group>
 
 				<Text size='xs' c='dimmed'>
-					{translate('media_playlist.fields.created_at')}: {new Date(playlist.createdAt).toLocaleDateString()}
+					{translate('coremart.vendingMachine.mediaPlaylist.fields.createdAt')}: {new Date(playlist.createdAt).toLocaleDateString()}
 				</Text>
 			</Stack>
 		</Card>
@@ -95,15 +96,15 @@ export const MediaPlaylistGridView: React.FC<MediaPlaylistGridViewProps> = ({
 	actions,
 	pagination,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const { preview: _onPreview, viewDetail, ...cardActions } = actions;
 
 	if (isLoading) {
-		return <Text c='dimmed'>{translate('messages.loading')}</Text>;
+		return <Text c='dimmed'>{translate('nikki.general.messages.loading')}</Text>;
 	}
 
 	if (playlists.length === 0) {
-		return <Text c='dimmed'>{translate('media_playlist.messages.no_playlists_found')}</Text>;
+		return <Text c='dimmed'>{translate('coremart.vendingMachine.mediaPlaylist.messages.no_playlists_found')}</Text>;
 	}
 
 	return (

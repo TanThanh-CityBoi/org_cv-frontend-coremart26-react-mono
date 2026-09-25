@@ -1,13 +1,14 @@
 import { cleanFormData } from '@nikkierp/common/utils';
 import { GLOBAL_CONTEXT_SLUG } from '@nikkierp/shell/constants';
 import { useUIState } from '@nikkierp/shell/contexts';
-import { useActiveOrgModule } from '@nikkierp/shell/routing';
 import { useActiveOrgWithDetails } from '@nikkierp/shell/userContext';
+import { useActiveOrgModule } from '@nikkierp/ui/appState/routingSlice';
 import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { resolvePath, useLocation, useNavigate, useParams } from 'react-router';
 
+import type { TFunction } from 'i18next';
 
 import {
 	AuthorizeDispatch,
@@ -18,10 +19,8 @@ import {
 	selectRoleState,
 	selectUserList,
 	selectUpdateRole,
-} from '../../../appState';
-import { Role } from '../types';
-
-import type { TFunction } from 'i18next';
+} from '@/appState';
+import { Role } from '@/features/roles/types';
 
 
 type NotificationType = ReturnType<typeof useUIState>['notification'];

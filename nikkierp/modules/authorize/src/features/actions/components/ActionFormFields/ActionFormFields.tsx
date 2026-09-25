@@ -1,7 +1,7 @@
 import { AutoField, EntityDisplayField, EntitySelectField } from '@nikkierp/ui/components/form';
 import React from 'react';
 
-import type { Resource } from '../../../resources';
+import type { Resource } from '@/features/resources';
 
 
 interface ActionFormFieldsProps {

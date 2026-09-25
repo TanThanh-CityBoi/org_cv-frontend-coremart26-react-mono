@@ -1,43 +1,54 @@
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
 import { TablePaginationProps } from '@nikkierp/ui/components';
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
 import React from 'react';
 
-import { usePaginationWithTotal } from '../../../common/hooks';
-import { SearchGraph } from '../../../types';
-import { kioskMediaCrudService } from '../kioskMediaCrudService';
+import {
+	VendingMachineDispatch,
+	kioskMediaActions,
+	selectKioskMediaList,
+} from '@/appState';
+import { usePagination } from '@/common/hooks';
+import { SearchGraph, SearchParams } from '@/types';
 
 import type { KioskMedia } from '../types';
 
 
-type SearchResponse = { items: KioskMedia[], total: number };
-
-
 export function useKioskMediaList(
-	{ graph, enabled = true }: { graph?: SearchGraph, enabled?: boolean } = {},
+	{ graph, enabled = true }: { graph?: SearchGraph; enabled?: boolean } = {},
 ) {
-	const { dispatchMethod, result } = useServiceLayer<SearchResponse>(kioskMediaCrudService.search);
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
+	const list = useMicroAppSelector(selectKioskMediaList);
 
 	const fetchList = React.useCallback((targetPage: number, size: number, searchGraph?: SearchGraph) => {
-		dispatchMethod({ page: targetPage - 1, size, graph: searchGraph });
-	}, [dispatchMethod]);
+		const params: SearchParams<KioskMedia> = {
+			page: targetPage - 1,
+			size,
+			graph: searchGraph,
+		};
+		dispatch(kioskMediaActions.listKioskMedias(params));
+	}, [dispatch]);
 
-	const paginationState = usePaginationWithTotal(fetchList, result.data?.total ?? 0, { graph });
+	const paginationState = usePagination(fetchList, selectKioskMediaList, { graph });
 	const { page, pageSize } = paginationState;
 
 	React.useEffect(() => {
-		// No reset-on-disable: the slice action that cleared the list is gone, and a disabled
-		// list simply stops fetching. Stale items are not rendered because callers gate on `enabled`.
-		if (!enabled) return;
+		if (!enabled) {
+			dispatch(kioskMediaActions.resetKioskMediaList());
+			return;
+		}
 		fetchList(page, pageSize, graph);
-	}, [enabled, fetchList, page, pageSize, graph]);
+	}, [dispatch, enabled, fetchList, page, pageSize, graph]);
 
 	const handleRefresh = React.useCallback(() => {
 		if (!enabled) return;
 		fetchList(page, pageSize, graph);
 	}, [enabled, fetchList, page, pageSize, graph]);
 
-	const items = result.data?.items ?? [];
-	const isLoadingList = enabled && !items.length && result.isPending;
+	const items = list.items ?? [];
+	const status = list.status;
+	const loading = status === 'pending';
+	const error = status === 'error' ? list.error ?? null : null;
+	const isLoadingList = enabled && !items.length && (status === 'pending' || status === 'idle');
 
 	const pagination: TablePaginationProps = {
 		totalItems: paginationState.totalItems,
@@ -51,8 +62,8 @@ export function useKioskMediaList(
 	return {
 		items,
 		isLoadingList,
-		loading: result.isPending,
-		error: result.error ?? null,
+		loading,
+		error,
 		handleRefresh,
 		pagination,
 	};

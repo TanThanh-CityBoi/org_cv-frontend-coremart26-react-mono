@@ -1,13 +1,13 @@
 import { Stack, Paper } from '@mantine/core';
 import { Headers, Actions, ConfirmModal } from '@nikkierp/ui/components';
-import { useConfirmModal } from '@nikkierp/ui/hookhoc';
+import { useConfirmModal } from '@nikkierp/ui/hooks';
 import { ModelSchema } from '@nikkierp/ui/model';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
-import { ResourceTable, resourceSchema, type Resource, useResourceList, useResourceDelete } from '../../features/resources';
-import { useAuthorizePermissions } from '../../hooks/useAuthorizePermissions';
+import { ResourceTable, resourceSchema, type Resource, useResourceList, useResourceDelete } from '@/features/resources';
+import { useAuthorizePermissions } from '@/hooks/useAuthorizePermissions';
 
 
 export const ResourceListPage: React.FC = () => {

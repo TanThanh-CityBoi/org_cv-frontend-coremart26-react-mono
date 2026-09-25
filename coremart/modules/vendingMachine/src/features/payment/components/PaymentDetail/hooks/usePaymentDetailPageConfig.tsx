@@ -1,5 +1,6 @@
 /* eslint-disable max-lines-per-function */
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+import { useMicroAppDispatch } from '@nikkierp/ui/microApp';
+import { ModelSchema } from '@nikkierp/ui/model';
 import {
 	IconArchive,
 	IconArrowLeft,
@@ -13,16 +14,15 @@ import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
-import { usePaymentDetailBreadcrumbs } from './usePaymentDetailBreadcrumbs';
-import { asLegacyModelSchema } from '../../../../../common/helpers';
-import { ControlPanelProps } from '../../../../../components/ControlPanel/ControlPanel';
-import { usePaymentArchived } from '../../../hooks/usePaymentArchived';
-import { usePaymentDelete } from '../../../hooks/usePaymentDelete';
-import { usePaymentEdit } from '../../../hooks/usePaymentEdit';
-import { paymentService } from '../../../paymentService';
-import { paymentSchema } from '../../../schemas';
-import { PaymentMethod } from '../../../types';
+import { paymentActions, VendingMachineDispatch } from '@/appState';
+import { ControlPanelProps } from '@/components/ControlPanel/ControlPanel';
+import { usePaymentArchived } from '@/features/payment/hooks/usePaymentArchived';
+import { usePaymentDelete } from '@/features/payment/hooks/usePaymentDelete';
+import { usePaymentEdit } from '@/features/payment/hooks/usePaymentEdit';
+import { paymentSchema } from '@/features/payment/schemas';
+import { PaymentMethod } from '@/features/payment/types';
 
+import { usePaymentDetailBreadcrumbs } from './usePaymentDetailBreadcrumbs';
 
 import type { UsePaymentDetailPageConfigReturn } from './types';
 
@@ -44,14 +44,14 @@ function buildToolbarActions(
 ): ControlPanelProps['actions'] {
 	const primary = !isEditing
 		? [{
-			label: translate('action.edit'),
+			label: translate('nikki.general.actions.edit'),
 			leftSection: <IconEdit size={16} />,
 			onClick: onEdit,
 			type: 'button' as const,
 			variant: 'filled' as const,
 		}]
 		: [{
-			label: translate('action.save'),
+			label: translate('nikki.general.actions.save'),
 			leftSection: <IconDeviceFloppy size={16} />,
 			onClick: onSave,
 			type: 'button' as const,
@@ -59,7 +59,7 @@ function buildToolbarActions(
 			disabled: isSubmitting,
 			loading: isSubmitting,
 		}, {
-			label: translate('action.cancel'),
+			label: translate('nikki.general.actions.cancel'),
 			leftSection: <IconX size={16} />,
 			onClick: onCancel,
 			type: 'button' as const,
@@ -69,7 +69,7 @@ function buildToolbarActions(
 
 	const archiveAction = payment.isArchived
 		? {
-			label: translate('action.restore'),
+			label: translate('nikki.general.actions.restore'),
 			leftSection: <IconRestore size={16} />,
 			onClick: onRestore,
 			type: 'button' as const,
@@ -77,7 +77,7 @@ function buildToolbarActions(
 			disabled: isSubmitting || isEditing,
 		}
 		: {
-			label: translate('action.archive'),
+			label: translate('nikki.general.actions.archive'),
 			leftSection: <IconArchive size={16} />,
 			onClick: onArchive,
 			type: 'button' as const,
@@ -90,7 +90,7 @@ function buildToolbarActions(
 		...primary,
 		archiveAction,
 		{
-			label: translate('action.delete'),
+			label: translate('nikki.general.actions.delete'),
 			leftSection: <IconTrash size={16} />,
 			onClick: onDelete,
 			type: 'button' as const,
@@ -104,26 +104,26 @@ function buildToolbarActions(
 export const usePaymentDetailPageConfig = (
 	{ payment }: { payment?: PaymentMethod },
 ): UsePaymentDetailPageConfigReturn => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const navigate = useNavigate();
-	const { dispatchMethod: refetchPayment } = useServiceLayer(paymentService.getById);
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
 	const [isEditing, setIsEditing] = useState(false);
 	const [formResetNonce, setFormResetNonce] = useState(0);
 
 	const onUpdateSuccess = useCallback(() => {
 		setIsEditing(false);
 		if (payment?.id) {
-			refetchPayment({ id: payment.id });
+			dispatch(paymentActions.getPayment(payment.id));
 		}
-	}, [payment?.id, refetchPayment]);
+	}, [payment?.id, dispatch]);
 
 	const { isSubmitting, handleSubmit } = usePaymentEdit({ onUpdateSuccess });
 
 	const onArchiveSuccess = useCallback(() => {
 		if (payment?.id) {
-			refetchPayment({ id: payment.id });
+			dispatch(paymentActions.getPayment(payment.id));
 		}
-	}, [payment?.id, refetchPayment]);
+	}, [payment?.id, dispatch]);
 
 	const {
 		handleConfirmArchive,
@@ -172,7 +172,7 @@ export const usePaymentDetailPageConfig = (
 		handleCloseDeleteModal();
 	}, [dispatchDelete, payment, handleCloseDeleteModal]);
 
-	const modelSchema = asLegacyModelSchema(paymentSchema);
+	const modelSchema = paymentSchema as ModelSchema;
 
 	const onArchiveClick = useCallback(() => {
 		if (payment) {
@@ -209,7 +209,7 @@ export const usePaymentDetailPageConfig = (
 
 	const actions = useMemo<ControlPanelProps['actions']>(() => [
 		{
-			label: translate('action.back'),
+			label: translate('nikki.general.actions.back'),
 			onClick: () => navigate('../payment'),
 			leftSection: <IconArrowLeft size={16} />,
 			variant: 'outline',

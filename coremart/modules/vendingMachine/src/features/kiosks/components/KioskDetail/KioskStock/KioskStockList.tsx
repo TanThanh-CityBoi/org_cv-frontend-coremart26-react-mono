@@ -1,27 +1,28 @@
 import { Avatar, Badge, Text } from '@mantine/core';
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
 import { AutoTable } from '@nikkierp/ui/components';
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
 import { ModelSchema } from '@nikkierp/ui/model';
 import { IconEdit, IconTrash } from '@tabler/icons-react';
 import { TFunction } from 'i18next';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { CreateKioskStockModal } from './CreateKioskStockModal';
-import { KioskStockEditModal } from './KioskStockEditModal';
-import { KioskStockSortModal } from './KioskStockSortModal';
-import { DeleteKioskStockModal } from '../../..';
-import { asLegacyModelSchema, getLocalizedName } from '../../../../../common/helpers';
-import { usePaginationWithTotal } from '../../../../../common/hooks';
-import { TableAction, TableContainer, TablePagination, type TableActionItem } from '../../../../../components/Table';
+import { VendingMachineDispatch, kioskActions, selectKioskStock } from '@/appState';
+import { getLocalizedName } from '@/common/helpers';
+import { usePagination } from '@/common/hooks';
+import { TableAction, TableContainer, TablePagination, type TableActionItem } from '@/components/Table';
+import { DeleteKioskStockModal } from '@/features/kiosks';
+import { useKioskStockListTab } from '@/features/kiosks/components/KioskDetail/hooks';
 import {
 	useCreateKioskStockBulk,
 	useKioskStockDelete,
 	useKioskStockUpdate,
-} from '../../../hooks';
-import { kioskStockService } from '../../../kioskStockService';
-import { Kiosk } from '../../../types';
-import { useKioskStockListTab } from '../hooks';
+} from '@/features/kiosks/hooks';
+import { Kiosk } from '@/features/kiosks/types';
+
+import { CreateKioskStockModal } from './CreateKioskStockModal';
+import { KioskStockEditModal } from './KioskStockEditModal';
+import { KioskStockSortModal } from './KioskStockSortModal';
 import {
 	formatKioskStockPositionsDisplay, totalQuantityForKioskStock,
 } from '../KioskStockGrid/kioskStock.helpers';
@@ -40,19 +41,19 @@ const KIOSK_STOCK_LIST_COLUMNS = [
 	'actions',
 ] as const;
 
-const kioskStockListSchema = asLegacyModelSchema({
+const kioskStockListSchema: ModelSchema = {
 	name: 'KioskStockList',
 	fields: {
 		image: { type: 'string', label: 'image' },
-		sku: { type: 'string', label: 'kiosk.stocks.fields.sku' },
-		name: { type: 'string', label: 'kiosk.stocks.fields.name' },
-		price: { type: 'integer', label: 'kiosk.stocks.fields.price' },
-		warningQuantity: { type: 'integer', label: 'kiosk.stocks.fields.warning_quantity' },
-		quantity: { type: 'integer', label: 'kiosk.stocks.fields.quantity' },
-		positions: { type: 'array', label: 'kiosk.stocks.fields.positions' },
-		actions: { type: 'string', label: 'kiosk.stocks.fields.actions' },
+		sku: { type: 'string', label: 'coremart.vendingMachine.kiosk.stocks.fields.sku' },
+		name: { type: 'string', label: 'coremart.vendingMachine.kiosk.stocks.fields.name' },
+		price: { type: 'integer', label: 'coremart.vendingMachine.kiosk.stocks.fields.price' },
+		warningQuantity: { type: 'integer', label: 'coremart.vendingMachine.kiosk.stocks.fields.warningQuantity' },
+		quantity: { type: 'integer', label: 'coremart.vendingMachine.kiosk.stocks.fields.quantity' },
+		positions: { type: 'array', label: 'coremart.vendingMachine.kiosk.stocks.fields.positions' },
+		actions: { type: 'string', label: 'coremart.vendingMachine.kiosk.stocks.fields.actions' },
 	},
-});
+};
 
 function mapKioskStocksToTableData(
 	stocks: KioskStock[],
@@ -82,13 +83,13 @@ function getKioskStockListActions(
 	return [
 		{
 			key: 'edit',
-			label: translate('action.edit'),
+			label: translate('nikki.general.actions.edit'),
 			icon: <IconEdit size={16} />,
 			onClick: () => onEdit(stock),
 		},
 		{
 			key: 'delete',
-			label: translate('action.delete'),
+			label: translate('nikki.general.actions.delete'),
 			icon: <IconTrash size={16} />,
 			color: 'red',
 			onClick: () => onDelete(stock),
@@ -97,9 +98,9 @@ function getKioskStockListActions(
 }
 
 type TableUiConfig = {
-	stocksById: Map<string, KioskStock>,
-	onEdit: (s: KioskStock) => void,
-	onDelete: (s: KioskStock) => void,
+	stocksById: Map<string, KioskStock>;
+	onEdit: (s: KioskStock) => void;
+	onDelete: (s: KioskStock) => void;
 };
 
 function useKioskStockListTableUi(translate: ReturnType<typeof useTranslation>['t'], {
@@ -147,7 +148,7 @@ function useKioskStockListTableUi(translate: ReturnType<typeof useTranslation>['
 				return (
 					<TableAction
 						actions={getKioskStockListActions(stock, onEdit, onDelete, translate)}
-						overflowMenuLabel={translate('action.title')}
+						overflowMenuLabel={translate('nikki.general.actions.title')}
 					/>
 				);
 			},
@@ -158,7 +159,7 @@ function useKioskStockListTableUi(translate: ReturnType<typeof useTranslation>['
 	const headerRenderers = useMemo(
 		() => ({
 			image: () => '',
-			actions: () => <Text size='sm' fw={600} fz='sm' ta='end'>{translate('action.title')}</Text>,
+			actions: () => <Text size='sm' fw={600} fz='sm' ta='end'>{translate('nikki.general.actions.title')}</Text>,
 		}),
 		[translate],
 	);
@@ -171,17 +172,15 @@ export interface KioskStockListProps {
 }
 
 function useKioskStockListPagedFetch(kioskId: string | undefined) {
-	const { dispatchMethod, result } = useServiceLayer<{ items: KioskStock[], total: number }>(
-		kioskStockService.search,
-	);
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
+	const kioskStockState = useMicroAppSelector(selectKioskStock);
 
-	// Nested resource — `[request, kioskId]`, not a bare object.
 	const fetchList = useCallback((targetPage: number, size: number) => {
 		if (!kioskId) return;
-		dispatchMethod([{ page: targetPage - 1, size }, kioskId]);
-	}, [dispatchMethod, kioskId]);
+		dispatch(kioskActions.fetchKioskStocks({ kioskId, page: targetPage - 1, size }));
+	}, [dispatch, kioskId]);
 
-	const pagination = usePaginationWithTotal(fetchList, result.data?.total ?? 0, {
+	const pagination = usePagination(fetchList, selectKioskStock, {
 		resetPageKey: kioskId,
 		fallbackPageSize: 10,
 	});
@@ -194,19 +193,19 @@ function useKioskStockListPagedFetch(kioskId: string | undefined) {
 	const refetch = useCallback((overrideKioskId?: string) => {
 		const id = overrideKioskId ?? kioskId;
 		if (!id) return Promise.reject(new Error('Missing kiosk id'));
-		return dispatchMethod([{ page: page - 1, size: pageSize }, id]);
-	}, [dispatchMethod, kioskId, page, pageSize]);
+		return dispatch(kioskActions.fetchKioskStocks({ kioskId: id, page: page - 1, size: pageSize }));
+	}, [dispatch, kioskId, page, pageSize]);
 
 	return {
-		stocks: result.data?.items ?? [],
-		isLoading: result.isPending || result.doneAt == null,
+		stocks: kioskStockState.items ?? [],
+		isLoading: kioskStockState.status === 'pending' || kioskStockState.status === 'idle',
 		refetch,
 		pagination,
 	};
 }
 
 function useKioskStockListViewModel(kiosk: Kiosk) {
-	const { t: translate, i18n } = useTranslation('vending_machine');
+	const { t: translate, i18n } = useTranslation();
 	const {
 		stocks,
 		isLoading,
@@ -324,7 +323,6 @@ export const KioskStockList: React.FC<KioskStockListProps> = ({ kiosk }) => {
 				}
 			>
 				<AutoTable
-					translationNs='vending_machine'
 					schema={kioskStockListSchema}
 					columns={[...KIOSK_STOCK_LIST_COLUMNS]}
 					data={vm.tableData}

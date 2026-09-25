@@ -6,43 +6,43 @@ import { IconDownload } from '@tabler/icons-react';
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { asLegacyModelSchema, fmtCurrency, fmtNumber, getLocalizedName } from '../../../../../common/helpers';
-import { PaginationConfig } from '../../../../../common/hooks/usePagination';
+import { fmtCurrency, fmtNumber, getLocalizedName } from '@/common/helpers';
+import { PaginationConfig } from '@/common/hooks/usePagination';
 import {
 	TimeRangeSelect,
 	type TimeRangePreset,
 	type TimeRangePresetRange,
-} from '../../../../../components/RangePicker';
-import { TableContainer, TablePagination } from '../../../../../components/Table';
-import { TextLink } from '../../../../../components/Text';
+} from '@/components/RangePicker';
+import { TableContainer, TablePagination } from '@/components/Table';
+import { TextLink } from '@/components/Text';
 
-import type { RevenueReportByProduct } from '../../type';
+import type { RevenueReportByProduct } from '@/features/reports/business/type';
 
 
 const BY_PRODUCT_COLUMNS = ['product', 'category', 'qty', 'revenue'] as const;
 
-const byProductSchema = asLegacyModelSchema({
+const byProductSchema: ModelSchema = {
 	name: 'RevenueByProduct',
 	fields: {
-		product: { type: 'string', label: 'reports.revenue_report.columns.product' },
-		category: { type: 'string', label: 'reports.revenue_report.columns.category' },
-		qty: { type: 'string', label: 'reports.revenue_report.columns.quantity' },
-		revenue: { type: 'string', label: 'reports.revenue_report.columns.revenue' },
+		product: { type: 'string', label: 'coremart.vendingMachine.reports.revenueReport.columns.product' },
+		category: { type: 'string', label: 'coremart.vendingMachine.reports.revenueReport.columns.category' },
+		qty: { type: 'string', label: 'coremart.vendingMachine.reports.revenueReport.columns.quantity' },
+		revenue: { type: 'string', label: 'coremart.vendingMachine.reports.revenueReport.columns.revenue' },
 	},
-});
+};
 
 export type ProductRevenueTableProps = {
-	items: RevenueReportByProduct[],
-	pagination: PaginationConfig,
-	isLoading?: boolean,
-	error?: string | null,
-	handleExport?: () => void,
-	title?: string,
-	description?: string,
-	showFilter?: boolean,
-	activePreset?: TimeRangePreset,
-	defaultPreset?: TimeRangePreset,
-	onFilterChange?: (preset: TimeRangePreset, range: TimeRangePresetRange) => void,
+	items: RevenueReportByProduct[];
+	pagination: PaginationConfig;
+	isLoading?: boolean;
+	error?: string | null;
+	handleExport?: () => void;
+	title?: string;
+	description?: string;
+	showFilter?: boolean;
+	activePreset?: TimeRangePreset;
+	defaultPreset?: TimeRangePreset;
+	onFilterChange?: (preset: TimeRangePreset, range: TimeRangePresetRange) => void;
 };
 
 function mapProductRowsToTableData(
@@ -70,7 +70,7 @@ export function ProductRevenueTable({
 	defaultPreset = 'this_month',
 	onFilterChange,
 }: ProductRevenueTableProps): React.ReactElement {
-	const { t: translate, i18n } = useTranslation('vending_machine');
+	const { t: translate, i18n } = useTranslation();
 
 	const tableData = useMemo(
 		() => mapProductRowsToTableData(items, i18n.language),
@@ -100,8 +100,8 @@ export function ProductRevenueTable({
 	};
 
 	const headerRenderers: React.ComponentProps<typeof AutoTable>['headerRenderers'] = {
-		qty: () => <Text fw={600} fz='sm' ta='end'>{translate('reports.revenue_report.columns.quantity')}</Text>,
-		revenue: () => <Text fw={600} fz='sm' ta='end'>{translate('reports.revenue_report.columns.revenue')}</Text>,
+		qty: () => <Text fw={600} fz='sm' ta='end'>{translate('coremart.vendingMachine.reports.revenueReport.columns.quantity')}</Text>,
+		revenue: () => <Text fw={600} fz='sm' ta='end'>{translate('coremart.vendingMachine.reports.revenueReport.columns.revenue')}</Text>,
 	};
 
 
@@ -138,7 +138,7 @@ export function ProductRevenueTable({
 								disabled={isLoading || !pagination.totalItems}
 								onClick={handleExport}
 							>
-								{translate('reports.revenue_report.export')}
+								{translate('coremart.vendingMachine.reports.revenueReport.export')}
 							</Button>
 						)}
 					</Group>
@@ -152,7 +152,6 @@ export function ProductRevenueTable({
 				</Alert>
 			) : (
 				<AutoTable
-					translationNs='vending_machine'
 					columns={[...BY_PRODUCT_COLUMNS]}
 					data={tableData}
 					schema={byProductSchema}

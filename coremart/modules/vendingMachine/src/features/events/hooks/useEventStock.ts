@@ -1,36 +1,25 @@
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
 import { useCallback, useEffect } from 'react';
 
-import { eventStockCrudService } from '../eventStockService';
+import { VendingMachineDispatch, eventActions, selectEventStocks } from '@/appState';
 
-import type { EventStock } from '../types';
+import type { EventStock } from '@/features/events/types';
 
 
 const EMPTY: EventStock[] = [];
 
-type SearchResponse = { items: EventStock[], total: number, page: number, size: number };
-
 export function useEventStock(eventId: string | undefined, apiPage?: number, apiSize?: number) {
-	const { dispatchMethod, result } = useServiceLayer<SearchResponse>(eventStockCrudService.search);
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
+	const eventStocks = useMicroAppSelector(selectEventStocks);
 
 	const page = apiPage ?? 0;
 	const size = apiSize ?? 10;
 
-	// The backend serves this resource flat, so the event is a filter rather than a path segment.
-	const fetchList = useCallback(
-		(targetEventId: string) => dispatchMethod({
-			page,
-			size,
-			graph: { if: ['event_ref', 'eq', targetEventId] },
-		}),
-		[dispatchMethod, page, size],
-	);
-
 	useEffect(() => {
 		if (eventId) {
-			fetchList(eventId);
+			dispatch(eventActions.fetchEventStocks({ eventId, page, size }));
 		}
-	}, [eventId, fetchList]);
+	}, [eventId, dispatch, page, size]);
 
 	const refetch = useCallback(
 		(overrideEventId?: string) => {
@@ -38,21 +27,17 @@ export function useEventStock(eventId: string | undefined, apiPage?: number, api
 			if (!id) {
 				return Promise.reject(new Error('Missing event id'));
 			}
-			return fetchList(id);
+			return dispatch(eventActions.fetchEventStocks({ eventId: id, page, size }));
 		},
-		[fetchList, eventId],
+		[dispatch, eventId, page, size],
 	);
 
 	return {
-		stocks: result.data?.items ?? EMPTY,
-		pagination: {
-			total: result.data?.total ?? 0,
-			page: result.data?.page ?? page,
-			size: result.data?.size ?? size,
-		},
-		status: result.isPending ? 'pending' : 'success',
-		error: result.error,
-		isLoading: result.isPending || result.doneAt == null,
+		stocks: eventStocks.items ?? EMPTY,
+		pagination: { total: eventStocks.total, page: eventStocks.page, size: eventStocks.size },
+		status: eventStocks.status,
+		error: eventStocks.error,
+		isLoading: eventStocks.status === 'pending' || eventStocks.status === 'idle',
 		refetch,
 	};
 }

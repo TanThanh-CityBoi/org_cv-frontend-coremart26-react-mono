@@ -3,13 +3,11 @@ import { useUIState } from '@nikkierp/shell/contexts';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { SortDirection } from '../../../../../../types/search-graph';
-import { kioskStockService } from '../../../../kioskStockService';
-import { Kiosk } from '../../../../types';
+import { kioskService } from '@/features/kiosks/kioskService';
+import { Kiosk } from '@/features/kiosks/types';
+import { SortDirection } from '@/types/search-graph';
 
 import type { KioskStock } from '../../KioskStockGrid/kioskStock.types';
-
-
 
 
 export type SortableStock = Omit<Pick<KioskStock, 'id' | 'sortIndex' | 'etag' | 'product' | 'sellPrice' | 'warningQuantity'>, 'etag'> & { etag: string };
@@ -30,12 +28,12 @@ function renumber(items: SortableStock[]): SortableStock[] {
 }
 
 export type UseKioskStockSortArgs = {
-	kiosk: Kiosk,
-	onSuccess?: () => void,
+	kiosk: Kiosk;
+	onSuccess?: () => void;
 };
 
 export function useKioskStockSort({ kiosk, onSuccess }: UseKioskStockSortArgs) {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const { notification } = useUIState();
 	const [items, setItems] = useState<SortableStock[]>([]);
 	const [isFetching, setIsFetching] = useState(false);
@@ -46,28 +44,20 @@ export function useKioskStockSort({ kiosk, onSuccess }: UseKioskStockSortArgs) {
 		if (!kiosk.id) return;
 		setIsFetching(true);
 		try {
-			// Called imperatively, not through `useServiceLayer`: this modal owns its own local
-			// list state, so the result must not go into the store.
-			//
-			// ⚠ The legacy call also sent `include_product=true`, which hydrated `product` on each
-			// row. `RestSearchRequest` has no field for arbitrary query params, so it is dropped
-			// here — rows arrive with `productRef` but no `product`. The modal only renders the
-			// product name, so if that comes back blank this is why; the fix belongs upstream in
-			// `RestSearchRequest`, not in a cast here.
-			const { data } = await kioskStockService.search({
+			const result = await kioskService.searchKioskStocks(kiosk.id, {
 				fields: ['id', 'etag', 'sortIndex', 'sellPrice', 'warningQuantity', 'productRef'],
 				page: 0,
 				size: 100,
+				extra: { include_product: 'true' },
 				graph: { order: [['sort_index', SortDirection.ASC]] },
-			}, kiosk.id);
-			const items_ = (data?.items ?? []) as KioskStock[];
-			setItems(items_.map(toSortableStock).sort((a, b) => (a?.sortIndex ?? 0) - (b?.sortIndex ?? 0)));
+			});
+			setItems(result.items.map(toSortableStock).sort((a, b) => (a?.sortIndex ?? 0) - (b?.sortIndex ?? 0)));
 			setIsDirty(false);
 		}
 		catch {
 			notification.showError(
-				translate('errors.loadFailed', { defaultValue: 'Failed to load stocks' }),
-				translate('messages.error'),
+				translate('nikki.general.errors.load_failed', { defaultValue: 'Failed to load stocks' }),
+				translate('nikki.general.messages.error'),
 			);
 		}
 		finally {
@@ -101,20 +91,20 @@ export function useKioskStockSort({ kiosk, onSuccess }: UseKioskStockSortArgs) {
 		if (!kiosk.id || !isDirty) return;
 		setIsSaving(true);
 		try {
-			await kioskStockService.bulkUpdate({
-				kioskId: kiosk.id,
-				items: items.map(({ id, etag, sortIndex, warningQuantity }) => ({
+			await kioskService.bulkUpdateKioskStocks(
+				kiosk.id,
+				items.map(({ id, etag, sortIndex, warningQuantity }) => ({
 					id,
 					etag,
 					sortIndex: sortIndex ? sortIndex + 1 : 1,
 					warningQuantity,
 				})),
-			});
+			);
 			notification.showInfo(
-				translate('kiosk_stock.sort.success', {
+				translate('coremart.vendingMachine.kioskStock.sort.success', {
 					defaultValue: 'Product order saved',
 				}),
-				translate('messages.success'),
+				translate('nikki.general.messages.success'),
 			);
 			setIsDirty(false);
 			onSuccess?.();
@@ -122,8 +112,8 @@ export function useKioskStockSort({ kiosk, onSuccess }: UseKioskStockSortArgs) {
 		}
 		catch {
 			notification.showError(
-				translate('errors.updateFailed', { defaultValue: 'Failed to save order' }),
-				translate('messages.error'),
+				translate('nikki.general.errors.update_failed', { defaultValue: 'Failed to save order' }),
+				translate('nikki.general.messages.error'),
 			);
 		}
 		finally {

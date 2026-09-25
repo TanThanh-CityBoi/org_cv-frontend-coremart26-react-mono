@@ -3,7 +3,7 @@ import { Badge, Box, Button, Card, Center, Group, Image, Modal, SimpleGrid, Stac
 import React, { ReactNode, useEffect, useRef, useTransition } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { normalizePlaylistObjectFit, type ObjectFit, type Playlist, type PlaylistMediaPlayState } from '../../../../mediaPlaylist';
+import { normalizePlaylistObjectFit, type ObjectFit, type Playlist, type PlaylistMediaPlayState } from '@/features/mediaPlaylist';
 
 
 
@@ -38,7 +38,7 @@ export interface MediaPlaylistPreviewProps {
 
 	// **
 	opened: boolean;
-	handleClose: () => void;
+	handleClose: () => void
 }
 
 export const KioskDisplayPreview: React.FC<MediaPlaylistPreviewProps> = ({
@@ -350,7 +350,7 @@ export const KioskDisplayPreview: React.FC<MediaPlaylistPreviewProps> = ({
 
 const PreviewModal = ({opened, handleClose, children}:
 {children: ReactNode, opened: boolean, handleClose: ()=>void}) => {
-	const {t: translate} = useTranslation('vending_machine');
+	const {t: translate} = useTranslation();
 
 	return (
 		<Modal
@@ -359,13 +359,13 @@ const PreviewModal = ({opened, handleClose, children}:
 			title={
 				<Group gap='xs'>
 					<Text fw={700} size='lg'>
-						{translate('kiosk_stock.sort.title', {
+						{translate('coremart.vendingMachine.kioskStock.sort.title', {
 							defaultValue: 'Sắp xếp sản phẩm',
 						})}
 					</Text>
 					{/* {isDirty && (
 						<Text size='xs' c='orange' fw={500}>
-							{translate('kiosk_stock.sort.unsaved', {
+							{translate('coremart.vendingMachine.kioskStock.sort.unsaved', {
 								defaultValue: '• Chưa lưu',
 							})}
 						</Text>

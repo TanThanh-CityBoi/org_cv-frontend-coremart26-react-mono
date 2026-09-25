@@ -1,7 +1,7 @@
 import { Stack } from '@mantine/core';
 import { GLOBAL_CONTEXT_SLUG } from '@nikkierp/shell/constants';
-import { useActiveOrgModule } from '@nikkierp/shell/routing';
 import { useActiveOrgWithDetails, useMyOrgs } from '@nikkierp/shell/userContext';
+import { useActiveOrgModule } from '@nikkierp/ui/appState/routingSlice';
 import {
 	BreadcrumbsHeader,
 	FormFieldProvider,
@@ -18,9 +18,9 @@ import {
 	identityActions,
 	selectGroupList,
 	selectUserList,
-} from '../../appState';
-import { RoleFormFields, roleSchema, useRoleCreate } from '../../features/roles';
-import { useAuthorizePermissions } from '../../hooks/useAuthorizePermissions';
+} from '@/appState';
+import { RoleFormFields, roleSchema, useRoleCreate } from '@/features/roles';
+import { useAuthorizePermissions } from '@/hooks/useAuthorizePermissions';
 
 
 function RoleCreatePageBody(): React.ReactNode {

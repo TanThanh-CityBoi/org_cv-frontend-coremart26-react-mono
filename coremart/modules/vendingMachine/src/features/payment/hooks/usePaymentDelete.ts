@@ -1,9 +1,13 @@
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+import { useUIState } from '@nikkierp/shell/contexts';
+import { ReduxActionState } from '@nikkierp/ui/appState';
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
-import { useMutationOutcome } from '../../../common/hooks/useMutationOutcome';
-import { paymentService } from '../paymentService';
+import { paymentActions, selectDeletePayment, VendingMachineDispatch } from '@/appState';
+
 import { PaymentMethod } from '../types';
+
 
 
 export interface UsePaymentDeleteProps {
@@ -11,15 +15,58 @@ export interface UsePaymentDeleteProps {
 	onDeleteError?: () => void;
 }
 
+function useDeleteOutcomeSync(
+	deleteState: ReduxActionState<void>,
+	dispatchedRequestIdRef: React.RefObject<string | null>,
+	dispatch: VendingMachineDispatch,
+	notification: ReturnType<typeof useUIState>['notification'],
+	translate: ReturnType<typeof useTranslation>['t'],
+	handleCloseDeleteModal: () => void,
+	onDeleteSuccess: () => void,
+	onDeleteError: () => void,
+) {
+	React.useEffect(() => {
+		const requestId = deleteState.requestId;
+		const matchesDispatch = requestId != null && dispatchedRequestIdRef.current === requestId;
+		if (!matchesDispatch) return;
+
+		if (deleteState.status === 'success') {
+			dispatchedRequestIdRef.current = null;
+			notification.showInfo(
+				translate('coremart.vendingMachine.payment.messages.delete_success'),
+				translate('nikki.general.messages.success'),
+			);
+			handleCloseDeleteModal();
+			onDeleteSuccess();
+			dispatch(paymentActions.resetDeletePayment());
+			return;
+		}
+		if (deleteState.status === 'error') {
+			dispatchedRequestIdRef.current = null;
+			notification.showError(
+				deleteState.error ?? translate('nikki.general.errors.delete_failed'),
+				translate('nikki.general.messages.error'),
+			);
+			handleCloseDeleteModal();
+			onDeleteError();
+			dispatch(paymentActions.resetDeletePayment());
+		}
+	}, [deleteState, dispatch, notification, translate, handleCloseDeleteModal, onDeleteSuccess, onDeleteError]);
+}
 
 export const usePaymentDelete = ({
-	onDeleteSuccess,
-	onDeleteError,
+	onDeleteSuccess = () => {},
+	onDeleteError = () => {},
 }: UsePaymentDeleteProps = {
 	onDeleteSuccess: () => {},
 	onDeleteError: () => {},
 }) => {
-	const { dispatchMethod, result } = useServiceLayer(paymentService.delete);
+	const { notification } = useUIState();
+	const { t: translate } = useTranslation();
+
+	const dispatchedDeleteRequestIdRef = React.useRef<string | null>(null);
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
+	const deleteState = useMicroAppSelector(selectDeletePayment);
 
 	const [isOpenDeleteModal, setIsOpenDeleteModal] = React.useState(false);
 	const [paymentToDelete, setPaymentToDelete] = React.useState<PaymentMethod | null>(null);
@@ -35,15 +82,20 @@ export const usePaymentDelete = ({
 	}, []);
 
 	const handleDelete = React.useCallback((paymentId: string) => {
-		dispatchMethod({ id: paymentId });
-	}, [dispatchMethod]);
+		const pendingAction = dispatch(paymentActions.deletePayment({ id: paymentId }));
+		dispatchedDeleteRequestIdRef.current = pendingAction.requestId;
+	}, [dispatch]);
 
-	useMutationOutcome(result, {
-		successKey: () => 'payment.messages.delete_success',
-		errorKey: 'errors.deleteFailed',
-		onSuccess: () => { handleCloseDeleteModal(); onDeleteSuccess?.(); },
-		onError: () => { handleCloseDeleteModal(); onDeleteError?.(); },
-	});
+	useDeleteOutcomeSync(
+		deleteState,
+		dispatchedDeleteRequestIdRef,
+		dispatch,
+		notification,
+		translate,
+		handleCloseDeleteModal,
+		onDeleteSuccess,
+		onDeleteError,
+	);
 
 	return {
 		handleDelete,

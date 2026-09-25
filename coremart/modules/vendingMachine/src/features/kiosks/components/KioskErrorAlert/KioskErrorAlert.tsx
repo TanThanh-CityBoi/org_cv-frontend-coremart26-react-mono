@@ -20,10 +20,10 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 
-import { asLegacyModelSchema, formatDateTime } from '../../../../common/helpers';
-import { PaginationConfig } from '../../../../common/hooks';
-import { TableContainer } from '../../../../components/Table';
-import { KioskWarning, KioskWarningLevel, KioskWarningStatus } from '../../../reports/operations/type';
+import { formatDateTime } from '@/common/helpers';
+import { PaginationConfig } from '@/common/hooks';
+import { TableContainer } from '@/components/Table';
+import { KioskWarning, KioskWarningLevel, KioskWarningStatus } from '@/features/reports/operations/type';
 
 
 interface KioskErrorAlertProps {
@@ -32,17 +32,17 @@ interface KioskErrorAlertProps {
 	detailLink?: string;
 }
 
-const kioskWarningSchema = asLegacyModelSchema({
+const kioskWarningSchema: ModelSchema = {
 	name: 'kioskWarning',
 	fields: {
 		id: { type: 'string', label: '', hidden: true },
-		kioskRef: { type: 'string', label: 'overview.error_alerts.kiosk_ref' },
-		level: { type: 'string', label: 'overview.error_alerts.level' },
-		description: { type: 'string', label: 'overview.error_alerts.description' },
-		status: { type: 'string', label: 'overview.error_alerts.status' },
-		createdAt: { type: 'string', label: 'overview.error_alerts.reported_at' },
+		kioskRef: { type: 'string', label: 'coremart.vendingMachine.overview.errorAlerts.kioskRef' },
+		level: { type: 'string', label: 'coremart.vendingMachine.overview.errorAlerts.level' },
+		description: { type: 'string', label: 'coremart.vendingMachine.overview.errorAlerts.description' },
+		status: { type: 'string', label: 'coremart.vendingMachine.overview.errorAlerts.status' },
+		createdAt: { type: 'string', label: 'coremart.vendingMachine.overview.errorAlerts.reportedAt' },
 	},
-});
+};
 
 const LEVEL_COLOR: Record<KioskWarningLevel, string> = {
 	low: 'blue',
@@ -110,7 +110,7 @@ function renderStatusColumn(row: Record<string, unknown>, translate: (key: strin
 	const status = String(row.status ?? '');
 	return (
 		<Badge color={getStatusColor(status)} variant='filled' size='sm'>
-			{translate(`overview.error.status.${status}`)}
+			{translate(`coremart.vendingMachine.overview.error.status.${status}`)}
 		</Badge>
 	);
 }
@@ -125,7 +125,7 @@ function renderCreatedAtColumn(row: KioskWarning) {
 
 
 export function KioskErrorAlert({ warnings, pagination, detailLink }: KioskErrorAlertProps): React.ReactElement {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const totalWarnings = pagination.totalItems;
 	const waitingCount = warnings.filter(w => w.status === 'waiting').length;
@@ -137,20 +137,20 @@ export function KioskErrorAlert({ warnings, pagination, detailLink }: KioskError
 			<Stack gap='md'>
 				<Group justify='space-between' align='flex-start'>
 					<Title order={4}>
-						{translate('overview.error_alerts.title')}
+						{translate('coremart.vendingMachine.overview.errorAlerts.title')}
 					</Title>
 					<Group gap='xs'>
 						{/* <Badge color='gray' variant='light'>
-							{waitingCount} {translate('overview.error_alerts.waiting')}
+							{waitingCount} {translate('coremart.vendingMachine.overview.errorAlerts.waiting')}
 						</Badge>
 						<Badge color='blue' variant='light'>
-							{inProgressCount} {translate('overview.error_alerts.in_progress')}
+							{inProgressCount} {translate('coremart.vendingMachine.overview.errorAlerts.inProgress')}
 						</Badge>
 						<Badge color='green' variant='light'>
-							{processedCount}/{totalWarnings} {translate('overview.error_alerts.processed')}
+							{processedCount}/{totalWarnings} {translate('coremart.vendingMachine.overview.errorAlerts.processed')}
 						</Badge> */}
 						<Badge color='orange.5' variant='filled'>
-							{totalWarnings} {translate('overview.error_alerts.total_warnings')}
+							{totalWarnings} {translate('coremart.vendingMachine.overview.errorAlerts.totalWarnings')}
 						</Badge>
 						{detailLink && (
 							<Button
@@ -160,7 +160,7 @@ export function KioskErrorAlert({ warnings, pagination, detailLink }: KioskError
 								size='xs'
 								rightSection={<IconArrowRight size={16} />}
 							>
-								{translate('overview.error_alerts.view_details')}
+								{translate('coremart.vendingMachine.overview.errorAlerts.viewDetails')}
 							</Button>
 						)}
 					</Group>
@@ -170,7 +170,6 @@ export function KioskErrorAlert({ warnings, pagination, detailLink }: KioskError
 					<Stack gap='xs'>
 						<TableContainer>
 							<AutoTable
-								translationNs='vending_machine'
 								columns={['kioskRef', 'level', 'status', 'description', 'createdAt']}
 								data={warnings}
 								schema={kioskWarningSchema}
@@ -190,7 +189,7 @@ export function KioskErrorAlert({ warnings, pagination, detailLink }: KioskError
 					</Stack>
 				) : (
 					<Text c='dimmed' ta='center' py='xl'>
-						{translate('overview.error_alerts.no_errors')}
+						{translate('coremart.vendingMachine.overview.errorAlerts.noErrors')}
 					</Text>
 				)}
 			</Stack>

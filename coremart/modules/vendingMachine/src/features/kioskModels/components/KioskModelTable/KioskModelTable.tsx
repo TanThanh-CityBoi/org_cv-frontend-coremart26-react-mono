@@ -11,11 +11,12 @@ import { TFunction } from 'i18next';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { ArchivedStatusBadge } from '../../../../components/ArchivedStatusBadge';
+import { ArchivedStatusBadge } from '@/components/ArchivedStatusBadge';
 import {
 	NameCell, TableAction, TableContainer, TablePagination,
 	type TableActionItem, type TablePaginationProps,
-} from '../../../../components/Table';
+} from '@/components/Table';
+
 import { KioskModel } from '../../types';
 
 
@@ -43,7 +44,7 @@ export function getKioskModelTableActions(
 	const defaultActions: (TableActionItem & { active?: boolean })[] = [
 		{
 			key: KIOSK_MODEL_ACTIONS.PREVIEW,
-			label: translate('action.preview'),
+			label: translate('nikki.general.actions.preview'),
 			icon: <IconLayoutSidebarRightExpand size={20} stroke={1.6} />,
 			onClick: () => actions[KIOSK_MODEL_ACTIONS.PREVIEW]?.(model),
 			color: 'gray',
@@ -51,7 +52,7 @@ export function getKioskModelTableActions(
 		},
 		{
 			key: KIOSK_MODEL_ACTIONS.VIEW_DETAIL,
-			label: translate('action.viewDetails'),
+			label: translate('nikki.general.actions.viewDetail'),
 			icon: <IconEye size={16} />,
 			onClick: () => actions[KIOSK_MODEL_ACTIONS.VIEW_DETAIL]?.(model),
 			color: 'blue',
@@ -59,7 +60,7 @@ export function getKioskModelTableActions(
 		},
 		{
 			key: KIOSK_MODEL_ACTIONS.ARCHIVE,
-			label: translate('action.archive'),
+			label: translate('nikki.general.actions.archive'),
 			icon: <IconArchive size={16} />,
 			onClick: () => actions[KIOSK_MODEL_ACTIONS.ARCHIVE]?.(model),
 			color: 'orange',
@@ -67,7 +68,7 @@ export function getKioskModelTableActions(
 		},
 		{
 			key: KIOSK_MODEL_ACTIONS.RESTORE,
-			label: translate('action.restore'),
+			label: translate('nikki.general.actions.restore'),
 			icon: <IconRestore size={16} />,
 			onClick: () => actions[KIOSK_MODEL_ACTIONS.RESTORE]?.(model),
 			color: 'blue',
@@ -75,7 +76,7 @@ export function getKioskModelTableActions(
 		},
 		{
 			key: KIOSK_MODEL_ACTIONS.DELETE,
-			label: translate('action.delete'),
+			label: translate('nikki.general.actions.delete'),
 			icon: <IconTrash size={16} />,
 			onClick: () => actions[KIOSK_MODEL_ACTIONS.DELETE]?.(model),
 			color: 'red',
@@ -90,7 +91,7 @@ function renderActionsHeader(
 	_schema: unknown,
 	translate: (key: string) => string,
 ) {
-	return <Text fw={600} fz='sm' ta='end'>{translate('action.title')}</Text>;
+	return <Text fw={600} fz='sm' ta='end'>{translate('nikki.general.actions.title')}</Text>;
 }
 
 export interface KioskModelTableProps extends AutoTableProps {
@@ -106,7 +107,7 @@ export const KioskModelTable: React.FC<KioskModelTableProps> = ({
 	actions,
 	pagination,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const colRenderers: React.ComponentProps<typeof AutoTable>['columnRenderers'] = {
 		referenceCode: (row) => {
@@ -133,7 +134,7 @@ export const KioskModelTable: React.FC<KioskModelTableProps> = ({
 		actions: (row) => (
 			<TableAction
 				actions={getKioskModelTableActions(row as unknown as KioskModel, actions, translate)}
-				overflowMenuLabel={translate('action.title')}
+				overflowMenuLabel={translate('nikki.general.actions.title')}
 			/>
 		),
 	};
@@ -146,7 +147,6 @@ export const KioskModelTable: React.FC<KioskModelTableProps> = ({
 		<Box pos='relative'>
 			<TableContainer minWidth={500} footer={<TablePagination {...pagination} />}>
 				<AutoTable
-					translationNs='vending_machine'
 					columns={columns}
 					data={data}
 					schema={schema}

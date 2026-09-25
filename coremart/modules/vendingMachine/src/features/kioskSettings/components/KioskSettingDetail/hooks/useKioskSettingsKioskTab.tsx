@@ -3,14 +3,15 @@ import { IconPlus } from '@tabler/icons-react';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { ControlPanelProps } from '../../../../../components/ControlPanel/ControlPanel';
-import { SearchGraph } from '../../../../../types';
-import { useKioskListInSetting } from '../../../hooks';
+import { ControlPanelProps } from '@/components/ControlPanel/ControlPanel';
+import { useKioskListInSetting } from '@/features/kioskSettings/hooks';
+import { SearchGraph } from '@/types';
+
 import { useRegisterKioskSettingDetailTab } from '../kioskSettingDetailTabControl';
 
 
 type UseKioskSettingsKioskTabArgs = {
-	graph: SearchGraph,
+	graph: SearchGraph;
 };
 
 function useTablePagination(
@@ -30,7 +31,7 @@ function useTablePagination(
 }
 
 export function useKioskSettingsKioskTab({ graph }: UseKioskSettingsKioskTabArgs) {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const list = useKioskListInSetting({ graph });
 	const pagination = useTablePagination(list.pagination);
 
@@ -38,7 +39,7 @@ export function useKioskSettingsKioskTab({ graph }: UseKioskSettingsKioskTabArgs
 
 	const tabActions = useMemo<ControlPanelProps['actions']>(() => [
 		{
-			label: translate('kiosk_settings.actions.add_kiosk'),
+			label: translate('coremart.vendingMachine.kioskSettings.actions.add_kiosk'),
 			leftSection: <IconPlus size={16} />,
 			onClick: () => setModalOpened(true),
 			variant: 'filled' as const,

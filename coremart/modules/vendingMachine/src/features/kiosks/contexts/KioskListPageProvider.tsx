@@ -3,19 +3,19 @@ import React, { createContext, useContext, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
-import { KioskListViewMode, useKioskArchive, useKioskDelete, useKioskPreview } from '..';
-import { BreadcrumbItem } from '../../../components/BreadCrumbs';
-import { ControlPanelActionItem } from '../../../components/ControlPanel';
-import { useKioskFilter } from '../hooks/useKioskFilter';
-import { useKioskList } from '../hooks/useKioskList';
+import { BreadcrumbItem } from '@/components/BreadCrumbs';
+import { ControlPanelActionItem } from '@/components/ControlPanel';
+import { KioskListViewMode, useKioskArchive, useKioskDelete, useKioskPreview } from '@/features/kiosks';
+import { useKioskFilter } from '@/features/kiosks/hooks/useKioskFilter';
+import { useKioskList } from '@/features/kiosks/hooks/useKioskList';
 
 
 type KioskListPageContextValue = {
-	filter: ReturnType<typeof useKioskFilter>,
-	list: ReturnType<typeof useKioskList>,
-	deleteKiosk: ReturnType<typeof useKioskDelete>,
-	archiveKiosk: ReturnType<typeof useKioskArchive>,
-	previewKiosk: ReturnType<typeof useKioskPreview>,
+	filter: ReturnType<typeof useKioskFilter>;
+	list: ReturnType<typeof useKioskList>;
+	deleteKiosk: ReturnType<typeof useKioskDelete>;
+	archiveKiosk: ReturnType<typeof useKioskArchive>;
+	previewKiosk: ReturnType<typeof useKioskPreview>;
 };
 const KioskListPageContext = createContext<KioskListPageContextValue | null>(null);
 
@@ -58,9 +58,9 @@ export interface UseKioskListPageConfigReturn {
 	breadcrumbs: BreadcrumbItem[];
 	actions: ControlPanelActionItem[];
 	viewModeConfig: {
-		value: KioskListViewMode,
-		onChange: (mode: KioskListViewMode) => void,
-		segments: KioskListViewMode[],
+		value: KioskListViewMode;
+		onChange: (mode: KioskListViewMode) => void;
+		segments: KioskListViewMode[];
 	};
 }
 export function useKioskListPageConfig(): UseKioskListPageConfigReturn {
@@ -68,7 +68,7 @@ export function useKioskListPageConfig(): UseKioskListPageConfigReturn {
 	if (!context) throw new Error('useKioskListPageLayout must be used within KioskListPageProvider');
 
 	const navigate = useNavigate();
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const [viewMode, setViewMode] = useState<KioskListViewMode>('grid');
 
 	const { handleRefresh } = context.list;
@@ -79,14 +79,14 @@ export function useKioskListPageConfig(): UseKioskListPageConfigReturn {
 
 	const breadcrumbs = useMemo(() => {
 		return [
-			{ title: translate('title'), href: '../overview' },
-			{ title: translate('kiosk.title'), href: '#' },
+			{ title: translate('coremart.vendingMachine.title'), href: '../overview' },
+			{ title: translate('coremart.vendingMachine.kiosk.title'), href: '#' },
 		];
 	}, [translate]);
 
 	const actions = useMemo(() => [
-		{ label: translate('action.create'), leftSection: <IconPlus size={16} />, onClick: handleCreate },
-		{ label: translate('action.refresh'), leftSection: <IconRefresh size={16} />, onClick: handleRefresh, variant: 'outline' as const },
+		{ label: translate('nikki.general.actions.create'), leftSection: <IconPlus size={16} />, onClick: handleCreate },
+		{ label: translate('nikki.general.actions.refresh'), leftSection: <IconRefresh size={16} />, onClick: handleRefresh, variant: 'outline' as const },
 	], [handleRefresh, translate]);
 
 	const viewModeConfig: UseKioskListPageConfigReturn['viewModeConfig'] = useMemo(() => {

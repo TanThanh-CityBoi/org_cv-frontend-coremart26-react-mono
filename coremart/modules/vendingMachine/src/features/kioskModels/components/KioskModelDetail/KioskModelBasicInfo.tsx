@@ -3,8 +3,9 @@ import { FormFieldProvider, FormStyleProvider } from '@nikkierp/ui/components';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { ArchiveKioskModelModal, DeleteKioskModelModal } from '../..';
-import { KioskModel } from '../../types';
+import { ArchiveKioskModelModal, DeleteKioskModelModal } from '@/features/kioskModels';
+import { KioskModel } from '@/features/kioskModels/types';
+
 import { KioskModelFormFields } from '../KioskModelFormFields/KioskModelFormFields';
 import { useBasicInfoTab } from './hooks/useBasicInfoTab';
 
@@ -14,13 +15,13 @@ export interface KioskModelBasicInfoProps {
 }
 
 const KioskModelBasicInfoAuditDates: React.FC<{ model: KioskModel }> = ({ model }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	return (
 		<React.Fragment>
 			<Divider my={3} />
 			<Box>
 				<Text size='sm' c='dimmed' mb={3}>
-					{translate('kiosk_models.fields.created_at')}
+					{translate('coremart.vendingMachine.kioskModels.fields.createdAt')}
 				</Text>
 				<Text size='sm'>{new Date(model.createdAt).toLocaleString()}</Text>
 			</Box>

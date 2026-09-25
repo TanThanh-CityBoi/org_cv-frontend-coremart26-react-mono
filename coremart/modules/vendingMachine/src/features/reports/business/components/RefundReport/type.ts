@@ -1,13 +1,13 @@
-import { LocalizedName } from '../../../../../common/helpers';
+import { LocalizedName } from '@/common/helpers';
 
 import type { DateValue, DatesRangeValue } from '@mantine/dates';
 
 
 export type RefundReportAppliedFilters = {
-	dateRange: DatesRangeValue<DateValue> | undefined,
-	kioskId: string | null,
-	kioskLabel: string | null,
-	timeSlot: { from: string | null, to: string | null },
+	dateRange: DatesRangeValue<DateValue> | undefined;
+	kioskId: string | null;
+	kioskLabel: string | null;
+	timeSlot: { from: string | null; to: string | null };
 };
 
 export type RefundColumnKey =
@@ -23,20 +23,20 @@ export type RefundColumnKey =
 
 
 export type KioskRefundBreakdown = {
-	kioskName: string,
-	refundAmount: number,
-	refundOrders: number,
+	kioskName: string;
+	refundAmount: number;
+	refundOrders: number;
 };
 
 export type ProductRefundBreakdown = {
-	productName: string,
-	refundAmount: number,
-	quantity: number,
+	productName: string;
+	refundAmount: number;
+	quantity: number;
 };
 
 export type MethodRefundRateRow = {
-	label: string,
-	refundAmount: number,
+	label: string;
+	refundAmount: number;
 };
 
 // ---
@@ -49,11 +49,11 @@ export type MethodRefundRateRow = {
 // 	"refund_rate_by_product": 22.22222222222222
 //  }
 export type RefundOverview = {
-	totalRefundAmount: string,
-	refundedOrderCount: number,
-	totalOrderCount: number,
-	refundedProductCount: number,
-	refundRateByProduct: number,
+	totalRefundAmount: string;
+	refundedOrderCount: number;
+	totalOrderCount: number;
+	refundedProductCount: number;
+	refundRateByProduct: number;
 };
 
 
@@ -62,10 +62,10 @@ export type RefundOverview = {
 // "refund_amount": "-14900",
 // "refunded_order_count": 1
 export type KioskRefundReport = {
-	kioskId: string,
-	kioskName: string,
-	refundAmount: string,
-	refundedOrderCount: number,
+	kioskId: string;
+	kioskName: string;
+	refundAmount: string;
+	refundedOrderCount: number;
 };
 
 
@@ -74,10 +74,10 @@ export type KioskRefundReport = {
 // "refund_amount": "-12200",
 // "refunded_order_count": 1
 export type PaymentMethodRefundReport = {
-	paymentMethod: string,
-	name: string,
-	refundAmount: string,
-	refundedOrderCount: number,
+	paymentMethod: string;
+	name: string;
+	refundAmount: string;
+	refundedOrderCount: number;
 };
 
 
@@ -91,10 +91,10 @@ export type PaymentMethodRefundReport = {
 // 	"refunded_order_count": 1
 //   },
 export type ProductRefundReport = {
-	productId: string,
-	productName: LocalizedName,
-	refundAmount: string,
-	refundedOrderCount: number,
+	productId: string;
+	productName: LocalizedName;
+	refundAmount: string;
+	refundedOrderCount: number;
 };
 
 
@@ -114,17 +114,17 @@ export type ProductRefundReport = {
 // 	"approve_by_email": "le.van.cuong@nikki.com"
 //  }
 export type OrderRefundReport = {
-	orderTime: string,
-	orderCode: string,
-	kioskId: string,
-	kioskName: string,
-	refundAmount: string,
-	refundMethod: string,
-	refundReason: string,
-	createdById: string,
-	createdByName: string,
-	createdByEmail: string,
-	approveById: string,
-	approveByName: string,
-	approveByEmail: string,
+	orderTime: string;
+	orderCode: string;
+	kioskId: string;
+	kioskName: string;
+	refundAmount: string;
+	refundMethod: string;
+	refundReason: string;
+	createdById: string;
+	createdByName: string;
+	createdByEmail: string;
+	approveById: string;
+	approveByName: string;
+	approveByEmail: string;
 };

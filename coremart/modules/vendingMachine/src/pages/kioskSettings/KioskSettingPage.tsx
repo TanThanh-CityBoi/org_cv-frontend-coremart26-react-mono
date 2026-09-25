@@ -1,12 +1,12 @@
-import { useDocumentTitle } from '@mantine/hooks';
+import { useDocumentTitle } from '@nikkierp/ui/hooks';
+import { ModelSchema } from '@nikkierp/ui/model';
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
-import { asLegacyModelSchema } from '../../common/helpers';
-import { ControlPanel } from '../../components';
-import { ControlPanelProps, ViewMode } from '../../components/ControlPanel/ControlPanel';
-import { PageContainer } from '../../components/PageContainer';
+import { ControlPanel } from '@/components';
+import { ControlPanelProps, ViewMode } from '@/components/ControlPanel/ControlPanel';
+import { PageContainer } from '@/components/PageContainer';
 import {
 	ArchiveKioskSettingModal,
 	DeleteKioskSettingModal,
@@ -22,8 +22,8 @@ import {
 	useKioskSettingPreview,
 	KioskSettingListViewMode,
 	type KioskSettingTableActions,
-} from '../../features/kioskSettings';
-import { KioskSetting } from '../../features/kioskSettings/types';
+} from '@/features/kioskSettings';
+import { KioskSetting } from '@/features/kioskSettings/types';
 
 
 export const KioskSettingPage: React.FC = () => {
@@ -64,7 +64,7 @@ export const KioskSettingPage: React.FC = () => {
 
 	const { breadcrumbs, actions, viewMode, setViewMode } = useKioskSettingPageConfig({ handleRefresh });
 
-	useDocumentTitle('kiosk_settings.title');
+	useDocumentTitle('coremart.vendingMachine.kioskSettings.title');
 
 	return (
 		<>
@@ -129,7 +129,7 @@ interface KioskSettingListControlPanelProps {
 
 const KioskSettingListControlPanel: React.FC<KioskSettingListControlPanelProps> =
 	({ actions, searchValue, setSearchValue, filters, viewMode, setViewMode }) => {
-		const { t: translate } = useTranslation('vending_machine');
+		const { t: translate } = useTranslation();
 		return (
 			<ControlPanel
 				key='control-panel'
@@ -137,7 +137,7 @@ const KioskSettingListControlPanel: React.FC<KioskSettingListControlPanelProps> 
 				search={{
 					value: searchValue,
 					onChange: setSearchValue,
-					placeholder: translate('kiosk_settings.search.placeholder'),
+					placeholder: translate('coremart.vendingMachine.kioskSettings.search.placeholder'),
 				}}
 				filters={filters}
 				viewMode={{
@@ -164,7 +164,7 @@ const KioskSettingListPageContent: React.FC<KioskSettingListPageContentProps> =
 			<KioskSettingTable
 				columns={['code', 'name', 'description', 'isArchived', 'actions']}
 				data={settings as unknown as Record<string, unknown>[]}
-				schema={asLegacyModelSchema(kioskSettingSchema)}
+				schema={kioskSettingSchema as ModelSchema}
 				isLoading={isLoading}
 				actions={actions}
 				pagination={pagination}

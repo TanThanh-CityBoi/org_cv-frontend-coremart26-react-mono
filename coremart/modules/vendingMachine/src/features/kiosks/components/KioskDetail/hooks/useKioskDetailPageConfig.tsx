@@ -4,9 +4,11 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
 
-import { useKioskDetailTabControl } from '..';
-import { ControlPanelActionItem } from '../../../../../components/ControlPanel';
-import { Kiosk } from '../../../types';
+
+import { ControlPanelActionItem } from '@/components/ControlPanel';
+import { useKioskDetailTabControl } from '@/features/kiosks/components/KioskDetail';
+import { Kiosk } from '@/features/kiosks/types';
+
 import { KioskActivity } from '../KioskActivity';
 import { KioskBasicInfo } from '../KioskBasicInfo';
 import { KioskDisplaySettings } from '../KioskDisplaySettings';
@@ -20,13 +22,13 @@ import {KioskDetailTabs} from './types';
 
 
 type DetailTabConfig = {
-	id: KioskDetailTabs,
-	title: string,
-	content: () => React.ReactNode,
+	id: KioskDetailTabs;
+	title: string;
+	content: () => React.ReactNode;
 };
 
 const useKioskDetailTabs = ({kiosk}: {kiosk?: Kiosk}): Array<DetailTabConfig> => {
-	const {t: translate} = useTranslation('vending_machine');
+	const {t: translate} = useTranslation();
 	const tabs = useMemo<Array<DetailTabConfig>>(() => {
 		if (!kiosk) {
 			return [];
@@ -34,32 +36,32 @@ const useKioskDetailTabs = ({kiosk}: {kiosk?: Kiosk}): Array<DetailTabConfig> =>
 		return [
 			{
 				id: KioskDetailTabs.BASIC_INFO,
-				title: translate('kiosk.tabs.basic_info'),
+				title: translate('coremart.vendingMachine.kiosk.tabs.basicInfo'),
 				content: () => <KioskBasicInfo key={KioskDetailTabs.BASIC_INFO} kiosk={kiosk} />,
 			},
 			{
 				id: KioskDetailTabs.STOCK_LIST,
-				title: translate('kiosk.tabs.products_list'),
+				title: translate('coremart.vendingMachine.kiosk.tabs.productsList'),
 				content: () => <KioskStockList key={KioskDetailTabs.STOCK_LIST} kiosk={kiosk}/>,
 			},
 			{
 				id: KioskDetailTabs.STOCK_GRID,
-				title: translate('kiosk.tabs.products_grid'),
+				title: translate('coremart.vendingMachine.kiosk.tabs.productsGrid'),
 				content: () => <KioskStockGrid key={KioskDetailTabs.STOCK_GRID} kiosk={kiosk} />,
 			},
 			{
 				id: KioskDetailTabs.OPERATIONAL_SETTINGS,
-				title: translate('kiosk.tabs.operational_settings'),
+				title: translate('coremart.vendingMachine.kiosk.tabs.operationalSettings'),
 				content: () => <KioskOperationalSettings key={KioskDetailTabs.OPERATIONAL_SETTINGS} kiosk={kiosk} />,
 			},
 			{
 				id: KioskDetailTabs.DISPLAY_SETTINGS,
-				title: translate('kiosk.tabs.display_settings'),
+				title: translate('coremart.vendingMachine.kiosk.tabs.displaySettings'),
 				content: () => <KioskDisplaySettings key={KioskDetailTabs.DISPLAY_SETTINGS} kiosk={kiosk} />,
 			},
 			{
 				id: KioskDetailTabs.ACTIVITY,
-				title: translate('kiosk.tabs.activity'),
+				title: translate('coremart.vendingMachine.kiosk.tabs.activity'),
 				content: () => <KioskActivity key={KioskDetailTabs.ACTIVITY} />,
 			},
 		];
@@ -70,12 +72,12 @@ const useKioskDetailTabs = ({kiosk}: {kiosk?: Kiosk}): Array<DetailTabConfig> =>
 
 const useTabActions = ({activeTab}: {activeTab: KioskDetailTabs}): ControlPanelActionItem[] => {
 	const navigate = useNavigate();
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const { registry } = useKioskDetailTabControl();
 
 	const actions = useMemo<ControlPanelActionItem[]>(() => {
 		const baseActions = [{
-			label: translate('action.back'),
+			label: translate('nikki.general.actions.back'),
 			onClick: () => navigate('../kiosks'),
 			leftSection: <IconArrowLeft size={16} />,
 			variant: 'outline',

@@ -1,5 +1,4 @@
 import {  Button, Drawer, Flex } from '@mantine/core';
-import { testAttrs } from '@nikkierp/common/utils';
 import { IconX } from '@tabler/icons-react';
 
 import { FilterState, ModuleViewMode } from '../ModuleHomePage';
@@ -39,7 +38,6 @@ export const ModuleFilterDrawer: React.FC<FilterDrawerProps> = ({
 						color='var(--mantine-color-gray-6)'
 						h={24} w={24} p={2}
 						onClick={onClose}
-						{...testAttrs('shell.moduleFilterDrawer', 'close')}
 					>
 						<IconX size={20} />
 					</Button>

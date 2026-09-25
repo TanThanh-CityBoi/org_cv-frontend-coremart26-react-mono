@@ -3,37 +3,37 @@
 	"fields": {
 		"id": {
 			"type": "string",
-			"label": "{ \"$ref\": 'settings.fields.id' }",
+			"label": "{ \"$ref\": 'coremart.vendingMachine.settings.fields.id' }",
 			"hidden": true
 		},
 		"code": {
 			"type": "string",
-			"label": "{ \"$ref\": 'settings.fields.code' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.settings.fields.code' }"
 		},
 		"name": {
 			"type": "string",
-			"label": "{ \"$ref\": 'settings.fields.name' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.settings.fields.name' }"
 		},
 		"description": {
 			"type": "string",
-			"label": "{ \"$ref\": 'settings.fields.description' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.settings.fields.description' }"
 		},
 		"config": {
 			"type": "object",
-			"label": "{ \"$ref\": 'settings.fields.config' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.settings.fields.config' }"
 		},
 		"isArchived": {
 			"type": "boolean",
-			"label": "{ \"$ref\": 'settings.fields.is_archived' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.settings.fields.isArchived' }"
 		},
 		"createdAt": {
 			"type": "date",
-			"label": "{ \"$ref\": 'settings.fields.created_at' }",
+			"label": "{ \"$ref\": 'coremart.vendingMachine.settings.fields.createdAt' }",
 			"hidden": true
 		},
 		"updatedAt": {
 			"type": "date",
-			"label": "{ \"$ref\": 'settings.fields.updated_at' }",
+			"label": "{ \"$ref\": 'coremart.vendingMachine.settings.fields.updatedAt' }",
 			"hidden": true
 		}
 	}

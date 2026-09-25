@@ -1,6 +1,5 @@
-import { RestSearchResponse } from '@nikkierp/common/dynamicModel';
-import { Module } from '@nikkierp/shell/erpModules';
-import { useActiveOrgModule } from '@nikkierp/shell/routing';
+import { useMyModules } from '@nikkierp/shell/userContext';
+import { useActiveOrgModule } from '@nikkierp/ui/appState/routingSlice';
 import { debounce } from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
 
@@ -8,11 +7,12 @@ import { mockModules as mockModuleListByCategory } from '../components/mockModul
 import { FilterState, ModuleViewMode } from '../components/ModuleHomePage';
 
 
-export function useQueryModule(allModules: RestSearchResponse<Module> | null) {
-	const availableModules = allModules?.items ?? [];
+export function useQueryModule() {
+	const { orgSlug } = useActiveOrgModule();
+	const availableModules = useMyModules(orgSlug ?? '');
 	const availableModuleSlugs = useMemo(
-		() => new Set(availableModules.map((module) => module.name)),
-		[...availableModules],
+		() => new Set(availableModules.map((module) => module.slug)),
+		[availableModules],
 	);
 	const [viewMode, setViewMode] = useState<ModuleViewMode>('list');
 	const {
@@ -36,8 +36,7 @@ export function useQueryModule(allModules: RestSearchResponse<Module> | null) {
 		// );
 		// return filterModules(modulesByContext, searchQuery, filters);
 		return filterModules(mockModuleListByCategory, searchQuery, filters);
-	// }, [searchQuery, filters, availableModuleSlugs]);
-	}, [searchQuery, filters]);
+	}, [searchQuery, filters, availableModuleSlugs]);
 
 	return {
 		// View mode

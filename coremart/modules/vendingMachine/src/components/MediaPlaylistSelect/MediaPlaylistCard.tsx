@@ -6,7 +6,7 @@ import { Link } from 'react-router';
 
 import { TextLink } from '../Text';
 
-import type { Playlist } from '../../features/mediaPlaylist/types';
+import type { Playlist } from '@/features/mediaPlaylist/types';
 
 
 export interface MediaPlaylistCardProps {
@@ -19,11 +19,11 @@ export interface MediaPlaylistCardProps {
 
 
 const EmptyPlaylistCardContent: React.FC<{
-	type: 'waiting' | 'shopping',
-	isEditing: boolean,
-	onSelect: () => void,
+	type: 'waiting' | 'shopping';
+	isEditing: boolean;
+	onSelect: () => void;
 }> = ({type, isEditing, onSelect}) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	return (
 		<Group gap='xs' justify='space-between'>
@@ -31,8 +31,8 @@ const EmptyPlaylistCardContent: React.FC<{
 				<IconPlaylist size={30} color='var(--mantine-color-gray-7)' />
 				<Text size='sm' c='dimmed'>
 					{translate(type === 'waiting'
-						? 'events.messages.no_idle_playlist'
-						: 'events.messages.no_shopping_playlist')}
+						? 'coremart.vendingMachine.events.messages.no_idle_playlist'
+						: 'coremart.vendingMachine.events.messages.no_shopping_playlist')}
 				</Text>
 			</Group>
 			{isEditing && (
@@ -41,7 +41,7 @@ const EmptyPlaylistCardContent: React.FC<{
 					leftSection={<IconPlus size={14} />}
 					onClick={onSelect}
 				>
-					{translate('events.playlist.select_media_playlists')}
+					{translate('coremart.vendingMachine.events.playlist.selectMediaPlaylists')}
 				</Button>
 			)}
 		</Group>
@@ -49,13 +49,13 @@ const EmptyPlaylistCardContent: React.FC<{
 };
 
 const MediaPlaylistCardContent: React.FC<{
-	playlist: Playlist,
-	isEditing: boolean,
-	onRemove?: () => void,
+	playlist: Playlist;
+	isEditing: boolean;
+	onRemove?: () => void;
 }> = ({ playlist, isEditing, onRemove }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const archived = !!playlist.isArchived;
-	const detailLabel = translate('action.viewDetails');
+	const detailLabel = translate('nikki.general.actions.viewDetail');
 
 	return (
 		<Group gap='xs' align='top' justify='space-between'>
@@ -70,8 +70,8 @@ const MediaPlaylistCardContent: React.FC<{
 					<Text size='xs' c='dimmed' lineClamp={1} mb={'xs'}>{playlist.id}</Text>
 					<Badge size='sm' variant='filled' color={archived ? 'gray' : 'green'}>
 						{archived
-							? translate('media_playlist.archived.yes')
-							: translate('media_playlist.archived.no')}
+							? translate('coremart.vendingMachine.mediaPlaylist.archived.yes')
+							: translate('coremart.vendingMachine.mediaPlaylist.archived.no')}
 					</Badge>
 				</Stack>
 			</Group>
@@ -92,7 +92,7 @@ const MediaPlaylistCardContent: React.FC<{
 					</Tooltip>
 				) : null}
 				{isEditing && onRemove ? (
-					<Tooltip label={translate('action.delete')}>
+					<Tooltip label={translate('nikki.general.actions.delete')}>
 						<ActionIcon variant='subtle' color='red' size='sm' onClick={onRemove}>
 							<IconTrash size={16} />
 						</ActionIcon>

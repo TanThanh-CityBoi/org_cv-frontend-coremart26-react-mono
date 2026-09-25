@@ -7,11 +7,11 @@ import type { KioskMedia } from '../../types';
 
 
 export type KioskMediaMutationFooterProps = {
-	media: KioskMedia,
-	translate: TFunction,
-	onRequestDelete?: () => void,
-	onRequestArchive?: () => void,
-	onRequestRestore?: () => void,
+	media: KioskMedia;
+	translate: TFunction;
+	onRequestDelete?: () => void;
+	onRequestArchive?: () => void;
+	onRequestRestore?: () => void;
 };
 
 export const KioskMediaMutationFooter: React.FC<KioskMediaMutationFooterProps> = ({
@@ -29,17 +29,17 @@ export const KioskMediaMutationFooter: React.FC<KioskMediaMutationFooterProps> =
 			<Group justify='flex-end' gap='xs'>
 				{media.isArchived !== true && onRequestArchive ? (
 					<Button variant='light' color='orange' onClick={onRequestArchive} leftSection={<IconArchive size={16} />}>
-						{translate('action.archive')}
+						{translate('nikki.general.actions.archive')}
 					</Button>
 				) : null}
 				{media.isArchived === true && onRequestRestore ? (
 					<Button variant='light' color='blue' onClick={onRequestRestore} leftSection={<IconRestore size={16} />}>
-						{translate('action.restore')}
+						{translate('nikki.general.actions.restore')}
 					</Button>
 				) : null}
 				{onRequestDelete ? (
 					<Button variant='outline' color='red' onClick={onRequestDelete} leftSection={<IconTrash size={16} />}>
-						{translate('action.delete')}
+						{translate('nikki.general.actions.delete')}
 					</Button>
 				) : null}
 			</Group>

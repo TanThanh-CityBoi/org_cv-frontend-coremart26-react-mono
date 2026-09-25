@@ -6,15 +6,16 @@ import { useNavigate, useParams } from 'react-router';
 
 import { useMinimumLoading } from './useMinimumLoading';
 import { useTreeNode } from './useTreeNode';
+import { treeRootItemsToTreeData } from '../utils';
+
 import {
 	driveFileActions,
 	selectTreeExpandedState,
 	selectTreePaging,
 	selectTreeRootItems,
-} from '../../../appState/file';
-import { DRIVE_TABS } from '../../../constants/driveTabs';
-import { useOrgModulePath } from '../../../hooks/useRootPath';
-import { treeRootItemsToTreeData } from '../utils';
+} from '@/appState/file';
+import { DRIVE_TABS } from '@/constants/driveTabs';
+import { useOrgModulePath } from '@/hooks/useRootPath';
 
 
 

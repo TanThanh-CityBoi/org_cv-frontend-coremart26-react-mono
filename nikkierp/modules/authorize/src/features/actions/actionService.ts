@@ -1,11 +1,12 @@
 import { Action } from './types';
+
 import {
 	listActions as listActionsApi,
 	getAction as getActionApi,
 	createAction as createActionApi,
 	updateAction as updateActionApi,
 	deleteAction as deleteActionApi,
-} from '../../services/authzService';
+} from '@/services/authzService';
 
 
 function mapDtoToAction(dto: Action): Action {

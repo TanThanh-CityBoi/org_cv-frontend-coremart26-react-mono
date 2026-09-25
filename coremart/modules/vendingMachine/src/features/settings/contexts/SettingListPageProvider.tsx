@@ -3,18 +3,19 @@ import React, { createContext, useContext, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
-import { BreadcrumbItem } from '../../../components/BreadCrumbs';
-import { ControlPanelActionItem } from '../../../components/ControlPanel';
-import { useSettingArchive, useSettingDelete, useSettingFilter, useSettingList, useSettingPreview } from '../hooks';
+import { BreadcrumbItem } from '@/components/BreadCrumbs';
+import { ControlPanelActionItem } from '@/components/ControlPanel';
+import { useSettingArchive, useSettingDelete, useSettingFilter, useSettingList, useSettingPreview } from '@/features/settings/hooks';
+
 import { SettingListViewMode } from '../types';
 
 
 type SettingListPageContextValue = {
-	filter: ReturnType<typeof useSettingFilter>,
-	list: ReturnType<typeof useSettingList>,
-	deleteSetting: ReturnType<typeof useSettingDelete>,
-	archiveSetting: ReturnType<typeof useSettingArchive>,
-	previewSetting: ReturnType<typeof useSettingPreview>,
+	filter: ReturnType<typeof useSettingFilter>;
+	list: ReturnType<typeof useSettingList>;
+	deleteSetting: ReturnType<typeof useSettingDelete>;
+	archiveSetting: ReturnType<typeof useSettingArchive>;
+	previewSetting: ReturnType<typeof useSettingPreview>;
 };
 
 const SettingListPageContext = createContext<SettingListPageContextValue | null>(null);
@@ -54,33 +55,33 @@ export interface UseSettingListPageConfigReturn {
 	breadcrumbs: BreadcrumbItem[];
 	actions: ControlPanelActionItem[];
 	viewModeConfig: {
-		value: SettingListViewMode,
-		onChange: (mode: SettingListViewMode) => void,
-		segments: SettingListViewMode[],
+		value: SettingListViewMode;
+		onChange: (mode: SettingListViewMode) => void;
+		segments: SettingListViewMode[];
 	};
 }
 
 export function useSettingListPageConfig(): UseSettingListPageConfigReturn {
 	const context = useSettingListPageContext();
 	const navigate = useNavigate();
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const [viewMode, setViewMode] = useState<SettingListViewMode>('list');
 
 	const { handleRefresh } = context.list;
 
 	const breadcrumbs = useMemo(() => [
-		{ title: translate('title'), href: '../overview' },
-		{ title: translate('settings.title'), href: '#' },
+		{ title: translate('coremart.vendingMachine.title'), href: '../overview' },
+		{ title: translate('coremart.vendingMachine.settings.title'), href: '#' },
 	], [translate]);
 
 	const actions = useMemo(() => [
 		{
-			label: translate('action.create'),
+			label: translate('nikki.general.actions.create'),
 			leftSection: <IconPlus size={16} />,
 			onClick: () => navigate('../settings/create'),
 		},
 		{
-			label: translate('action.refresh'),
+			label: translate('nikki.general.actions.refresh'),
 			leftSection: <IconRefresh size={16} />,
 			onClick: handleRefresh,
 			variant: 'outline' as const,

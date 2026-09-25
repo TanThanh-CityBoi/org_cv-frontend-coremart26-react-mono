@@ -1,29 +1,31 @@
 import {  Group, Stack, Text, useMantineColorScheme, useMantineTheme } from '@mantine/core';
-import { ErrorBoundary } from '@nikkierp/ui/components';
 import clsx from 'clsx';
 import React from 'react';
 import { Outlet } from 'react-router';
 
 
+import { LangSwitchDropdown } from '@/components/LangSwitch';
+import { ScrollableContent } from '@/components/ScrollableContent';
+import { ThemeSwitchDropdown } from '@/components/ThemeSwitch';
+
 import classes from './PublicLayout.module.css';
-import { LangSwitchDropdown } from '../../components/LangSwitch';
-import { ScrollableContent } from '../../components/ScrollableContent';
-import { ThemeSwitchDropdown } from '../../components/ThemeSwitch';
+
+
+
 
 
 export function PublicLayout(): React.ReactNode {
 	return (
-		<ErrorBoundary>
-			<Stack gap={0} h='100vh' bg='var(--nikki-color-linear-page-background)'>
-				<Header />
-				<ScrollableContent>
-					<Outlet />
-				</ScrollableContent>
-				<Footer />
-			</Stack>
-		</ErrorBoundary>
+		<Stack gap={0} h='100vh' bg='var(--nikki-color-linear-page-background)'>
+			<Header />
+			<ScrollableContent>
+				<Outlet />
+			</ScrollableContent>
+			<Footer />
+		</Stack>
 	);
 };
+
 
 const Header: React.FC = () => {
 	const { colorScheme } = useMantineColorScheme();
@@ -32,8 +34,12 @@ const Header: React.FC = () => {
 
 	return (
 		<Group
-			component='header'align='center' justify='flex-end'
-			h={50} gap={0} bg={bg}
+			component='header'
+			align='center'
+			justify='flex-end'
+			h={50}
+			gap={0}
+			bg={bg}
 			className={clsx( classes.headerRow )}
 			px={'md'}
 		>

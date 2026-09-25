@@ -1,13 +1,12 @@
-import { useDocumentTitle } from '@mantine/hooks';
 import { ConfirmModal } from '@nikkierp/ui/components';
-import { useConfirmModal } from '@nikkierp/ui/hookhoc';
+import { useConfirmModal, useDocumentTitle } from '@nikkierp/ui/hooks';
+import { ModelSchema } from '@nikkierp/ui/model';
 import { IconPlus, IconRefresh } from '@tabler/icons-react';
 import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { asLegacyModelSchema } from '../../common/helpers';
-import { ControlPanel, type ViewMode, ControlPanelFilterConfig } from '../../components';
-import { PageContainer } from '../../components/PageContainer';
+import { ControlPanel, type ViewMode, ControlPanelFilterConfig } from '@/components';
+import { PageContainer } from '@/components/PageContainer';
 import {
 	GameDetailDrawer,
 	GameGridView,
@@ -15,13 +14,13 @@ import {
 	gameSchema,
 	useGameDetail,
 	useGameList,
-} from '../../features/games';
-import { Game } from '../../features/games/types';
+} from '@/features/games';
+import { Game } from '@/features/games/types';
 
 
 // eslint-disable-next-line max-lines-per-function
 export const GamesPage: React.FC = () => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const { games, isLoadingList, handleRefresh } = useGameList();
 	const { isOpen, item, configOpenModal, handleCloseModal } = useConfirmModal<Game>();
 
@@ -87,8 +86,8 @@ export const GamesPage: React.FC = () => {
 	};
 
 	const statusOptions = [
-		{ value: 'active', label: translate('status.active') },
-		{ value: 'inactive', label: translate('status.inactive') },
+		{ value: 'active', label: translate('nikki.general.status.active') },
+		{ value: 'inactive', label: translate('nikki.general.status.inactive') },
 	];
 
 	const filters: ControlPanelFilterConfig[] = useMemo(() => [
@@ -98,15 +97,15 @@ export const GamesPage: React.FC = () => {
 			value: statusFilter,
 			onChange: setStatusFilter,
 			options: statusOptions,
-			placeholder: translate('games.filter.status'),
+			placeholder: translate('coremart.vendingMachine.games.filter.status'),
 		},
 	], [statusFilter, statusOptions, translate]);
 
-	useDocumentTitle('menu.mini_game');
+	useDocumentTitle('coremart.vendingMachine.menu.miniGame');
 
 	const breadcrumbs = useMemo(() => [
-		{ title: translate('title'), href: '../overview' },
-		{ title: translate('menu.mini_game'), href: '#' },
+		{ title: translate('coremart.vendingMachine.title'), href: '../overview' },
+		{ title: translate('coremart.vendingMachine.menu.miniGame'), href: '#' },
 	], [translate]);
 
 	return (
@@ -116,10 +115,10 @@ export const GamesPage: React.FC = () => {
 				actionBar={
 					<ControlPanel
 						actions={[
-							{ label: translate('action.create'), leftSection: <IconPlus size={16} />, onClick: handleCreate },
-							{ label: translate('action.refresh'), leftSection: <IconRefresh size={16} />, onClick: handleRefresh, variant: 'outline' },
+							{ label: translate('nikki.general.actions.create'), leftSection: <IconPlus size={16} />, onClick: handleCreate },
+							{ label: translate('nikki.general.actions.refresh'), leftSection: <IconRefresh size={16} />, onClick: handleRefresh, variant: 'outline' },
 						]}
-						search={{ value: searchValue, onChange: setSearchValue, placeholder: translate('games.search.placeholder') }}
+						search={{ value: searchValue, onChange: setSearchValue, placeholder: translate('coremart.vendingMachine.games.search.placeholder') }}
 						filters={filters}
 						viewMode={{ value: viewMode, onChange: setViewMode, segments: ['list', 'grid'] }}
 					/>
@@ -129,7 +128,7 @@ export const GamesPage: React.FC = () => {
 					<GameTable
 						columns={['code', 'name', 'description', 'status', 'latestVersion', 'minAppVersion', 'actions']}
 						data={filteredGames as unknown as Record<string, unknown>[]}
-						schema={asLegacyModelSchema(gameSchema)}
+						schema={gameSchema as ModelSchema}
 						isLoading={isLoadingList}
 						onViewDetail={handleViewDetail}
 						onDelete={handleOpenDeleteModal}
@@ -148,13 +147,13 @@ export const GamesPage: React.FC = () => {
 				opened={isOpen}
 				onClose={handleCloseModal}
 				onConfirm={handleDeleteConfirm}
-				title={translate('messages.delete.confirm')}
+				title={translate('nikki.general.messages.delete_confirm')}
 				message={
 					item
-						? translate('messages.delete.confirm.name', { name: item.name })
-						: translate('messages.delete.confirm')
+						? translate('nikki.general.messages.delete_confirm_name', { name: item.name })
+						: translate('nikki.general.messages.delete_confirm')
 				}
-				confirmLabel={translate('action.delete')}
+				confirmLabel={translate('nikki.general.actions.delete')}
 				confirmColor='red'
 			/>
 

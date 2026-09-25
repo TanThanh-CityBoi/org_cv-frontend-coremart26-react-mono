@@ -2,7 +2,7 @@ import { Box, Group, Image, Text } from '@mantine/core';
 import { IconCreditCard } from '@tabler/icons-react';
 import React from 'react';
 
-import { PaymentMethod } from '../../types';
+import { PaymentMethod } from '@/features/payment/types';
 
 
 export interface PaymentDetailHeaderProps {

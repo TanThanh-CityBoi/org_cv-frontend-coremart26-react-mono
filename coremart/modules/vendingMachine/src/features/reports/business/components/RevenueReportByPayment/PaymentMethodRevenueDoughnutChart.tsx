@@ -10,13 +10,13 @@ import React, { useMemo } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import { useTranslation } from 'react-i18next';
 
-import { fmtCurrency } from '../../../../../common/helpers';
+import { fmtCurrency } from '@/common/helpers';
 import {
 	REPORT_PALETTE_BORDERS,
 	REPORT_PALETTE_FILLS,
 	reportPaletteKeyAt,
-} from '../../../../../components/reportChartTheme';
-import { usePaymentList, type PaymentMethod } from '../../../../payment';
+} from '@/components/reportChartTheme';
+import { usePaymentList, type PaymentMethod } from '@/features/payment';
 
 import type { PaymentMethodMetricRow } from './PaymentMethodMetricBarChart';
 
@@ -24,15 +24,15 @@ import type { PaymentMethodMetricRow } from './PaymentMethodMetricBarChart';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 type PaymentMethodRevenueDoughnutChartProps = {
-	data: PaymentMethodMetricRow[],
-	title?: string,
+	data: PaymentMethodMetricRow[];
+	title?: string;
 };
 
 export function PaymentMethodRevenueDoughnutChart({
 	data,
 	title,
 }: PaymentMethodRevenueDoughnutChartProps): React.ReactElement {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const { payments } = usePaymentList();
 
 	const labeled = useMemo(
@@ -40,7 +40,7 @@ export function PaymentMethodRevenueDoughnutChart({
 			...item,
 			label: item.label
 				?? payments?.find((p: PaymentMethod) => p.id === item.paymentMethodId)?.name
-				?? translate('reports.revenue_report.payment_fallback', {
+				?? translate('coremart.vendingMachine.reports.revenueReport.paymentFallback', {
 					index: index + 1,
 				}),
 		})),

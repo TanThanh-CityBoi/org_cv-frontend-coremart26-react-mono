@@ -12,7 +12,7 @@ export interface UseKioskMediaArchiveProps {
 	onArchiveError?: () => void;
 }
 
-type PendingArchive = { media: KioskMedia, targetArchived: boolean };
+type PendingArchive = { media: KioskMedia; targetArchived: boolean };
 
 /* eslint-disable max-lines-per-function -- mirrors useKioskModelArchive confirm + async API */
 export const useKioskMediaArchive = ({
@@ -20,7 +20,7 @@ export const useKioskMediaArchive = ({
 	onArchiveError = () => {},
 }: UseKioskMediaArchiveProps = {}) => {
 	const { notification } = useUIState();
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const [pendingArchive, setPendingArchive] = useState<PendingArchive | null>(null);
 	const [isArchiving, setIsArchiving] = useState(false);
@@ -45,8 +45,8 @@ export const useKioskMediaArchive = ({
 	const handleConfirmArchive = useCallback(async () => {
 		if (!pendingArchive?.media.etag) {
 			notification.showError(
-				translate('errors.updateFailed'),
-				translate('messages.error'),
+				translate('nikki.general.errors.update_failed'),
+				translate('nikki.general.messages.error'),
 			);
 			return;
 		}
@@ -57,11 +57,11 @@ export const useKioskMediaArchive = ({
 		try {
 			await kioskMediaService.setKioskMediaArchived(id, { etag, isArchived: targetArchived });
 			const messageKey = targetArchived
-				? 'kiosk_media.messages.archive_success'
-				: 'kiosk_media.messages.restore_success';
+				? 'coremart.vendingMachine.kioskMedia.messages.archive_success'
+				: 'coremart.vendingMachine.kioskMedia.messages.restore_success';
 			notification.showInfo(
 				translate(messageKey),
-				translate('messages.success'),
+				translate('nikki.general.messages.success'),
 			);
 			resetArchiveModal();
 			onArchiveSuccess();
@@ -69,8 +69,8 @@ export const useKioskMediaArchive = ({
 		catch (e: unknown) {
 			const msg = e instanceof Error ? e.message : String(e);
 			notification.showError(
-				msg || translate('errors.updateFailed'),
-				translate('messages.error'),
+				msg || translate('nikki.general.errors.update_failed'),
+				translate('nikki.general.messages.error'),
 			);
 			onArchiveError();
 		}

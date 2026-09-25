@@ -1,11 +1,11 @@
 import { notifications } from '@mantine/notifications';
+import { ModelSchema } from '@nikkierp/ui/model';
 import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
-import { asLegacyModelSchema } from '../../common/helpers';
-import { ControlPanel } from '../../components';
-import { PageContainer } from '../../components/PageContainer';
+import { ControlPanel } from '@/components';
+import { PageContainer } from '@/components/PageContainer';
 import {
 	OrderHistoryModal,
 	OrderRefundModal,
@@ -16,8 +16,8 @@ import {
 	useOrderPageConfig,
 	useOrderPageContext,
 	type VdOrder,
-} from '../../features/orders';
-import { ORDER_TABLE_COLUMNS } from '../../features/orders/components/OrderTable/OrderTable';
+} from '@/features/orders';
+import { ORDER_TABLE_COLUMNS } from '@/features/orders/components/OrderTable/OrderTable';
 
 
 export const OrderListPage: React.FC = () => {
@@ -29,7 +29,7 @@ export const OrderListPage: React.FC = () => {
 };
 
 const OrderListPageContent: React.FC = () => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const navigate = useNavigate();
 	const { filter: {
 		filters,
@@ -46,8 +46,8 @@ const OrderListPageContent: React.FC = () => {
 	const openInvoice = useCallback((order: VdOrder) => {
 		notifications.show({
 			color: 'blue',
-			title: translate('orders.invoice.pending_title'),
-			message: translate('orders.invoice.pending_message', { id: order.id }),
+			title: translate('coremart.vendingMachine.orders.invoice.pending_title'),
+			message: translate('coremart.vendingMachine.orders.invoice.pending_message', { id: order.id }),
 		});
 	}, [translate]);
 
@@ -65,7 +65,7 @@ const OrderListPageContent: React.FC = () => {
 
 	return (
 		<PageContainer
-			documentTitle={translate('menu.orders')}
+			documentTitle={translate('coremart.vendingMachine.menu.orders')}
 			breadcrumbs={breadcrumbs}
 			sections={[
 				<ControlPanel
@@ -80,7 +80,7 @@ const OrderListPageContent: React.FC = () => {
 			<OrderTable
 				columns={[...ORDER_TABLE_COLUMNS]}
 				data={rows}
-				schema={asLegacyModelSchema(orderSchema)}
+				schema={orderSchema as ModelSchema}
 				actions={tableActions}
 				isLoading={isLoading}
 				pagination={pagination}

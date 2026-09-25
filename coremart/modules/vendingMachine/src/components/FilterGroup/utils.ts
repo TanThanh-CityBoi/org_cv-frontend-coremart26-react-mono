@@ -226,7 +226,7 @@ export function formatFilterTag(
 	type: 'search' | 'filter',
 	key: string,
 	value: string | string[],
-	config?: { search?: any[], filter?: any[] },
+	config?: { search?: any[]; filter?: any[] },
 ): string {
 	if (type === 'search') {
 		const searchConfig = config?.search?.find((s) => s.key === key);
@@ -384,7 +384,7 @@ function createTag(options: CreateTagOptions): FilterTag {
 /**
  * Helper function để tìm label từ config array
  */
-function findLabelFromConfig<T extends { key: string, label: string }>(
+function findLabelFromConfig<T extends { key: string; label: string }>(
 	configArray: T[] | undefined,
 	key: string,
 ): string {

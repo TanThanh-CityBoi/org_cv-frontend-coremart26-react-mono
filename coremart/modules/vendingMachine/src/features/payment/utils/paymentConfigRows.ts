@@ -1,11 +1,11 @@
-import type { CustomFieldValueType, PaymentMethod, PaymentMethodConfig, PaymentMethodConfigValue } from '../types';
+import type { CustomFieldValueType, PaymentMethod, PaymentMethodConfig, PaymentMethodConfigValue } from '@/features/payment/types';
 
 
 
 export type PaymentConfigRow = {
-	key: string,
-	value: string,
-	valueType: CustomFieldValueType,
+	key: string;
+	value: string;
+	valueType: CustomFieldValueType;
 };
 
 export function paymentConfigToRows(config?: PaymentMethod['config']): PaymentConfigRow[] {

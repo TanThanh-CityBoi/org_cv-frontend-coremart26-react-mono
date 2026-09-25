@@ -31,7 +31,7 @@ export const FilterGroup: React.FC<FilterGroupProps> = ({
 	placeholder,
 	style,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const [filterDropdownOpened, setFilterDropdownOpened] = useState(false);
 
 	const hasActiveFilters = useMemo(() => Object.values(state).some(value => !isEmpty(value)), [state]);
@@ -59,7 +59,7 @@ export const FilterGroup: React.FC<FilterGroupProps> = ({
 					state={state}
 					updateState={updateState}
 					resetState={resetState}
-					placeholder={placeholder || translate('search.placeholder') || 'Tìm kiếm...'}
+					placeholder={placeholder || translate('nikki.general.search.placeholder') || 'Tìm kiếm...'}
 				/>
 				<FilterDropdown
 					config={config}

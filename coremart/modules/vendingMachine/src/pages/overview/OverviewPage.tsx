@@ -6,26 +6,26 @@ import {
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { PageContainer } from '../../components/PageContainer';
+import { PageContainer } from '@/components/PageContainer';
+import {
+	mockOperationParameters,
+	mockSupportRequests,
+} from '@/features/kiosks/mocks';
+import { CustomerSupportRequest, KioskAnalyticsChart, OverviewStats } from '@/features/reports/operations/components';
+import { useKioskAnalytics, useKioskWarnings } from '@/features/reports/operations/hooks';
+import { useKioskLowStocks } from '@/features/reports/operations/hooks/useKioskLowStocks';
+
 import {
 	KioskErrorAlert,
 	KioskLowStockAlert,
 } from '../../features/kiosks/components';
 import { KioskHitMap } from '../../features/kiosks/components/KioskHitMap';
 import { useKioskList } from '../../features/kiosks/hooks';
-import {
-	mockOperationParameters,
-	mockSupportRequests,
-} from '../../features/kiosks/mocks';
-import { CustomerSupportRequest, KioskAnalyticsChart, OverviewStats } from '../../features/reports/operations/components';
-import { useKioskAnalytics, useKioskWarnings } from '../../features/reports/operations/hooks';
-import { useKioskLowStocks } from '../../features/reports/operations/hooks/useKioskLowStocks';
-
 
 
 
 export default function OverviewPage(): React.ReactNode {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const { kiosks = [] } = useKioskList();
 
 	const { data: lowStockAlerts, pagination: lowStockPagination } = useKioskLowStocks();
@@ -34,7 +34,7 @@ export default function OverviewPage(): React.ReactNode {
 
 	return (
 		<PageContainer
-			documentTitle={translate('overview.title')}
+			documentTitle={translate('coremart.vendingMachine.overview.title')}
 			layoutProps={{ p: 0, bg: 'transparent' }}
 			unstyledPaper
 		>

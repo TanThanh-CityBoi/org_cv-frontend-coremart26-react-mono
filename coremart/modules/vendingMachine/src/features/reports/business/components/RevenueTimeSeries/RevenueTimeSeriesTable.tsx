@@ -11,13 +11,13 @@ import 'dayjs/locale/vi';
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { asLegacyModelSchema, fmtCurrency, fmtNumber } from '../../../../../common/helpers';
-import { PaginationConfig } from '../../../../../common/hooks/usePagination';
-import { TableContainer, TablePagination } from '../../../../../components/Table';
-import { GroupTime } from '../../../../../types/api';
-import { formatOrderTimeLabel } from '../../../helpers';
+import { fmtCurrency, fmtNumber } from '@/common/helpers';
+import { PaginationConfig } from '@/common/hooks/usePagination';
+import { TableContainer, TablePagination } from '@/components/Table';
+import { formatOrderTimeLabel } from '@/features/reports/helpers';
+import { GroupTime } from '@/types/api';
 
-import type { RevenueReportByOrderTime } from '../../type';
+import type { RevenueReportByOrderTime } from '@/features/reports/business/type';
 
 
 dayjs.extend(customParseFormat);
@@ -38,20 +38,20 @@ const REVENUE_OVERVIEW_DETAIL_COLUMNS = [
 type DetailColumnKey = (typeof REVENUE_OVERVIEW_DETAIL_COLUMNS)[number];
 
 
-const TABLE_SCHEMA = asLegacyModelSchema({
+const TABLE_SCHEMA: ModelSchema = {
 	name: 'RevenueOverviewOrderTimeDetail',
 	fields: {
-		orderTime: { type: 'string', label: 'reports.revenue_report.columns.order_time' },
-		orderCount: { type: 'string', label: 'reports.revenue_report.columns.order_count' },
-		cancelledOrderCount: { type: 'string', label: 'reports.revenue_report.columns.cancelled_order_count' },
-		refundedOrderCount: { type: 'string', label: 'reports.revenue_report.columns.refunded_order_count' },
-		totalItemCount: { type: 'string', label: 'reports.revenue_report.columns.total_item_count' },
-		totalSuccessItemCount: { type: 'string', label: 'reports.revenue_report.columns.total_success_item_count' },
-		totalRevenue: { type: 'string', label: 'reports.revenue_report.columns.total_revenue' },
-		averageRevenue: { type: 'string', label: 'reports.revenue_report.columns.average_revenue' },
-		totalRefund: { type: 'string', label: 'reports.revenue_report.columns.total_refund' },
+		orderTime: { type: 'string', label: 'coremart.vendingMachine.reports.revenueReport.columns.orderTime' },
+		orderCount: { type: 'string', label: 'coremart.vendingMachine.reports.revenueReport.columns.orderCount' },
+		cancelledOrderCount: { type: 'string', label: 'coremart.vendingMachine.reports.revenueReport.columns.cancelledOrderCount' },
+		refundedOrderCount: { type: 'string', label: 'coremart.vendingMachine.reports.revenueReport.columns.refundedOrderCount' },
+		totalItemCount: { type: 'string', label: 'coremart.vendingMachine.reports.revenueReport.columns.totalItemCount' },
+		totalSuccessItemCount: { type: 'string', label: 'coremart.vendingMachine.reports.revenueReport.columns.totalSuccessItemCount' },
+		totalRevenue: { type: 'string', label: 'coremart.vendingMachine.reports.revenueReport.columns.totalRevenue' },
+		averageRevenue: { type: 'string', label: 'coremart.vendingMachine.reports.revenueReport.columns.averageRevenue' },
+		totalRefund: { type: 'string', label: 'coremart.vendingMachine.reports.revenueReport.columns.totalRefund' },
 	},
-});
+};
 
 interface RevenueTimeSeriesTableProps {
 	data: RevenueReportByOrderTime[];
@@ -67,7 +67,7 @@ export function RevenueTimeSeriesTable({
 	handleExport,
 	groupTime = 'day',
 }: RevenueTimeSeriesTableProps): React.ReactElement {
-	const { t: translate, i18n } = useTranslation('vending_machine');
+	const { t: translate, i18n } = useTranslation();
 
 	const colAlignEndKeys = new Set<DetailColumnKey>([
 		'orderCount',
@@ -111,7 +111,7 @@ export function RevenueTimeSeriesTable({
 			colKey,
 			() => (
 				<Text fw={600} fz='sm' ta={headerAlignEndKeys.has(colKey) ? 'end' : 'start'}>
-					{translate(`reports.revenue_report.columns.${colKey}`)}
+					{translate(`coremart.vendingMachine.reports.revenueReport.columns.${colKey}`)}
 				</Text>
 			),
 		]),
@@ -125,21 +125,20 @@ export function RevenueTimeSeriesTable({
 			header={
 				<Group justify='space-between' align='flex-start' wrap='nowrap' mb={6}>
 					<Title order={4} fw={600}>
-						{translate('reports.revenue_report.detail_table')}
+						{translate('coremart.vendingMachine.reports.revenueReport.detailTable')}
 					</Title>
 					<Button
 						size='sm'
 						leftSection={<IconDownload size={16} />}
 						onClick={handleExport}
 					>
-						{translate('reports.revenue_report.export')}
+						{translate('coremart.vendingMachine.reports.revenueReport.export')}
 					</Button>
 				</Group>
 			}
 			footer={<TablePagination {...pagination} />}
 		>
 			<AutoTable
-				translationNs='vending_machine'
 				columns={[...REVENUE_OVERVIEW_DETAIL_COLUMNS]}
 				data={formattedDetailRows}
 				schema={TABLE_SCHEMA}

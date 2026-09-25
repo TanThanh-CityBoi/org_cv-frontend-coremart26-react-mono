@@ -37,9 +37,9 @@ import type { PlaylistMediaPlayState, PlaylistMediaRow } from '../../types';
 export type { PlaylistMediaPlayState };
 
 export type TrialPlaybackState = {
-	trialPlaying: boolean,
-	elapsedSec: number,
-	currentItem: PlaylistMediaRow | null,
+	trialPlaying: boolean;
+	elapsedSec: number;
+	currentItem: PlaylistMediaRow | null;
 };
 
 export { playlistSegmentStartSec, effectivePlaylistClipSec };
@@ -60,11 +60,11 @@ const formatSec = (sec?: number) => {
 };
 
 type ResizeSession = {
-	initialX: number,
-	index: number,
-	trackW: number,
-	snapshot: PlaylistMediaRow[],
-	initialDuration: number,
+	initialX: number;
+	index: number;
+	trackW: number;
+	snapshot: PlaylistMediaRow[];
+	initialDuration: number;
 };
 
 interface SortableBlockProps {
@@ -122,7 +122,7 @@ function SortableTimelineBlock({
 				<IconGripVertical size={14} style={{ marginTop: 2 }} />
 			</Box>
 			<Tooltip
-				label={translate('media_playlist.media.timeline.seek_item_hint')}
+				label={translate('coremart.vendingMachine.mediaPlaylist.media.timeline.seek_item_hint')}
 				position='top'
 			>
 				<Box
@@ -150,7 +150,7 @@ function SortableTimelineBlock({
 				</Box>
 			</Tooltip>
 			<Tooltip
-				label={translate('media_playlist.media.timeline.resize_hint')}
+				label={translate('coremart.vendingMachine.mediaPlaylist.media.timeline.resize_hint')}
 				position='top'
 			>
 				<Box
@@ -162,7 +162,7 @@ function SortableTimelineBlock({
 						background: 'var(--mantine-color-gray-4)',
 						flexShrink: 0,
 					}}
-					aria-label={translate('media_playlist.media.timeline.resize_hint')}
+					aria-label={translate('coremart.vendingMachine.mediaPlaylist.media.timeline.resize_hint')}
 				/>
 			</Tooltip>
 		</Box>
@@ -176,11 +176,11 @@ function StaticTimelineBlock({
 	onSeekToSegment,
 	index,
 }: {
-	item: PlaylistMediaRow,
-	weight: number,
-	trialActive: boolean,
-	onSeekToSegment: (index: number) => void,
-	index: number,
+	item: PlaylistMediaRow;
+	weight: number;
+	trialActive: boolean;
+	onSeekToSegment: (index: number) => void;
+	index: number;
 }) {
 	const mergedStyle: React.CSSProperties = {
 		flexGrow: Math.max(weight, 0.01),
@@ -264,7 +264,7 @@ export const PlaylistDurationTimeline: React.FC<PlaylistDurationTimelineProps> =
 	readOnly = false,
 	stopTrialPlaybackSignal,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const containerRef = useRef<HTMLDivElement>(null);
 	const progressRef = useRef<HTMLDivElement>(null);
 	const resizeSessionRef = useRef<ResizeSession | null>(null);
@@ -489,11 +489,11 @@ export const PlaylistDurationTimeline: React.FC<PlaylistDurationTimelineProps> =
 	const previewLayoutOptions = [
 		{
 			value: 'vertical',
-			label: translate('media_playlist.preview.vertical'),
+			label: translate('coremart.vendingMachine.mediaPlaylist.preview.vertical'),
 		},
 		{
 			value: 'horizontal',
-			label: translate('media_playlist.preview.horizontal'),
+			label: translate('coremart.vendingMachine.mediaPlaylist.preview.horizontal'),
 		},
 	];
 
@@ -516,7 +516,7 @@ export const PlaylistDurationTimeline: React.FC<PlaylistDurationTimelineProps> =
 				</Box>
 				<Group gap='xs' wrap='wrap' justify='flex-end'>
 					<Text size='sm' c='dimmed'>
-						{translate('media_playlist.media.timeline.total_duration')}:{' '}
+						{translate('coremart.vendingMachine.mediaPlaylist.media.timeline.total_duration')}:{' '}
 						{formatSec(totalSec)}
 					</Text>
 					{mediaPlayState.isPlaying ? (
@@ -527,7 +527,7 @@ export const PlaylistDurationTimeline: React.FC<PlaylistDurationTimelineProps> =
 							leftSection={<IconPlayerStop size={14} />}
 							onClick={stopTrial}
 						>
-							{translate('media_playlist.media.timeline.trial_stop')}
+							{translate('coremart.vendingMachine.mediaPlaylist.media.timeline.trial_stop')}
 						</Button>
 					) : showResumeControls ? (
 						<Group gap='xs' wrap='nowrap'>
@@ -537,7 +537,7 @@ export const PlaylistDurationTimeline: React.FC<PlaylistDurationTimelineProps> =
 								leftSection={<IconRotateClockwise size={14} />}
 								onClick={playFromStart}
 							>
-								{translate('media_playlist.media.timeline.trial_play_from_start')}
+								{translate('coremart.vendingMachine.mediaPlaylist.media.timeline.trial_play_from_start')}
 							</Button>
 							<Button
 								size='xs'
@@ -545,7 +545,7 @@ export const PlaylistDurationTimeline: React.FC<PlaylistDurationTimelineProps> =
 								leftSection={<IconPlayerPlay size={14} />}
 								onClick={continueTrial}
 							>
-								{translate('media_playlist.media.timeline.trial_resume')}
+								{translate('coremart.vendingMachine.mediaPlaylist.media.timeline.trial_resume')}
 							</Button>
 						</Group>
 					) : (
@@ -555,14 +555,14 @@ export const PlaylistDurationTimeline: React.FC<PlaylistDurationTimelineProps> =
 							leftSection={<IconPlayerPlay size={14} />}
 							onClick={playFromStart}
 						>
-							{translate('media_playlist.media.timeline.trial_play')}
+							{translate('coremart.vendingMachine.mediaPlaylist.media.timeline.trial_play')}
 						</Button>
 					)}
 				</Group>
 			</Group>
 
 			<Box mb='sm'>
-				{/* <Tooltip label={translate('media_playlist.media.timeline.seek_progress_hint')}> */}
+				{/* <Tooltip label={translate('coremart.vendingMachine.mediaPlaylist.media.timeline.seek_progress_hint')}> */}
 				<Box
 					ref={progressRef}
 					//? Tạm bỏ handleProgressClick do api stream không thể tua video
@@ -578,7 +578,7 @@ export const PlaylistDurationTimeline: React.FC<PlaylistDurationTimelineProps> =
 				{/* </Tooltip> */}
 				{showTrialTime ? (
 					<Text size='xs' c='dimmed' mt={4}>
-						{translate('media_playlist.media.timeline.trial_position')}:{' '}
+						{translate('coremart.vendingMachine.mediaPlaylist.media.timeline.trial_position')}:{' '}
 						{formatSec(displayElapsed)} / {formatSec(totalSec)}
 					</Text>
 				) :

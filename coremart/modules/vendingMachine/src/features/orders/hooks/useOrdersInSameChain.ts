@@ -1,44 +1,53 @@
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
 import React from 'react';
 
-import { SearchOperator } from '../../../types/search-graph';
-import { orderCrudService } from '../orderService';
+import { selectChainGroupOrderList, VendingMachineDispatch, vendingOrderActions } from '@/appState';
+import { PagedReduxState } from '@/types';
+
+import { CHAIN_GROUP_LIST_PAGE_SIZE } from '../orderSlice';
 
 import type { VdOrder } from '../types';
 
 
-export const CHAIN_GROUP_LIST_PAGE_SIZE = 10;
-
-type SearchResponse = { items: VdOrder[], total: number };
-
 /** Load orders sharing the same `chainKey` (search API) for the order detail “same chain” section. */
 export function useOrdersInSameChain(chainKey?: string | null): {
-	orders: VdOrder[],
-	isLoading: boolean,
-	error: string | null,
+	orders: VdOrder[];
+	isLoading: boolean;
+	error: string | null;
 } {
-	const { dispatchMethod, result } = useServiceLayer<SearchResponse>(orderCrudService.search);
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
+	const chainGroup = useMicroAppSelector(selectChainGroupOrderList) as PagedReduxState<VdOrder>;
 	const trimmedKey = chainKey?.trim() ?? '';
 
 	React.useEffect(() => {
 		if (!trimmedKey) {
+			dispatch(vendingOrderActions.clearChainGroupOrders());
 			return;
 		}
-		dispatchMethod({
-			page: 0,
-			size: CHAIN_GROUP_LIST_PAGE_SIZE,
-			graph: { and: [{ if: ['chain_key', SearchOperator.EQUAL, trimmedKey] }] },
-		});
-	}, [trimmedKey, dispatchMethod]);
 
-	// The slice's `clearChainGroupOrders` is gone: this hook owns its own service-layer result,
-	// so there is no shared entry for a stale chain's rows to leak out of.
-	const orders = trimmedKey ? result.data?.items ?? [] : [];
-	const isLoading = Boolean(trimmedKey) && (result.isPending || result.doneAt == null);
+		dispatch(
+			vendingOrderActions.listOrdersByChainKey({
+				chainKey: trimmedKey,
+				page: 0,
+				size: CHAIN_GROUP_LIST_PAGE_SIZE,
+			}),
+		);
+
+		return () => {
+			dispatch(vendingOrderActions.clearChainGroupOrders());
+		};
+	}, [trimmedKey, dispatch]);
+
+	const orders = chainGroup.items ?? [];
+	const status = chainGroup.status;
+	const isLoading =
+		Boolean(trimmedKey)
+		&& status !== 'success'
+		&& status !== 'error';
 
 	return {
 		orders,
 		isLoading,
-		error: result.error,
+		error: chainGroup.error,
 	};
 }

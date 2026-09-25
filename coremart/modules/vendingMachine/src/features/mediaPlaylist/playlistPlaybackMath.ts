@@ -42,7 +42,7 @@ export function effectivePlaylistClipSec(sec?: number): number {
 export function splitPlaylistElapsed(
 	playlistElapsedSec: number,
 	sorted: PlaylistMediaRow[],
-): { activeIndex: number, activeMediaId: string | null, clipElapsedSec: number } {
+): { activeIndex: number; activeMediaId: string | null; clipElapsedSec: number } {
 	if (sorted.length === 0) {
 		return { activeIndex: 0, activeMediaId: null, clipElapsedSec: 0 };
 	}

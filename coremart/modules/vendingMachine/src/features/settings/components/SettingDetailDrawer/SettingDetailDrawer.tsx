@@ -4,7 +4,8 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
-import { PreviewDrawer } from '../../../../components/PreviewDrawer';
+import { PreviewDrawer } from '@/components/PreviewDrawer';
+
 import { Setting } from '../../types';
 
 
@@ -21,7 +22,7 @@ export const SettingDetailDrawer: React.FC<SettingDetailDrawerProps> = ({
 	setting,
 	isLoading = false,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const navigate = useNavigate();
 
 	return (
@@ -46,7 +47,7 @@ export const SettingDetailDrawer: React.FC<SettingDetailDrawerProps> = ({
 			<Stack gap='md'>
 				<div>
 					<Text size='sm' c='dimmed' mb='xs'>
-						{translate('settings.fields.code')}
+						{translate('coremart.vendingMachine.settings.fields.code')}
 					</Text>
 					<Text size='sm' fw={500}>{setting?.code}</Text>
 				</div>
@@ -55,7 +56,7 @@ export const SettingDetailDrawer: React.FC<SettingDetailDrawerProps> = ({
 
 				<div>
 					<Text size='sm' c='dimmed' mb='xs'>
-						{translate('settings.fields.name')}
+						{translate('coremart.vendingMachine.settings.fields.name')}
 					</Text>
 					<Text size='sm'>{setting?.name}</Text>
 				</div>
@@ -65,7 +66,7 @@ export const SettingDetailDrawer: React.FC<SettingDetailDrawerProps> = ({
 						<Divider />
 						<div>
 							<Text size='sm' c='dimmed' mb='xs'>
-								{translate('settings.fields.description')}
+								{translate('coremart.vendingMachine.settings.fields.description')}
 							</Text>
 							<Text size='sm'>{setting.description}</Text>
 						</div>
@@ -77,7 +78,7 @@ export const SettingDetailDrawer: React.FC<SettingDetailDrawerProps> = ({
 						<Divider />
 						<div>
 							<Text size='sm' c='dimmed' mb='xs'>
-								{translate('settings.fields.config')}
+								{translate('coremart.vendingMachine.settings.fields.config')}
 							</Text>
 							<Code block>{JSON.stringify(setting.config, null, 2)}</Code>
 						</div>
@@ -88,14 +89,14 @@ export const SettingDetailDrawer: React.FC<SettingDetailDrawerProps> = ({
 
 				<div>
 					<Text size='sm' c='dimmed' mb='xs'>
-						{translate('settings.fields.is_archived')}
+						{translate('coremart.vendingMachine.settings.fields.isArchived')}
 					</Text>
 					{setting
 						? (
 							<Badge color={setting.isArchived ? 'gray' : 'green'} size='sm'>
 								{setting.isArchived
-									? translate('status.archived')
-									: translate('status.active')}
+									? translate('nikki.general.status.archived')
+									: translate('nikki.general.status.active')}
 							</Badge>
 						)
 						: null}
@@ -105,7 +106,7 @@ export const SettingDetailDrawer: React.FC<SettingDetailDrawerProps> = ({
 
 				<div>
 					<Text size='sm' c='dimmed' mb='xs'>
-						{translate('settings.fields.created_at')}
+						{translate('coremart.vendingMachine.settings.fields.createdAt')}
 					</Text>
 					<Text size='sm'>{setting?.createdAt ? new Date(setting.createdAt).toLocaleString() : '—'}</Text>
 				</div>
@@ -115,7 +116,7 @@ export const SettingDetailDrawer: React.FC<SettingDetailDrawerProps> = ({
 						<Divider />
 						<div>
 							<Text size='sm' c='dimmed' mb='xs'>
-								{translate('settings.fields.updated_at')}
+								{translate('coremart.vendingMachine.settings.fields.updatedAt')}
 							</Text>
 							<Text size='sm'>{new Date(setting.updatedAt).toLocaleString()}</Text>
 						</div>

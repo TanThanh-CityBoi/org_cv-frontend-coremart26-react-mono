@@ -7,29 +7,39 @@ import { IconChevronLeft, IconChevronRight, IconRefresh } from '@tabler/icons-re
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Event } from '../../..';
-import { getLocalizedName } from '../../../../../common/helpers';
-import { ControlPanel, ViewMode } from '../../../../../components/ControlPanel';
-import { KioskProductList } from '../../../../kioskProducts/components/KioskProductList';
-import { useKioskProductFilter } from '../../../../kioskProducts/hooks/useKioskProductList';
-import { sellPriceFromProposedPrice } from '../../../../kioskProducts/sellPrice';
-import { useAvailableProductForEvent } from '../../../hooks';
+import { getLocalizedName } from '@/common/helpers';
+import { ControlPanel, ViewMode } from '@/components/ControlPanel';
+import { Event } from '@/features/events';
+import { useAvailableProductForEvent } from '@/features/events/hooks';
+import { KioskProductList } from '@/features/kioskProducts/components/KioskProductList';
+import { useKioskProductFilter } from '@/features/kioskProducts/hooks/useKioskProductList';
 
-import type { KioskProduct } from '../../../../kioskProducts/type';
-import type { CreateEventStockFormPayload } from '../../../hooks/useCreateEventStock';
+import type { CreateEventStockFormPayload } from '@/features/events/hooks/useCreateEventStock';
+import type { KioskProduct } from '@/features/kioskProducts/type';
 
+
+function sellPriceFromProposedPrice(proposed: string | undefined): number {
+	if (proposed == null || proposed === '') {
+		return 0;
+	}
+	const n = Number(String(proposed).replace(/\s/g, ''));
+	if (!Number.isFinite(n) || n < 0) {
+		return 0;
+	}
+	return Math.floor(n);
+}
 
 type StockLineDraft = {
-	sellPrice: number | string,
+	sellPrice: number | string;
 };
 
 type SelectedProductsProps = {
-	selectedProducts: KioskProduct[],
-	lineByProductId: Record<string, StockLineDraft>,
-	setLineSellPrice: (productId: string, value: number | string) => void,
+	selectedProducts: KioskProduct[];
+	lineByProductId: Record<string, StockLineDraft>;
+	setLineSellPrice: (productId: string, value: number | string) => void;
 	/** When set (e.g. second slide), overrides default empty helper text */
-	emptyHint?: string,
-	scrollMaxHeight?: number,
+	emptyHint?: string;
+	scrollMaxHeight?: number;
 };
 
 function SlideExpose({ children }: React.PropsWithChildren) {
@@ -84,13 +94,13 @@ const SelectedProducts: React.FC<SelectedProductsProps> = ({
 	emptyHint,
 	scrollMaxHeight = 360,
 }) => {
-	const { t, i18n } = useTranslation('vending_machine');
+	const { t, i18n } = useTranslation();
 	if (selectedProducts.length === 0) {
 		return (
 			<Center h={scrollMaxHeight}>
 				<Text size='sm' c='dimmed'>
 					{emptyHint ??
-					t('event_stock.create.none_selected', {
+					t('coremart.vendingMachine.eventStock.create.noneSelected', {
 						defaultValue: 'Pick one or more products above to set price.',
 					})}
 				</Text>
@@ -120,7 +130,7 @@ const SelectedProducts: React.FC<SelectedProductsProps> = ({
 									<Text size='xs' c='dimmed' lineClamp={1}>{product.sku}</Text>
 								</Stack>
 								<NumberInput
-									label={t('kiosk.stocks.fields.sell_price', {
+									label={t('coremart.vendingMachine.kiosk.stocks.fields.sellPrice', {
 										defaultValue: 'Giá bán',
 									})}
 									size='xs'
@@ -144,11 +154,11 @@ const SelectedProducts: React.FC<SelectedProductsProps> = ({
 
 
 export type CreateEventStockModalProps = {
-	opened: boolean,
-	onClose: () => void,
-	onSubmit: (payloads: CreateEventStockFormPayload[]) => void,
-	isSubmitting: boolean,
-	event: Event,
+	opened: boolean;
+	onClose: () => void;
+	onSubmit: (payloads: CreateEventStockFormPayload[]) => void;
+	isSubmitting: boolean;
+	event: Event;
 };
 
 function useBulkCreateEventStocks(
@@ -196,11 +206,6 @@ function useBulkCreateEventStocks(
 			if (!line) {
 				continue;
 			}
-			// An empty field is not zero. Number('') is 0, so testing the parsed value alone would
-			// let a product the operator never priced through at 0 ₫.
-			if (line.sellPrice === '' || line.sellPrice == null) {
-				return;
-			}
 			const price = Number(line.sellPrice);
 			if (Number.isNaN(price) || price < 0) {
 				return;
@@ -228,7 +233,7 @@ function useBulkCreateEventStocks(
 export const CreateEventStockModal: React.FC<CreateEventStockModalProps> = ({
 	opened, onClose, onSubmit, isSubmitting, event,
 }) => {
-	const { t } = useTranslation('vending_machine');
+	const { t } = useTranslation();
 	const {
 		selectedProducts,
 		setSelectedProducts,
@@ -246,7 +251,7 @@ export const CreateEventStockModal: React.FC<CreateEventStockModalProps> = ({
 	const { products, pagination, handleRefresh, listError } = useAvailableProductForEvent(event.id, graph);
 
 	const viewSelectedLabel = useMemo(() => {
-		const base = t('events.event_stock.create.view_selected', {
+		const base = t('coremart.vendingMachine.events.eventStock.create.viewSelected', {
 			defaultValue: 'View selected',
 		});
 		return selectedProducts.length > 0 ? `${base} (${selectedProducts.length})` : base;
@@ -261,7 +266,7 @@ export const CreateEventStockModal: React.FC<CreateEventStockModalProps> = ({
 				variant: 'outline' as const,
 			},
 			{
-				label: t('action.refresh'),
+				label: t('nikki.general.actions.refresh'),
 				leftSection: <IconRefresh size={16} />,
 				onClick: handleRefresh,
 				variant: 'outline' as const,
@@ -285,7 +290,7 @@ export const CreateEventStockModal: React.FC<CreateEventStockModalProps> = ({
 		<Modal
 			opened={opened}
 			onClose={onClose}
-			title={t('events.event_stock.create.title', {
+			title={t('coremart.vendingMachine.events.eventStock.create.title', {
 				defaultValue: 'Add product to event',
 			})}
 			centered
@@ -326,7 +331,7 @@ export const CreateEventStockModal: React.FC<CreateEventStockModalProps> = ({
 								leftSection={<IconChevronLeft size={16} />}
 								onClick={goToBrowse}
 							>
-								{t('events.event_stock.create.back_to_browse', {
+								{t('coremart.vendingMachine.events.eventStock.create.backToBrowse', {
 									defaultValue: 'Back to product list',
 								})}
 							</Button>
@@ -336,7 +341,7 @@ export const CreateEventStockModal: React.FC<CreateEventStockModalProps> = ({
 								setLineSellPrice={setLineSellPrice}
 								scrollMaxHeight={380}
 								emptyHint={
-									t('events.event_stock.create.none_selected_slide', {
+									t('coremart.vendingMachine.events.eventStock.create.noneSelectedSlide', {
 										defaultValue: 'Nothing selected yet. Go back and pick one or more products.',
 									})
 								}
@@ -346,14 +351,14 @@ export const CreateEventStockModal: React.FC<CreateEventStockModalProps> = ({
 				</SlideExpose>
 				<Group justify='flex-end' mt='md'>
 					<Button variant='default' onClick={onClose} disabled={isSubmitting}>
-						{t('action.cancel')}
+						{t('nikki.general.actions.cancel')}
 					</Button>
 					<Button
 						loading={isSubmitting}
 						disabled={selectedProducts.length === 0}
 						onClick={onSave}
 					>
-						{t('action.add', { defaultValue: 'Add' })}
+						{t('nikki.general.actions.add', { defaultValue: 'Add' })}
 					</Button>
 				</Group>
 			</Stack>

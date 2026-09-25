@@ -1,23 +1,21 @@
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
 import React from 'react';
 
-import { themeCrudService } from '../themeService';
-
-import type { Theme } from '../types';
+import { VendingMachineDispatch, themeActions, selectThemeDetail } from '@/appState';
 
 
 export function useThemeDetail(themeId?: string) {
-	const { dispatchMethod, result } = useServiceLayer<Theme>(themeCrudService.getById);
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
+	const detail = useMicroAppSelector(selectThemeDetail);
 
 	React.useEffect(() => {
 		if (themeId) {
-			dispatchMethod({ id: themeId });
+			dispatch(themeActions.getTheme(themeId));
 		}
-	}, [themeId, dispatchMethod]);
+	}, [themeId, dispatch]);
 
 	return {
-		// `useServiceLayer` yields `null` before the first call; consumers expect `undefined`.
-		theme: result.data ?? undefined,
-		isLoading: result.isPending || result.doneAt == null,
+		theme: detail.data,
+		isLoading: detail.status === 'pending' || detail.status === 'idle',
 	};
 }

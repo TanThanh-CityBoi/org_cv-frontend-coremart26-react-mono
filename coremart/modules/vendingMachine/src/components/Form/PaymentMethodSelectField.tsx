@@ -1,20 +1,20 @@
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { MultiSelectField, MultiSelectFieldProps } from './MultiSelectField';
-import { buildSimpleSearchGraph } from '../../common/helpers';
-import { usePaymentList } from '../../features/payment';
-import { PaymentMethod } from '../../features/payment/types';
+import { buildSimpleSearchGraph } from '@/common/helpers';
+import { usePaymentList } from '@/features/payment';
+import { PaymentMethod } from '@/features/payment/types';
 
+import { MultiSelectField, MultiSelectFieldProps } from './MultiSelectField';
 
 
 export type PaymentMethodSelectFieldProps = Omit<MultiSelectFieldProps, 'name' | 'data' | 'searchValue' | 'onSearchChange'> & {
-	isView: boolean,
-	isSubmitting: boolean,
+	isView: boolean;
+	isSubmitting: boolean;
 };
 
 export function PaymentMethodSelectField({ isView, isSubmitting, ...restProps }: PaymentMethodSelectFieldProps) {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const [paymentSearch, setPaymentSearch] = useState('');
 	const paymentGraph = useMemo(() => buildSimpleSearchGraph([
 		{
@@ -46,7 +46,7 @@ export function PaymentMethodSelectField({ isView, isSubmitting, ...restProps }:
 			onSearchChange={setPaymentSearch}
 			readOnly={isView}
 			disabled={isSubmitting ?? false}
-			placeholder={translate('kiosk.fields.payment_methods')}
+			placeholder={translate('coremart.vendingMachine.kiosk.fields.paymentMethods')}
 			{...restProps}
 		/>
 	);

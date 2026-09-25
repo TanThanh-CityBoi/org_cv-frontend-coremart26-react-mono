@@ -4,17 +4,17 @@ import React from 'react';
 
 
 export type TableActionItem = {
-	key: string,
-	label: string,
-	icon: React.ReactNode,
-	onClick: () => void,
-	color?: ActionIconProps['color'],
+	key: string;
+	label: string;
+	icon: React.ReactNode;
+	onClick: () => void;
+	color?: ActionIconProps['color'];
 };
 
 export type TableActionProps = {
-	actions: TableActionItem[],
+	actions: TableActionItem[];
 	/** Tooltip and aria-label for the overflow menu trigger (shown when there is more than one action). */
-	overflowMenuLabel?: string,
+	overflowMenuLabel?: string;
 };
 
 export const TableAction: React.FC<TableActionProps> = ({

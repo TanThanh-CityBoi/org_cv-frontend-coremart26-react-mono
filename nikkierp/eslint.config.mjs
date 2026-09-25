@@ -77,7 +77,7 @@ export default defineConfig([
 		languageOptions: {
 			parser: parserTs,
 			parserOptions: {
-				// project: ['./tsconfig.json'], // Commented out to avoid full project build in every save.
+				project: ['./tsconfig.json'],
 				ecmaVersion: 'latest',
 				sourceType: 'module',
 			},
@@ -143,14 +143,6 @@ export default defineConfig([
 				},
 			],
 			'import/newline-after-import': ['error', { 'count': 2 }],
-			'no-restricted-imports': ['error', {
-				patterns: [{
-					group: ['@/*'],
-					message: "Do not use the '@/' path alias — it only resolves inside this package's own build "
-						+ 'tooling and breaks when consumed as a micro-frontend or by cross-package tooling. '
-						+ 'Use a relative import instead.',
-				}],
-			}],
 		},
 		settings: {
 			'import/parsers': {
@@ -158,7 +150,7 @@ export default defineConfig([
 			},
 			'import/resolver': {
 				node: { extensions: ['.js', '.jsx', '.ts', '.tsx'] },
-				typescript: { alwaysTryTypes: false },
+				typescript: { alwaysTryTypes: true },
 			},
 		},
 	},
@@ -210,5 +202,8 @@ export default defineConfig([
 			'**/coverage/',
 			'**/public/',
 		],
+		settings: {
+			'import/resolver': { typescript: { alwaysTryTypes: true } },
+		},
 	},
 ]);

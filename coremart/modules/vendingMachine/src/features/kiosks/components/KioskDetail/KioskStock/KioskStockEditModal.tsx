@@ -9,8 +9,9 @@ import { IconCloudUpload, IconPhoto, IconTrash } from '@tabler/icons-react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { getLocalizedName } from '../../../../../common/helpers';
-import { KioskStockUpdateFormPayload } from '../../../hooks/useKioskStockUpdate';
+import { getLocalizedName } from '@/common/helpers';
+import { KioskStockUpdateFormPayload } from '@/features/kiosks/hooks/useKioskStockUpdate';
+
 import {
 	formatKioskStockPositionsDisplay, totalQuantityForKioskStock,
 } from '../KioskStockGrid/kioskStock.helpers';
@@ -48,14 +49,14 @@ function useObjectPreviewUrlForFile(file: File | null): string | null {
 }
 
 type KioskStockBadgeImageUploadProps = {
-	label: string,
-	hint?: string,
-	browseLabel: string,
-	acceptLabel: string,
-	rejectLabel: string,
-	emptyFileLabel: string,
-	file: File | null,
-	onFileChange: (f: File | null) => void,
+	label: string;
+	hint?: string;
+	browseLabel: string;
+	acceptLabel: string;
+	rejectLabel: string;
+	emptyFileLabel: string;
+	file: File | null;
+	onFileChange: (f: File | null) => void;
 };
 
 const KioskStockBadgeImageUpload: React.FC<KioskStockBadgeImageUploadProps> = ({
@@ -183,18 +184,18 @@ const KioskStockBadgeImageUpload: React.FC<KioskStockBadgeImageUploadProps> = ({
 };
 
 export type KioskStockEditModalProps = {
-	opened: boolean,
-	stock: KioskStock | null,
-	lang: string,
-	onClose: () => void,
-	onSubmit: (p: KioskStockUpdateFormPayload) => void,
-	isSubmitting: boolean,
+	opened: boolean;
+	stock: KioskStock | null;
+	lang: string;
+	onClose: () => void;
+	onSubmit: (p: KioskStockUpdateFormPayload) => void;
+	isSubmitting: boolean;
 };
 
 export const KioskStockEditModal: React.FC<KioskStockEditModalProps> = ({
 	opened, stock, lang, onClose, onSubmit, isSubmitting,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const [sortIndex, setSortIndex] = useState(0);
 	const [sellPrice, setSellPrice] = useState(0);
 	const [warningQuantity, setWarningQuantity] = useState(0);
@@ -236,7 +237,7 @@ export const KioskStockEditModal: React.FC<KioskStockEditModalProps> = ({
 		<Modal
 			opened={opened}
 			onClose={onClose}
-			title={translate('kiosk.stocks.edit.title', { defaultValue: 'Product line' })}
+			title={translate('coremart.vendingMachine.kiosk.stocks.edit.title', { defaultValue: 'Product line' })}
 			centered
 			size='lg'
 		>
@@ -262,29 +263,29 @@ export const KioskStockEditModal: React.FC<KioskStockEditModalProps> = ({
 						</Box>
 						<Divider />
 						<Stack gap={3}>
-							<Text size='sm' c='dimmed'>{translate('kiosk.stocks.fields.proposed_price', { defaultValue: 'Sell price' })}</Text>
+							<Text size='sm' c='dimmed'>{translate('coremart.vendingMachine.kiosk.stocks.fields.proposedPrice', { defaultValue: 'Sell price' })}</Text>
 							<Text size='sm'>{priceDisplay}</Text>
-							<Text size='sm' c='dimmed'>{translate('kiosk.stocks.fields.quantity', { defaultValue: 'Quantity in machine' })}</Text>
+							<Text size='sm' c='dimmed'>{translate('coremart.vendingMachine.kiosk.stocks.fields.quantity', { defaultValue: 'Quantity in machine' })}</Text>
 							<Text size='sm'>{totalQty}</Text>
-							<Text size='sm' c='dimmed'>{translate('kiosk.stocks.fields.positions', { defaultValue: 'Positions' })}</Text>
+							<Text size='sm' c='dimmed'>{translate('coremart.vendingMachine.kiosk.stocks.fields.positions', { defaultValue: 'Positions' })}</Text>
 							<Text size='sm'>{positions}</Text>
 						</Stack>
 					</Stack>
 				</Group>
 				<KioskStockBadgeImageUpload
-					label={translate('kiosk.stocks.fields.badge_image', {
+					label={translate('coremart.vendingMachine.kiosk.stocks.fields.badgeImage', {
 						defaultValue: 'Badge image',
 					})}
-					browseLabel={translate('kiosk_stock.edit.badge_browse', {
+					browseLabel={translate('coremart.vendingMachine.kioskStock.edit.badge_browse', {
 						defaultValue: 'Browse Files to upload',
 					})}
-					acceptLabel={translate('kiosk_stock.edit.badge_drop_accept', {
+					acceptLabel={translate('coremart.vendingMachine.kioskStock.edit.badge_drop_accept', {
 						defaultValue: 'Drop file here',
 					})}
-					rejectLabel={translate('kiosk_stock.edit.badge_drop_reject', {
+					rejectLabel={translate('coremart.vendingMachine.kioskStock.edit.badge_drop_reject', {
 						defaultValue: 'File type or size is not valid',
 					})}
-					emptyFileLabel={translate('kiosk_stock.edit.badge_no_file', {
+					emptyFileLabel={translate('coremart.vendingMachine.kioskStock.edit.badge_no_file', {
 						defaultValue: 'No selected File -',
 					})}
 					file={badgeFile}
@@ -292,7 +293,7 @@ export const KioskStockEditModal: React.FC<KioskStockEditModalProps> = ({
 				/>
 				<SimpleGrid cols={3} spacing='md'>
 					<NumberInput
-						label={translate('kiosk.stocks.fields.sell_price', { defaultValue: 'Sell price' })}
+						label={translate('coremart.vendingMachine.kiosk.stocks.fields.sellPrice', { defaultValue: 'Sell price' })}
 						value={sellPrice}
 						onChange={(v) => setSellPrice(typeof v === 'number' ? v : parseNonNegativeInt(String(v)))}
 						min={0}
@@ -300,7 +301,7 @@ export const KioskStockEditModal: React.FC<KioskStockEditModalProps> = ({
 						allowDecimal={false}
 					/>
 					<NumberInput
-						label={translate('kiosk.stocks.fields.warning_quantity', {
+						label={translate('coremart.vendingMachine.kiosk.stocks.fields.warningQuantity', {
 							defaultValue: 'Warning quantity',
 						})}
 						value={warningQuantity}
@@ -310,7 +311,7 @@ export const KioskStockEditModal: React.FC<KioskStockEditModalProps> = ({
 						allowDecimal={false}
 					/>
 					<NumberInput
-						label={translate('kiosk.stocks.fields.sort_index', {
+						label={translate('coremart.vendingMachine.kiosk.stocks.fields.sortIndex', {
 							defaultValue: 'Display order',
 						})}
 						value={sortIndex}
@@ -322,13 +323,13 @@ export const KioskStockEditModal: React.FC<KioskStockEditModalProps> = ({
 				</SimpleGrid>
 				<Group justify='flex-end' mt='md'>
 					<Button variant='default' onClick={onClose} disabled={isSubmitting}>
-						{translate('action.cancel', { defaultValue: 'Cancel' })}
+						{translate('nikki.general.actions.cancel', { defaultValue: 'Cancel' })}
 					</Button>
 					<Button
 						loading={isSubmitting}
 						onClick={() => onSubmit({ sortIndex, sellPrice, warningQuantity })}
 					>
-						{translate('action.save', { defaultValue: 'Save' })}
+						{translate('nikki.general.actions.save', { defaultValue: 'Save' })}
 					</Button>
 				</Group>
 			</Stack>

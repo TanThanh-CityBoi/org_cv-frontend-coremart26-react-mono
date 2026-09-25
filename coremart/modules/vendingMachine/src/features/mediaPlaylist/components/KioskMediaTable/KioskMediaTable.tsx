@@ -13,10 +13,10 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 
-import { formatDateTime } from '../../../../common/helpers/format-time';
-import { ArchivedStatusBadge } from '../../../../components/ArchivedStatusBadge';
-import { NameCell, TableAction, TableContainer, TablePagination, type TableActionItem, TextCell } from '../../../../components/Table';
-import { type TablePaginationProps } from '../../../../components/Table';
+import { formatDateTime } from '@/common/helpers/format-time';
+import { ArchivedStatusBadge } from '@/components/ArchivedStatusBadge';
+import { NameCell, TableAction, TableContainer, TablePagination, type TableActionItem, TextCell } from '@/components/Table';
+import { type TablePaginationProps } from '@/components/Table';
 
 import type { KioskMedia } from '../../types';
 
@@ -26,16 +26,16 @@ function renderActionsHeader(
 	_schema: unknown,
 	translate: (key: string) => string,
 ) {
-	return <Text fw={600} fz='sm' ta='end'>{translate('action.title')}</Text>;
+	return <Text fw={600} fz='sm' ta='end'>{translate('nikki.general.actions.title')}</Text>;
 }
 
 export type KioskMediaTableActions = {
-	onView?: (km: KioskMedia) => void,
-	onDelete?: (km: KioskMedia) => void,
-	onArchive?: (km: KioskMedia) => void,
-	onRestore?: (km: KioskMedia) => void,
-	onEdit?: (km: KioskMedia) => void,
-	onDownload?: (km: KioskMedia) => void,
+	onView?: (km: KioskMedia) => void;
+	onDelete?: (km: KioskMedia) => void;
+	onArchive?: (km: KioskMedia) => void;
+	onRestore?: (km: KioskMedia) => void;
+	onEdit?: (km: KioskMedia) => void;
+	onDownload?: (km: KioskMedia) => void;
 };
 
 export function getKioskMediaTableActions(
@@ -46,7 +46,7 @@ export function getKioskMediaTableActions(
 	const list: (TableActionItem & { active?: boolean })[] = [
 		{
 			key: 'view',
-			label: translate('action.view'),
+			label: translate('nikki.general.actions.view'),
 			icon: <IconEye size={16} />,
 			onClick: () => actions.onView?.(km),
 			color: 'blue',
@@ -54,7 +54,7 @@ export function getKioskMediaTableActions(
 		},
 		{
 			key: 'rename',
-			label: translate('action.rename'),
+			label: translate('nikki.general.actions.rename'),
 			icon: <IconPencil size={16} />,
 			onClick: () => actions.onEdit?.(km),
 			color: 'blue',
@@ -62,7 +62,7 @@ export function getKioskMediaTableActions(
 		},
 		{
 			key: 'download',
-			label: translate('action.download'),
+			label: translate('nikki.general.actions.download'),
 			icon: <IconDownload size={16} />,
 			onClick: () => actions.onDownload?.(km),
 			color: 'blue',
@@ -70,7 +70,7 @@ export function getKioskMediaTableActions(
 		},
 		{
 			key: 'archive',
-			label: translate('action.archive'),
+			label: translate('nikki.general.actions.archive'),
 			icon: <IconArchive size={16} />,
 			onClick: () => actions.onArchive?.(km),
 			color: 'orange',
@@ -78,7 +78,7 @@ export function getKioskMediaTableActions(
 		},
 		{
 			key: 'restore',
-			label: translate('action.restore'),
+			label: translate('nikki.general.actions.restore'),
 			icon: <IconRestore size={16} />,
 			onClick: () => actions.onRestore?.(km),
 			color: 'blue',
@@ -86,7 +86,7 @@ export function getKioskMediaTableActions(
 		},
 		{
 			key: 'delete',
-			label: translate('action.delete'),
+			label: translate('nikki.general.actions.delete'),
 			icon: <IconTrash size={16} />,
 			onClick: () => actions.onDelete?.(km),
 			color: 'red',
@@ -111,7 +111,7 @@ export const KioskMediaTable: React.FC<KioskMediaTableProps> = ({
 	pagination,
 	tableActions,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const hasActions = tableActions && (
 		tableActions.onView ||
@@ -129,7 +129,7 @@ export const KioskMediaTable: React.FC<KioskMediaTableProps> = ({
 		mediaType: (row) => <TextCell content={String(row.mediaType ?? '—')} />,
 		scopeType: (row) => {
 			const km = row as unknown as KioskMedia;
-			const key = `media_playlist.scope_type.${km.scopeType}`;
+			const key = `coremart.vendingMachine.mediaPlaylist.scopeType.${km.scopeType}`;
 			return <TextCell content={translate(key)} />;
 		},
 		isArchived: (row) => <ArchivedStatusBadge isArchived={!!row.isArchived} />,
@@ -139,7 +139,7 @@ export const KioskMediaTable: React.FC<KioskMediaTableProps> = ({
 				actions: (row) => (
 					<TableAction
 						actions={getKioskMediaTableActions(row as unknown as KioskMedia, tableActions, translate)}
-						overflowMenuLabel={translate('action.title')}
+						overflowMenuLabel={translate('nikki.general.actions.title')}
 					/>
 				),
 			}
@@ -154,7 +154,6 @@ export const KioskMediaTable: React.FC<KioskMediaTableProps> = ({
 		<Box pos='relative'>
 			<TableContainer footer={<TablePagination {...pagination} />}>
 				<AutoTable
-					translationNs='vending_machine'
 					columns={columns}
 					data={data}
 					schema={schema}

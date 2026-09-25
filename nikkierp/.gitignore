@@ -140,6 +140,3 @@ web_modules/
 
 # Strange files
 .DS_Store
-
-ai-prompts/
-!ai-prompts/.gitkeep

@@ -1,14 +1,14 @@
 import { Box, Text } from '@mantine/core';
 import { AutoTable } from '@nikkierp/ui/components';
+import { ModelSchema } from '@nikkierp/ui/model';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { NameCell, TableContainer, TablePagination, type TablePaginationProps, TextCell } from '@/components/Table';
+
 import mediaPlaylistKioskListTableSchema from './mediaPlaylistKioskListTableSchema.json';
-import { asLegacyModelSchema } from '../../../../../common/helpers';
-import { NameCell, TableContainer, TablePagination, type TablePaginationProps, TextCell } from '../../../../../components/Table';
 
-
-import type { Kiosk } from '../../../../kiosks/types';
+import type { Kiosk } from '@/features/kiosks/types';
 
 
 const COLUMNS = ['code', 'name', 'screenAssignment'] as const;
@@ -21,19 +21,19 @@ function kioskPlaylistAssignmentLabel(
 	const shopping = kiosk.shoppingScreenPlaylistRef === playlistId;
 	const waiting = kiosk.waitingScreenPlaylistRef === playlistId;
 	if (shopping && waiting) {
-		return translate('media_playlist.kiosk_list.usage.both');
+		return translate('coremart.vendingMachine.mediaPlaylist.kioskList.usage.both');
 	}
 	if (shopping) {
-		return translate('media_playlist.kiosk_list.usage.shopping');
+		return translate('coremart.vendingMachine.mediaPlaylist.kioskList.usage.shopping');
 	}
-	return translate('media_playlist.kiosk_list.usage.waiting');
+	return translate('coremart.vendingMachine.mediaPlaylist.kioskList.usage.waiting');
 }
 
 export type MediaPlaylistKioskTableProps = {
-	data: Record<string, unknown>[],
-	isLoading: boolean,
-	pagination: TablePaginationProps,
-	playlistId: string,
+	data: Record<string, unknown>[];
+	isLoading: boolean;
+	pagination: TablePaginationProps;
+	playlistId: string;
 };
 
 export const MediaPlaylistKioskTable: React.FC<MediaPlaylistKioskTableProps> = ({
@@ -42,7 +42,7 @@ export const MediaPlaylistKioskTable: React.FC<MediaPlaylistKioskTableProps> = (
 	pagination,
 	playlistId,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const colRenderers: React.ComponentProps<typeof AutoTable>['columnRenderers'] = {
 		name: (row) => (
@@ -62,10 +62,9 @@ export const MediaPlaylistKioskTable: React.FC<MediaPlaylistKioskTableProps> = (
 		<Box pos='relative'>
 			<TableContainer footer={<TablePagination {...pagination} />}>
 				<AutoTable
-					translationNs='vending_machine'
 					columns={[...COLUMNS]}
 					data={data}
-					schema={asLegacyModelSchema(mediaPlaylistKioskListTableSchema)}
+					schema={mediaPlaylistKioskListTableSchema as ModelSchema}
 					isLoading={isLoading}
 					columnRenderers={colRenderers}
 					striped='even'

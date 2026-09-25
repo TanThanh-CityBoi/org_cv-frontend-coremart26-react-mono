@@ -1,5 +1,14 @@
 export * from './hooks';
-export * from './eventAvailableProductStoreService';
+export {
+	searchEventAvailableProducts,
+	DEFAULT_EVENT_AVAILABLE_PAGE_SIZE,
+	initialEventAvailableProductState,
+} from './eventAvailableProductSlice';
+export type {
+	SearchEventAvailableProductsPayload,
+	EventAvailableProductState,
+} from './eventAvailableProductSlice';
+export * from './eventAvailableProductService';
 export * from './contexts/EventListPageProvider';
 export * from './types';
 export * from './schemas';

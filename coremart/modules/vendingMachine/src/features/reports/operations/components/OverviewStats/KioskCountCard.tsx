@@ -1,9 +1,9 @@
 import { IconDeviceDesktop, IconDeviceDesktopOff } from '@tabler/icons-react';
 import { TFunction } from 'i18next';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 
-import { GroupedStatCard } from '../../../../../components/GroupedStatCard';
+import { GroupedStatCard } from '@/components/GroupedStatCard';
+import { useTranslation } from 'react-i18next';
 import { KioskStats } from '../../type';
 
 
@@ -12,7 +12,7 @@ interface KioskCountCardProps {
 }
 
 export function KioskCountCard({ data: archiveStatus }: KioskCountCardProps): React.ReactElement {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const activeKiosks = archiveStatus?.find(status => status.value === 'unarchived')?.count ?? 0;
 	const archivedKiosks = archiveStatus?.find(status => status.value === 'archived')?.count ?? 0;
@@ -20,21 +20,21 @@ export function KioskCountCard({ data: archiveStatus }: KioskCountCardProps): Re
 
 	const items = [
 		{
-			label: translate('overview.total_kiosks'),
+			label: translate('coremart.vendingMachine.overview.total_kiosks'),
 			value: totalKiosks,
 			icon: <IconDeviceDesktop size={16} />,
 			color: 'blue',
 			link: '../kiosks',
 		},
 		{
-			label: translate('overview.active_kiosks'),
+			label: translate('coremart.vendingMachine.overview.active_kiosks'),
 			value: activeKiosks,
 			icon: <IconDeviceDesktop size={16} />,
 			color: 'green',
 			link: '../kiosks?isArchived=false',
 		},
 		{
-			label: translate('overview.inactive_kiosks'),
+			label: translate('coremart.vendingMachine.overview.inactive_kiosks'),
 			value: archivedKiosks,
 			icon: <IconDeviceDesktopOff size={16} />,
 			color: 'red',
@@ -44,7 +44,7 @@ export function KioskCountCard({ data: archiveStatus }: KioskCountCardProps): Re
 
 	return (
 		<GroupedStatCard
-			title={translate('overview.kiosk_count')}
+			title={translate('coremart.vendingMachine.overview.kiosk_count')}
 			icon={<IconDeviceDesktop size={24} />}
 			iconColor='blue'
 			link='../kiosks'

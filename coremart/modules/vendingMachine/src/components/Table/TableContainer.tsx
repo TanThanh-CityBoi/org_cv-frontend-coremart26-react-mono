@@ -9,55 +9,55 @@ export type TableContainerProps = StackProps & {
 	 * The header of the table.
 	 * @default null
 	 */
-	header?: React.ReactNode,
+	header?: React.ReactNode;
 
 	/**
 	 * The footer of the table.
 	 * @default null
 	 */
-	footer?: React.ReactNode,
+	footer?: React.ReactNode;
 
 	/**
 	 * The minimum width of the table.
 	 * @default 300
 	 */
-	minWidth?: MantineTableScrollProps['minWidth'],
+	minWidth?: MantineTableScrollProps['minWidth'];
 
 	/**
 	 * The minimum height of the table.
 	 * @default 200
 	 */
-	minHeight?: MantineTableScrollProps['mih'],
+	minHeight?: MantineTableScrollProps['mih'];
 
 	/**
 	 * The maximum height of the table.
 	 * @default undefined
 	 */
-	maxHeight?: MantineTableScrollProps['maxHeight'],
+	maxHeight?: MantineTableScrollProps['maxHeight'];
 
 	/**
 	 * Whether to add a border to the table.
 	 * @default false
 	 */
-	withBorder?: boolean,
+	withBorder?: boolean;
 
 	/**
 	 * The shadow of the table.
 	 * @default 'none'
 	 */
-	shadow?: MantineShadow,
+	shadow?: MantineShadow;
 
 	/**
 	 * Whether to unstyle the table scroll container.
 	 * @default false
 	 */
-	unstyledScrollContainer?: boolean,
+	unstyledScrollContainer?: boolean;
 
 	/**
 	 * The props for the table scroll container.
 	 * @default null
 	 */
-	scrollContainerProps?: Partial<MantineTableScrollProps>,
+	scrollContainerProps?: Partial<MantineTableScrollProps>;
 };
 
 /**

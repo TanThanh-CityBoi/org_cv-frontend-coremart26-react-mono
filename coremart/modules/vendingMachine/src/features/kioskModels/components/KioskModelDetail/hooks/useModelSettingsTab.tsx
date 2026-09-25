@@ -1,34 +1,34 @@
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+import { useMicroAppDispatch } from '@nikkierp/ui/microApp';
 import { IconDeviceFloppy, IconEdit, IconX } from '@tabler/icons-react';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { ControlPanelProps } from '../../../../../components/ControlPanel';
-import { useKioskModelEdit } from '../../../hooks/useKioskModelEdit';
-import { kioskModelCrudService } from '../../../kioskModelService';
-import { KioskModel, KioskType, ShelvesConfigRow } from '../../../types';
-import { buildShelvesConfigWire, parseShelvesConfigRows } from '../../ShelvesConfig';
-import { useRegisterKioskModelDetailTab } from '../kioskModelDetailTabControl';
+import { kioskModelActions, VendingMachineDispatch } from '@/appState';
+import { ControlPanelProps } from '@/components/ControlPanel';
+import { useRegisterKioskModelDetailTab } from '@/features/kioskModels/components/KioskModelDetail/kioskModelDetailTabControl';
+import { buildShelvesConfigWire, parseShelvesConfigRows } from '@/features/kioskModels/components/ShelvesConfig';
+import { useKioskModelEdit } from '@/features/kioskModels/hooks/useKioskModelEdit';
+import { KioskModel, KioskType, ShelvesConfigRow } from '@/features/kioskModels/types';
 
 
 export type UseModelSettingsTabArgs = {
-	model: KioskModel,
+	model: KioskModel;
 };
 
 export type UseModelSettingsTabReturn = {
-	isEditing: boolean,
-	isSubmitting: boolean,
-	selectedGoodsCollectorType: KioskType | undefined,
-	setSelectedGoodsCollectorType: (v: KioskType | undefined) => void,
-	shelvesNumber: number,
-	setShelvesNumber: (n: number) => void,
-	shelvesConfigRows: ShelvesConfigRow[],
-	setShelvesConfigRows: (rows: ShelvesConfigRow[]) => void,
+	isEditing: boolean;
+	isSubmitting: boolean;
+	selectedGoodsCollectorType: KioskType | undefined;
+	setSelectedGoodsCollectorType: (v: KioskType | undefined) => void;
+	shelvesNumber: number;
+	setShelvesNumber: (n: number) => void;
+	shelvesConfigRows: ShelvesConfigRow[];
+	setShelvesConfigRows: (rows: ShelvesConfigRow[]) => void;
 };
 
 export function useModelSettingsTab({ model }: UseModelSettingsTabArgs): UseModelSettingsTabReturn {
-	const { t: translate } = useTranslation('vending_machine');
-	const { dispatchMethod: refetchModel } = useServiceLayer(kioskModelCrudService.getById);
+	const { t: translate } = useTranslation();
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
 	const [isEditing, setIsEditing] = useState(false);
 	const [selectedGoodsCollectorType, setSelectedGoodsCollectorType] =
 		useState<KioskType | undefined>(model.goodsCollectorType);
@@ -47,9 +47,9 @@ export function useModelSettingsTab({ model }: UseModelSettingsTabArgs): UseMode
 	const onUpdateSuccess = useCallback(() => {
 		setIsEditing(false);
 		if (model.id) {
-			refetchModel({ id: model.id });
+			dispatch(kioskModelActions.getKioskModel(model.id));
 		}
-	}, [model.id, refetchModel]);
+	}, [model.id, dispatch]);
 	const { isSubmitting, handleSubmit } = useKioskModelEdit({ onUpdateSuccess });
 
 	const handleEdit = useCallback(() => setIsEditing(true), []);
@@ -72,14 +72,14 @@ export function useModelSettingsTab({ model }: UseModelSettingsTabArgs): UseMode
 	const actions = useMemo<ControlPanelProps['actions']>(() => [
 		...(!isEditing
 			? [{
-				label: translate('action.edit'),
+				label: translate('nikki.general.actions.edit'),
 				leftSection: <IconEdit size={16} />,
 				onClick: handleEdit,
 				type: 'button' as const,
 				variant: 'filled' as const,
 			}]
 			: [{
-				label: translate('action.save'),
+				label: translate('nikki.general.actions.save'),
 				leftSection: <IconDeviceFloppy size={16} />,
 				onClick: handleSave,
 				type: 'button' as const,
@@ -87,7 +87,7 @@ export function useModelSettingsTab({ model }: UseModelSettingsTabArgs): UseMode
 				disabled: isSubmitting,
 				loading: isSubmitting,
 			}, {
-				label: translate('action.cancel'),
+				label: translate('nikki.general.actions.cancel'),
 				leftSection: <IconX size={16} />,
 				onClick: handleCancel,
 				type: 'button' as const,

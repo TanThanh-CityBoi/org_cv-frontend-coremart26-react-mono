@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { DriveFileSharePermission } from '../type';
-import { useDriveFileSharePermissionStrings } from './enum/useDriveFileSharePermissionStrings';
+import { useDriveFileSharePermissionStrings } from '@/features/fileShare/hooks/enum/useDriveFileSharePermissionStrings';
+import { DriveFileSharePermission } from '@/features/fileShare/type';
 
 
 
-export function useSharePermissionOptions(): Array<{ value: DriveFileSharePermission, label: string }> {
+export function useSharePermissionOptions(): Array<{ value: DriveFileSharePermission; label: string }> {
 	const { label: permissionLabel } = useDriveFileSharePermissionStrings();
 	return React.useMemo(() => {
 		return [

@@ -1,3 +1,5 @@
+import { PermissionScope, useHasPermission } from '@nikkierp/shell/userContext';
+import { Unauthorized } from '@nikkierp/ui/components';
 import { AppRoute, WidgetRoute } from '@nikkierp/ui/microApp';
 import React from 'react';
 import { Outlet } from 'react-router';
@@ -6,9 +8,13 @@ import type { AppRouteConfig } from './appRoutes';
 import type { WidgetRouteConfig } from './widgetRoutes';
 
 
-export function renderAppRoutes(routes: AppRouteConfig[]): React.ReactNode {
+export function renderAppRoutes(routes: AppRouteConfig[], contextScope?: PermissionScope): React.ReactNode {
 	return routes.map((route) => {
-		const { key, path, element, index, children } = route;
+		const { key, path, element, index, children, resource, action } = route;
+
+		// * check permission
+		const hasPermission = resource && action ? useHasPermission(resource, action, contextScope) : true;
+		if (!hasPermission) return <AppRoute key={key} path={path ?? ''} element={<Unauthorized />} />;
 
 		return ( index ?
 			<AppRoute key={key} index element={element} /> :
@@ -20,7 +26,7 @@ export function renderAppRoutes(routes: AppRouteConfig[]): React.ReactNode {
 }
 
 
-export function renderWidgetRoutes(routes: WidgetRouteConfig[]): React.ReactNode {
+export function renderWidgetRoutes(routes: WidgetRouteConfig[], _contextScope?: PermissionScope): React.ReactNode {
 	return routes.map((route) => {
 		const { key, element } = route;
 		return (

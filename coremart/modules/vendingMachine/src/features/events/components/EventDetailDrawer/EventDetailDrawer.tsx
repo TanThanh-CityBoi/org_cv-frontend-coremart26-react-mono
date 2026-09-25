@@ -1,15 +1,16 @@
 import { Box, Divider, Stack, Text } from '@mantine/core';
 import { FormFieldProvider, FormStyleProvider } from '@nikkierp/ui/components';
+import { ModelSchema } from '@nikkierp/ui/model';
 import { IconCalendarEvent } from '@tabler/icons-react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
+import { AuditDate } from '@/components';
+import { PreviewDrawer } from '@/components/PreviewDrawer';
+import { eventCrudSchema } from '@/features/events/schemas';
+
 import { EventKioskList } from './EventKioskList';
-import { asLegacyModelSchema } from '../../../../common/helpers';
-import { AuditDate } from '../../../../components';
-import { PreviewDrawer } from '../../../../components/PreviewDrawer';
-import { eventCrudSchema } from '../../schemas';
 import { Event } from '../../types';
 import { EventFormFields } from '../EventFormFields';
 
@@ -28,7 +29,7 @@ export const EventDetailDrawer: React.FC<EventDetailDrawerProps> = ({
 	event,
 	isLoading = false,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const navigate = useNavigate();
 
 	if (!event) return null;
@@ -56,7 +57,7 @@ export const EventDetailDrawer: React.FC<EventDetailDrawerProps> = ({
 					<FormFieldProvider
 						key={`${event.id}-${event.etag}-basic-info`}
 						formVariant='update'
-						modelSchema={asLegacyModelSchema(eventCrudSchema)}
+						modelSchema={eventCrudSchema as ModelSchema}
 						modelValue={event}
 					>
 						{() => (
@@ -74,7 +75,7 @@ export const EventDetailDrawer: React.FC<EventDetailDrawerProps> = ({
 				<Divider />
 				<Box>
 					<Text size='sm' c='dimmed' mb='md' fw={500}>
-						{translate('events.fields.kiosks')}
+						{translate('coremart.vendingMachine.events.fields.kiosks')}
 					</Text>
 					<EventKioskList
 						kiosks={event?.kiosks ?? []}
@@ -83,7 +84,7 @@ export const EventDetailDrawer: React.FC<EventDetailDrawerProps> = ({
 
 				<AuditDate
 					date={event?.createdAt ?? ''}
-					label={translate('events.fields.created_at')}
+					label={translate('coremart.vendingMachine.events.fields.createdAt')}
 				/>
 				<Box h={50}></Box>
 			</Stack>

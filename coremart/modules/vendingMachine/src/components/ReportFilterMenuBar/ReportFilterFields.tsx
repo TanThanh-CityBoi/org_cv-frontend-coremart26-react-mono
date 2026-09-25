@@ -28,8 +28,8 @@ export type ReportFilterFieldsProps = Pick<
 	| 'sectionVisibility'
 	| 'onSectionVisibilityChange'
 > & {
-	isNarrow: boolean,
-	maxH: string,
+	isNarrow: boolean;
+	maxH: string;
 };
 
 export function ReportFilterFields({
@@ -44,7 +44,7 @@ export function ReportFilterFields({
 	sectionVisibility,
 	onSectionVisibilityChange,
 }: ReportFilterFieldsProps) {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const theme = useMantineTheme();
 
 	const switchStyles = {
@@ -59,19 +59,19 @@ export function ReportFilterFields({
 	return (
 		<Stack gap='sm' style={{ maxHeight: maxH }}>
 			<Title order={6} fz={{ base: 'sm', sm: 'md' }} fw={600}>
-				{translate('reports.filter_bar.title')}
+				{translate('coremart.vendingMachine.reports.filterBar.title')}
 			</Title>
 
 			<ScrollArea.Autosize mah={isNarrow ? 'calc(88vh - 120px)' : maxH} type='auto'>
 				<Stack gap='md' pb='xs'>
 					<Stack gap={6}>
 						<Text size='xs' fw={600} c='dimmed' tt='uppercase'>
-							{translate('reports.filter_bar.date_range')}
+							{translate('coremart.vendingMachine.reports.filterBar.dateRange')}
 						</Text>
 						<RangePicker
 							value={dateRange}
 							onChange={onDateRangeChange}
-							placeholder={translate('common.date_picker.select_date_range')}
+							placeholder={translate('coremart.vendingMachine.common.datePicker.selectDateRange')}
 							clearable={false}
 							miw={0}
 							size='sm'
@@ -82,13 +82,13 @@ export function ReportFilterFields({
 
 					<Stack gap={6}>
 						<Text size='xs' fw={600} c='dimmed' tt='uppercase'>
-							{translate('reports.filter_bar.kiosk')}
+							{translate('coremart.vendingMachine.reports.filterBar.kiosk')}
 						</Text>
 						<MultiSelect
 							data={kioskOptions}
 							value={kioskValue}
 							onChange={onKioskChange}
-							placeholder={translate('reports.filter_bar.kiosk_placeholder')}
+							placeholder={translate('coremart.vendingMachine.reports.filterBar.kioskPlaceholder')}
 							size='sm'
 							maxDropdownHeight={220}
 							w='100%'
@@ -101,7 +101,7 @@ export function ReportFilterFields({
 					{reportSections.length > 0 && (
 						<>
 							<Divider
-								label={translate('reports.filter_bar.report_sections')}
+								label={translate('coremart.vendingMachine.reports.filterBar.reportSections')}
 								labelPosition='left'
 							/>
 							<Stack gap='xs'>
@@ -115,7 +115,7 @@ export function ReportFilterFields({
 										labelPosition='left'
 										styles={switchStyles}
 										aria-label={
-											`${translate('reports.filter_bar.toggle_section')}: ${s.label}`
+											`${translate('coremart.vendingMachine.reports.filterBar.toggleSection')}: ${s.label}`
 										}
 									/>
 								))}

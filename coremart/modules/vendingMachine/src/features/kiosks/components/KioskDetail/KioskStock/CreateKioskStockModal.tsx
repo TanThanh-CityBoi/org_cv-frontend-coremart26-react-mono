@@ -7,37 +7,47 @@ import { IconChevronLeft, IconChevronRight, IconRefresh } from '@tabler/icons-re
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { getLocalizedName } from '@/common/helpers';
+import { ControlPanel, ViewMode } from '@/components/ControlPanel';
+import { useAvailableProductForKiosk } from '@/features/kioskProducts';
+import { KioskProductList } from '@/features/kioskProducts/components/KioskProductList';
+import { useKioskProductFilter } from '@/features/kioskProducts/hooks/useKioskProductList';
+import { Kiosk } from '@/features/kiosks';
+
+
 import { DEFAULT_STOCK_WARNING_QUANTITY } from './KioskStockEditModal';
-import { Kiosk } from '../../..';
-import { getLocalizedName } from '../../../../../common/helpers';
-import { ControlPanel, ViewMode } from '../../../../../components/ControlPanel';
-import { useAvailableProductForKiosk } from '../../../../kioskProducts';
-import { KioskProductList } from '../../../../kioskProducts/components/KioskProductList';
-import { useKioskProductFilter } from '../../../../kioskProducts/hooks/useKioskProductList';
-import { sellPriceFromProposedPrice } from '../../../../kioskProducts/sellPrice';
+
+import type { KioskProduct } from '@/features/kioskProducts/type';
+import type { CreateKioskStockFormPayload } from '@/features/kiosks/hooks/useCreateKioskStock';
 
 
-
-import type { KioskProduct } from '../../../../kioskProducts/type';
-import type { CreateKioskStockFormPayload } from '../../../hooks/useCreateKioskStock';
-
+function sellPriceFromProposedPrice(proposed: string | undefined): number {
+	if (proposed == null || proposed === '') {
+		return 0;
+	}
+	const n = Number(String(proposed).replace(/\s/g, ''));
+	if (!Number.isFinite(n) || n < 0) {
+		return 0;
+	}
+	return Math.floor(n);
+}
 
 const DEFAULT_SORT = 1;
 
 type StockLineDraft = {
-	sellPrice: number | string,
-	sortIndex: number | string,
-	warningQuantity?: number | string,
+	sellPrice: number | string;
+	sortIndex: number | string;
+	warningQuantity?: number | string;
 };
 
 type SelectedProductsProps = {
-	selectedProducts: KioskProduct[],
-	lineByProductId: Record<string, StockLineDraft>,
-	setLineSellPrice: (productId: string, value: number | string) => void,
-	setLineSortIndex: (productId: string, value: number | string) => void,
-	setLineWarningQuantity: (productId: string, value: number | string) => void,
-	emptyHint?: string,
-	scrollMaxHeight?: number,
+	selectedProducts: KioskProduct[];
+	lineByProductId: Record<string, StockLineDraft>;
+	setLineSellPrice: (productId: string, value: number | string) => void;
+	setLineSortIndex: (productId: string, value: number | string) => void;
+	setLineWarningQuantity: (productId: string, value: number | string) => void;
+	emptyHint?: string;
+	scrollMaxHeight?: number;
 };
 
 function SlideExpose({ children }: React.PropsWithChildren) {
@@ -92,13 +102,13 @@ const SelectedProducts: React.FC<SelectedProductsProps> = ({
 	emptyHint,
 	scrollMaxHeight = 360,
 }) => {
-	const { t, i18n } = useTranslation('vending_machine');
+	const { t, i18n } = useTranslation();
 	if (selectedProducts.length === 0) {
 		return (
 			<Center h={scrollMaxHeight}>
 				<Text size='sm' c='dimmed'>
 					{emptyHint ??
-						t('kiosk_stock.create.none_selected', {
+						t('coremart.vendingMachine.kioskStock.create.noneSelected', {
 							defaultValue: 'Pick one or more products above to set price and display order.',
 						})}
 				</Text>
@@ -129,7 +139,7 @@ const SelectedProducts: React.FC<SelectedProductsProps> = ({
 								</Stack>
 								<SimpleGrid cols={2} spacing='xs' style={{ flex: '1 1 220px' }}>
 									<NumberInput
-										label={t('kiosk.stocks.fields.sell_price', {
+										label={t('coremart.vendingMachine.kiosk.stocks.fields.sellPrice', {
 											defaultValue: 'Giá bán',
 										})}
 										size='xs'
@@ -142,7 +152,7 @@ const SelectedProducts: React.FC<SelectedProductsProps> = ({
 										required
 									/>
 									<NumberInput
-										label={t('kiosk.stocks.fields.warning_quantity', {
+										label={t('coremart.vendingMachine.kiosk.stocks.fields.warningQuantity', {
 											defaultValue: 'Số lượng cảnh báo',
 										})}
 										size='xs'
@@ -163,11 +173,11 @@ const SelectedProducts: React.FC<SelectedProductsProps> = ({
 
 
 export type CreateKioskStockModalProps = {
-	opened: boolean,
-	onClose: () => void,
-	onSubmit: (payloads: CreateKioskStockFormPayload[]) => void,
-	isSubmitting: boolean,
-	kiosk: Kiosk,
+	opened: boolean;
+	onClose: () => void;
+	onSubmit: (payloads: CreateKioskStockFormPayload[]) => void;
+	isSubmitting: boolean;
+	kiosk: Kiosk;
 };
 
 function useBulkCreateKioskStocks(
@@ -243,12 +253,6 @@ function useBulkCreateKioskStocks(
 			if (!line) {
 				continue;
 			}
-			// An empty field is not zero. Number('') is 0, so testing the parsed value alone would
-			// let a product the operator never priced through at 0 ₫ — the whole point of leaving
-			// an unpriced product's field blank is that it cannot be saved by accident.
-			if (line.sellPrice === '' || line.sellPrice == null) {
-				return;
-			}
 			const price = Number(line.sellPrice);
 			const sort = Math.max(0, Math.floor(Number(line.sortIndex)));
 			if (Number.isNaN(price) || price < 0) {
@@ -281,7 +285,7 @@ function useBulkCreateKioskStocks(
 export const CreateKioskStockModal: React.FC<CreateKioskStockModalProps> = ({
 	opened, onClose, onSubmit, isSubmitting, kiosk,
 }) => {
-	const { t } = useTranslation('vending_machine');
+	const { t } = useTranslation();
 	const {
 		selectedProducts,
 		setSelectedProducts,
@@ -300,7 +304,7 @@ export const CreateKioskStockModal: React.FC<CreateKioskStockModalProps> = ({
 	const { products, pagination, handleRefresh, listError } = useAvailableProductForKiosk(kiosk?.id, graph);
 
 	const viewSelectedLabel = useMemo(() => {
-		const base = t('kiosk.stocks.create.view_selected', {
+		const base = t('coremart.vendingMachine.kiosk.stocks.create.viewSelected', {
 			defaultValue: 'View selected',
 		});
 		return selectedProducts.length > 0 ? `${base} (${selectedProducts.length})` : base;
@@ -315,7 +319,7 @@ export const CreateKioskStockModal: React.FC<CreateKioskStockModalProps> = ({
 				variant: 'outline' as const,
 			},
 			{
-				label: t('action.refresh'),
+				label: t('nikki.general.actions.refresh'),
 				leftSection: <IconRefresh size={16} />,
 				onClick: handleRefresh,
 				variant: 'outline' as const,
@@ -339,7 +343,7 @@ export const CreateKioskStockModal: React.FC<CreateKioskStockModalProps> = ({
 		<Modal
 			opened={opened}
 			onClose={onClose}
-			title={t('kiosk.stocks.create.title', {
+			title={t('coremart.vendingMachine.kiosk.stocks.create.title', {
 				defaultValue: 'Add product to kiosk',
 			})}
 			centered
@@ -379,7 +383,7 @@ export const CreateKioskStockModal: React.FC<CreateKioskStockModalProps> = ({
 								leftSection={<IconChevronLeft size={16} />}
 								onClick={goToBrowse}
 							>
-								{t('kiosk.stocks.create.back_to_browse', {
+								{t('coremart.vendingMachine.kiosk.stocks.create.backToBrowse', {
 									defaultValue: 'Back to product list',
 								})}
 							</Button>
@@ -391,7 +395,7 @@ export const CreateKioskStockModal: React.FC<CreateKioskStockModalProps> = ({
 								setLineWarningQuantity={setLineWarningQuantity}
 								scrollMaxHeight={380}
 								emptyHint={
-									t('kiosk.stocks.create.none_selected_slide', {
+									t('coremart.vendingMachine.kiosk.stocks.create.noneSelectedSlide', {
 										defaultValue:
 											'Nothing selected yet. Go back and pick products to set sell price and display order.',
 									})
@@ -402,14 +406,14 @@ export const CreateKioskStockModal: React.FC<CreateKioskStockModalProps> = ({
 				</SlideExpose>
 				<Group justify='flex-end' mt='md'>
 					<Button variant='default' onClick={onClose} disabled={isSubmitting}>
-						{t('action.cancel')}
+						{t('nikki.general.actions.cancel')}
 					</Button>
 					<Button
 						loading={isSubmitting}
 						disabled={selectedProducts.length === 0}
 						onClick={onSave}
 					>
-						{t('action.add', { defaultValue: 'Add' })}
+						{t('nikki.general.actions.add', { defaultValue: 'Add' })}
 					</Button>
 				</Group>
 			</Stack>

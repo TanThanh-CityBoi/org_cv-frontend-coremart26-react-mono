@@ -18,7 +18,7 @@ export const useKioskMediaEditName = ({
 	onEditError = () => {},
 }: UseKioskMediaEditNameProps = {}) => {
 	const { notification } = useUIState();
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const [mediaToEdit, setMediaToEdit] = useState<KioskMedia | null>(null);
 	const [nameDraft, setNameDraft] = useState('');
@@ -44,15 +44,15 @@ export const useKioskMediaEditName = ({
 		const trimmed = nameDraft.trim();
 		if (!trimmed) {
 			notification.showError(
-				translate('kiosk_media.create.validation.name'),
-				translate('messages.error'),
+				translate('coremart.vendingMachine.kioskMedia.create.validation.name'),
+				translate('nikki.general.messages.error'),
 			);
 			return;
 		}
 		if (!mediaToEdit.etag) {
 			notification.showError(
-				translate('errors.updateFailed'),
-				translate('messages.error'),
+				translate('nikki.general.errors.update_failed'),
+				translate('nikki.general.messages.error'),
 			);
 			return;
 		}
@@ -67,8 +67,8 @@ export const useKioskMediaEditName = ({
 				name: trimmed,
 			});
 			notification.showInfo(
-				translate('kiosk_media.messages.update_name_success'),
-				translate('messages.success'),
+				translate('coremart.vendingMachine.kioskMedia.messages.update_name_success'),
+				translate('nikki.general.messages.success'),
 			);
 			resetEditModal();
 			onEditSuccess();
@@ -76,8 +76,8 @@ export const useKioskMediaEditName = ({
 		catch (e: unknown) {
 			const msg = e instanceof Error ? e.message : String(e);
 			notification.showError(
-				translate('kiosk_media.messages.update_name_failed', { message: msg }),
-				translate('messages.error'),
+				translate('coremart.vendingMachine.kioskMedia.messages.update_name_failed', { message: msg }),
+				translate('nikki.general.messages.error'),
 			);
 			onEditError();
 		}

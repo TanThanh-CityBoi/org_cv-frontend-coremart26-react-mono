@@ -3,27 +3,27 @@
 	"fields": {
 		"interfaceMode": {
 			"type": "enum",
-			"label": "{ \"$ref\": 'kiosk_models.fields.interface_mode' }",
+			"label": "{ \"$ref\": 'coremart.vendingMachine.kioskModels.fields.interfaceMode' }",
 			"enum": [
-				{ "value": "normal", "label": "{ \"$ref\": 'kiosk_models.interface_mode.normal' }" },
-				{ "value": "focus", "label": "{ \"$ref\": 'kiosk_models.interface_mode.focus' }" }
+				{ "value": "normal", "label": "{ \"$ref\": 'coremart.vendingMachine.kioskModels.interfaceMode.normal' }" },
+				{ "value": "focus", "label": "{ \"$ref\": 'coremart.vendingMachine.kioskModels.interfaceMode.focus' }" }
 			]
 		},
 		"waitingPlaylistId": {
 			"type": "string",
-			"label": "{ \"$ref\": 'events.fields.waiting_playlist' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.events.fields.waitingPlaylist' }"
 		},
 		"shoppingPlaylistId": {
 			"type": "string",
-			"label": "{ \"$ref\": 'events.fields.waiting_playlist' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.events.fields.waitingPlaylist' }"
 		},
 		"themeId": {
 			"type": "string",
-			"label": "{ \"$ref\": 'events.fields.theme' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.events.fields.theme' }"
 		},
 		"gameId": {
 			"type": "string",
-			"label": "{ \"$ref\": 'events.fields.game' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.events.fields.game' }"
 		}
 	}
 }

@@ -1,4 +1,4 @@
-import type { KioskShelfType, ShelvesConfigRow, ShelvesConfigWire } from '../../types';
+import type { KioskShelfType, ShelvesConfigRow, ShelvesConfigWire } from '@/features/kioskModels/types';
 
 
 function normalizeShelfType(raw: unknown): KioskShelfType | undefined {
@@ -11,14 +11,14 @@ export function parseShelvesConfigRows(
 	config?: ShelvesConfigWire | Record<string, unknown> | null,
 ): ShelvesConfigRow[] {
 	if (!config) return [];
-	const c = config as { config?: unknown, trays?: unknown };
+	const c = config as { config?: unknown; trays?: unknown };
 	const arr = Array.isArray(c.config)
 		? c.config
 		: Array.isArray(c.trays)
 			? c.trays
 			: [];
 	return arr
-		.map((item: { row?: unknown, type?: unknown, shelfType?: unknown }) => ({
+		.map((item: { row?: unknown; type?: unknown; shelfType?: unknown }) => ({
 			row: String(item.row ?? ''),
 			shelfType: normalizeShelfType(item.type ?? item.shelfType),
 		}))

@@ -1,25 +1,31 @@
-import { snakeToCamelObject } from '@nikkierp/common/utils';
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
 import React from 'react';
 
-import { usePaginationWithTotal } from '../../../common/hooks';
-import { eventCrudService } from '../eventService';
+import {
+	VendingMachineDispatch,
+	eventActions,
+	selectEventList,
+} from '@/appState';
+import { usePagination } from '@/common/hooks';
 
-import type { SearchGraph } from '../../../types';
 import type { Event } from '../types';
-
-
-type SearchResponse = { items: Event[], total: number };
+import type { SearchGraph, SearchParams } from '@/types';
 
 
 export function useEventList({ graph }: { graph?: SearchGraph } = {}) {
-	const { dispatchMethod, result } = useServiceLayer<SearchResponse>(eventCrudService.search);
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
+	const list = useMicroAppSelector(selectEventList);
 
 	const fetchList = React.useCallback((targetPage: number, pageSizeArg: number, searchGraph?: SearchGraph) => {
-		dispatchMethod({ page: targetPage - 1, size: pageSizeArg, graph: searchGraph });
-	}, [dispatchMethod]);
+		const params: SearchParams<Event> = {
+			page: targetPage - 1,
+			size: pageSizeArg,
+			graph: searchGraph,
+		};
+		dispatch(eventActions.listEvents(params));
+	}, [dispatch]);
 
-	const pagination = usePaginationWithTotal(fetchList, result.data?.total ?? 0, { graph });
+	const pagination = usePagination(fetchList, selectEventList, { graph });
 	const { page, pageSize } = pagination;
 
 	React.useEffect(() => {
@@ -30,16 +36,14 @@ export function useEventList({ graph }: { graph?: SearchGraph } = {}) {
 		fetchList(page, pageSize, graph);
 	}, [fetchList, page, pageSize, graph]);
 
-	const events = React.useMemo(
-		() => result.data?.items.map((item) => snakeToCamelObject(item) as Event),
-		[result.data?.items],
-	);
-	const isLoading = !events?.length && result.isPending;
-	const isEmpty = !events?.length && !result.isPending && result.doneAt != null;
+	const events = list.items;
+	const status = list.status;
+	const isLoading = !events?.length && (status === 'pending' || status === 'idle');
+	const isEmpty = !events?.length && status !== 'idle' && status !== 'pending';
 
 	return {
 		events,
-		status: result.isPending ? 'pending' : 'success',
+		status,
 		isLoading,
 		isEmpty,
 		handleRefresh,

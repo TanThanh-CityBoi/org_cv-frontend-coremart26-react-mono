@@ -18,7 +18,7 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
 	state,
 	onFilterChange,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	if (!filterConfig) return null;
 
@@ -27,7 +27,7 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
 			<Group gap='xs' mb='xs'>
 				<IconFilter size={16} style={{ color: '#e64980' }} />
 				<Text size='sm' fw={500}>
-					{translate('search.filters')}
+					{translate('nikki.general.filter.title')}
 				</Text>
 			</Group>
 			<Stack gap='xs'>
@@ -46,7 +46,7 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
 						console.log('Add custom filter');
 					}}
 				>
-					{translate('search.addCustomFilter')}
+					{translate('nikki.general.filter.add_custom')}
 				</Button>
 			</Stack>
 		</Box>

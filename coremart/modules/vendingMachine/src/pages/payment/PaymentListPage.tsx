@@ -1,11 +1,11 @@
 import { ConfirmModal } from '@nikkierp/ui/components';
+import { ModelSchema } from '@nikkierp/ui/model';
 import React from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 
-import { asLegacyModelSchema } from '../../common/helpers';
-import { ControlPanel } from '../../components';
-import { ControlPanelViewModeProps } from '../../components/ControlPanel/ControlPanelViewMode';
-import { PageContainer } from '../../components/PageContainer';
+import { ControlPanel } from '@/components';
+import { ControlPanelViewModeProps } from '@/components/ControlPanel/ControlPanelViewMode';
+import { PageContainer } from '@/components/PageContainer';
 import {
 	PaymentDetailDrawer,
 	PaymentGridView,
@@ -17,7 +17,7 @@ import {
 	usePaymentListPageActions,
 	usePaymentListPageConfig,
 	usePaymentListPageContext,
-} from '../../features/payment';
+} from '@/features/payment';
 
 
 export const PaymentListPage: React.FC = () => {
@@ -31,7 +31,7 @@ export const PaymentListPage: React.FC = () => {
 const PAYMENT_TABLE_COLUMNS = ['name', 'method', 'isArchived', 'transactionRange', 'actions'];
 
 export const PaymentListPageContent: React.FC = () => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const { filter: { filters }, list: { payments, isLoading, isEmpty } } = usePaymentListPageContext();
 	const { breadcrumbs, actions, viewModeConfig } = usePaymentListPageConfig();
@@ -47,7 +47,7 @@ export const PaymentListPageContent: React.FC = () => {
 	return (
 		<>
 			<PageContainer
-				documentTitle={translate('menu.payment')}
+				documentTitle={translate('coremart.vendingMachine.menu.payment')}
 				breadcrumbs={breadcrumbs}
 				sections={[
 					<ControlPanel
@@ -89,7 +89,7 @@ const PaymentPreviewDrawer: React.FC = () => {
 };
 
 const ArchivePaymentModal: React.FC = () => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const {
 		pendingArchive,
 		isOpenArchiveModal,
@@ -103,27 +103,27 @@ const ArchivePaymentModal: React.FC = () => {
 			onClose={handleCloseModal}
 			onConfirm={handleConfirmArchive}
 			title={pendingArchive?.targetArchived
-				? translate('payment.messages.archive_modal_title')
-				: translate('payment.messages.restore_modal_title')}
+				? translate('coremart.vendingMachine.payment.messages.archive_modal_title')
+				: translate('coremart.vendingMachine.payment.messages.restore_modal_title')}
 			message={
 				<Trans
 					i18nKey={pendingArchive?.targetArchived
-						? 'payment.messages.archive_confirm'
-						: 'payment.messages.restore_confirm'}
+						? 'coremart.vendingMachine.payment.messages.archive_confirm'
+						: 'coremart.vendingMachine.payment.messages.restore_confirm'}
 					values={{ name: pendingArchive?.payment?.name || '' }}
 					components={{ strong: <strong /> }}
 				/>
 			}
 			confirmLabel={pendingArchive?.targetArchived
-				? translate('action.archive')
-				: translate('action.restore')}
+				? translate('nikki.general.actions.archive')
+				: translate('nikki.general.actions.restore')}
 			confirmColor={pendingArchive?.targetArchived ? 'orange' : 'blue'}
 		/>
 	);
 };
 
 const DeletePaymentModal: React.FC = () => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const {
 		paymentToDelete,
 		isOpenDeleteModal,
@@ -133,28 +133,28 @@ const DeletePaymentModal: React.FC = () => {
 
 	return (
 		<ConfirmModal
-			title={translate('messages.delete.confirm')}
+			title={translate('nikki.general.messages.delete_confirm')}
 			opened={!!paymentToDelete && isOpenDeleteModal}
 			onClose={handleCloseDeleteModal}
 			onConfirm={() => handleDelete(paymentToDelete?.id || '')}
 			message={
 				<Trans
-					i18nKey='payment.messages.delete_confirm'
+					i18nKey='coremart.vendingMachine.payment.messages.delete_confirm'
 					values={{ name: paymentToDelete?.name || '' }}
 					components={{ strong: <strong /> }}
 				/>
 			}
-			confirmLabel={translate('action.delete')}
+			confirmLabel={translate('nikki.general.actions.delete')}
 			confirmColor='red'
 		/>
 	);
 };
 
 type PaymentListProps = {
-	payments: PaymentMethod[],
-	viewMode: 'list' | 'grid',
-	isLoading: boolean,
-	actions: PaymentTableActions,
+	payments: PaymentMethod[];
+	viewMode: 'list' | 'grid';
+	isLoading: boolean;
+	actions: PaymentTableActions;
 };
 
 function PaymentList({ payments, viewMode, isLoading, actions }: PaymentListProps) {
@@ -173,7 +173,7 @@ function PaymentList({ payments, viewMode, isLoading, actions }: PaymentListProp
 				<PaymentTable
 					columns={PAYMENT_TABLE_COLUMNS}
 					data={payments as unknown as Record<string, unknown>[]}
-					schema={asLegacyModelSchema(paymentSchema)}
+					schema={paymentSchema as ModelSchema}
 					isLoading={isLoading}
 					actions={actions}
 				/>

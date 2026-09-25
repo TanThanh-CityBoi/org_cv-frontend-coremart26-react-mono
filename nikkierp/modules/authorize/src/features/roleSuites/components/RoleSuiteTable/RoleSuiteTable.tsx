@@ -11,8 +11,8 @@ import {
 	renderActionsColumn,
 } from './renderColumns';
 
-import type { Group as IdentityGroup, Org } from '../../../identities';
-import type { User } from '../../../identities';
+import type { Group as IdentityGroup, Org } from '@/features/identities';
+import type { User } from '@/features/identities';
 
 
 export interface RoleSuiteTableProps extends AutoTableProps {

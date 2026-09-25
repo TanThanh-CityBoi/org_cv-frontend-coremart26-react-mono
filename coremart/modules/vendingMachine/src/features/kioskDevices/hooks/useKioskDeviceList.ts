@@ -1,23 +1,25 @@
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
 import React from 'react';
 
-import { kioskDeviceStoreService } from '../kioskDeviceStoreService';
-
-import type { KioskDevice } from '../types';
+import { VendingMachineDispatch, kioskDeviceActions, selectKioskDeviceList } from '@/appState';
 
 
 export function useKioskDeviceList() {
-	const { dispatchMethod, result } = useServiceLayer<KioskDevice[]>(kioskDeviceStoreService.list);
-
-	const handleRefresh = React.useCallback(() => dispatchMethod({}), [dispatchMethod]);
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
+	const list = useMicroAppSelector(selectKioskDeviceList);
 
 	React.useEffect(() => {
-		handleRefresh();
-	}, [handleRefresh]);
+		if (list.status === 'idle') {
+			dispatch(kioskDeviceActions.listKioskDevices());
+		}
+	}, [dispatch, list]);
+
+
+	const handleRefresh = () => dispatch(kioskDeviceActions.listKioskDevices());
 
 	return {
-		kioskDevices: result.data ?? [],
-		isLoadingList: result.isPending || result.doneAt == null,
+		kioskDevices: list.data,
+		isLoadingList: list.status === 'pending' || list.status === 'idle',
 		handleRefresh,
 	};
 }

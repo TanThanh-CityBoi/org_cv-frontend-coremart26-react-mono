@@ -1,7 +1,8 @@
 import { MantineProvider } from '@mantine/core';
+import { useSetMenuBarItems } from '@nikkierp/ui/appState';
 import {
 	AppRoute, AppRoutes, defineWebComponent, MicroAppBundle, MicroAppDomType, MicroAppProps,
-	MicroAppProvider, initMicroAppStateContext,
+	MicroAppProvider, initMicroAppStateContext, useMicroAppDispatch,
 	MicroAppRouter, WidgetRoutes,
 } from '@nikkierp/ui/microApp';
 import { Navigate } from 'react-router';
@@ -9,8 +10,8 @@ import { Navigate } from 'react-router';
 import { reducer } from './appState';
 import { DRIVE_TABS } from './constants/driveTabs';
 import { registerDriveFileSelectorWebComponent } from './features/files/components';
+import { useMenuBarItems } from './hooks';
 import { DriveLayout } from './layouts';
-import { buildDriveMenu } from './menu';
 import { DriveSearchPage } from './pages/file/DriveSearchPage';
 import { FolderPage } from './pages/file/FolderPage';
 import { SharedWithMePage } from './pages/file/SharedFilePage';
@@ -21,6 +22,10 @@ import './styles/index.css';
 
 
 function Main(props: MicroAppProps) {
+	const dispatch = useMicroAppDispatch();
+	const menuBarItems = useMenuBarItems();
+	useSetMenuBarItems(menuBarItems, dispatch);
+
 	return (
 		<MicroAppProvider {...props}>
 			<MantineProvider>
@@ -53,7 +58,7 @@ function Main(props: MicroAppProps) {
 }
 
 const bundle: MicroAppBundle = {
-	init({ htmlTag, slug, registerReducer, host }) {
+	init({ htmlTag, registerReducer }) {
 		const domType = MicroAppDomType.SHARED;
 		defineWebComponent(Main, {
 			htmlTag,
@@ -64,7 +69,6 @@ const bundle: MicroAppBundle = {
 
 		const result = registerReducer(reducer);
 		initMicroAppStateContext(result);
-		host.menuRegistry.register(buildDriveMenu(slug));
 		return {
 			domType,
 		};

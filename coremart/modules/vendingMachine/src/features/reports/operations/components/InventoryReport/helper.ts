@@ -1,6 +1,5 @@
 import type { InventoryReportAppliedFilters, InventorySourceRow } from './type';
 
-
 export function filterInventoryRows(
 	rows: readonly InventorySourceRow[],
 	applied: InventoryReportAppliedFilters,
@@ -14,7 +13,7 @@ export function filterInventoryRows(
 
 export function aggregateInventoryQtyByCategory(
 	rows: readonly InventorySourceRow[],
-): { key: string, qty: number }[] {
+): { key: string; qty: number }[] {
 	const map = new Map<string, number>();
 	for (const r of rows) {
 		map.set(r.categoryKey, (map.get(r.categoryKey) ?? 0) + r.totalQty);

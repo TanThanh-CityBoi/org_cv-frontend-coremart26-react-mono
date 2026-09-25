@@ -2,10 +2,10 @@ import { Box, Text } from '@mantine/core';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { type Playlist } from '@/features/mediaPlaylist/types';
 
 import {  MediaPlaylistCard } from './MediaPlaylistCard';
 import { MediaPlaylistSelectModal } from './MediaPlaylistSelectModal';
-import { type Playlist } from '../../features/mediaPlaylist/types';
 
 
 export interface MediaPlaylistSelectProps {
@@ -23,7 +23,7 @@ export const MediaPlaylistSelect: React.FC<MediaPlaylistSelectProps> = ({
 	onChange,
 	onRemove,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const [modalOpened, setModalOpened] = useState(false);
 
@@ -38,8 +38,8 @@ export const MediaPlaylistSelect: React.FC<MediaPlaylistSelectProps> = ({
 		<Box>
 			<Text size='sm' c='dimmed' mb={3} fw={500}>
 				{translate(type === 'waiting'
-					? 'events.fields.idle_playlist'
-					: 'events.fields.shopping_playlist')
+					? 'coremart.vendingMachine.events.fields.idlePlaylist'
+					: 'coremart.vendingMachine.events.fields.shoppingPlaylist')
 				}
 			</Text>
 			<MediaPlaylistCard

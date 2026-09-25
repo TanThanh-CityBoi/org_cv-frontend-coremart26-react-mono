@@ -1,11 +1,10 @@
 import { Avatar, Box, Divider, Flex, Menu, Text } from '@mantine/core';
-import { testAttrs } from '@nikkierp/common/utils';
-import { useSignOut } from '@nikkierp/shell/authenticate';
 import { useUserContext } from '@nikkierp/shell/userContext';
 import { IconUserFilled } from '@tabler/icons-react';
 import clsx from 'clsx';
 import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
 
 import { handleMenuItemClick } from './helpers';
 import { PROFILE_MENU_CONFIG } from './menuConfig';
@@ -14,13 +13,11 @@ import { LangSwitchModal } from '../LangSwitch';
 import { ThemeSwitchModal } from '../ThemeSwitch';
 
 
-const TEST_ID = 'shell.profileMenu';
-
 export const ProfileMenuDropdown: React.FC = () => {
-	const { dispatchMethod: signOut } = useSignOut();
+	const dispatch = useDispatch<any>();
 	const { t: translate } = useTranslation();
 
-	const userCtx = useUserContext();
+	const { user } = useUserContext();
 	const themeModeModalRef = useRef<any>(null);
 	const langSwitchModalRef = useRef<any>(null);
 
@@ -30,10 +27,7 @@ export const ProfileMenuDropdown: React.FC = () => {
 		<>
 			<Menu shadow='md' width={300} opened={opened} onChange={setOpened}>
 				<Menu.Target>
-					<Avatar
-						size={35} className={clsx(classes.avatar, opened && classes.activeAvatar)}
-						{...testAttrs(TEST_ID, 'trigger')}
-					>
+					<Avatar size={35} className={clsx(classes.avatar, opened && classes.activeAvatar)}>
 						<IconUserFilled color={'var(--mantine-color-gray-6)'} />
 					</Avatar>
 				</Menu.Target>
@@ -47,8 +41,8 @@ export const ProfileMenuDropdown: React.FC = () => {
 							<IconUserFilled color={'var(--mantine-color-gray-6)'} />
 						</Avatar>
 						<Box>
-							<Text size='md' fw={600}>{userCtx?.displayName}</Text>
-							<Text size='sm' c='dimmed'>{userCtx?.email}</Text>
+							<Text size='md' fw={600}>{user?.displayName || 'Display name'}</Text>
+							<Text size='sm' c='dimmed'>{user?.email || 'username@example.com'}</Text>
 						</Box>
 					</Flex>
 
@@ -63,11 +57,10 @@ export const ProfileMenuDropdown: React.FC = () => {
 								leftSection={item.icon}
 								onClick={() => handleMenuItemClick(
 									item.action,
-									signOut,
+									dispatch,
 									themeModeModalRef,
 									langSwitchModalRef)
 								}
-								{...testAttrs(TEST_ID, 'item', item.id)}
 							>
 								{translate(item.translationKey)}
 							</Menu.Item>

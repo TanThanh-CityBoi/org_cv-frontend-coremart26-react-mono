@@ -4,14 +4,15 @@ import { IconPlaylist, IconSearch, IconX } from '@tabler/icons-react';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { TablePagination } from '@/components/Table';
 import {
 	useMediaPlaylistFilter,
 	useMediaPlaylistList,
-} from '../../features/mediaPlaylist/hooks';
-import { ArchivedStatusBadge } from '../ArchivedStatusBadge';
-import { TablePagination } from '../Table';
+} from '@/features/mediaPlaylist/hooks';
 
-import type { Playlist } from '../../features/mediaPlaylist/types';
+import { ArchivedStatusBadge } from '../ArchivedStatusBadge';
+
+import type { Playlist } from '@/features/mediaPlaylist/types';
 
 
 export interface MediaPlaylistSelectModalProps {
@@ -26,7 +27,7 @@ export const MediaPlaylistSelectModal: React.FC<MediaPlaylistSelectModalProps> =
 	onClose,
 	onSelectPlaylists,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const { filters, graph } = useMediaPlaylistFilter();
 	const {
 		playlists,
@@ -63,7 +64,7 @@ export const MediaPlaylistSelectModal: React.FC<MediaPlaylistSelectModalProps> =
 		<Modal
 			opened={opened}
 			onClose={handleCancel}
-			title={translate('media_playlist.select_playlists.title')}
+			title={translate('coremart.vendingMachine.mediaPlaylist.selectPlaylists.title')}
 			size='xl'
 		>
 			<Stack gap='md'>
@@ -83,7 +84,7 @@ export const MediaPlaylistSelectModal: React.FC<MediaPlaylistSelectModalProps> =
 
 				{selectedPlaylists.length > 0 ? (
 					<Text size='sm' c='blue' fw={500}>
-						{translate('media_playlist.select_playlists.selected_count',
+						{translate('coremart.vendingMachine.mediaPlaylist.selectPlaylists.selectedCount',
 							{ count: selectedPlaylists.length })}
 					</Text>
 				) : null}
@@ -91,11 +92,11 @@ export const MediaPlaylistSelectModal: React.FC<MediaPlaylistSelectModalProps> =
 				<ScrollArea h={400}>
 					{isLoadingList ? (
 						<Text size='sm' c='dimmed' ta='center' py='md'>
-							{translate('messages.loading')}
+							{translate('nikki.general.messages.loading')}
 						</Text>
 					) : showEmpty ? (
 						<Text size='sm' c='dimmed' ta='center' py='md'>
-							{translate('media_playlist.messages.no_playlists_found')}
+							{translate('coremart.vendingMachine.mediaPlaylist.messages.no_playlists_found')}
 						</Text>
 					) : (
 						<SimpleGrid cols={2} spacing='md'>
@@ -124,7 +125,7 @@ export const MediaPlaylistSelectModal: React.FC<MediaPlaylistSelectModalProps> =
 											</Group>
 
 											<Text size='xs' c='dimmed'>
-												{translate('media_playlist.fields.created_at')}: {new Date(playlist.createdAt).toLocaleDateString()}
+												{translate('coremart.vendingMachine.mediaPlaylist.fields.createdAt')}: {new Date(playlist.createdAt).toLocaleDateString()}
 											</Text>
 										</Stack>
 									</Card>
@@ -140,10 +141,10 @@ export const MediaPlaylistSelectModal: React.FC<MediaPlaylistSelectModalProps> =
 
 				<Group justify='flex-end' gap='xs'>
 					<Button variant='subtle' onClick={handleCancel}>
-						{translate('action.cancel')}
+						{translate('nikki.general.actions.cancel')}
 					</Button>
 					<Button onClick={handleConfirm} disabled={selectedPlaylists.length === 0}>
-						{translate('action.confirm')}
+						{translate('nikki.general.actions.confirm')}
 					</Button>
 				</Group>
 			</Stack>

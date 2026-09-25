@@ -1,12 +1,12 @@
 import { TablePaginationProps } from '@nikkierp/ui/components';
+import { ModelSchema } from '@nikkierp/ui/model';
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
-import { asLegacyModelSchema } from '../../common/helpers';
-import { ControlPanel } from '../../components';
-import { ControlPanelViewModeProps } from '../../components/ControlPanel/ControlPanelViewMode';
-import { PageContainer } from '../../components/PageContainer';
+import { ControlPanel } from '@/components';
+import { ControlPanelViewModeProps } from '@/components/ControlPanel/ControlPanelViewMode';
+import { PageContainer } from '@/components/PageContainer';
 import {
 	ArchiveEventModal,
 	DeleteEventModal,
@@ -22,9 +22,9 @@ import {
 	useEventListPageActions,
 	useEventListPageContext,
 	useEventListPageConfig,
-} from '../../features/events';
+} from '@/features/events';
 
-import type { Event } from '../../features/events/types';
+import type { Event } from '@/features/events/types';
 
 
 export const EventsPage: React.FC = () => (
@@ -34,7 +34,7 @@ export const EventsPage: React.FC = () => (
 );
 
 export const EventsPageContent: React.FC = () => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const { filter, list } = useEventListPageContext();
 	const { breadcrumbs, actions, viewModeConfig } = useEventListPageConfig();
 	const { delete: deleteEventHook, archive, preview } = useEventListPageActions();
@@ -83,7 +83,7 @@ export const EventsPageContent: React.FC = () => {
 					viewMode={viewModeConfig as ControlPanelViewModeProps}
 				/>,
 			]}
-			documentTitle={translate('menu.events')}
+			documentTitle={translate('coremart.vendingMachine.menu.events')}
 		>
 			<EventViews
 				events={(list.events ?? []) as Event[]}
@@ -177,7 +177,7 @@ const EventViews: React.FC<EventViewsProps> = ({
 				<EventTable
 					columns={tableColumns}
 					data={events as unknown as Record<string, unknown>[]}
-					schema={asLegacyModelSchema(eventSchema)}
+					schema={eventSchema as ModelSchema}
 					isLoading={isLoading}
 					actions={tableActions}
 					pagination={listPaginationProps}

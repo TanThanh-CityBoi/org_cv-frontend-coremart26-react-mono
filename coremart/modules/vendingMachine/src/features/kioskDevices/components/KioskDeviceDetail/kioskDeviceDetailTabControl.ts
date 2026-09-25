@@ -1,4 +1,4 @@
-import { createDetailTabControl } from '../../../../components/DetailLayout';
+import { createDetailTabControl } from '@/components/DetailLayout';
 
 import type { KioskDeviceDetailTabId } from './hooks/types';
 

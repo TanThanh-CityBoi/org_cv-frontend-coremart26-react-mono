@@ -3,30 +3,31 @@ import { Center, SimpleGrid, Stack, Text } from '@mantine/core';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { getLocalizedName } from '@/common/helpers';
+import { ViewMode } from '@/components';
+import { TableContainer, TablePagination } from '@/components/Table';
+import { type TablePaginationProps } from '@/components/Table';
+
 import { KioskProductCard } from './KioskProductCard';
 import { KioskProductTable } from './KioskProductTable';
-import { getLocalizedName } from '../../../../common/helpers';
-import { ViewMode } from '../../../../components';
-import { TableContainer, TablePagination } from '../../../../components/Table';
-import { type TablePaginationProps } from '../../../../components/Table';
 import { KioskProduct } from '../../type';
 
 
 
 
 export type KioskProductListProps = {
-	products: KioskProduct[],
-	pagination: TablePaginationProps,
-	error: string | null,
-	viewMode: ViewMode,
+	products: KioskProduct[];
+	pagination: TablePaginationProps;
+	error: string | null;
+	viewMode: ViewMode;
 	/** When false, at most one product (replace on click; click same again clears). When true, toggle membership. */
-	multiSelect?: boolean,
+	multiSelect?: boolean;
 	/** Selected rows; pass with {@link onSelectProductsChange} for controlled usage, or omit for uncontrolled. */
-	selectedProducts?: KioskProduct[],
-	onSelectProductsChange?: (products: KioskProduct[]) => void,
-	scrollAreaHeight?: number,
+	selectedProducts?: KioskProduct[];
+	onSelectProductsChange?: (products: KioskProduct[]) => void;
+	scrollAreaHeight?: number;
 
-	maxSelected?: number,
+	maxSelected?: number;
 };
 
 export const KioskProductList: React.FC<KioskProductListProps> = ({
@@ -40,11 +41,11 @@ export const KioskProductList: React.FC<KioskProductListProps> = ({
 	scrollAreaHeight = 360,
 	maxSelected = 10,
 }) => {
-	const { t } = useTranslation('vending_machine');
+	const { t } = useTranslation();
 	const [localSelectedProducts, setLocalSelectedProducts] = useState<KioskProduct[]>([]);
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-	const { i18n } = useTranslation('vending_machine');
+	const { i18n } = useTranslation();
 
 	const displayNameFor = useMemo(
 		() => (p: KioskProduct) => getLocalizedName(p.name, i18n.language),
@@ -81,7 +82,7 @@ export const KioskProductList: React.FC<KioskProductListProps> = ({
 			if (multiSelect) {
 				const has = effectiveSelected.some((p) => p.id === product.id);
 				if (isMaxSelected && !has) {
-					setErrorMessage(t('kiosk_products.messages.max_selected', {
+					setErrorMessage(t('coremart.vendingMachine.kioskProducts.messages.maxSelected', {
 						defaultValue: 'You have reached the maximum number of products',
 					}));
 					return;
@@ -115,7 +116,7 @@ export const KioskProductList: React.FC<KioskProductListProps> = ({
 			{products.length === 0 ? (
 				<Center h={scrollAreaHeight}>
 					<Text size='sm' c={error ? 'red' : 'dimmed'} ta='center' py='xl'>
-						{error ?? t('kiosk_products.messages.no_results')}
+						{error ?? t('coremart.vendingMachine.kioskProducts.messages.noResults')}
 					</Text>
 				</Center>
 			) : (

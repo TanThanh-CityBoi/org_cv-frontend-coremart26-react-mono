@@ -1,3 +1,4 @@
+import { signOutAction } from '@nikkierp/shell/auth';
 import React from 'react';
 
 
@@ -12,13 +13,10 @@ export interface LangSwitchModalRef {
 }
 
 /**
- * Handle logout action.
- *
- * `signOut` is supplied by the caller — it comes from `useServiceLayer`, which can only
- * be called inside a component.
+ * Handle logout action
  */
-export const handleLogout = (signOut: () => void, onClose?: () => void) => {
-	signOut();
+export const handleLogout = (dispatch: any, onClose?: () => void) => {
+	dispatch(signOutAction());
 	if (onClose) {
 		onClose();
 	}
@@ -50,14 +48,14 @@ export const handleLanguageSwitch =
  */
 export const handleMenuItemClick = (
 	action: string | undefined,
-	signOut: () => void,
+	dispatch: any,
 	themeModeModalRef: React.RefObject<ThemeModeModalRef>,
 	langSwitchModalRef: React.RefObject<LangSwitchModalRef>,
 	onClose?: () => void,
 ) => {
 	switch (action) {
 		case 'signOut':
-			handleLogout(signOut, onClose);
+			handleLogout(dispatch, onClose);
 			break;
 		case 'themeMode':
 			handleThemeMode(themeModeModalRef, onClose);

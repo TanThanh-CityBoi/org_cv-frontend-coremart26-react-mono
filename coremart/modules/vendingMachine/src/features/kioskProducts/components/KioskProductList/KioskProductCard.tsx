@@ -3,15 +3,14 @@ import { formatCurrency } from '@nikkierp/common/utils';
 import blankPicture from '@nikkierp/ui/assets/images/blank-picture.png';
 import React from 'react';
 
-import { formatCatalogPrice } from '../../sellPrice';
 import { KioskProduct } from '../../type';
 
 
 export type KioskProductCardProps = {
-	product: KioskProduct,
-	displayName: string,
-	selected: boolean,
-	onSelect?: (product: KioskProduct) => void,
+	product: KioskProduct;
+	displayName: string;
+	selected: boolean;
+	onSelect?: (product: KioskProduct) => void;
 };
 
 export const KioskProductCard: React.FC<KioskProductCardProps> = ({
@@ -49,7 +48,7 @@ export const KioskProductCard: React.FC<KioskProductCardProps> = ({
 			<Text size='sm' fw={500} lineClamp={2} mt='xs'>{displayName}</Text>
 			<Group justify='space-between' gap='xs' wrap='nowrap' mt={4}>
 				<Text size='xs' c='dimmed' lineClamp={1} style={{ flex: 1 }}>{product.sku}</Text>
-				<Text size='xs' c='dimmed'>{formatCatalogPrice(product.proposedPrice, formatCurrency.VND)}</Text>
+				<Text size='xs' c='dimmed'>{formatCurrency.VND(Number(product.proposedPrice))}</Text>
 			</Group>
 		</Card>
 	);

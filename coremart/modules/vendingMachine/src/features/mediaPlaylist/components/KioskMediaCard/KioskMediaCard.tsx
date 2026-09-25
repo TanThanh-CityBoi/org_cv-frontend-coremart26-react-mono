@@ -3,7 +3,8 @@ import { IconPhoto, IconVideo } from '@tabler/icons-react';
 import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { CardActionMenu } from '../../../../components';
+import { CardActionMenu } from '@/components';
+
 import { getKioskMediaTableActions, KioskMediaTableActions } from '../KioskMediaTable/KioskMediaTable';
 import { formatGalleryDuration } from '../MediaGalleryModal/mediaGalleryUtils';
 import { MediaPreview } from '../MediaPreview';
@@ -36,7 +37,7 @@ export const KioskMediaCard: React.FC<KioskMediaCardProps> = ({
 	actions,
 }) => {
 	const cardRef = useRef<HTMLDivElement>(null);
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const actionsMenuItems = getKioskMediaTableActions(item as unknown as KioskMedia, actions ?? {}, translate);
 
 	return (

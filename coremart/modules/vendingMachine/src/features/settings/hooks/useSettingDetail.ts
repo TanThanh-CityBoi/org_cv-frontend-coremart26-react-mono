@@ -1,23 +1,20 @@
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
 import React from 'react';
 
-import { settingStoreService } from '../settingStoreService';
-
-import type { Setting } from '../types';
-
+import { VendingMachineDispatch, settingActions, selectSettingDetail } from '@/appState';
 
 export function useSettingDetail(settingId?: string) {
-	const { dispatchMethod, result } = useServiceLayer<Setting>(settingStoreService.getById);
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
+	const detail = useMicroAppSelector(selectSettingDetail);
 
 	React.useEffect(() => {
 		if (settingId) {
-			dispatchMethod({ id: settingId });
+			dispatch(settingActions.getSetting(settingId));
 		}
-	}, [settingId, dispatchMethod]);
+	}, [settingId, dispatch]);
 
 	return {
-		// `useServiceLayer` yields `null` before the first call; consumers expect `undefined`.
-		setting: result.data ?? undefined,
-		isLoading: result.isPending || result.doneAt == null,
+		setting: detail.data,
+		isLoading: detail.status === 'pending' || detail.status === 'idle',
 	};
 }

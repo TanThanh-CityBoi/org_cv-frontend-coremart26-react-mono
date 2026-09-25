@@ -1,53 +1,59 @@
+import { PermissionScopeType } from '@nikkierp/shell/userContext';
 import { Navigate } from 'react-router';
 
-import { EventCreatePage } from '../pages/events/EventCreatePage';
-import { EventDetailPage } from '../pages/events/EventDetailPage';
-import { EventsPage } from '../pages/events/EventsPage';
-import { GameDetailPage } from '../pages/games/GameDetailPage';
-import { GamesPage } from '../pages/games/GamesPage';
-import { KioskDeviceDetailPage } from '../pages/kioskDevices/KioskDeviceDetailPage';
-import { KioskDevicePage } from '../pages/kioskDevices/KioskDevicePage';
-import { KioskModelCreatePage } from '../pages/kioskModels/KioskModelCreatePage';
-import { KioskModelDetailPage } from '../pages/kioskModels/KioskModelDetailPage';
-import { KioskModelPage } from '../pages/kioskModels/KioskModelPage';
-import { KioskCreatePage } from '../pages/kiosks/KioskCreatePage';
-import { KioskDetailPage } from '../pages/kiosks/KioskDetailPage';
-import { KioskListPage } from '../pages/kiosks/KioskListPage';
-import { KioskSettingCreatePage } from '../pages/kioskSettings/KioskSettingCreatePage';
-import { KioskSettingDetailPage } from '../pages/kioskSettings/KioskSettingDetailPage';
-import { KioskSettingPage } from '../pages/kioskSettings/KioskSettingPage';
-import { KioskMediaCreatePage } from '../pages/mediaPlaylist/KioskMediaCreatePage';
-import { MediaListPage } from '../pages/mediaPlaylist/MediaListPage';
-import { MediaPlaylistCreatePage } from '../pages/mediaPlaylist/MediaPlaylistCreatePage';
-import { MediaPlaylistDetailPage } from '../pages/mediaPlaylist/MediaPlaylistDetailPage';
-import { MediaPlaylistsPage } from '../pages/mediaPlaylist/MediaPlaylistsPage';
-import { OrderDetailPage } from '../pages/orders/OrderDetailPage';
-import { OrderListPage } from '../pages/orders/OrderListPage';
-import OverviewPage from '../pages/overview/OverviewPage';
-import { PaymentCreatePage } from '../pages/payment/PaymentCreatePage';
-import { PaymentDetailPage } from '../pages/payment/PaymentDetailPage';
-import { PaymentListPage } from '../pages/payment/PaymentListPage';
-import { BusinessOverviewPage } from '../pages/reports/BusinessOverviewPage';
-import { InventoryReportPage } from '../pages/reports/InventoryReportPage';
-import { KioskRevenueDetailPage } from '../pages/reports/KioskRevenueDetailPage';
-import { PnlReportPage } from '../pages/reports/PnlReportPage';
-import { RefundReportPage } from '../pages/reports/RefundReportPage';
-import { RevenueReportPage } from '../pages/reports/RevenueReportPage';
-import { SettingCreatePage } from '../pages/settings/SettingCreatePage';
-import { SettingDetailPage } from '../pages/settings/SettingDetailPage';
-import { SettingsPage } from '../pages/settings/SettingsPage';
-import { ThemeDetailPage } from '../pages/themes/ThemeDetailPage';
-import { ThemesPage } from '../pages/themes/ThemesPage';
+import { EventCreatePage } from '@/pages/events/EventCreatePage';
+import { EventDetailPage } from '@/pages/events/EventDetailPage';
+import { EventsPage } from '@/pages/events/EventsPage';
+import { GameDetailPage } from '@/pages/games/GameDetailPage';
+import { GamesPage } from '@/pages/games/GamesPage';
+import { KioskDeviceDetailPage } from '@/pages/kioskDevices/KioskDeviceDetailPage';
+import { KioskDevicePage } from '@/pages/kioskDevices/KioskDevicePage';
+import { KioskModelCreatePage } from '@/pages/kioskModels/KioskModelCreatePage';
+import { KioskModelDetailPage } from '@/pages/kioskModels/KioskModelDetailPage';
+import { KioskModelPage } from '@/pages/kioskModels/KioskModelPage';
+import { KioskCreatePage } from '@/pages/kiosks/KioskCreatePage';
+import { KioskDetailPage } from '@/pages/kiosks/KioskDetailPage';
+import { KioskListPage } from '@/pages/kiosks/KioskListPage';
+import { KioskSettingCreatePage } from '@/pages/kioskSettings/KioskSettingCreatePage';
+import { KioskSettingDetailPage } from '@/pages/kioskSettings/KioskSettingDetailPage';
+import { KioskSettingPage } from '@/pages/kioskSettings/KioskSettingPage';
+import { KioskMediaCreatePage } from '@/pages/mediaPlaylist/KioskMediaCreatePage';
+import { MediaListPage } from '@/pages/mediaPlaylist/MediaListPage';
+import { MediaPlaylistCreatePage } from '@/pages/mediaPlaylist/MediaPlaylistCreatePage';
+import { MediaPlaylistDetailPage } from '@/pages/mediaPlaylist/MediaPlaylistDetailPage';
+import { MediaPlaylistsPage } from '@/pages/mediaPlaylist/MediaPlaylistsPage';
+import { OrderDetailPage } from '@/pages/orders/OrderDetailPage';
+import { OrderListPage } from '@/pages/orders/OrderListPage';
+import OverviewPage from '@/pages/overview/OverviewPage';
+import { PaymentCreatePage } from '@/pages/payment/PaymentCreatePage';
+import { PaymentDetailPage } from '@/pages/payment/PaymentDetailPage';
+import { PaymentListPage } from '@/pages/payment/PaymentListPage';
+import { BusinessOverviewPage } from '@/pages/reports/BusinessOverviewPage';
+import { InventoryReportPage } from '@/pages/reports/InventoryReportPage';
+import { KioskRevenueDetailPage } from '@/pages/reports/KioskRevenueDetailPage';
+import { PnlReportPage } from '@/pages/reports/PnlReportPage';
+import { RefundReportPage } from '@/pages/reports/RefundReportPage';
+import { RevenueReportPage } from '@/pages/reports/RevenueReportPage';
+import { SettingCreatePage } from '@/pages/settings/SettingCreatePage';
+import { SettingDetailPage } from '@/pages/settings/SettingDetailPage';
+import { SettingsPage } from '@/pages/settings/SettingsPage';
+import { ThemeDetailPage } from '@/pages/themes/ThemeDetailPage';
+import { ThemesPage } from '@/pages/themes/ThemesPage';
 
 
 export type AppRouteConfig = {
-	key: string,
-	path?: string, //* route path
-	element?: React.ReactNode, //* route element
-	index?: boolean,
+	key: string;
+	path?: string; //* route path
+	element?: React.ReactNode; //* route element
+	index?: boolean;
+
+	// * permission guard props
+	contextScope?: { scopeType: PermissionScopeType; scopeRef: string };
+	resource?: string;
+	action?: string;
 
 	// * children routes
-	children?: AppRouteConfig[],
+	children?: AppRouteConfig[];
 };
 
 export const appRoutes: AppRouteConfig[] = [{

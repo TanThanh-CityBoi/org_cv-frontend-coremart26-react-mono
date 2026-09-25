@@ -21,11 +21,11 @@ export const EventKanbanView: React.FC<EventKanbanViewProps> = ({
 	isLoading = false,
 	actions = {},
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const { preview: onPreview, ...cardActions } = actions;
 
 	const phaseLabel = (phase: EventRunPhase) =>
-		translate(`events.run_phase.${phase}`);
+		translate(`coremart.vendingMachine.events.runPhase.${phase}`);
 
 	const eventsByRunPhase = useMemo(() => {
 		const grouped: Record<EventRunPhase, Event[]> = {
@@ -43,7 +43,7 @@ export const EventKanbanView: React.FC<EventKanbanViewProps> = ({
 	}, [events]);
 
 	if (isLoading) {
-		return <Text c='dimmed'>{translate('messages.loading')}</Text>;
+		return <Text c='dimmed'>{translate('nikki.general.messages.loading')}</Text>;
 	}
 
 	return (
@@ -68,7 +68,7 @@ export const EventKanbanView: React.FC<EventKanbanViewProps> = ({
 							))}
 							{(!eventsByRunPhase[phase] || eventsByRunPhase[phase].length === 0) && (
 								<Text size='sm' c='dimmed' ta='center' p='md'>
-									{translate('events.messages.no_events')}
+									{translate('coremart.vendingMachine.events.messages.no_events')}
 								</Text>
 							)}
 						</Stack>

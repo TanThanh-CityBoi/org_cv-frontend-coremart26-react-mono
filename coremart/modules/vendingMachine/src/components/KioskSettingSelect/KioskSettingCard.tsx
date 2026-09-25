@@ -4,9 +4,9 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 
-import { ArchivedStatusBadge } from '../ArchivedStatusBadge';
+import { ArchivedStatusBadge } from '@/components/ArchivedStatusBadge';
 
-import type { KioskSetting } from '../../features/kioskSettings/types';
+import type { KioskSetting } from '@/features/kioskSettings/types';
 
 
 export interface KioskSettingCardProps {
@@ -17,22 +17,22 @@ export interface KioskSettingCardProps {
 }
 
 const EmptySettingCardContent: React.FC<{
-	isEditing: boolean,
-	onSelect: () => void,
+	isEditing: boolean;
+	onSelect: () => void;
 }> = ({ isEditing, onSelect }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	return (
 		<Group gap='xs' justify='space-between'>
 			<Group gap='xs' align='start'>
 				<IconAdjustments size={30} color='var(--mantine-color-gray-7)' />
 				<Text size='sm' c='dimmed'>
-					{translate('kiosk_settings.select_setting.empty')}
+					{translate('coremart.vendingMachine.kioskSettings.selectSetting.empty')}
 				</Text>
 			</Group>
 			{isEditing && (
 				<Button size='xs' leftSection={<IconPlus size={14} />} onClick={onSelect}>
-					{translate('kiosk_settings.select_setting.select_button')}
+					{translate('coremart.vendingMachine.kioskSettings.selectSetting.selectButton')}
 				</Button>
 			)}
 		</Group>
@@ -40,12 +40,12 @@ const EmptySettingCardContent: React.FC<{
 };
 
 const KioskSettingCardContent: React.FC<{
-	setting: KioskSetting,
-	isEditing: boolean,
-	onRemove?: () => void,
+	setting: KioskSetting;
+	isEditing: boolean;
+	onRemove?: () => void;
 }> = ({ setting, isEditing, onRemove }) => {
-	const { t: translate } = useTranslation('vending_machine');
-	const detailLabel = translate('action.viewDetails');
+	const { t: translate } = useTranslation();
+	const detailLabel = translate('nikki.general.actions.viewDetail');
 
 	return (
 		<Group gap='xs' justify='space-between' align='top'>
@@ -79,7 +79,7 @@ const KioskSettingCardContent: React.FC<{
 					</Tooltip>
 				) : null}
 				{isEditing && onRemove ? (
-					<Tooltip label={translate('action.delete')}>
+					<Tooltip label={translate('nikki.general.actions.delete')}>
 						<ActionIcon variant='subtle' color='red' size='sm' onClick={onRemove}>
 							<IconTrash size={16} />
 						</ActionIcon>

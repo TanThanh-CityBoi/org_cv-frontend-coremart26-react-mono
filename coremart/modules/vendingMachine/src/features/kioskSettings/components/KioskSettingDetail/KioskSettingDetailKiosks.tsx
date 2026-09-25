@@ -1,16 +1,16 @@
 import { Stack } from '@mantine/core';
+import { ModelSchema } from '@nikkierp/ui/model';
 import React, { useMemo } from 'react';
 
-import { useAssignKiosksToSetting, useRemoveKioskFromSetting } from './hooks';
-import { useKioskSettingsKioskTab } from './hooks/useKioskSettingsKioskTab';
-import { asLegacyModelSchema } from '../../../../common/helpers';
-import { KioskSelectModal } from '../../../../components/KioskSelectModal';
-import { SearchOperator, SearchGraph } from '../../../../types';
-import { KioskTable } from '../../../kiosks';
-import { kioskSchema } from '../../../kiosks/schemas';
-import { KioskSetting } from '../../types';
-import { RemoveKioskFromSettingModal } from '../KioskSettingConfirmModals';
+import { KioskSelectModal } from '@/components/KioskSelectModal';
+import { KioskTable } from '@/features/kiosks';
+import { kioskSchema } from '@/features/kiosks/schemas';
+import { RemoveKioskFromSettingModal } from '@/features/kioskSettings/components/KioskSettingConfirmModals';
+import { SearchOperator, SearchGraph } from '@/types';
 
+import { useAssignKiosksToSetting, useRemoveKioskFromSetting } from './hooks';
+import { KioskSetting } from '../../types';
+import { useKioskSettingsKioskTab } from './hooks/useKioskSettingsKioskTab';
 
 
 const KIOSK_DETAIL_COLUMNS = [
@@ -23,7 +23,7 @@ const KIOSK_DETAIL_COLUMNS = [
 ] as const;
 
 export type KioskSettingDetailKiosksProps = {
-	setting: KioskSetting,
+	setting: KioskSetting;
 };
 
 export const KioskSettingDetailKiosks: React.FC<KioskSettingDetailKiosksProps> = ({ setting }) => {
@@ -73,7 +73,7 @@ export const KioskSettingDetailKiosks: React.FC<KioskSettingDetailKiosksProps> =
 			<KioskTable
 				columns={[...KIOSK_DETAIL_COLUMNS]}
 				data={kiosks as unknown as Record<string, unknown>[]}
-				schema={asLegacyModelSchema(kioskSchema)}
+				schema={kioskSchema as ModelSchema}
 				isLoading={isLoading}
 				actions={{
 					delete: (kiosk) => {

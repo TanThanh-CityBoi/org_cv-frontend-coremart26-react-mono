@@ -1,17 +1,17 @@
 import { Stack } from '@mantine/core';
 import { FormFieldProvider, FormStyleProvider } from '@nikkierp/ui/components';
+import { ModelSchema } from '@nikkierp/ui/model';
 import { IconArrowLeft, IconDeviceFloppy, IconX } from '@tabler/icons-react';
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
-import { asLegacyModelSchema } from '../../common/helpers';
-import { ControlPanel } from '../../components';
-import { ControlPanelProps } from '../../components/ControlPanel/ControlPanel';
-import { PageContainer } from '../../components/PageContainer';
-import { PaymentDetailFormFields } from '../../features/payment/components/PaymentDetail/PaymentDetailFormFields';
-import { PaymentCreateFormData, usePaymentCreate } from '../../features/payment/hooks/usePaymentCreate';
-import { paymentSchema } from '../../features/payment/schemas';
+import { ControlPanel } from '@/components';
+import { ControlPanelProps } from '@/components/ControlPanel/ControlPanel';
+import { PageContainer } from '@/components/PageContainer';
+import { PaymentDetailFormFields } from '@/features/payment/components/PaymentDetail/PaymentDetailFormFields';
+import { PaymentCreateFormData, usePaymentCreate } from '@/features/payment/hooks/usePaymentCreate';
+import { paymentSchema } from '@/features/payment/schemas';
 
 
 const FORM_ID = 'payment-create-form';
@@ -23,8 +23,8 @@ const defaultFormValues: Partial<PaymentCreateFormData> = {
 };
 
 export const PaymentCreatePage: React.FC = () => {
-	const { t: translate } = useTranslation('vending_machine');
-	const schema = asLegacyModelSchema(paymentSchema);
+	const { t: translate } = useTranslation();
+	const schema = paymentSchema as ModelSchema;
 	const { isSubmitting, handleCancel, handleSubmit } = usePaymentCreate();
 	const { breadcrumbs, actions } = usePaymentCreatePageConfig({
 		handleCancel,
@@ -33,7 +33,7 @@ export const PaymentCreatePage: React.FC = () => {
 
 	return (
 		<PageContainer
-			documentTitle={translate('payment.title_create')}
+			documentTitle={translate('coremart.vendingMachine.payment.title_create')}
 			breadcrumbs={breadcrumbs}
 			sections={[<ControlPanel key='control-panel' actions={actions} />]}
 		>
@@ -74,23 +74,23 @@ function usePaymentCreatePageConfig({
 	isSubmitting,
 }: UsePaymentCreatePageConfigProps) {
 	const navigate = useNavigate();
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const breadcrumbs = useMemo(() => [
-		{ title: translate('title'), href: '../overview' },
-		{ title: translate('payment.title'), href: '../payment' },
-		{ title: translate('payment.title_create'), href: '#' },
+		{ title: translate('coremart.vendingMachine.title'), href: '../overview' },
+		{ title: translate('coremart.vendingMachine.payment.title'), href: '../payment' },
+		{ title: translate('coremart.vendingMachine.payment.title_create'), href: '#' },
 	], [translate]);
 
 	const actions = useMemo<ControlPanelProps['actions']>(() => [
 		{
-			label: translate('action.back'),
+			label: translate('nikki.general.actions.back'),
 			onClick: () => navigate('../payment'),
 			leftSection: <IconArrowLeft size={16} />,
 			variant: 'outline' as const,
 		},
 		{
-			label: translate('action.create'),
+			label: translate('nikki.general.actions.create'),
 			leftSection: <IconDeviceFloppy size={16} />,
 			variant: 'filled' as const,
 			type: 'submit' as const,
@@ -98,7 +98,7 @@ function usePaymentCreatePageConfig({
 			loading: isSubmitting,
 		},
 		{
-			label: translate('action.cancel'),
+			label: translate('nikki.general.actions.cancel'),
 			leftSection: <IconX size={16} />,
 			onClick: handleCancel,
 			variant: 'outline' as const,

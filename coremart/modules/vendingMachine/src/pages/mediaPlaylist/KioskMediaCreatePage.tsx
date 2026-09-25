@@ -6,11 +6,11 @@ import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
-import { ControlPanel } from '../../components';
-import { ControlPanelProps } from '../../components/ControlPanel/ControlPanel';
-import { PageContainer } from '../../components/PageContainer';
-import { useKioskMediaCreate } from '../../features/mediaPlaylist';
-import { KioskMediaFileSelector } from '../../features/mediaPlaylist/components/KioskMediaFileSelector/KioskMediaFileSelector';
+import { ControlPanel } from '@/components';
+import { ControlPanelProps } from '@/components/ControlPanel/ControlPanel';
+import { PageContainer } from '@/components/PageContainer';
+import { useKioskMediaCreate } from '@/features/mediaPlaylist';
+import { KioskMediaFileSelector } from '@/features/mediaPlaylist/components/KioskMediaFileSelector/KioskMediaFileSelector';
 
 
 const FORM_ID = 'kiosk-media-create-form';
@@ -18,7 +18,7 @@ const FORM_ID = 'kiosk-media-create-form';
 function formatCreateError(err: unknown): string {
 	if (err instanceof Error) return err.message;
 	if (typeof err === 'object' && err !== null) {
-		const detail = err as { code?: string, details?: unknown, message?: string };
+		const detail = err as { code?: string; details?: unknown; message?: string };
 		if (typeof detail.message === 'string' && detail.message) return detail.message;
 		if (detail.details !== undefined) return JSON.stringify(detail.details);
 		if (typeof detail.code === 'string') return detail.code;
@@ -39,13 +39,13 @@ function useKioskMediaCreatePageConfig({
 	isSubmitting,
 }: UseKioskMediaCreatePageConfigProps) {
 	const navigate = useNavigate();
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const breadcrumbs = useMemo(
 		() => [
-			{ title: translate('title'), href: '../../overview' },
-			{ title: translate('kiosk_media.title'), href: '../media-playlist/gallery' },
-			{ title: translate('kiosk_media.create.title'), href: '#' },
+			{ title: translate('coremart.vendingMachine.title'), href: '../../overview' },
+			{ title: translate('coremart.vendingMachine.kioskMedia.title'), href: '../media-playlist/gallery' },
+			{ title: translate('coremart.vendingMachine.kioskMedia.create.title'), href: '#' },
 		],
 		[translate],
 	);
@@ -53,13 +53,13 @@ function useKioskMediaCreatePageConfig({
 	const actions = useMemo<ControlPanelProps['actions']>(
 		() => [
 			{
-				label: translate('action.back'),
+				label: translate('nikki.general.actions.back'),
 				onClick: () => navigate('../media-playlist/gallery'),
 				leftSection: <IconArrowLeft size={16} />,
 				variant: 'outline' as const,
 			},
 			{
-				label: translate('action.create'),
+				label: translate('nikki.general.actions.create'),
 				leftSection: <IconDeviceFloppy size={16} />,
 				variant: 'filled' as const,
 				type: 'submit' as const,
@@ -74,7 +74,7 @@ function useKioskMediaCreatePageConfig({
 }
 
 export const KioskMediaCreatePage: React.FC = () => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const navigate = useNavigate();
 	const { isSubmitting, create } = useKioskMediaCreate();
 
@@ -82,9 +82,9 @@ export const KioskMediaCreatePage: React.FC = () => {
 		initialValues: { name: '', file: null as File | null },
 		validate: {
 			name: (v) =>
-				!v?.trim() ? translate('kiosk_media.create.validation.name') : null,
+				!v?.trim() ? translate('coremart.vendingMachine.kioskMedia.create.validation.name') : null,
 			file: (v) =>
-				!v ? translate('kiosk_media.create.validation.file') : null,
+				!v ? translate('coremart.vendingMachine.kioskMedia.create.validation.file') : null,
 		},
 	});
 
@@ -94,7 +94,7 @@ export const KioskMediaCreatePage: React.FC = () => {
 		if (!values.file) return;
 		try {
 			await create({ name: values.name, file: values.file });
-			const successTitle = translate('kiosk_media.messages.create_success');
+			const successTitle = translate('coremart.vendingMachine.kioskMedia.messages.create_success');
 			notifications.show({
 				color: 'green',
 				title: successTitle,
@@ -106,15 +106,15 @@ export const KioskMediaCreatePage: React.FC = () => {
 			const message = formatCreateError(err);
 			notifications.show({
 				color: 'red',
-				title: translate('messages.error'),
-				message: translate('kiosk_media.messages.create_failed', { message }),
+				title: translate('nikki.general.messages.error'),
+				message: translate('coremart.vendingMachine.kioskMedia.messages.create_failed', { message }),
 			});
 		}
 	});
 
 	return (
 		<PageContainer
-			documentTitle={translate('kiosk_media.create.title')}
+			documentTitle={translate('coremart.vendingMachine.kioskMedia.create.title')}
 			breadcrumbs={breadcrumbs}
 			sections={[<ControlPanel key='control-panel' actions={actions} />]}
 		>
@@ -122,12 +122,12 @@ export const KioskMediaCreatePage: React.FC = () => {
 				<form id={FORM_ID} onSubmit={handleSubmit} noValidate>
 					<Stack gap='md'>
 						<TextInput
-							label={translate('kiosk_media.fields.name')}
-							placeholder={translate('kiosk_media.create.name_placeholder')}
+							label={translate('coremart.vendingMachine.kioskMedia.fields.name')}
+							placeholder={translate('coremart.vendingMachine.kioskMedia.create.name_placeholder')}
 							{...form.getInputProps('name')}
 						/>
 						<KioskMediaFileSelector
-							label={translate('kiosk_media.create.file_label')}
+							label={translate('coremart.vendingMachine.kioskMedia.create.file_label')}
 							file={form.values.file}
 							onFileChange={(next: File | null) => {
 								form.setFieldValue('file', next);

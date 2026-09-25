@@ -6,20 +6,20 @@ import { normalizePlaylistObjectFit, type PlaylistMediaRow } from '../../types';
 
 
 export type KioskMediaPreviewModalProps = {
-	opened: boolean,
-	onClose: () => void,
-	media: PlaylistMediaRow,
+	opened: boolean;
+	onClose: () => void;
+	media: PlaylistMediaRow;
 };
 
 export function KioskMediaPreviewModal({ opened, onClose, media }: KioskMediaPreviewModalProps) {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const fit = normalizePlaylistObjectFit(media.objectFit);
 
 	return (
 		<Modal
 			opened={opened}
 			onClose={onClose}
-			title={translate('media_playlist.media.preview_modal_title')}
+			title={translate('coremart.vendingMachine.mediaPlaylist.media.preview_modal_title')}
 			size='xl'
 			centered
 		>

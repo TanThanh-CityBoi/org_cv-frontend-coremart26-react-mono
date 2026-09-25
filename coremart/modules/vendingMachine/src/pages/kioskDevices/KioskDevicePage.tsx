@@ -1,13 +1,12 @@
-import { useDocumentTitle } from '@mantine/hooks';
 import { ConfirmModal } from '@nikkierp/ui/components';
-import { useConfirmModal } from '@nikkierp/ui/hookhoc';
+import { useConfirmModal, useDocumentTitle } from '@nikkierp/ui/hooks';
+import { ModelSchema } from '@nikkierp/ui/model';
 import { IconPlus, IconRefresh } from '@tabler/icons-react';
 import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { asLegacyModelSchema } from '../../common/helpers';
-import { ControlPanel, type ViewMode, ControlPanelFilterConfig } from '../../components';
-import { PageContainer } from '../../components/PageContainer';
+import { ControlPanel, type ViewMode, ControlPanelFilterConfig } from '@/components';
+import { PageContainer } from '@/components/PageContainer';
 import {
 	KioskDeviceDetailDrawer,
 	KioskDeviceGridView,
@@ -15,13 +14,13 @@ import {
 	kioskDeviceSchema,
 	useKioskDeviceDetail,
 	useKioskDeviceList,
-} from '../../features/kioskDevices';
-import { KioskDevice } from '../../features/kioskDevices/types';
+} from '@/features/kioskDevices';
+import { KioskDevice } from '@/features/kioskDevices/types';
 
 
 // eslint-disable-next-line max-lines-per-function
 export const KioskDevicePage: React.FC = () => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const { kioskDevices, isLoadingList, handleRefresh } = useKioskDeviceList();
 	const { isOpen, item, configOpenModal, handleCloseModal } = useConfirmModal<KioskDevice>();
 
@@ -94,16 +93,16 @@ export const KioskDevicePage: React.FC = () => {
 	};
 
 	const statusOptions = [
-		{ value: 'active', label: translate('status.active') },
-		{ value: 'inactive', label: translate('status.inactive') },
+		{ value: 'active', label: translate('nikki.general.status.active') },
+		{ value: 'inactive', label: translate('nikki.general.status.inactive') },
 	];
 
 	const deviceTypeOptions = [
-		{ value: 'motor', label: translate('device.device_type.motor') },
-		{ value: 'pos', label: translate('device.device_type.pos') },
-		{ value: 'screen', label: translate('device.device_type.screen') },
-		{ value: 'cpu', label: translate('device.device_type.cpu') },
-		{ value: 'router', label: translate('device.device_type.router') },
+		{ value: 'motor', label: translate('coremart.vendingMachine.device.deviceType.motor') },
+		{ value: 'pos', label: translate('coremart.vendingMachine.device.deviceType.pos') },
+		{ value: 'screen', label: translate('coremart.vendingMachine.device.deviceType.screen') },
+		{ value: 'cpu', label: translate('coremart.vendingMachine.device.deviceType.cpu') },
+		{ value: 'router', label: translate('coremart.vendingMachine.device.deviceType.router') },
 	];
 
 	const filters: ControlPanelFilterConfig[] = useMemo(() => [
@@ -113,7 +112,7 @@ export const KioskDevicePage: React.FC = () => {
 			value: statusFilter,
 			onChange: setStatusFilter,
 			options: statusOptions,
-			placeholder: translate('device.filter.status'),
+			placeholder: translate('coremart.vendingMachine.device.filter.status'),
 		},
 		{
 			key: 'deviceType',
@@ -121,15 +120,15 @@ export const KioskDevicePage: React.FC = () => {
 			value: deviceTypeFilter,
 			onChange: setDeviceTypeFilter,
 			options: deviceTypeOptions,
-			placeholder: translate('device.filter.device_type'),
+			placeholder: translate('coremart.vendingMachine.device.filter.deviceType'),
 		},
 	], [statusFilter, deviceTypeFilter, statusOptions, deviceTypeOptions, translate]);
 
-	useDocumentTitle('menu.device');
+	useDocumentTitle('coremart.vendingMachine.menu.device');
 
 	const breadcrumbs = useMemo(() => [
-		{ title: translate('title'), href: '../overview' },
-		{ title: translate('menu.device'), href: '#' },
+		{ title: translate('coremart.vendingMachine.title'), href: '../overview' },
+		{ title: translate('coremart.vendingMachine.menu.device'), href: '#' },
 	], [translate]);
 
 	return (
@@ -139,10 +138,10 @@ export const KioskDevicePage: React.FC = () => {
 				actionBar={
 					<ControlPanel
 						actions={[
-							{ label: translate('action.create'), leftSection: <IconPlus size={16} />, onClick: handleCreate },
-							{ label: translate('action.refresh'), leftSection: <IconRefresh size={16} />, onClick: handleRefresh, variant: 'outline' },
+							{ label: translate('nikki.general.actions.create'), leftSection: <IconPlus size={16} />, onClick: handleCreate },
+							{ label: translate('nikki.general.actions.refresh'), leftSection: <IconRefresh size={16} />, onClick: handleRefresh, variant: 'outline' },
 						]}
-						search={{ value: searchValue, onChange: setSearchValue, placeholder: translate('device.search.placeholder') }}
+						search={{ value: searchValue, onChange: setSearchValue, placeholder: translate('coremart.vendingMachine.device.search.placeholder') }}
 						filters={filters}
 						viewMode={{ value: viewMode, onChange: setViewMode, segments: ['list', 'grid'] }}
 					/>
@@ -152,7 +151,7 @@ export const KioskDevicePage: React.FC = () => {
 					<KioskDeviceTable
 						columns={['code', 'name', 'deviceType', 'description', 'status', 'specifications', 'actions']}
 						data={filteredKioskDevices as unknown as Record<string, unknown>[]}
-						schema={asLegacyModelSchema(kioskDeviceSchema)}
+						schema={kioskDeviceSchema as ModelSchema}
 						isLoading={isLoadingList}
 						onViewDetail={handleViewDetail}
 						onDelete={handleOpenDeleteModal}
@@ -171,13 +170,13 @@ export const KioskDevicePage: React.FC = () => {
 				opened={isOpen}
 				onClose={handleCloseModal}
 				onConfirm={handleDeleteConfirm}
-				title={translate('messages.delete.confirm')}
+				title={translate('nikki.general.messages.delete_confirm')}
 				message={
 					item
-						? translate('messages.delete.confirm.name', { name: item.name })
-						: translate('messages.delete.confirm')
+						? translate('nikki.general.messages.delete_confirm_name', { name: item.name })
+						: translate('nikki.general.messages.delete_confirm')
 				}
-				confirmLabel={translate('action.delete')}
+				confirmLabel={translate('nikki.general.actions.delete')}
 				confirmColor='red'
 			/>
 

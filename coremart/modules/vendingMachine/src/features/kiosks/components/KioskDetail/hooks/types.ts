@@ -1,8 +1,8 @@
 
-import { Kiosk } from '../../..';
-import { BreadcrumbItem } from '../../../../../components/BreadCrumbs';
-import { ControlPanelProps } from '../../../../../components/ControlPanel/ControlPanel';
-import { DetailLayoutProps } from '../../../../../components/DetailLayout';
+import { BreadcrumbItem } from '@/components/BreadCrumbs';
+import { ControlPanelProps } from '@/components/ControlPanel/ControlPanel';
+import { DetailLayoutProps } from '@/components/DetailLayout';
+import { Kiosk } from '@/features/kiosks';
 
 
 /** @deprecated */
@@ -18,13 +18,13 @@ export enum KioskDetailTabs {
 }
 
 export type UseKioskDetailPageConfigProps = {
-	kiosk?: Kiosk,
+	kiosk?: Kiosk;
 };
 
 export type UseKioskDetailPageConfigReturn = {
-	breadcrumbs: BreadcrumbItem[],
-	actions: ControlPanelProps['actions'],
-	tabs: DetailLayoutProps['tabs'],
-	activeTab: KioskDetailTabs,
-	onTabChange: (tab: KioskDetailTabs) => void,
+	breadcrumbs: BreadcrumbItem[];
+	actions: ControlPanelProps['actions'];
+	tabs: DetailLayoutProps['tabs'];
+	activeTab: KioskDetailTabs;
+	onTabChange: (tab: KioskDetailTabs) => void;
 };

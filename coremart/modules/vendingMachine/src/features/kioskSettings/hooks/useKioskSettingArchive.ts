@@ -1,12 +1,18 @@
+/* eslint-disable max-lines-per-function */
 import { useUIState } from '@nikkierp/shell/contexts';
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+import { ReduxActionState } from '@nikkierp/ui/appState';
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { useMutationOutcome } from '../../../common/hooks/useMutationOutcome';
-import { kioskSettingCrudService } from '../kioskSettingService';
+import {
+	kioskSettingActions,
+	selectKioskSettingArchiveOutcome,
+	VendingMachineDispatch,
+} from '@/appState';
 
-import type { KioskSetting } from '../types';
+import type { KioskSetting } from '@/features/kioskSettings/types';
+import type { RestArchiveResponse } from '@/types';
 
 
 export interface UseKioskSettingArchiveProps {
@@ -14,19 +20,73 @@ export interface UseKioskSettingArchiveProps {
 	onError?: () => void;
 }
 
-type PendingArchive = { setting: KioskSetting, targetArchived: boolean };
+type PendingArchive = { setting: KioskSetting; targetArchived: boolean };
 
+function useArchiveOutcomeSync(
+	archiveState: ReduxActionState<RestArchiveResponse>,
+	dispatchedRequestIdRef: React.RefObject<string | null>,
+	pendingTargetArchivedRef: React.RefObject<boolean | null>,
+	dispatch: VendingMachineDispatch,
+	notification: ReturnType<typeof useUIState>['notification'],
+	translate: ReturnType<typeof useTranslation>['t'],
+	handleCloseModal: () => void,
+	onArchiveSuccess: () => void,
+	onArchiveError: () => void,
+) {
+	React.useEffect(() => {
+		const requestId = archiveState.requestId;
+		const matchesDispatch = requestId != null && dispatchedRequestIdRef.current === requestId;
+		if (!matchesDispatch) return;
+
+		if (archiveState.status === 'success') {
+			dispatchedRequestIdRef.current = null;
+			const archived = pendingTargetArchivedRef.current === true;
+			pendingTargetArchivedRef.current = null;
+			const messageKey = archived
+				? 'coremart.vendingMachine.kioskSettings.messages.archive_success'
+				: 'coremart.vendingMachine.kioskSettings.messages.restore_success';
+			notification.showInfo(
+				translate(messageKey),
+				translate('nikki.general.messages.success'),
+			);
+			handleCloseModal();
+			onArchiveSuccess();
+			dispatch(kioskSettingActions.resetArchiveKioskSetting());
+			return;
+		}
+		if (archiveState.status === 'error') {
+			dispatchedRequestIdRef.current = null;
+			pendingTargetArchivedRef.current = null;
+			notification.showError(
+				archiveState.error ?? translate('nikki.general.errors.update_failed'),
+				translate('nikki.general.messages.error'),
+			);
+			handleCloseModal();
+			onArchiveError();
+			dispatch(kioskSettingActions.resetArchiveKioskSetting());
+		}
+	}, [
+		archiveState,
+		dispatch,
+		notification,
+		translate,
+		handleCloseModal,
+		onArchiveSuccess,
+		onArchiveError,
+	]);
+}
 
 export const useKioskSettingArchive = ({
 	onSuccess = () => {},
 	onError = () => {},
 }: UseKioskSettingArchiveProps = {}) => {
 	const { notification } = useUIState();
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
-	const { dispatchMethod, result } = useServiceLayer(kioskSettingCrudService.setIsArchived);
-	// Which direction the in-flight call was, since the response body does not say.
+	const dispatchedArchiveRequestIdRef = React.useRef<string | null>(null);
 	const pendingTargetArchivedRef = React.useRef<boolean | null>(null);
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
+	const archiveState = useMicroAppSelector(selectKioskSettingArchiveOutcome);
 
 	const [pendingArchive, setPendingArchive] = React.useState<PendingArchive | null>(null);
 
@@ -45,25 +105,29 @@ export const useKioskSettingArchive = ({
 	const handleConfirmArchive = React.useCallback(() => {
 		if (!pendingArchive?.setting.etag) {
 			notification.showError(
-				translate('errors.updateFailed'),
-				translate('messages.error'),
+				translate('nikki.general.errors.update_failed'),
+				translate('nikki.general.messages.error'),
 			);
 			return;
 		}
 		const { id, etag } = pendingArchive.setting;
 		const { targetArchived } = pendingArchive;
 		pendingTargetArchivedRef.current = targetArchived;
-		dispatchMethod({ id, etag, is_archived: targetArchived });
-	}, [dispatchMethod, notification, pendingArchive, translate]);
+		const action = dispatch(kioskSettingActions.setArchivedKioskSetting({ id, etag, isArchived: targetArchived }));
+		dispatchedArchiveRequestIdRef.current = action.requestId;
+	}, [dispatch, notification, pendingArchive, translate]);
 
-	useMutationOutcome(result, {
-		successKey: () => (pendingTargetArchivedRef.current === true
-			? 'kiosk_settings.messages.archive_success'
-			: 'kiosk_settings.messages.restore_success'),
-		errorKey: 'errors.updateFailed',
-		onSuccess: () => { pendingTargetArchivedRef.current = null; handleCloseModal(); onSuccess(); },
-		onError: () => { pendingTargetArchivedRef.current = null; handleCloseModal(); onError(); },
-	});
+	useArchiveOutcomeSync(
+		archiveState,
+		dispatchedArchiveRequestIdRef,
+		pendingTargetArchivedRef,
+		dispatch,
+		notification,
+		translate,
+		handleCloseModal,
+		onSuccess,
+		onError,
+	);
 
 	return {
 		handleConfirmArchive,

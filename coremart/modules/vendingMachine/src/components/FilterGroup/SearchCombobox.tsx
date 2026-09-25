@@ -24,7 +24,7 @@ export const SearchCombobox: React.FC<SearchComboboxProps> = ({
 }) => {
 	const inputRef = useRef<HTMLInputElement>(null);
 	const searchFields = config.search || [];
-	const {t: translate} = useTranslation('vending_machine');
+	const {t: translate} = useTranslation();
 
 	const [isFocused, setIsFocused] = useState(false);
 	const [searchQuery, setSearchQuery] = useState('');
@@ -172,7 +172,7 @@ export const SearchCombobox: React.FC<SearchComboboxProps> = ({
 						<IconSearch size={16} color='var(--mantine-color-gray-6)' />
 						{renderTags()}
 						<Input flex={1} ref={inputRef}
-							placeholder={placeholder || translate('search.placeholder')}
+							placeholder={placeholder || translate('nikki.general.search.placeholder')}
 							value={searchQuery}
 							onChange={(e) => {
 								if (searchFields.length === 0) {

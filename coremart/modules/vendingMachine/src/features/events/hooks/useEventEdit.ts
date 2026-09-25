@@ -1,10 +1,11 @@
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
-import { useCallback } from 'react';
+import { useUIState } from '@nikkierp/shell/contexts';
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
+import React, { useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 
-import { useMutationOutcome } from '../../../common/hooks/useMutationOutcome';
-import { eventCrudService } from '../eventService';
+import { eventActions, selectUpdateEvent, VendingMachineDispatch } from '@/appState';
 
-import type { EventUpdateFormData, EventUpdatePatch } from '../types';
+import type { EventUpdateFormData, EventUpdatePatch } from '@/features/events/types';
 
 
 export type { EventUpdateFormData };
@@ -48,23 +49,69 @@ export function convertEventUpdateFormToApiPatch(
 	return patch;
 }
 
+function useSubmitHandler(
+	dispatch: VendingMachineDispatch,
+	notification: ReturnType<typeof useUIState>['notification'],
+	translate: ReturnType<typeof useTranslation>['t'],
+	onUpdateSuccess?: () => void,
+) {
+	const updateEvt = useMicroAppSelector(selectUpdateEvent);
+	const updateRequestIdRef = React.useRef<string | null>(null);
+
+	React.useEffect(() => {
+		const requestId = updateEvt.requestId;
+		const matchesDispatch = requestId != null && requestId === updateRequestIdRef.current;
+		if (!matchesDispatch) return;
+
+		if (updateEvt.status === 'success') {
+			updateRequestIdRef.current = null;
+			dispatch(eventActions.resetUpdateEvent());
+			onUpdateSuccess?.();
+			notification.showInfo(
+				translate('coremart.vendingMachine.events.messages.update_success'),
+				translate('nikki.general.messages.success'),
+			);
+		}
+		else if (updateEvt.status === 'error') {
+			updateRequestIdRef.current = null;
+			dispatch(eventActions.resetUpdateEvent());
+			notification.showError(
+				updateEvt.error ?? translate('nikki.general.errors.update_failed'),
+				translate('nikki.general.messages.error'),
+			);
+		}
+	}, [updateEvt, dispatch, notification, translate, onUpdateSuccess]);
+
+	const handleSubmit = useCallback((id: string, etag: string, updates: EventUpdatePatch) => {
+		const action = dispatch(eventActions.updateEvent({ id, etag, updates }));
+		updateRequestIdRef.current = action.requestId;
+	}, [dispatch]);
+
+	return {
+		isSubmitting: updateEvt.status === 'pending',
+		handleSubmit,
+	};
+}
 
 export function useEventEdit({ onUpdateSuccess }: { onUpdateSuccess?: () => void }) {
-	const { dispatchMethod, result } = useServiceLayer(eventCrudService.update);
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
+	const { notification } = useUIState();
+	const { t: translate } = useTranslation();
 
-	useMutationOutcome(result, {
-		successKey: () => 'events.messages.update_success',
-		errorKey: 'errors.updateFailed',
-		onSuccess: onUpdateSuccess,
-	});
+	const { isSubmitting, handleSubmit } = useSubmitHandler(
+		dispatch,
+		notification,
+		translate,
+		onUpdateSuccess,
+	);
 
 	const submit = useCallback(
 		(body: EventUpdateFormData) => {
 			const { id, etag, ...updates } = body;
-			dispatchMethod({ id, etag, ...convertEventUpdateFormToApiPatch(updates) });
+			handleSubmit(id, etag, convertEventUpdateFormToApiPatch(updates));
 		},
-		[dispatchMethod],
+		[handleSubmit],
 	);
 
-	return { isSubmitting: result.isPending, handleSubmit: submit };
+	return { isSubmitting, handleSubmit: submit };
 }

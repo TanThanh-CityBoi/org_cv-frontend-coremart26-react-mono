@@ -1,8 +1,15 @@
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+/* eslint-disable max-lines-per-function */
+import { useUIState } from '@nikkierp/shell/contexts';
+import { ReduxActionState } from '@nikkierp/ui/appState';
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
-import { useMutationOutcome } from '../../../common/hooks/useMutationOutcome';
-import { orderCrudService } from '../orderService';
+import {
+	selectRefundOrderItemsState,
+	VendingMachineDispatch,
+	vendingOrderActions,
+} from '@/appState';
 
 import type { VdRefundOrderItemsBody } from '../types';
 
@@ -10,8 +17,64 @@ import type { VdRefundOrderItemsBody } from '../types';
 export interface UseOrderRefundProps {
 	onSuccess?: () => void;
 	onError?: () => void;
-	/** Runs after the refund notification and before the order refetch — e.g. close the modal. */
+	/** Runs after refund success notifications and before Redux reset — e.g. clear modal UI + call parent `onClose`. */
 	onRefundSuccessModalClose?: () => void;
+}
+
+function useRefundOutcomeSync(
+	refundState: ReduxActionState,
+	dispatchedRequestIdRef: React.RefObject<string | null>,
+	pendingOrderIdRef: React.RefObject<string | null>,
+	dispatch: VendingMachineDispatch,
+	notification: ReturnType<typeof useUIState>['notification'],
+	translate: ReturnType<typeof useTranslation>['t'],
+	onRefundSuccessModalClose: () => void,
+	onRefundSuccess: () => void,
+	onRefundError: () => void,
+) {
+	React.useEffect(() => {
+		const requestId = refundState.requestId;
+		const matchesDispatch = requestId != null && dispatchedRequestIdRef.current === requestId;
+		if (!matchesDispatch) return;
+
+		if (refundState.status === 'success') {
+			dispatchedRequestIdRef.current = null;
+			const orderId = pendingOrderIdRef.current;
+			pendingOrderIdRef.current = null;
+			notification.showInfo(
+				translate('coremart.vendingMachine.orders.refund.success_message'),
+				translate('coremart.vendingMachine.orders.refund.success_title'),
+			);
+			onRefundSuccessModalClose();
+			if (orderId) {
+				dispatch(vendingOrderActions.getOrder({ id: orderId }));
+			}
+			onRefundSuccess();
+			dispatch(vendingOrderActions.resetRefundOrderItems());
+			return;
+		}
+
+		if (refundState.status === 'error') {
+			dispatchedRequestIdRef.current = null;
+			pendingOrderIdRef.current = null;
+			notification.showError(
+				refundState.error ?? translate('coremart.vendingMachine.orders.refund.error_message'),
+				translate('coremart.vendingMachine.orders.refund.error_title'),
+			);
+			onRefundError();
+			dispatch(vendingOrderActions.resetRefundOrderItems());
+		}
+	}, [
+		refundState,
+		dispatch,
+		notification,
+		translate,
+		onRefundSuccessModalClose,
+		onRefundSuccess,
+		onRefundError,
+		dispatchedRequestIdRef,
+		pendingOrderIdRef,
+	]);
 }
 
 export const useOrderRefund = ({
@@ -19,39 +82,45 @@ export const useOrderRefund = ({
 	onError = () => {},
 	onRefundSuccessModalClose = () => {},
 }: UseOrderRefundProps = {}) => {
-	const { dispatchMethod, result } = useServiceLayer(orderCrudService.refundItems);
-	const { dispatchMethod: reloadOrder } = useServiceLayer(orderCrudService.getDetail);
-	// Which order the in-flight refund was for; the response body does not say.
-	const pendingOrderIdRef = React.useRef<string | null>(null);
+	const { notification } = useUIState();
+	const { t: translate } = useTranslation();
+
+	const dispatchedRefundRequestIdRef = React.useRef<string | null>(null);
+	const pendingRefundOrderIdRef = React.useRef<string | null>(null);
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
+	const refundState = useMicroAppSelector(selectRefundOrderItemsState);
+
+	const matchesDispatch =
+		refundState.requestId != null
+		&& dispatchedRefundRequestIdRef.current === refundState.requestId;
+	const isRefundPending =
+		matchesDispatch && refundState.status === 'pending';
 
 	const handleRefundOrderItemsSubmit = React.useCallback(
 		(orderId: string, body: VdRefundOrderItemsBody) => {
-			pendingOrderIdRef.current = orderId;
-			dispatchMethod({ orderId, body });
+			pendingRefundOrderIdRef.current = orderId;
+			const pendingAction = dispatch(
+				vendingOrderActions.refundOrderItems({ orderId, body }),
+			);
+			dispatchedRefundRequestIdRef.current = pendingAction.requestId;
 		},
-		[dispatchMethod],
+		[dispatch],
 	);
 
-	useMutationOutcome(result, {
-		successKey: () => 'orders.refund.success_message',
-		errorKey: 'orders.refund.error_message',
-		// Refund has its own notification headings, not the generic success/error ones.
-		successTitleKey: 'orders.refund.success_title',
-		errorTitleKey: 'orders.refund.error_title',
-		onSuccess: () => {
-			const orderId = pendingOrderIdRef.current;
-			pendingOrderIdRef.current = null;
-			onRefundSuccessModalClose();
-			if (orderId) {
-				reloadOrder({ id: orderId });
-			}
-			onSuccess();
-		},
-		onError: () => { pendingOrderIdRef.current = null; onError(); },
-	});
+	useRefundOutcomeSync(
+		refundState,
+		dispatchedRefundRequestIdRef,
+		pendingRefundOrderIdRef,
+		dispatch,
+		notification,
+		translate,
+		onRefundSuccessModalClose,
+		onSuccess,
+		onError,
+	);
 
 	return {
 		handleRefundOrderItemsSubmit,
-		isRefundPending: result.isPending,
+		isRefundPending,
 	};
 };

@@ -1,5 +1,6 @@
 import { z, ZodNumber, ZodString } from 'zod';
 
+import { extractLabel } from './formContext';
 import { FieldDefinition, FieldConstraint, ModelSchema } from '../../model';
 
 
@@ -127,7 +128,9 @@ function applyConstraint(
 	fieldSchema: z.ZodTypeAny,
 	constraint: FieldConstraint,
 ): z.ZodTypeAny {
-	const message = constraint.message;
+	const message = constraint.message
+		? extractLabel(constraint.message)
+		: undefined;
 
 	switch (constraint.type) {
 		case 'required':

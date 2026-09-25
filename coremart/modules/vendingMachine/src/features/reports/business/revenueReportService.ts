@@ -1,9 +1,6 @@
 import * as request from '@nikkierp/common/request';
 import { ky } from '@nikkierp/common/request';
 import { camelToSnakeCase, snakeToCamelObject } from '@nikkierp/common/utils';
-import { storeAsyncMethod, storeService } from '@nikkierp/ui/appState/store';
-
-import { vendingMachineStore } from '../../../store';
 
 import type {
 	RevenueOverview,
@@ -26,7 +23,7 @@ import type {
 	RevenueReportByPaymentMethodQuery,
 	RevenueReportByProductQuery,
 	RevenueReportOverviewQuery,
-} from '../../../types';
+} from '@/types';
 
 
 
@@ -88,133 +85,85 @@ async function fetchRevenueReport<R>(endpoint: string, searchParams: string[][])
 	return snakeToCamelObject(result) as RevenueReport<R>;
 }
 
-/** Every paged revenue breakdown builds its query the same way. */
-function pagedTuples(query: ListReportQuery & GroupTimeQuery): string[][] {
-	const tuples = revenueReportTuples(query);
-	pushPagedFields(tuples, query);
-	return tuples;
-}
-
-
-/**
- * Revenue report.
- *
- * Read-only, and **not** a `StoreCrudServiceBase` — reports have no dynamic-model schema. See
- * `InventoryReportService` for the reasoning.
- *
- * The `export*` methods are deliberately **unannotated**: a Blob download is not state, so it
- * must not be cached in the store. Call them directly, not through `useServiceLayer`.
- */
-@storeService('RevenueReportService', vendingMachineStore)
-export class RevenueReportService {
-	@storeAsyncMethod
-	public async getOverview(query: RevenueReportOverviewQuery): Promise<RevenueOverview> {
-		const result = await request.get<RevenueOverview>(`${BASE_PATH}/overview`, {
-			searchParams: baseReportTuples(query),
-		});
+export const revenueReportService = {
+	async getOverview(query: RevenueReportOverviewQuery): Promise<RevenueOverview> {
+		const tuples = baseReportTuples(query);
+		const result = await request.get<RevenueOverview>(`${BASE_PATH}/overview`, { searchParams: tuples });
 		return snakeToCamelObject(result) as RevenueOverview;
-	}
+	},
 
-	@storeAsyncMethod
-	public async getByHour(query: RevenueReportByHourQuery): Promise<RevenueReport<RevenueReportByHour>> {
-		return fetchRevenueReport<RevenueReportByHour>('by-hour', pagedTuples(query));
-	}
+	async getByHour(query: RevenueReportByHourQuery): Promise<RevenueReport<RevenueReportByHour>> {
+		const tuples = revenueReportTuples(query);
+		pushPagedFields(tuples, query);
+		return fetchRevenueReport<RevenueReportByHour>('by-hour', tuples);
+	},
 
-	@storeAsyncMethod
-	public async getByOrderTime(
+	async getByOrderTime(
 		query: RevenueReportByOrderTimeQuery,
 	): Promise<RevenueReport<RevenueReportByOrderTime>> {
-		return fetchRevenueReport<RevenueReportByOrderTime>('by-order-time', pagedTuples(query));
-	}
+		const tuples = revenueReportTuples(query);
+		pushPagedFields(tuples, query);
+		return fetchRevenueReport<RevenueReportByOrderTime>('by-order-time', tuples);
+	},
 
-	@storeAsyncMethod
-	public async getByKiosk(query: RevenueReportByKioskQuery): Promise<RevenueReport<RevenueReportByKiosk>> {
-		return fetchRevenueReport<RevenueReportByKiosk>('by-kiosk', pagedTuples(query));
-	}
+	async getByKiosk(query: RevenueReportByKioskQuery): Promise<RevenueReport<RevenueReportByKiosk>> {
+		const tuples = revenueReportTuples(query);
+		pushPagedFields(tuples, query);
+		return fetchRevenueReport<RevenueReportByKiosk>('by-kiosk', tuples);
+	},
 
-	@storeAsyncMethod
-	public async getByProduct(query: RevenueReportByProductQuery): Promise<RevenueReport<RevenueReportByProduct>> {
-		return fetchRevenueReport<RevenueReportByProduct>('by-product', pagedTuples(query));
-	}
+	async getByProduct(query: RevenueReportByProductQuery): Promise<RevenueReport<RevenueReportByProduct>> {
+		const tuples = revenueReportTuples(query);
+		pushPagedFields(tuples, query);
+		return fetchRevenueReport<RevenueReportByProduct>('by-product', tuples);
+	},
 
-	@storeAsyncMethod
-	public async getByCategory(
-		query: RevenueReportByCategoryQuery,
-	): Promise<RevenueReport<RevenueReportByCategory>> {
-		return fetchRevenueReport<RevenueReportByCategory>('by-category', pagedTuples(query));
-	}
+	async getByCategory(query: RevenueReportByCategoryQuery): Promise<RevenueReport<RevenueReportByCategory>> {
+		const tuples = revenueReportTuples(query);
+		pushPagedFields(tuples, query);
+		return fetchRevenueReport<RevenueReportByCategory>('by-category', tuples);
+	},
 
-	@storeAsyncMethod
-	public async getByPaymentMethod(
+	async getByPaymentMethod(
 		query: RevenueReportByPaymentMethodQuery,
 	): Promise<RevenueReport<RevenueReportByPaymentMethod>> {
-		return fetchRevenueReport<RevenueReportByPaymentMethod>('by-payment-method', pagedTuples(query));
-	}
+		const tuples = revenueReportTuples(query);
+		pushPagedFields(tuples, query);
+		return fetchRevenueReport<RevenueReportByPaymentMethod>('by-payment-method', tuples);
+	},
 
-	/**
-	 * Chart-only twins of the breakdown queries above. Same calls — deliberately **separate
-	 * methods**.
-	 *
-	 * Service-layer state is keyed by `{sliceName}.{methodName}`, so a chart (one large page) and
-	 * its table (the user's page) would overwrite each other's results if both went through the
-	 * same method. The old slice gave each its own key via a dedicated thunk; this preserves that.
-	 */
-	@storeAsyncMethod
-	public async getTimeSeriesChart(
-		query: RevenueReportByOrderTimeQuery,
-	): Promise<RevenueReport<RevenueReportByOrderTime>> {
-		return fetchRevenueReport<RevenueReportByOrderTime>('by-order-time', pagedTuples(query));
-	}
+	async exportByHour(query: BaseReportQuery): Promise<Blob> {
+		const tuples = [...baseReportTuples(query), ['download', 'true']];
+		return getReportBlob('by-hour/export', tuples);
+	},
 
-	@storeAsyncMethod
-	public async getByKioskChart(query: RevenueReportByKioskQuery): Promise<RevenueReport<RevenueReportByKiosk>> {
-		return fetchRevenueReport<RevenueReportByKiosk>('by-kiosk', pagedTuples(query));
-	}
+	async exportByOrderTime(query: RevenueReportByOrderTimeQuery): Promise<Blob> {
+		const tuples = revenueReportTuples(query);
+		pushPagedFields(tuples, query);
+		return getReportBlob('by-order-time/export', tuples);
+	},
 
-	@storeAsyncMethod
-	public async getByProductChart(
-		query: RevenueReportByProductQuery,
-	): Promise<RevenueReport<RevenueReportByProduct>> {
-		return fetchRevenueReport<RevenueReportByProduct>('by-product', pagedTuples(query));
-	}
+	async exportByKiosk(query: RevenueReportByKioskQuery): Promise<Blob> {
+		const tuples = revenueReportTuples(query);
+		pushPagedFields(tuples, query);
+		return getReportBlob('by-kiosk/export', tuples);
+	},
 
-	@storeAsyncMethod
-	public async getByCategoryChart(
-		query: RevenueReportByCategoryQuery,
-	): Promise<RevenueReport<RevenueReportByCategory>> {
-		return fetchRevenueReport<RevenueReportByCategory>('by-category', pagedTuples(query));
-	}
+	async exportByProduct(query: RevenueReportByProductQuery): Promise<Blob> {
+		const tuples = revenueReportTuples(query);
+		pushPagedFields(tuples, query);
+		return getReportBlob('by-product/export', tuples);
+	},
 
-	@storeAsyncMethod
-	public async getByPaymentMethodChart(
-		query: RevenueReportByPaymentMethodQuery,
-	): Promise<RevenueReport<RevenueReportByPaymentMethod>> {
-		return fetchRevenueReport<RevenueReportByPaymentMethod>('by-payment-method', pagedTuples(query));
-	}
+	async exportByCategory(query: RevenueReportByCategoryQuery): Promise<Blob> {
+		const tuples = revenueReportTuples(query);
+		pushPagedFields(tuples, query);
+		return getReportBlob('by-category/export', tuples);
+	},
 
-	public async exportByHour(query: BaseReportQuery): Promise<Blob> {
-		return getReportBlob('by-hour/export', [...baseReportTuples(query), ['download', 'true']]);
-	}
-
-	public async exportByOrderTime(query: RevenueReportByOrderTimeQuery): Promise<Blob> {
-		return getReportBlob('by-order-time/export', pagedTuples(query));
-	}
-
-	public async exportByKiosk(query: RevenueReportByKioskQuery): Promise<Blob> {
-		return getReportBlob('by-kiosk/export', pagedTuples(query));
-	}
-
-	public async exportByProduct(query: RevenueReportByProductQuery): Promise<Blob> {
-		return getReportBlob('by-product/export', pagedTuples(query));
-	}
-
-	public async exportByCategory(query: RevenueReportByCategoryQuery): Promise<Blob> {
-		return getReportBlob('by-category/export', pagedTuples(query));
-	}
-
-	public async exportByPaymentMethod(query: RevenueReportByPaymentMethodQuery): Promise<Blob> {
-		return getReportBlob('by-payment-method/export', pagedTuples(query));
-	}
-}
-
-export const revenueReportService = new RevenueReportService();
+	async exportByPaymentMethod(query: RevenueReportByPaymentMethodQuery): Promise<Blob> {
+		const tuples = revenueReportTuples(query);
+		pushPagedFields(tuples, query);
+		return getReportBlob('by-payment-method/export', tuples);
+	},
+};

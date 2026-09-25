@@ -11,9 +11,10 @@ import { TFunction } from 'i18next';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { ArchivedStatusBadge } from '../../../../components/ArchivedStatusBadge';
-import { NameCell, TableAction, TableContainer, TablePagination, type TableActionItem, TextCell } from '../../../../components/Table';
-import { type TablePaginationProps } from '../../../../components/Table';
+import { ArchivedStatusBadge } from '@/components/ArchivedStatusBadge';
+import { NameCell, TableAction, TableContainer, TablePagination, type TableActionItem, TextCell } from '@/components/Table';
+import { type TablePaginationProps } from '@/components/Table';
+
 import { Setting } from '../../types';
 
 
@@ -46,7 +47,7 @@ export function getSettingTableActions(
 	const defaultActions: (TableActionItem & { active?: boolean })[] = [
 		{
 			key: SETTING_ACTIONS.PREVIEW,
-			label: translate('action.preview'),
+			label: translate('nikki.general.actions.preview'),
 			icon: <IconLayoutSidebarRightExpand size={20} stroke={1.6} />,
 			onClick: () => actions[SETTING_ACTIONS.PREVIEW]?.(setting),
 			color: 'gray',
@@ -54,7 +55,7 @@ export function getSettingTableActions(
 		},
 		{
 			key: SETTING_ACTIONS.VIEW_DETAIL,
-			label: translate('action.viewDetails'),
+			label: translate('nikki.general.actions.viewDetail'),
 			icon: <IconEye size={16} />,
 			onClick: () => actions[SETTING_ACTIONS.VIEW_DETAIL]?.(setting),
 			color: 'blue',
@@ -62,7 +63,7 @@ export function getSettingTableActions(
 		},
 		{
 			key: SETTING_ACTIONS.ARCHIVE,
-			label: translate('action.archive'),
+			label: translate('nikki.general.actions.archive'),
 			icon: <IconArchive size={16} />,
 			onClick: () => actions[SETTING_ACTIONS.ARCHIVE]?.(setting),
 			color: 'orange',
@@ -70,7 +71,7 @@ export function getSettingTableActions(
 		},
 		{
 			key: SETTING_ACTIONS.RESTORE,
-			label: translate('action.restore'),
+			label: translate('nikki.general.actions.restore'),
 			icon: <IconRestore size={16} />,
 			onClick: () => actions[SETTING_ACTIONS.RESTORE]?.(setting),
 			color: 'blue',
@@ -78,7 +79,7 @@ export function getSettingTableActions(
 		},
 		{
 			key: SETTING_ACTIONS.DELETE,
-			label: translate('action.delete'),
+			label: translate('nikki.general.actions.delete'),
 			icon: <IconTrash size={16} />,
 			onClick: () => actions[SETTING_ACTIONS.DELETE]?.(setting),
 			color: 'red',
@@ -97,7 +98,7 @@ export const SettingTable: React.FC<SettingTableProps> = ({
 	actions,
 	pagination,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const colRenderers: React.ComponentProps<typeof AutoTable>['columnRenderers'] = {
 		code: (row) => <TextCell content={row.code as string} />,
@@ -110,7 +111,7 @@ export const SettingTable: React.FC<SettingTableProps> = ({
 		actions: (row) => (
 			<TableAction
 				actions={getSettingTableActions(row as unknown as Setting, actions, translate)}
-				overflowMenuLabel={translate('action.title')}
+				overflowMenuLabel={translate('nikki.general.actions.title')}
 			/>
 		),
 	};
@@ -118,7 +119,7 @@ export const SettingTable: React.FC<SettingTableProps> = ({
 	const headerRenderers: React.ComponentProps<typeof AutoTable>['headerRenderers'] = {
 		actions: () => (
 			<Text fw={600} fz='sm' ta='end'>
-				{translate('action.title')}
+				{translate('nikki.general.actions.title')}
 			</Text>
 		),
 	};
@@ -130,7 +131,6 @@ export const SettingTable: React.FC<SettingTableProps> = ({
 				footer={<TablePagination {...pagination} />}
 			>
 				<AutoTable
-					translationNs='vending_machine'
 					columns={columns}
 					data={data}
 					schema={schema}

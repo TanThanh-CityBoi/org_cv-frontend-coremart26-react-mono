@@ -1,5 +1,5 @@
-import { LocalizedName } from '../../../../../common/helpers';
-import { KioskProduct } from '../../../../kioskProducts/type';
+import { LocalizedName } from '@/common/helpers';
+import { KioskProduct } from '@/features/kioskProducts/type';
 
 
 const _simpleKioskStock = {
@@ -87,29 +87,29 @@ type Range<
 export type KioskStockCol = Range<1, 10>;
 
 export type KioskStockPosition = {
-	row: KioskStockRow,
-	col: KioskStockCol,
-	isEnabled: boolean,
-	quantity: number,
-	maxQuantity: number,
+	row: KioskStockRow;
+	col: KioskStockCol;
+	isEnabled: boolean;
+	quantity: number;
+	maxQuantity: number;
 	//
-	id?: string,
-	etag?: string,
-	kioskRef?: string,
-	stockRef?: string,
+	id?: string;
+	etag?: string;
+	kioskRef?: string;
+	stockRef?: string;
 };
 
 /** `vending_machine.kiosk_stock` + optional product (search/get detail). */
 export type KioskStock = {
-	id: string,
-	sortIndex?: number,
-	sellPrice: string,
-	warningQuantity?: number,
-	kioskRef?: string,
-	productRef?: string,
-	product?: KioskProduct,
-	positions: KioskStockPosition[],
-	etag?: string,
+	id: string;
+	sortIndex?: number;
+	sellPrice: string;
+	warningQuantity?: number;
+	kioskRef?: string;
+	productRef?: string;
+	product?: KioskProduct;
+	positions: KioskStockPosition[];
+	etag?: string;
 };
 
 /** UI / grid state alias (same payload as API `KioskStock`). */
@@ -117,17 +117,17 @@ export type KioskStockDetail = KioskStock;
 
 export type CellStockItem = {
 	// product
-	stockId: string,
-	productRef?: string,
-	name?: LocalizedName,
-	sku?: string,
-	imageUrl?: string,
+	stockId: string;
+	productRef?: string;
+	name?: LocalizedName;
+	sku?: string;
+	imageUrl?: string;
 	// position
-	row: KioskStockRow,
-	col: KioskStockCol,
-	isEnabled: boolean,
-	quantity: number,
-	maxQuantity: number,
+	row: KioskStockRow;
+	col: KioskStockCol;
+	isEnabled: boolean;
+	quantity: number;
+	maxQuantity: number;
 };
 
 /** In-memory grid: cell key (`${row}-${col}`) → cell payload. */

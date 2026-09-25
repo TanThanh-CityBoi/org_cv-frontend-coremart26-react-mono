@@ -21,35 +21,35 @@ export const KioskDeviceGridView: React.FC<KioskDeviceGridViewProps> = ({
 	onEdit,
 	onDelete,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const getStatusBadge = (status: 'active' | 'inactive') => {
 		const statusMap = {
-			active: { color: 'green', label: translate('status.active') },
-			inactive: { color: 'gray', label: translate('status.inactive') },
+			active: { color: 'green', label: translate('nikki.general.status.active') },
+			inactive: { color: 'gray', label: translate('nikki.general.status.inactive') },
 		};
 		const statusInfo = statusMap[status];
 		return <Badge color={statusInfo.color} size='sm'>{statusInfo.label}</Badge>;
 	};
 
 	const getDeviceTypeBadge = (deviceType: string) => {
-		const typeMap: Record<string, { color: string, label: string }> = {
-			motor: { color: 'blue', label: translate('device.device_type.motor') },
-			pos: { color: 'cyan', label: translate('device.device_type.pos') },
-			screen: { color: 'purple', label: translate('device.device_type.screen') },
-			cpu: { color: 'orange', label: translate('device.device_type.cpu') },
-			router: { color: 'teal', label: translate('device.device_type.router') },
+		const typeMap: Record<string, { color: string; label: string }> = {
+			motor: { color: 'blue', label: translate('coremart.vendingMachine.device.deviceType.motor') },
+			pos: { color: 'cyan', label: translate('coremart.vendingMachine.device.deviceType.pos') },
+			screen: { color: 'purple', label: translate('coremart.vendingMachine.device.deviceType.screen') },
+			cpu: { color: 'orange', label: translate('coremart.vendingMachine.device.deviceType.cpu') },
+			router: { color: 'teal', label: translate('coremart.vendingMachine.device.deviceType.router') },
 		};
 		const typeInfo = typeMap[deviceType] || { color: 'gray', label: deviceType };
 		return <Badge color={typeInfo.color} size='sm' variant='light'>{typeInfo.label}</Badge>;
 	};
 
 	if (isLoading) {
-		return <Text c='dimmed'>{translate('messages.loading')}</Text>;
+		return <Text c='dimmed'>{translate('nikki.general.messages.loading')}</Text>;
 	}
 
 	if (kioskDevices.length === 0) {
-		return <Text c='dimmed'>{translate('device.messages.no_devices')}</Text>;
+		return <Text c='dimmed'>{translate('coremart.vendingMachine.device.messages.no_devices')}</Text>;
 	}
 
 	return (
@@ -80,14 +80,14 @@ export const KioskDeviceGridView: React.FC<KioskDeviceGridViewProps> = ({
 							</Group>
 							<Group gap='xs' onClick={(e) => e.stopPropagation()}>
 								{onEdit && (
-									<Tooltip label={translate('action.edit')}>
+									<Tooltip label={translate('nikki.general.actions.edit')}>
 										<ActionIcon variant='subtle' color='gray' size='sm' onClick={() => onEdit(kioskDevice.id)}>
 											<IconEdit size={14} />
 										</ActionIcon>
 									</Tooltip>
 								)}
 								{onDelete && (
-									<Tooltip label={translate('action.delete')}>
+									<Tooltip label={translate('nikki.general.actions.delete')}>
 										<ActionIcon variant='subtle' color='red' size='sm' onClick={() => onDelete(kioskDevice.id)}>
 											<IconTrash size={14} />
 										</ActionIcon>
@@ -109,12 +109,12 @@ export const KioskDeviceGridView: React.FC<KioskDeviceGridViewProps> = ({
 
 						{kioskDevice.specifications && kioskDevice.specifications.length > 0 && (
 							<Text size='xs' c='dimmed'>
-								{kioskDevice.specifications.length} {translate('device.fields.specifications')}
+								{kioskDevice.specifications.length} {translate('coremart.vendingMachine.device.fields.specifications')}
 							</Text>
 						)}
 
 						<Text size='xs' c='dimmed'>
-							{translate('device.fields.created_at')}: {new Date(kioskDevice.createdAt).toLocaleDateString()}
+							{translate('coremart.vendingMachine.device.fields.createdAt')}: {new Date(kioskDevice.createdAt).toLocaleDateString()}
 						</Text>
 					</Stack>
 				</Card>

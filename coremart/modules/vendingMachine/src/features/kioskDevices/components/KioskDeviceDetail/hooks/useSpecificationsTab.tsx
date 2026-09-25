@@ -2,21 +2,21 @@ import { IconDeviceFloppy, IconEdit, IconX } from '@tabler/icons-react';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { ControlPanelProps } from '../../../../../components/ControlPanel';
-import { KioskDevice } from '../../../types';
-import { useRegisterKioskDeviceDetailTab } from '../kioskDeviceDetailTabControl';
+import { ControlPanelProps } from '@/components/ControlPanel';
+import { useRegisterKioskDeviceDetailTab } from '@/features/kioskDevices/components/KioskDeviceDetail/kioskDeviceDetailTabControl';
+import { KioskDevice } from '@/features/kioskDevices/types';
 
 
 export type UseSpecificationsTabArgs = {
-	kioskDevice: KioskDevice,
+	kioskDevice: KioskDevice;
 };
 
 export type UseSpecificationsTabReturn = {
-	isEditing: boolean,
+	isEditing: boolean;
 };
 
 export function useSpecificationsTab({ kioskDevice }: UseSpecificationsTabArgs): UseSpecificationsTabReturn {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const [isEditing, setIsEditing] = useState(false);
 
 	const handleEdit = useCallback(() => setIsEditing(true), []);
@@ -28,19 +28,19 @@ export function useSpecificationsTab({ kioskDevice }: UseSpecificationsTabArgs):
 
 	const actions = useMemo<ControlPanelProps['actions']>(() => [
 		...(!isEditing ? [{
-			label: translate('action.edit'),
+			label: translate('nikki.general.actions.edit'),
 			leftSection: <IconEdit size={16} />,
 			onClick: handleEdit,
 			type: 'button' as const,
 			variant: 'filled' as const,
 		}] : [{
-			label: translate('action.save'),
+			label: translate('nikki.general.actions.save'),
 			leftSection: <IconDeviceFloppy size={16} />,
 			onClick: handleSave,
 			type: 'button' as const,
 			variant: 'filled' as const,
 		}, {
-			label: translate('action.cancel'),
+			label: translate('nikki.general.actions.cancel'),
 			leftSection: <IconX size={16} />,
 			onClick: handleCancel,
 			type: 'button' as const,

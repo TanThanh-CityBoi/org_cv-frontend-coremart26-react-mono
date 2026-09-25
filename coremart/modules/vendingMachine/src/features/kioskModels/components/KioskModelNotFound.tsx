@@ -9,7 +9,7 @@ export interface KioskModelNotFoundProps {
 }
 
 export const KioskModelNotFound: React.FC<KioskModelNotFoundProps> = () => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	return (
 		<Center
@@ -20,8 +20,8 @@ export const KioskModelNotFound: React.FC<KioskModelNotFoundProps> = () => {
 		>
 			<Stack align='center' gap='md'>
 				<IconAlertCircle size={48} color='red' />
-				<Title order={4}>{translate('kiosk_models.messages.not_found.title')}</Title>
-				<Text c='dimmed'>{translate('kiosk_models.messages.not_found.message')}</Text>
+				<Title order={4}>{translate('coremart.vendingMachine.kioskModels.messages.not_found.title')}</Title>
+				<Text c='dimmed'>{translate('coremart.vendingMachine.kioskModels.messages.not_found.message')}</Text>
 			</Stack>
 		</Center>
 	);

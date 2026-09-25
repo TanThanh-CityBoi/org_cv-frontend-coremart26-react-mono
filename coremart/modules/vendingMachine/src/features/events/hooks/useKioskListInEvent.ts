@@ -1,62 +1,38 @@
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
 import React from 'react';
 
-import { usePaginationWithTotal } from '../../../common/hooks';
-import { SearchGraph } from '../../../types';
-import { SortDirection } from '../../../types/search-graph';
-import { kioskCrudService } from '../../kiosks/kioskService';
-import { Kiosk } from '../../kiosks/types';
-// The enum, not the `'asc' | 'desc'` type alias the `@/types` barrel re-exports under the same name.
+import {
+	VendingMachineDispatch,
+	eventActions,
+	selectKioskListInEvent,
+} from '@/appState';
+import { usePagination } from '@/common/hooks';
+import { Kiosk } from '@/features/kiosks/types';
+import { SearchGraph, SearchParams } from '@/types';
 
 
-type SearchResponse = { items: Kiosk[], total: number };
-
-/** Kept from the deleted `eventSlice.listKiosksInEvent` thunk. */
-const EVENT_KIOSK_LIST_DEFAULT_SIZE = 10;
-const EVENT_KIOSK_LIST_FIELDS: Array<keyof Kiosk> = [
-	'id',
-	'etag',
-	'code',
-	'name',
-	'isArchived',
-	'mode',
-	'uiMode',
-	'locationAddress',
-	'latitude',
-	'longitude',
-	'createdAt',
-	'updatedAt',
-];
-
-
-/**
- * Lists kiosks for the event detail page.
- *
- * Like `useKioskListInSetting`, this queries the **kiosk** resource — `eventId` only resets
- * pagination when the page switches events; it is not a path segment or a filter here. That
- * matches the deleted thunk, which called `kioskService.searchKiosks` with no event predicate.
- */
 export function useKioskListInEvent(
-	{ eventId, graph }: { eventId: string, graph?: SearchGraph },
+	{ eventId, graph }: { eventId: string; graph?: SearchGraph },
 ) {
-	const { dispatchMethod, result } = useServiceLayer<SearchResponse>(kioskCrudService.search);
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
+	const list = useMicroAppSelector(selectKioskListInEvent);
 
 	const fetchList = React.useCallback(
 		(targetPage: number, pageSize: number, searchGraph?: SearchGraph) => {
-			dispatchMethod({
-				fields: EVENT_KIOSK_LIST_FIELDS,
+			const params: SearchParams<Kiosk> & { eventId: string } = {
+				eventId,
 				page: targetPage - 1,
 				size: pageSize,
-				graph: { order: [['created_at', SortDirection.DESC]], ...(searchGraph ?? {}) },
-			});
+				graph: searchGraph,
+			};
+			dispatch(eventActions.listKiosksInEvent(params));
 		},
-		[dispatchMethod],
+		[dispatch, eventId],
 	);
 
-	const pagination = usePaginationWithTotal(fetchList, result.data?.total ?? 0, {
+	const pagination = usePagination(fetchList, selectKioskListInEvent, {
 		graph,
 		resetPageKey: eventId,
-		fallbackPageSize: EVENT_KIOSK_LIST_DEFAULT_SIZE,
 	});
 	const { page, pageSize } = pagination;
 
@@ -68,13 +44,14 @@ export function useKioskListInEvent(
 		fetchList(page, pageSize, graph);
 	}, [fetchList, page, pageSize, graph]);
 
-	const kiosks = result.data?.items;
-	const isLoading = !kiosks?.length && result.isPending;
-	const isEmpty = !kiosks?.length && !result.isPending && result.doneAt != null;
+	const kiosks = list.items;
+	const status = list.status;
+	const isLoading = !kiosks?.length && (status === 'pending' || status === 'idle');
+	const isEmpty = !kiosks?.length && status !== 'idle' && status !== 'pending';
 
 	return {
 		kiosks,
-		status: result.isPending ? 'pending' : 'success',
+		status,
 		isLoading,
 		isEmpty,
 		handleRefresh,

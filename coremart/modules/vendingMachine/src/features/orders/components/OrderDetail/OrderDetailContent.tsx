@@ -1,24 +1,25 @@
 /* eslint-disable max-lines-per-function */
 import { Badge, Divider, Group, SimpleGrid, Stack, Text } from '@mantine/core';
+import { ModelSchema } from '@nikkierp/ui/model';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { TextLink } from '@/components/Text';
+
 import { OrderItemLineList } from './OrderItemLineCard';
-import { asLegacyModelSchema } from '../../../../common/helpers';
-import { TextLink } from '../../../../components/Text';
 import { CHAIN_GROUP_ORDER_TABLE_COLUMNS, OrderTable } from '../../components/OrderTable/OrderTable';
 import { formatOrderMoney } from '../../formatters';
 import { useOrdersInSameChain } from '../../hooks';
-import { CHAIN_GROUP_LIST_PAGE_SIZE } from '../../hooks/useOrdersInSameChain';
+import { CHAIN_GROUP_LIST_PAGE_SIZE } from '../../orderSlice';
 import { orderSchema } from '../../schemas';
 import { VdOrder, VdOrderCurrency, VdOrderStatus, VdTxLineStatus } from '../../types';
 
 
 export const OrderStatusBadge: React.FC<{ status: VdOrderStatus }> = ({ status }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	return (
 		<Badge color={orderStatusColor(status)} variant='filled'>
-			{translate(`orders.order_status.${status}`)}
+			{translate(`coremart.vendingMachine.orders.orderStatus.${status}`)}
 		</Badge>
 	);
 };
@@ -45,12 +46,12 @@ function txStatusColor(s: VdTxLineStatus): string {
 }
 
 export type OrderDetailContentProps = {
-	order: VdOrder,
+	order: VdOrder;
 };
 
 
 export const OrderDetailContent: React.FC<OrderDetailContentProps> = ({ order }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const chainKey = order.chainKey?.trim() ?? '';
 	const {
 		orders: chainOrders,
@@ -82,21 +83,21 @@ export const OrderDetailContent: React.FC<OrderDetailContentProps> = ({ order })
 				{order.status && (
 					<Group>
 						<Badge color={orderStatusColor(order.status)} variant='filled'>
-							{translate(`orders.order_status.${order.status}`)}
+							{translate(`coremart.vendingMachine.orders.orderStatus.${order.status}`)}
 						</Badge>
 					</Group>
 				)}
 				{order.paymentStatus && (
 					<Group>
 						<Badge color={txStatusColor(order.paymentStatus)} variant='light'>
-							{'Thanh toán'}: {translate(`orders.tx_status.${order.paymentStatus}`)}
+							{'Thanh toán'}: {translate(`coremart.vendingMachine.orders.txStatus.${order.paymentStatus}`)}
 						</Badge>
 					</Group>
 				)}
 				{order.refundStatus && (
 					<Group>
 						<Badge color={txStatusColor(order.refundStatus)} variant='light'>
-							{'Hoàn tiền'}: {translate(`orders.tx_status.${order.refundStatus}`)}
+							{'Hoàn tiền'}: {translate(`coremart.vendingMachine.orders.txStatus.${order.refundStatus}`)}
 						</Badge>
 					</Group>
 				)}
@@ -104,63 +105,63 @@ export const OrderDetailContent: React.FC<OrderDetailContentProps> = ({ order })
 
 			<SimpleGrid cols={{ base: 1, sm: 2 }} spacing='sm'>
 				<Stack gap={4}>
-					<Text size='sm' c='dimmed'>{translate('orders.fields.id')}</Text>
+					<Text size='sm' c='dimmed'>{translate('coremart.vendingMachine.orders.fields.id')}</Text>
 					<Text size='sm'>{order.orderCode}</Text>
 				</Stack>
 				<Stack gap={4}>
-					<Text size='sm' c='dimmed'>{translate('orders.fields.gateway_ref')}</Text>
+					<Text size='sm' c='dimmed'>{translate('coremart.vendingMachine.orders.fields.gatewayRef')}</Text>
 					<Text size='sm'>{order.gatewayRefCode || '—'}</Text>
 				</Stack>
 
 				<Stack gap={4}>
-					<Text size='sm' c='dimmed'>{translate('orders.fields.parent_order_ref')}</Text>
+					<Text size='sm' c='dimmed'>{translate('coremart.vendingMachine.orders.fields.parentOrderRef')}</Text>
 					<TextLink size='sm' to={order.parentOrderCode ? `../reports/orders/${order.parentOrderCode}` : undefined}>{order.parentOrderCode || '—'}</TextLink>
 				</Stack>
 
 				<Stack gap={4}>
-					<Text size='sm' c='dimmed'>{translate('orders.fields.root_order_ref')}</Text>
+					<Text size='sm' c='dimmed'>{translate('coremart.vendingMachine.orders.fields.rootOrderRef')}</Text>
 					<TextLink size='sm' to={order.chainKey !== order.orderCode ? `../reports/orders/${order.chainKey}` : undefined}>{order.chainKey || '—'}</TextLink>
 				</Stack>
 
 				<Stack gap={4}>
-					<Text size='sm' c='dimmed'>{translate('orders.fields.kiosk')}</Text>
+					<Text size='sm' c='dimmed'>{translate('coremart.vendingMachine.orders.fields.kiosk')}</Text>
 					<TextLink size='sm' to={`../kiosks/${order.kioskRef}`}>{order.kiosk?.name || order.kioskRef}</TextLink>
 				</Stack>
 				<Stack gap={4}>
-					<Text size='sm' c='dimmed'>{translate('orders.fields.payment_method')}</Text>
-					<Text size='sm'>{translate(`orders.payment_method.${order.paymentMethod}`)}</Text>
+					<Text size='sm' c='dimmed'>{translate('coremart.vendingMachine.orders.fields.paymentMethod')}</Text>
+					<Text size='sm'>{translate(`coremart.vendingMachine.orders.paymentMethod.${order.paymentMethod}`)}</Text>
 				</Stack>
 				{/* <Stack gap={4}>
-					<Text size='sm' c='dimmed'>{translate('orders.fields.content')}</Text>
+					<Text size='sm' c='dimmed'>{translate('coremart.vendingMachine.orders.fields.content')}</Text>
 					<Text size='sm'>{'—'}</Text>
 				</Stack> */}
 				<Stack gap={4}>
-					<Text size='sm' c='dimmed'>{translate('orders.fields.created_at')}</Text>
+					<Text size='sm' c='dimmed'>{translate('coremart.vendingMachine.orders.fields.createdAt')}</Text>
 					<Text size='sm'>{order.createdAt ? new Date(order.createdAt).toLocaleString() : '—'}</Text>
 				</Stack>
 				<Stack gap={4}>
-					<Text size='sm' c='dimmed'>{translate('orders.fields.updated_at')}</Text>
+					<Text size='sm' c='dimmed'>{translate('coremart.vendingMachine.orders.fields.updatedAt')}</Text>
 					<Text size='sm'>{order.updatedAt ? new Date(order.updatedAt).toLocaleString() : '—'}</Text>
 				</Stack>
 				<Stack gap={4}>
-					<Text size='sm' c='dimmed'>{translate('orders.fields.amount')}</Text>
+					<Text size='sm' c='dimmed'>{translate('coremart.vendingMachine.orders.fields.amount')}</Text>
 					<Text size='sm' fw={600}>{formatOrderMoney(order.amount, order.currency as VdOrderCurrency)}</Text>
 				</Stack>
 				<Stack gap={4}>
-					<Text size='sm' c='dimmed'>{translate('orders.fields.refund_amount')}</Text>
+					<Text size='sm' c='dimmed'>{translate('coremart.vendingMachine.orders.fields.refundAmount')}</Text>
 					<Text size='sm'>{formatOrderMoney(order.refundAmount, order.currency as VdOrderCurrency)}</Text>
 				</Stack>
 			</SimpleGrid>
 
 			<Stack gap='sm'>
-				<Divider label={<Text size='sm' fw={500}>{translate('orders.sections.items')}</Text>} labelPosition='left'/>
+				<Divider label={<Text size='sm' fw={500}>{translate('coremart.vendingMachine.orders.sections.items')}</Text>} labelPosition='left'/>
 				<OrderItemLineList order={order} />
 			</Stack>
 
 			{/* <Divider/>
 			<Stack gap='sm'>
-				<Title order={4}>{translate('orders.sections.order_discount')}</Title>
-				<Text size='sm' c='dimmed'>{translate('orders.order_discount.hint')}</Text>
+				<Title order={4}>{translate('coremart.vendingMachine.orders.sections.order_discount')}</Title>
+				<Text size='sm' c='dimmed'>{translate('coremart.vendingMachine.orders.order_discount.hint')}</Text>
 			</Stack> */}
 
 			{chainKey ? (
@@ -168,7 +169,7 @@ export const OrderDetailContent: React.FC<OrderDetailContentProps> = ({ order })
 					<Divider
 						label={(
 							<Text size='sm' c='dimmed'>
-								{translate('orders.sections.chain_group')}
+								{translate('coremart.vendingMachine.orders.sections.chain_group')}
 							</Text>
 						)}
 						labelPosition='left'
@@ -179,14 +180,14 @@ export const OrderDetailContent: React.FC<OrderDetailContentProps> = ({ order })
 						)}
 						{!sortedChainOrders?.length ? (
 							<Text size='sm' c='dimmed'>
-								{translate('orders.chain_group.empty')}
+								{translate('coremart.vendingMachine.orders.chain_group.empty')}
 							</Text>
 						) :
 							<OrderTable
-								tableTitle={translate('orders.sections.chain_group')}
+								tableTitle={translate('coremart.vendingMachine.orders.sections.chain_group')}
 								columns={[...CHAIN_GROUP_ORDER_TABLE_COLUMNS]}
 								data={chainTableRows}
-								schema={asLegacyModelSchema(orderSchema)}
+								schema={orderSchema as ModelSchema}
 								actions={{}}
 								isLoading={chainOrdersLoading}
 								pagination={{

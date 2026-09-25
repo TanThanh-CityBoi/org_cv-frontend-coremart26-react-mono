@@ -1,4 +1,4 @@
-import { ViewMode } from '../../components';
+import { ViewMode } from '@/components';
 
 
 export type KioskModelViewMode = Extract<ViewMode, 'list' | 'grid'>;
@@ -30,7 +30,7 @@ export interface ShelvesConfigRow {
 
 /** API JSON: shelves_config.config[] uses `type` (not shelf_type). */
 export interface ShelvesConfigWire {
-	config: Array<{ row: string, type: string }>;
+	config: Array<{ row: string; type: string }>;
 }
 
 export interface KioskModel {

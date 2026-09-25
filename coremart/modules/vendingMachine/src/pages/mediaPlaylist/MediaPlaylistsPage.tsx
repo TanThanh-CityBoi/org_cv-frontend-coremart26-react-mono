@@ -1,14 +1,17 @@
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
 import { ConfirmModal } from '@nikkierp/ui/components';
-import { useConfirmModal } from '@nikkierp/ui/hookhoc';
+import { useConfirmModal } from '@nikkierp/ui/hooks';
+import { useMicroAppDispatch } from '@nikkierp/ui/microApp';
+import { ModelSchema } from '@nikkierp/ui/model';
 import { IconPlus, IconRefresh } from '@tabler/icons-react';
 import React, { useMemo, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
-import { asLegacyModelSchema } from '../../common/helpers';
-import { ControlPanel, type ViewMode } from '../../components';
-import { PageContainer } from '../../components/PageContainer';
+
+
+import { mediaPlaylistActions, VendingMachineDispatch } from '@/appState';
+import { ControlPanel, type ViewMode } from '@/components';
+import { PageContainer } from '@/components/PageContainer';
 import {
 	MediaPlaylistDetailDrawer,
 	MediaPlaylistGridView,
@@ -19,18 +22,17 @@ import {
 	useMediaPlaylistFilter,
 	useMediaPlaylistList,
 	usePlaylistArchive,
-} from '../../features/mediaPlaylist';
-import { mediaPlaylistCrudService } from '../../features/mediaPlaylist/mediaPlaylistCrudService';
+} from '@/features/mediaPlaylist';
 
-import type { Playlist } from '../../features/mediaPlaylist/types';
+import type { Playlist } from '@/features/mediaPlaylist/types';
 
 
 
 // eslint-disable-next-line max-lines-per-function
 export const MediaPlaylistsPage: React.FC = () => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const navigate = useNavigate();
-	const { dispatchMethod: deletePlaylist } = useServiceLayer(mediaPlaylistCrudService.delete);
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
 	const { filters, graph } = useMediaPlaylistFilter();
 	const { playlists, isLoadingList, handleRefresh, pagination } = useMediaPlaylistList({ graph });
 	const archive = usePlaylistArchive({ onArchiveSuccess: handleRefresh });
@@ -70,7 +72,7 @@ export const MediaPlaylistsPage: React.FC = () => {
 
 	const handleDeleteConfirm = () => {
 		if (item) {
-			void deletePlaylist({ id: item.id }).then(() => {
+			void dispatch(mediaPlaylistActions.deleteMediaPlaylist({ id: item.id })).then(() => {
 				handleRefresh();
 			});
 		}
@@ -94,20 +96,20 @@ export const MediaPlaylistsPage: React.FC = () => {
 	};
 
 	const breadcrumbs = useMemo(() => [
-		{ title: translate('title'), href: '../overview' },
-		{ title: translate('media_playlist.title'), href: '#' },
+		{ title: translate('coremart.vendingMachine.title'), href: '../overview' },
+		{ title: translate('coremart.vendingMachine.mediaPlaylist.title'), href: '#' },
 	], [translate]);
 
 	return (
 		<>
 			<PageContainer
-				documentTitle={translate('media_playlist.title')}
+				documentTitle={translate('coremart.vendingMachine.mediaPlaylist.title')}
 				breadcrumbs={breadcrumbs}
 				actionBar={
 					<ControlPanel
 						actions={[
-							{ label: translate('action.create'), leftSection: <IconPlus size={16} />, onClick: handleCreate },
-							{ label: translate('action.refresh'), leftSection: <IconRefresh size={16} />, onClick: handleRefresh, variant: 'outline' },
+							{ label: translate('nikki.general.actions.create'), leftSection: <IconPlus size={16} />, onClick: handleCreate },
+							{ label: translate('nikki.general.actions.refresh'), leftSection: <IconRefresh size={16} />, onClick: handleRefresh, variant: 'outline' },
 						]}
 						filters={filters}
 						viewMode={{ value: viewMode, onChange: setViewMode, segments: ['list', 'grid'] }}
@@ -118,7 +120,7 @@ export const MediaPlaylistsPage: React.FC = () => {
 					<MediaPlaylistTable
 						columns={['name', 'isArchived', 'mediaItems', 'actions']}
 						data={tableRows}
-						schema={asLegacyModelSchema(mediaPlaylistSchema)}
+						schema={mediaPlaylistSchema as ModelSchema}
 						isLoading={isLoadingList}
 						actions={playlistTableActions}
 						pagination={pagination}
@@ -137,13 +139,13 @@ export const MediaPlaylistsPage: React.FC = () => {
 				opened={isOpen}
 				onClose={handleCloseModal}
 				onConfirm={handleDeleteConfirm}
-				title={translate('messages.delete.confirm')}
+				title={translate('nikki.general.messages.delete_confirm')}
 				message={
 					item
-						? translate('messages.delete.confirm.name', { name: item.name })
-						: translate('messages.delete.confirm')
+						? translate('nikki.general.messages.delete_confirm_name', { name: item.name })
+						: translate('nikki.general.messages.delete_confirm')
 				}
-				confirmLabel={translate('action.delete')}
+				confirmLabel={translate('nikki.general.actions.delete')}
 				confirmColor='red'
 			/>
 
@@ -152,20 +154,20 @@ export const MediaPlaylistsPage: React.FC = () => {
 				onClose={archive.handleCloseModal}
 				onConfirm={archive.handleConfirmArchive}
 				title={archive.pendingArchive?.targetArchived
-					? translate('media_playlist.messages.archive_modal_title')
-					: translate('media_playlist.messages.restore_modal_title')}
+					? translate('coremart.vendingMachine.mediaPlaylist.messages.archive_modal_title')
+					: translate('coremart.vendingMachine.mediaPlaylist.messages.restore_modal_title')}
 				message={
 					<Trans
 						i18nKey={archive.pendingArchive?.targetArchived
-							? 'media_playlist.messages.archive_confirm'
-							: 'media_playlist.messages.restore_confirm'}
+							? 'coremart.vendingMachine.mediaPlaylist.messages.archive_confirm'
+							: 'coremart.vendingMachine.mediaPlaylist.messages.restore_confirm'}
 						values={{ name: archive.pendingArchive?.playlist?.name || '' }}
 						components={{ strong: <strong /> }}
 					/>
 				}
 				confirmLabel={archive.pendingArchive?.targetArchived
-					? translate('action.archive')
-					: translate('action.restore')}
+					? translate('nikki.general.actions.archive')
+					: translate('nikki.general.actions.restore')}
 				confirmColor={archive.pendingArchive?.targetArchived ? 'orange' : 'blue'}
 			/>
 

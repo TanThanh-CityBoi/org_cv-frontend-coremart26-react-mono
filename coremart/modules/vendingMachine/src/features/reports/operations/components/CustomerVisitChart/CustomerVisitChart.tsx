@@ -14,7 +14,8 @@ import React from 'react';
 import { Line } from 'react-chartjs-2';
 import { useTranslation } from 'react-i18next';
 
-import { GroupTime } from '../../../../../types';
+import { GroupTime } from '@/types';
+
 import { KioskVisitor } from '../../type';
 
 
@@ -49,7 +50,7 @@ const getChartData = (visitors: KioskVisitor[], translate: TFunction) => {
 		labels,
 		datasets: [
 			{
-				label: translate('overview.customer_visit.visits'),
+				label: translate('coremart.vendingMachine.overview.customerVisit.visits'),
 				data: counts,
 				borderColor: 'rgba(59, 130, 246, 1)',
 				backgroundColor: 'rgba(59, 130, 246, 0.1)',
@@ -61,7 +62,7 @@ const getChartData = (visitors: KioskVisitor[], translate: TFunction) => {
 };
 
 export function CustomerVisitChart({ visitors }: CustomerVisitChartProps): React.ReactElement {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const data = getChartData(visitors, translate);
 
@@ -82,13 +83,13 @@ export function CustomerVisitChart({ visitors }: CustomerVisitChartProps): React
 				beginAtZero: true,
 				title: {
 					display: true,
-					text: translate('overview.customer_visit.count'),
+					text: translate('coremart.vendingMachine.overview.customerVisit.count'),
 				},
 			},
 			x: {
 				title: {
 					display: true,
-					text: translate('overview.customer_visit.date'),
+					text: translate('coremart.vendingMachine.overview.customerVisit.date'),
 				},
 			},
 		},
@@ -97,12 +98,12 @@ export function CustomerVisitChart({ visitors }: CustomerVisitChartProps): React
 	return (
 		<Card shadow='sm' padding='sm' radius='md' withBorder h='100%'>
 			<Stack gap={4}>
-				<Title order={4} fz='sm'>
-					{translate('overview.customer_visit.title')}
-				</Title>
-				<Text size='xs' c='dimmed'>
-					{translate('overview.customer_visit.description')}
-				</Text>
+			<Title order={4} fz='sm'>
+				{translate('coremart.vendingMachine.overview.customerVisit.title')}
+			</Title>
+			<Text size='xs' c='dimmed'>
+				{translate('coremart.vendingMachine.overview.customerVisit.description')}
+			</Text>
 			</Stack>
 			<div style={{ height: '350px', position: 'relative' }}>
 				<Line data={data} options={options} />

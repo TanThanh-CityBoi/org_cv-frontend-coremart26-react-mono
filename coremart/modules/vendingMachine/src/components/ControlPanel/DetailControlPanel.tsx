@@ -18,26 +18,26 @@ export const DetailControlPanel: React.FC<DetailControlPanelProps> = ({
 	onGoBack,
 	onDelete,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const navigate = useNavigate();
 
 	return (
 		<ControlPanel
 			actions={[
 				{
-					label: translate('action.back'),
+					label: translate('nikki.general.actions.back'),
 					leftSection: <IconArrowLeft size={16} />,
 					onClick: onGoBack ?? (() => navigate(-1)),
 					variant: 'outline',
 				},
 				{
-					label: translate('action.save'),
+					label: translate('nikki.general.actions.save'),
 					leftSection: <IconDeviceFloppy size={16} />,
 					onClick: onSave ?? (() => {}),
 					variant: 'filled',
 				},
 				{
-					label: translate('action.delete'),
+					label: translate('nikki.general.actions.delete'),
 					leftSection: <IconTrash size={16} />,
 					onClick: onDelete ?? (() => {}),
 					variant: 'outline',

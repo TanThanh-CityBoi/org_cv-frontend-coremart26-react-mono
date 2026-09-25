@@ -1,12 +1,12 @@
 import { Divider, Stack } from '@mantine/core';
-import { AdhocFormProvider, FormStyleProvider } from '@nikkierp/ui/components';
-import { useLocalize } from '@nikkierp/ui/i18n';
+import { FormFieldProvider, FormStyleProvider } from '@nikkierp/ui/components';
 import React from 'react';
 
-import { ArchiveKioskModal, DeleteKioskModal  } from '../..';
-import { AuditDate } from '../../../../components/AuditDate';
-import { KioskStateDetailFields } from '../../../../components/KioskState';
-import { Kiosk } from '../../types';
+import { AuditDate } from '@/components/AuditDate';
+import { KioskStateDetailFields } from '@/components/KioskState';
+import { ArchiveKioskModal, DeleteKioskModal  } from '@/features/kiosks';
+import { Kiosk } from '@/features/kiosks/types';
+
 import { KioskFormFields } from '../KioskFormFields/KioskFormFields';
 import { useBasicInfoTab } from './hooks/useBasicInfoTab';
 
@@ -21,17 +21,15 @@ export const KioskBasicInfo: React.FC<KioskBasicInfoProps> = ({ kiosk }) => {
 		closeDeleteModal, confirmDelete, isOpenDeleteModal,
 		isOpenArchiveModal, pendingArchive, handleConfirmArchive, handleCloseArchiveModal,
 	} = useBasicInfoTab({ kiosk });
-	const localize = useLocalize('vending_machine');
 
 	return (
 		<React.Fragment>
 			<Stack gap='xs'>
 				<FormStyleProvider layout='onecol'>
-					<AdhocFormProvider
+					<FormFieldProvider
 						key={`${kiosk.id}-${kiosk.etag}-basic-info`}
 						formVariant='update'
 						modelSchema={modelSchema}
-						localize={localize}
 						modelValue={formValues}
 						modelLoading={isEditing && isSubmitting}
 					>
@@ -47,7 +45,7 @@ export const KioskBasicInfo: React.FC<KioskBasicInfoProps> = ({ kiosk }) => {
 								</form>
 							</>
 						)}
-					</AdhocFormProvider>
+					</FormFieldProvider>
 				</FormStyleProvider>
 
 				<Divider my={'xs'} />

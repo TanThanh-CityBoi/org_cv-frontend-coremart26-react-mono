@@ -3,13 +3,13 @@ import { IconDotsVertical } from '@tabler/icons-react';
 import React, { useEffect, useState, type RefObject } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { type TableActionItem } from '../Table';
+import { type TableActionItem } from '@/components/Table';
 
 
 export type CardActionMenuProps = {
-	items: TableActionItem[],
+	items: TableActionItem[];
 	/** Chuột phải trên phần tử này (thẻ card) mở cùng menu thao tác. */
-	contextMenuContainerRef?: RefObject<HTMLElement | null>,
+	contextMenuContainerRef?: RefObject<HTMLElement | null>;
 };
 
 function MenuItems({ items }: { items: TableActionItem[] }) {
@@ -33,8 +33,8 @@ export const CardActionMenu: React.FC<CardActionMenuProps> = ({
 	items,
 	contextMenuContainerRef,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
-	const [contextPos, setContextPos] = useState<{ x: number, y: number } | null>(null);
+	const { t: translate } = useTranslation();
+	const [contextPos, setContextPos] = useState<{ x: number; y: number } | null>(null);
 
 	useEffect(() => {
 		const el = contextMenuContainerRef?.current;
@@ -59,7 +59,7 @@ export const CardActionMenu: React.FC<CardActionMenuProps> = ({
 							size='sm'
 							variant='default'
 							radius='sm'
-							aria-label={translate('action.title')}
+							aria-label={translate('nikki.general.actions.title')}
 						>
 							<IconDotsVertical size={16} />
 						</ActionIcon>

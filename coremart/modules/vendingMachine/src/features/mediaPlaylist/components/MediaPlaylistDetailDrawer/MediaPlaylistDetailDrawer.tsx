@@ -5,8 +5,9 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
-import { ArchivedStatusBadge } from '../../../../components/ArchivedStatusBadge';
-import { PreviewDrawer } from '../../../../components/PreviewDrawer';
+import { ArchivedStatusBadge } from '@/components/ArchivedStatusBadge';
+import { PreviewDrawer } from '@/components/PreviewDrawer';
+
 import { mediaPlaylistService } from '../../mediaPlaylistService';
 import { type Playlist, type PlaylistMediaRow } from '../../types';
 import { MediaList } from '../MediaList';
@@ -26,7 +27,7 @@ export const MediaPlaylistDetailDrawer: React.FC<MediaPlaylistDetailDrawerProps>
 	playlist,
 	isLoading = false,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const navigate = useNavigate();
 	const [playlistMedia, setPlaylistMedia] = useState<PlaylistMediaRow[]>([]);
 
@@ -68,7 +69,7 @@ export const MediaPlaylistDetailDrawer: React.FC<MediaPlaylistDetailDrawerProps>
 			<Stack gap='sm'>
 				<Box>
 					<Text size='sm' c='dimmed' mb={3}>
-						{translate('media_playlist.fields.name')}
+						{translate('coremart.vendingMachine.mediaPlaylist.fields.name')}
 					</Text>
 					<Text size='sm' fw={500}>{playlist?.name}</Text>
 				</Box>
@@ -77,7 +78,7 @@ export const MediaPlaylistDetailDrawer: React.FC<MediaPlaylistDetailDrawerProps>
 
 				<Box>
 					<Text size='sm' c='dimmed' mb={3}>
-						{translate('media_playlist.fields.created_at')}
+						{translate('coremart.vendingMachine.mediaPlaylist.fields.createdAt')}
 					</Text>
 					<Text size='sm'>{playlist?.createdAt ? new Date(playlist.createdAt).toLocaleString() : '—'}</Text>
 				</Box>

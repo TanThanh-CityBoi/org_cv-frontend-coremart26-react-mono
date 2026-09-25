@@ -13,7 +13,6 @@
 .moduleCard {
 	cursor: pointer;
 	background-color: transparent;
-	display: block;
 }
   
 .moduleCardHover .actionBtn {

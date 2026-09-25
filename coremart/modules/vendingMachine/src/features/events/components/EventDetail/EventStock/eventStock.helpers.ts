@@ -1,4 +1,4 @@
-import { getLocalizedName } from '../../../../../common/helpers';
+import { getLocalizedName } from '@/common/helpers';
 
 import type { EventStockCatalogProduct } from './eventStock.types';
 

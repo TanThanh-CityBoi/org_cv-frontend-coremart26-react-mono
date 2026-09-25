@@ -31,9 +31,9 @@ function VideoStreamThumbnail({
 	label,
 	fitMode,
 }: {
-	src: string,
-	label: string,
-	fitMode: CSSProperties['objectFit'],
+	src: string;
+	label: string;
+	fitMode: CSSProperties['objectFit'];
 }) {
 	const ref = useRef<HTMLVideoElement>(null);
 

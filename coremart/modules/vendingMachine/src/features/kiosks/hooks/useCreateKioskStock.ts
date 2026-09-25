@@ -1,84 +1,142 @@
+/* eslint-disable max-lines-per-function */
+
 import { useUIState } from '@nikkierp/shell/contexts';
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
-import { useCallback, useState } from 'react';
+import { ReduxActionState } from '@nikkierp/ui/appState';
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
+import { RefObject, useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { useMutationOutcome } from '../../../common/hooks/useMutationOutcome';
-import { kioskStockService } from '../kioskStockService';
+
+import { kioskActions, selectCreateKioskStock, VendingMachineDispatch } from '@/appState';
+import { CreateKioskStockRequest } from '@/features/kiosks/kioskSlice';
+import { RestCreateResponse } from '@/types';
+
 import { Kiosk } from '../types';
 
 
+
 export type CreateKioskStockFormPayload = {
-	productRef: string,
-	sortIndex: number,
-	sellPrice: number,
-	warningQuantity?: number,
+	productRef: string;
+	sortIndex: number;
+	sellPrice: number;
+	warningQuantity?: number;
 };
 
 export type UseCreateKioskStockArgs = {
-	kiosk: Kiosk,
+	kiosk: Kiosk;
 	/** Gọi sau khi tạo thành công (vd. `fetchKioskStocks`). */
-	onSuccess?: () => void,
-	onError?: () => void,
+	onSuccess?: () => void;
+	onError?: () => void;
 };
 
+function useCreateKioskStockOutcomeSync(
+	createState: ReduxActionState<RestCreateResponse>,
+	requestIdRef: RefObject<string | null>,
+	dispatch: VendingMachineDispatch,
+	notification: ReturnType<typeof useUIState>['notification'],
+	translate: ReturnType<typeof useTranslation>['t'],
+	onClose: () => void,
+	onSuccess?: () => void,
+	onError?: () => void,
+) {
+	useEffect(() => {
+		const requestId = createState.requestId;
+		const matchesDispatch = requestId != null && requestIdRef.current === requestId;
+		if (!matchesDispatch) {
+			return;
+		}
+		if (createState.status === 'success') {
+			requestIdRef.current = null;
+			notification.showInfo(
+				translate('coremart.vendingMachine.kioskStock.create.success', {
+					defaultValue: 'Product added to kiosk',
+				}),
+				translate('nikki.general.messages.success'),
+			);
+
+			onClose();
+			onSuccess?.();
+			dispatch(kioskActions.resetCreateKioskStock());
+			return;
+		}
+		if (createState.status === 'error') {
+			requestIdRef.current = null;
+			notification.showError(
+				createState.error ?? translate('nikki.general.errors.create_failed'),
+				translate('nikki.general.messages.error'),
+			);
+			onError?.();
+			onClose?.();
+			dispatch(kioskActions.resetCreateKioskStock());
+		}
+	}, [createState, dispatch, notification, translate, onClose, onSuccess, onError, requestIdRef]);
+}
+
 export function useCreateKioskStock(
-	{ kiosk, onSuccess = () => {}, onError = () => {} }: UseCreateKioskStockArgs,
+	{ kiosk, onSuccess, onError = () => {} }: UseCreateKioskStockArgs,
 ) {
 	const { notification } = useUIState();
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
 	const [isOpen, setIsOpen] = useState(false);
-	const { dispatchMethod, result } = useServiceLayer(kioskStockService.create);
+	const [isSubmitting, setIsSubmitting] = useState(false);
+	const createState = useMicroAppSelector(selectCreateKioskStock);
+	const requestIdRef = useRef<string | null>(null);
 
 	const handleCloseModal = useCallback(() => {
+		setIsSubmitting(false);
 		setIsOpen(false);
 	}, []);
 
 	const handleOpenCreateModal = useCallback(() => {
+		setIsSubmitting(false);
 		setIsOpen(true);
 	}, []);
 
 	const handleSubmit = useCallback(
-		(payloads: CreateKioskStockFormPayload[]) => {
+		async (payloads: CreateKioskStockFormPayload[]) => {
 			const list = payloads.filter((p) => p.productRef !== '');
 			if (list.length === 0) {
 				return;
 			}
 			if (!kiosk.id) {
 				notification.showError(
-					translate('errors.createFailed'),
-					translate('messages.error'),
+					translate('nikki.general.errors.create_failed'),
+					translate('nikki.general.messages.error'),
 				);
 				return;
 			}
-			// Only the first row: this hook creates one stock, `useCreateKioskStockBulk` many.
-			const [first] = list;
-			// Nested resource — `[request, kioskId]`, not a bare object.
-			dispatchMethod([
-				{
-					productRef: first.productRef,
-					sortIndex: first.sortIndex,
-					sellPrice: String(first.sellPrice),
-					warningQuantity: first.warningQuantity,
-				},
-				kiosk.id,
-			]);
+			setIsSubmitting(true);
+			const firstItem = list[0];
+			const body: CreateKioskStockRequest = {
+				kioskId: kiosk.id,
+				productRef: firstItem.productRef,
+				sortIndex: firstItem.sortIndex,
+				sellPrice: String(firstItem.sellPrice),
+				warningQuantity: firstItem.warningQuantity,
+			};
+			const pending = dispatch(kioskActions.createKioskStock(body));
+			requestIdRef.current = pending.requestId;
 		},
-		[dispatchMethod, kiosk.id, notification, translate],
+		[dispatch, handleCloseModal, kiosk.id, notification, onError, onSuccess, translate],
 	);
 
-	useMutationOutcome(result, {
-		successKey: () => 'kiosk_stock.create.success',
-		errorKey: 'errors.createFailed',
-		onSuccess: () => { handleCloseModal(); onSuccess(); },
-		onError: () => { handleCloseModal(); onError(); },
-	});
+	useCreateKioskStockOutcomeSync(
+		createState,
+		requestIdRef,
+		dispatch,
+		notification,
+		translate,
+		handleCloseModal,
+		onSuccess,
+		onError,
+	);
 
 	return {
 		isOpenCreateModal: isOpen,
 		handleOpenCreateModal,
 		handleCloseModal,
 		handleSubmit,
-		isSubmitting: result.isPending,
+		isSubmitting,
 	};
 }

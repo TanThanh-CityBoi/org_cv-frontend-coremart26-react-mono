@@ -1,0 +1,1768 @@
+{
+	"title": "Vending Machine",
+	"menu": {
+		"overview": "Overview",
+		"kiosk": "Kiosk",
+		"kiosk_management": "Kiosk Management",
+		"kiosk_warnings": "Kiosk Warnings",
+		"kiosk_devices": "Kiosk Devices",
+		"presentation": "Presentation",
+		"slideshow": "Presentation",
+		"gallery": "Gallery",
+		"playlists": "Playlists",
+		"mediaPlaylist": "Media playlists",
+		"device": "Devices",
+		"events": "Events",
+		"reports": "Reports",
+		"appearance": "Appearance",
+		"themes": "Themes",
+		"miniGame": "Mini Game",
+		"kiosk_models": "Kiosk Models",
+		"kiosk_settings": "Kiosk Settings",
+		"settings": "Settings",
+		"business_report": "Business Report",
+		"revenue_report": "Revenue Report",
+		"business_overview": "Business Overview",
+		"pnl_report": "Profit & Loss Report",
+		"operations_report": "Operations Report",
+		"operations_overview": "Operations Overview",
+		"revenue_overview": "Revenue Overview",
+		"revenue_by_kiosk": "Revenue by Kiosk",
+		"revenue_by_product": "Revenue by Product",
+		"revenue_by_payment_method": "Revenue by Payment Method",
+		"refunds_report": "Refunds Report",
+		"orders_report": "Orders",
+		"inventory_report": "Inventory Report",
+		"payment": "Payment",
+		"orders": "Orders"
+	},
+	"assignedKioskList": {
+		"addKiosks": "Add kiosks",
+		"empty": "No kiosks assigned"
+	},
+	"common": {
+		"fields": {
+			"createdAt": "Created At",
+			"deletedAt": "Deleted At",
+			"updatedAt": "Updated At",
+			"archivedAt": "Archived At",
+			"restoredAt": "Restored At"
+		},
+		"datePicker": {
+			"today": "Today",
+			"lastTwoDays": "Last 2 days",
+			"lastSevenDays": "Last 7 days",
+			"thisWeek": "This week",
+			"lastWeek": "Last week",
+			"thisMonth": "This month",
+			"lastMonth": "Last month",
+			"thisYear": "This year",
+			"lastYear": "Last year",
+			"selectDateRange": "Select date range",
+			"selectDateRangeHint": "Please select a date range"
+		},
+		"fileDropzone": {
+			"label": "Upload files",
+			"hint": "",
+			"browseLabel": "Drag files here or click to browse",
+			"acceptLabel": "Drop files to upload",
+			"rejectLabel": "File type not accepted or file is too large",
+			"emptyFileLabel": "No file selected",
+			"clearAriaLabel": "Remove file"
+		},
+		"actions": {
+			"view": "View",
+			"apply": "Apply"
+		},
+		"timeOfDay": {
+			"morning": "morning",
+			"afternoon": "afternoon",
+			"evening": "evening",
+			"night": "night"
+		},
+		"messages": {
+			"update_success": "Update successful",
+			"update_failed": "Update failed"
+		}
+	},
+	"overview": {
+		"title": "Vending Machine Overview",
+		"statistics": "Statistics",
+		"kiosk_count": "Kiosk Count",
+		"total_kiosks": "Total Kiosks",
+		"active_kiosks": "Active Kiosks",
+		"inactive_kiosks": "Archived Kiosks",
+		"avg_temperature": "Average Temperature",
+		"avg_humidity": "Average Humidity",
+		"total_power": "Total Power Consumption",
+		"kiosk_distribution": "Kiosk Distribution",
+		"connection": {
+			"status": "Connection Status",
+			"fast": "Fast",
+			"slow": "Slow",
+			"disconnected": "Disconnected",
+			"lost": "Lost"
+		},
+		"operation": {
+			"status": "Operation Status",
+			"selling": "Selling",
+			"slideshowOnly": "Slideshow Only",
+			"pending": "Pending"
+		},
+		"machineType": {
+			"distribution": "Machine Type Distribution",
+			"dropProduct": "Drop Product",
+			"elevator": "Elevator"
+		},
+		"errorAlerts": {
+			"title": "Error Alerts",
+			"waiting": "Waiting",
+			"inProgress": "In Progress",
+			"processed": "Processed",
+			"kioskRef": "Kiosk",
+			"level": "Level",
+			"description": "Description",
+			"status": "Status",
+			"reportedAt": "Reported At",
+			"noErrors": "No errors",
+			"viewDetails": "View Details",
+			"totalWarnings": "Warnings"
+		},
+		"error": {
+			"status": {
+				"waiting": "Waiting",
+				"handling": "Handling",
+				"processing": "Processing",
+				"processed": "Processed"
+			},
+			"level": {
+				"low": "Low",
+				"medium": "Medium",
+				"high": "High",
+				"critical": "Critical"
+			}
+		},
+		"lowStock": {
+			"title": "Low Stock Alerts",
+			"kioskOutOfStock": "Kiosk Needs Restock",
+			"activeAlerts": "Active Alerts",
+			"kioskCode": "Kiosk Code",
+			"kioskName": "Kiosk Name",
+			"stockRatio": "Stock Ratio",
+			"items": "Items",
+			"status": "Status",
+			"urgent": "Urgent",
+			"noAlerts": "No low stock alerts",
+			"viewDetails": "View Details"
+		},
+		"operationParams": {
+			"title": "Operation Parameters",
+			"temperature": "Temperature",
+			"humidity": "Humidity",
+			"powerConsumption": "Power Consumption",
+			"totalPowerConsumption": "Total Power Consumption",
+			"avgTemperature": "Average Temperature",
+			"avgHumidity": "Average Humidity",
+			"temperatureHumidity": "Temperature / Humidity",
+			"power": "Power (kW)",
+			"energy": "Energy (Wh)"
+		},
+		"support": {
+			"title": "Customer Support Requests",
+			"pending": "Pending",
+			"inProgress": "In Progress",
+			"resolved": "Resolved",
+			"kioskCode": "Kiosk Code",
+			"kioskName": "Kiosk Name",
+			"customer": "Customer",
+			"description": "Description",
+			"status": "Status",
+			"noRequests": "No support requests",
+			"viewDetails": "View Details",
+			"statusLabels": {
+				"pending": "Pending",
+				"in_progress": "In Progress",
+				"resolved": "Resolved"
+			}
+		},
+		"customerVisit": {
+			"title": "Customer Visit Flow",
+			"description": "Chart showing customer visits to vending machines.",
+			"visits": "Visits",
+			"count": "Count",
+			"date": "Date"
+		}
+	},
+	"kioskProducts": {
+		"search": {
+			"placeholder": "Search by name, SKU, barcode…"
+		},
+		"filter": {
+			"status": "Status"
+		},
+		"status": {
+			"active": "Active",
+			"draft": "Draft",
+			"discontinued": "Discontinued"
+		},
+		"messages": {
+			"selectOrg": "Select an organization to browse catalog products.",
+			"noResults": "No products match your filters."
+		},
+		"modal": {
+			"title": "Select product",
+			"confirm": "Select"
+		}
+	},
+	"kiosk": {
+		"title": "Kiosks",
+		"title_create": "Create New Kiosk",
+		"detail": {
+			"title": "Kiosk Details"
+		},
+		"fields": {
+			"code": "Code",
+			"name": "Name",
+			"displayName": "Display Name",
+			"address": "Address",
+			"locationAddress": "Location Address",
+			"latitude": "Latitude",
+			"longitude": "Longitude",
+			"coordinates": "Coordinates",
+			"isActive": "Active Status",
+			"connectionStatus": "Connection Status",
+			"status": "Status",
+			"archived": "Archived",
+			"mode": "Mode",
+			"warnings": "Warnings",
+			"actions": "Actions",
+			"createdAt": "Created At",
+			"deletedAt": "Deleted At"
+		},
+		"state": {
+			"updatedAt": "Updated At",
+			"sectionTitle": "Operating metrics",
+			"noData": "No data available",
+			"temperature": "Temperature",
+			"humidity": "Humidity",
+			"current": "Current",
+			"energy": "Energy",
+			"power": "Power",
+			"outputDoorSwitch": "Output Door Switch",
+			"homeSwitch": "Home Switch",
+			"outputSwitch": "Output Switch"
+		},
+		"stateSwitch": {
+			"on": "On",
+			"off": "Off",
+			"unknown": "Unknown"
+		},
+		"stocks": {
+			"view": {
+				"list": "List",
+				"grid": "Grid"
+			},
+			"fields": {
+				"image": "Image",
+				"code": "Product Code",
+				"sku": "SKU",
+				"barcode": "Barcode",
+				"name": "Product Name",
+				"price": "Price",
+				"quantity": "Quantity",
+				"positions": "Positions",
+				"actions": "Actions",
+				"sortIndex": "Display order",
+				"sellPrice": "Sell price",
+				"proposedPrice": "Proposed price",
+				"badgeImage": "Badge image",
+				"maxQuantity": "Max quantity",
+				"warningQuantity": "Warning quantity",
+				"isEnabled": "Enabled"
+			},
+			"actions": {
+				"addStock": "Add product",
+				"discardChanges": "Discard Changes",
+				"loadAll": "Load All",
+				"viewOnly": "View Only"
+			},
+			"empty": "Empty",
+			"create": {
+				"title": "Add product to kiosk",
+				"viewSelected": "View selected",
+				"backToBrowse": "Back to product list",
+				"noneSelectedSlide": "Nothing selected yet. Go back and pick products to set sell price and display order."
+			},
+			"edit": {
+				"title": "Edit product line"
+			},
+			"assign": {
+				"title": "Assign stock to cell",
+				"hint": "Select a line, set quantities, then assign.",
+				"empty": "No kiosk stock lines available."
+			},
+			"messages": {
+				"discardChanges": "Are you sure you want to discard changes?",
+				"deleteConfirm": "Are you sure you want to delete <strong>{{name}}</strong>? This action <strong>cannot be undone</strong>."
+			}
+		},
+		"activity": {
+			"searchPlaceholder": "Search by content...",
+			"filter": {
+				"type": "Filter by type",
+				"startDate": "Start date",
+				"endDate": "End date"
+			},
+			"fields": {
+				"time": "Time",
+				"type": "Type",
+				"content": "Content"
+			},
+			"type": {
+				"warning": "Warning",
+				"statusDetail": "Activity",
+				"error": "Error",
+				"inform": "Inform"
+			},
+			"detail": {
+				"title": "Activity Detail"
+			},
+			"noLogs": "No logs"
+		},
+		"tabs": {
+			"basicInfo": "Basic Information",
+			"operationalSettings": "Operational Settings",
+			"displaySettings": "Display Settings",
+			"shelvesConfig": "Shelves Configuration",
+			"kioskSetting": "Kiosk Setting",
+			"productsList": "Products",
+			"productsGrid": "Restock Products",
+			"activity": "Activity"
+		},
+		"status": {
+			"activated": "Activated",
+			"disabled": "Disabled",
+			"deleted": "Deleted"
+		},
+		"connectionStatus": {
+			"fast": "Fast",
+			"slow": "Slow",
+			"disconnected": "Disconnected",
+			"lost": "Lost"
+		},
+		"connectionHistory": {
+			"title": "Recent Connection History",
+			"no_history": "No connection history",
+			"just_now": "Just now",
+			"minutes_ago": "{{count}} minutes ago",
+			"hours_ago": "{{count}} hours ago",
+			"days_ago": "{{count}} days ago"
+		},
+		"mode": {
+			"pending": "Pending",
+			"selling": "Selling",
+			"slideshowOnly": "Slideshow Only"
+		},
+		"search": {
+			"placeholder": "Search by code or name..."
+		},
+		"filter": {
+			"status": "Filter by Status",
+			"connection": "Filter by Connection",
+			"mode": "Filter by Mode"
+		},
+		"warnings": {
+			"title": "Warnings",
+			"more": "{{count}} more warning(s)"
+		},
+		"messages": {
+			"no_kiosks": "No kiosks found",
+			"create_success": "Kiosk has been created successfully",
+			"update_success": "Kiosk has been updated successfully",
+			"archive_success": "Kiosk has been archived successfully",
+			"restore_success": "Kiosk has been restored successfully",
+			"delete_success": "Kiosk has been deleted successfully",
+			"delete_confirm": "Are you sure you want to delete the kiosk <strong>{{name}}</strong>? This action <strong>cannot be undone</strong>.",
+			"invalid_coordinates": "Invalid latitude or longitude. Please enter valid numbers.",
+			"archive_modal_title": "Archive Kiosk",
+			"restore_modal_title": "Restore Kiosk",
+			"archive_confirm": "Are you sure you want to archive the kiosk <strong>{{name}}</strong>?",
+			"restore_confirm": "Are you sure you want to restore the kiosk <strong>{{name}}</strong>?",
+			"not_found": {
+				"title": "Kiosk Not Found",
+				"message": "The kiosk you are looking for does not exist or has been removed."
+			}
+		}
+	},
+	"slideshow": {
+		"title": "Presentations",
+		"detail": {
+			"title": "Slideshow Details"
+		},
+		"fields": {
+			"id": "ID",
+			"code": "Code",
+			"name": "Name",
+			"description": "Description",
+			"status": "Status",
+			"startDate": "Start Date",
+			"endDate": "End Date",
+			"createdAt": "Created At"
+		},
+		"status": {
+			"expired": "Expired"
+		},
+		"search": {
+			"placeholder": "Search by code or name..."
+		},
+		"filter": {
+			"status": "Filter by Status"
+		},
+		"messages": {
+			"no_slideshows": "No slideshows found",
+			"no_playlists_found": "No playlists found"
+		},
+		"preview": {
+			"title": "Preview",
+			"vertical": "Vertical Slideshow (9:16) - Idle/Waiting Screen",
+			"horizontal": "Horizontal Slideshow - Displayed in Footer"
+		},
+		"media": {
+			"title": "Media List",
+			"add": "Add Media",
+			"empty": "No media items yet. Click 'Add Media' to add.",
+			"fields": {
+				"preview": "Preview",
+				"code": "Code",
+				"name": "Name",
+				"type": "Type",
+				"duration": "Duration",
+				"size": "Size"
+			},
+			"type": {
+				"image": "Image",
+				"video": "Video"
+			},
+			"gallery": {
+				"title": "Media Gallery",
+				"tab": "Gallery",
+				"folders": "Folders",
+				"all": "All",
+				"items": "items",
+				"gridView": "Grid View",
+				"listView": "List View",
+				"selected": "Selected",
+				"selectedCount": "items selected",
+				"selectedMedia": "Selected Media"
+			},
+			"upload": {
+				"tab": "Upload",
+				"description": "Select files from your computer to upload",
+				"button": "Choose Files"
+			}
+		}
+	},
+	"mediaPlaylist": {
+		"title": "Media playlists",
+		"tabs": {
+			"details": "Details",
+			"settings": "Settings",
+			"kioskList": "Assigned kiosks"
+		},
+		"kioskList": {
+			"columnUsage": "Screen assignment",
+			"usage": {
+				"shopping": "Shopping screen",
+				"waiting": "Waiting screen",
+				"both": "Shopping & waiting screens"
+			},
+			"empty": "No kiosks use this playlist yet.",
+			"loadError": "Could not load kiosks for this playlist."
+		},
+		"detail": {
+			"title": "Media playlist details"
+		},
+		"create": {
+			"title": "Create media playlist"
+		},
+		"fields": {
+			"id": "ID",
+			"name": "Name",
+			"scopeType": "Scope",
+			"scopeRef": "Scope reference",
+			"isArchived": "Archived",
+			"status": "Status",	
+			"mediaItems": "Media items",
+			"createdAt": "Created At"
+		},
+		"scopeType": {
+			"domain": "Domain",
+			"org": "Organization",
+			"hierarchy": "Hierarchy",
+			"private": "Private"
+		},
+		"archived": {
+			"yes": "Archived",
+			"no": "Active"
+		},
+		"status": {
+			"expired": "Expired"
+		},
+		"search": {
+			"placeholder": "Search by name..."
+		},
+		"filter": {
+			"status": "Filter by Status"
+		},
+		"messages": {
+			"no_slideshows": "No media playlists found",
+			"no_playlists_found": "No playlists found",
+			"update_success": "Media playlist updated successfully",
+			"delete_success": "Media playlist deleted successfully",
+			"delete_confirm": "Are you sure you want to delete <strong>{{name}}</strong>? This cannot be undone.",
+			"archive_modal_title": "Archive media playlist",
+			"restore_modal_title": "Restore media playlist",
+			"archive_confirm": "Archive <strong>{{name}}</strong>?",
+			"restore_confirm": "Restore <strong>{{name}}</strong>?",
+			"archive_success": "Media playlist archived successfully",
+			"restore_success": "Media playlist restored successfully",
+			"name_required": "Please enter a playlist name",
+			"create_success": "Media playlist created successfully"
+		},
+		"preview": {
+			"title": "Preview",
+			"layout_select": "Preview layout",
+			"vertical": "Vertical playlist (9:16) - Idle/waiting screen",
+			"horizontal": "Horizontal playlist - Footer area"
+		},
+		"media": {
+			"title": "Media list",
+			"add": "Add media",
+			"empty": "No media yet. Click Add media to add items.",
+			"fields": {
+				"preview": "Preview",
+				"code": "Code",
+				"kioskMediaRef": "Kiosk media",
+				"name": "Name",
+				"type": "Type",
+				"duration": "Duration (sec)",
+				"size": "Size",
+				"object_fit": "Object fit"
+			},
+			"object_fit_option": {
+				"fill": "Fill",
+				"contain": "Contain",
+				"cover": "Cover",
+				"none": "None",
+				"scale-down": "Scale down"
+			},
+			"type": {
+				"image": "Image",
+				"video": "Video"
+			},
+			"gallery": {
+				"title": "Media gallery",
+				"tab": "Gallery",
+				"folders": "Folders",
+				"all": "All",
+				"items": "items",
+				"gridView": "Grid view",
+				"listView": "List view",
+				"selected": "Selected",
+				"selectedCount": "items selected",
+				"selectedMedia": "Selected media",
+				"config_missing": "API base URL is not configured.",
+				"load_failed": "Could not load kiosk media: {{message}}"
+			},
+			"upload": {
+				"tab": "Upload",
+				"description": "Select files from your computer to upload",
+				"button": "Choose files"
+			},
+			"play_order": "Play order",
+			"preview_modal_title": "Media preview",
+			"edit_modal_title": "Edit media",
+			"drag_hint": "Drag to reorder",
+			"preview": "Preview",
+			"preview_aspect_ratio": "Preview frame aspect ratio",
+			"edit": "Edit",
+			"timeline": {
+				"title": "Playlist timeline",
+				"total_duration": "Total duration",
+				"resize_hint": "Drag the right edge to adjust this clip only (other clips unchanged)",
+				"empty": "Add media to see the timeline.",
+				"trial_play": "Play preview",
+				"trial_play_from_start": "Play from start",
+				"trial_resume": "Resume",
+				"trial_stop": "Stop",
+				"trial_position": "Playback",
+				"seek_progress_hint": "Click to seek",
+				"seek_item_hint": "Click to play from this clip"
+			}
+		},
+		"selectPlaylists": {
+			"title": "Select media playlists",
+			"searchPlaceholder": "Search playlists...",
+			"selectedCount": "Selected {{count}} playlists",
+			"noPlaylists": "No playlists found",
+			"media": "media"
+		}
+	},
+	"kioskMedia": {
+		"title": "Kiosk media",
+		"search": {
+			"placeholder": "Search by name..."
+		},
+		"filter": {
+			"status": "Filter by status"
+		},
+		"edit": {
+			"title": "Rename kiosk media"
+		},
+		"create": {
+			"title": "Create kiosk media",
+			"name_placeholder": "Display name for this file",
+			"file_label": "Media file",
+			"file_placeholder": "Choose an image or video",
+			"upload_zone_title": "Upload file",
+			"drop_accept": "Drop to upload",
+			"drop_reject": "File type or size not allowed",
+			"preview_alt": "Selected media preview",
+			"remove_file_aria": "Remove selected file",
+			"validation": {
+				"name": "Name is required",
+				"file": "Please choose a file"
+			}
+		},
+		"fields": {
+			"id": "ID",
+			"name": "Name",
+			"mediaType": "Type",
+			"status": "Status",
+			"isArchived": "Archived",
+			"createdAt": "Created at",
+			"storageKey": "Storage key",
+			"scope": "Scope",
+			"updatedAt": "Updated at"
+		},
+		"messages": {
+			"load_failed": "Could not load kiosk media: {{message}}",
+			"empty": "No kiosk media found",
+			"create_success": "Kiosk media created",
+			"create_failed": "Could not create kiosk media: {{message}}",
+			"delete_success": "Kiosk media has been deleted",
+			"delete_confirm": "Delete kiosk media <strong>{{name}}</strong>? This cannot be undone.",
+			"archive_modal_title": "Archive kiosk media",
+			"restore_modal_title": "Restore kiosk media",
+			"archive_confirm": "Archive <strong>{{name}}</strong>? You can restore it later.",
+			"restore_confirm": "Restore <strong>{{name}}</strong>?",
+			"archive_success": "Kiosk media has been archived",
+			"restore_success": "Kiosk media has been restored",
+			"update_name_success": "Kiosk media name updated",
+			"update_name_failed": "Could not update name: {{message}}"
+		}
+	},
+	"events": {
+		"title_create": "Create event",
+		"tabs": {
+			"basicInfo": "Basic information",
+			"ui": "Appearance",
+			"products": "Product list",
+			"kiosks": "Kiosk list"
+		},
+		"actions": {
+			"addStock": "Add product",
+			"addKiosks": "Add Kiosks"
+		},
+		"detail": {
+			"title": "Event Details"
+		},
+		"runPhase": {
+			"upcoming": "Upcoming",
+			"ongoing": "Ongoing",
+			"ended": "Ended"
+		},
+		"fields": {
+			"id": "ID",
+			"code": "Code",
+			"name": "Name",
+			"description": "Description",
+			"status": "Status",
+			"archivedState": "Archive",
+			"runPhase": "Schedule",
+			"startDate": "Start Date",
+			"endDate": "End Date",
+			"startTime": "Start time",
+			"endTime": "End time",
+			"dailyStartTime": "Daily start time",
+			"dailyEndTime": "Daily end time",
+			"isAllDay": "All day",
+			"shoppingScreenPlaylistRef": "Shopping screen playlist",
+			"waitingScreenPlaylistRef": "Waiting screen playlist",
+			"themeRef": "Theme",
+			"gameRef": "Game",
+			"createdAt": "Created At",
+			"kiosks": "Kiosk List",
+			"products": "Product List",
+			"theme": "Theme",
+			"game": "Game",
+			"themeAndSlideshow": "Theme and Slideshow",
+			"slideshowPlaylists": "Slideshow Playlists",
+			"idlePlaylist": "Idle Playlist",
+			"shoppingPlaylist": "Shopping Playlist",
+			"productImage": "Image",
+			"productCode": "Product Code",
+			"productName": "Product Name",
+			"originalPrice": "Original Price",
+			"eventPrice": "Event Price"
+		},
+		"status": {
+			"completed": "Completed"
+		},
+		"search": {
+			"placeholder": "Search by code or name..."
+		},
+		"filter": {
+			"status": "Filter by Status"
+		},
+		"productSearch": {
+			"placeholder": "Search products by code or name..."
+		},
+		"availableProducts": {
+			"title": "Available Products"
+		},
+		"theme": {
+			"placeholder": "Select theme...",
+			"noResults": "No themes found"
+		},
+		"playlist": {
+			"idleScreen": "Idle Screen",
+			"shoppingScreen": "Shopping Screen",
+			"mediaType": "Type",
+			"thumbnail": "Thumbnail",
+			"duration": "Duration",
+			"selectSlideshows": "Select Slideshows",
+			"selectMediaPlaylists": "Select media playlists"
+		},
+		"selectSlideshows": {
+			"title": "Select Slideshows for Playlist",
+			"searchPlaceholder": "Search slideshows...",
+			"selectedCount": "Selected {{count}} slideshows",
+			"noSlideshows": "No slideshows found",
+			"media": "media"
+		},
+		"selectMediaPlaylists": {
+			"title": "Select media playlists",
+			"searchPlaceholder": "Search playlists...",
+			"selectedCount": "Selected {{count}} playlists",
+			"noPlaylists": "No playlists found",
+			"media": "media"
+		},
+		"selectKiosks": {
+			"title": "Select Kiosks for Event",
+			"searchPlaceholder": "Search kiosks...",
+			"selectedCount": "Selected {{count}} kiosks",
+			"noKiosks": "No kiosks found",
+			"addKiosks": "Add Kiosks"
+		},
+		"selectProducts": {
+			"title": "Select Products for Event",
+			"searchPlaceholder": "Search products...",
+			"selectedProducts": "Selected Products",
+			"availableProducts": "Available Products",
+			"noProducts": "No products found",
+			"addProducts": "Add Products",
+			"editProduct": "Edit Product",
+			"imageUrl": "Image URL",
+			"badgeImageUrl": "Badge Image URL"
+		},
+		"eventStock": {
+			"create": {
+				"title": "Add product to event",
+				"viewSelected": "View selected",
+				"backToBrowse": "Back to product list",
+				"noneSelectedSlide": "Nothing selected yet. Go back and pick one or more products."
+			}
+		},
+		"selectTheme": {
+			"title": "Select Theme for Event",
+			"searchPlaceholder": "Search themes...",
+			"noThemes": "No themes found",
+			"selectTheme": "Select Theme"
+		},
+		"selectGame": {
+			"title": "Select Game for Event",
+			"searchPlaceholder": "Search games...",
+			"noGames": "No games found",
+			"selectGame": "Select Game"
+		},
+		"messages": {
+			"no_events": "No events found",
+			"not_found_title": "Event not found",
+			"not_found_message": "This event does not exist or was removed.",
+			"create_success": "Event created",
+			"update_success": "Event updated",
+			"delete_success": "Event deleted",
+			"delete_confirm": "Delete event <strong>{{name}}</strong>? This cannot be undone.",
+			"archive_modal_title": "Archive event",
+			"restore_modal_title": "Restore event",
+			"archive_confirm": "Archive <strong>{{name}}</strong>? You can restore it later.",
+			"restore_confirm": "Restore <strong>{{name}}</strong>?",
+			"archive_success": "Event archived",
+			"restore_success": "Event restored",
+			"no_kiosks": "No kiosks assigned to this event",
+			"no_products": "No products in this event",
+			"no_theme": "No theme selected",
+			"no_game": "No game selected",
+			"no_idle_playlist": "No playlist for idle screen",
+			"no_shopping_playlist": "No playlist for shopping screen",
+			"no_media_in_playlist": "No media in playlist",
+			"remove_kiosk_from_event_title": "Remove kiosk from event",
+			"remove_kiosk_from_event_confirm": "Are you sure you want to remove kiosk <strong>{{kioskName}}</strong> from event <strong>{{eventName}}</strong>?",
+			"remove_kiosk_from_event_success": "Kiosk <strong>{{kioskName}}</strong> has been removed from event <strong>{{eventName}}</strong>"
+		},
+		"calendar": {
+			"view": {
+				"month": "Month",
+				"week": "Week",
+				"day": "Day",
+				"list": "List"
+			}
+		}
+	},
+	"settingTemplates": {
+		"detail": {
+			"title": "Setting Template Details"
+		},
+		"fields": {
+			"id": "ID",
+			"code": "Code",
+			"name": "Name",
+			"description": "Description",
+			"status": "Status",
+			"createdAt": "Created At",
+			"kiosks": "Kiosk List",
+			"products": "Product List",
+			"theme": "Theme",
+			"game": "Game"
+		},
+		"search": {
+			"placeholder": "Search by code or name..."
+		},
+		"filter": {
+			"status": "Filter by Status"
+		},
+		"messages": {
+			"no_templates": "No setting templates found"
+		}
+	},
+	"kioskSettings": {
+		"title": "Kiosk Settings",
+		"title_create": "Create Kiosk Setting",
+		"detail": {
+			"title": "Kiosk Setting Details"
+		},
+		"sections": {
+			"basicInfo": "Basic Information"
+		},
+		"tabs": {
+			"basicInfo": "Basic Information",
+			"settings": "Settings",
+			"kiosks": "Kiosks"
+		},
+		"actions": {
+			"add_kiosk": "Add kiosk"
+		},
+		"fields": {
+			"id": "ID",
+			"code": "Code",
+			"name": "Name",
+			"description": "Description",
+			"status": "Status",
+			"isArchived": "Archived",
+			"brand": "Brand",
+			"createdAt": "Created At",
+			"kiosks": "Kiosk List",
+			"products": "Product List",
+			"theme": "Theme",
+			"game": "Game",
+			"settings": "Settings"
+		},
+		"selectSetting": {
+			"title": "Select kiosk setting",
+			"searchPlaceholder": "Search by code, name…",
+			"empty": "No kiosk configuration selected",
+			"selectButton": "Select configuration",
+			"noSettings": "No kiosk settings match your search",
+			"selectedLabel": "Selected: {{name}}"
+		},
+		"search": {
+			"placeholder": "Search by code or name..."
+		},
+		"filter": {
+			"status": "Filter by Status"
+		},
+		"messages": {
+			"no_settings": "No kiosk settings found",
+			"not_found_title": "Kiosk setting not found",
+			"not_found_message": "This kiosk setting does not exist or was removed.",
+			"create_success": "Kiosk setting «{{name}}» has been created successfully",
+			"update_success": "Kiosk setting has been updated successfully",
+			"delete_confirm": "Delete kiosk setting <strong>{{name}}</strong>? This cannot be undone.",
+			"archive_modal_title": "Archive kiosk setting",
+			"restore_modal_title": "Restore kiosk setting",
+			"archive_confirm": "Archive <strong>{{name}}</strong>? You can restore it later.",
+			"restore_confirm": "Restore <strong>{{name}}</strong>?",
+			"archive_success": "Kiosk setting archived",
+			"restore_success": "Kiosk setting restored",
+			"assign_kiosks_success": "Assigned {{count}} kiosk(s) to this setting",
+			"remove_kiosk_wait": "Another kiosk update is in progress. Please try again in a moment.",
+			"remove_kiosk_from_setting_title": "Remove setting from kiosk",
+			"remove_kiosk_from_setting_confirm": "Remove <strong>{{settingName}}</strong> from kiosk <strong>{{kioskName}}</strong>? The kiosk will no longer use this configuration.",
+			"remove_kiosk_from_setting_success": "The setting has been removed from the kiosk"
+		}
+	},
+	"settings": {
+		"title": "Settings",
+		"title_create": "Create New Setting",
+		"detail": {
+			"title": "Setting Detail"
+		},
+		"tabs": {
+			"basicInfo": "Basic Information"
+		},
+		"fields": {
+			"id": "ID",
+			"code": "Code",
+			"name": "Name",
+			"description": "Description",
+			"config": "Config",
+			"isArchived": "Status",
+			"createdAt": "Created At",
+			"updatedAt": "Updated At"
+		},
+		"search": {
+			"placeholder": "Search by code or name..."
+		},
+		"filter": {
+			"status": "Filter by Status"
+		},
+		"config": {
+			"key": "Key",
+			"value": "Value",
+			"no_entries": "No config entries"
+		},
+		"messages": {
+			"no_settings": "No settings found",
+			"create_success": "Setting has been created successfully",
+			"update_success": "Setting has been updated successfully",
+			"delete_success": "Setting has been deleted successfully",
+			"archive_success": "Setting has been archived",
+			"restore_success": "Setting has been restored",
+			"delete_confirm": "Are you sure you want to delete setting <strong>{{name}}</strong>? This action cannot be undone.",
+			"not_found": {
+				"title": "Setting Not Found",
+				"message": "The setting you are looking for does not exist or has been removed."
+			}
+		}
+	},
+	"kioskModels": {
+		"title": "Kiosk Models",
+		"title_create": "Create New Kiosk Model",
+		"detail": {
+			"title": "Kiosk Model Details"
+		},
+		"tabs": {
+			"basicInfo": "Basic Information",
+			"modelSettings": "Settings"
+		},
+		"sections": {
+			"basicInfo": "Basic Information",
+			"configuration": "Configuration",
+			"contentMedia": "Content & Media",
+			"trayConfiguration": "Tray Configuration",
+			"metadata": "Metadata"
+		},
+		"fields": {
+			"id": "ID",
+			"code": "Code",
+			"name": "Name",
+			"modelId": "Model ID",
+			"referenceCode": "Reference Code",
+			"model": "Kiosk Model",
+			"description": "Description",
+			"status": "Status",
+			"operatingMode": "Operating Mode",
+			"kioskType": "Kiosk Type",
+			"interfaceMode": "Interface Mode",
+			"slideshow": "Slideshow",
+			"numberOfTrays": "Number of Trays",
+			"shelvesNumber": "Number of Shelves",
+			"shelvesConfig": "Shelves Configuration",
+			"trayConfigurations": "Tray Configurations",
+			"trayRow": "Row",
+			"shelfType": "Shelf Type",
+			"createdAt": "Created At"
+		},
+		"shelfType": {
+			"spring": "Spring",
+			"conveyor": "Conveyor",
+			"hangingConveyor": "Hanging Conveyor",
+			"pushTape": "Push Tape"
+		},
+		"operatingMode": {
+			"pending": "Pending",
+			"selling": "Selling",
+			"slideshowOnly": "Slideshow Only"
+		},
+		"kioskType": {
+			"elevator": "Elevator",
+			"nonElevator": "Non Elevator"
+		},
+		"interfaceMode": {
+			"normal": "Normal",
+			"focus": "Focus"
+		},
+		"search": {
+			"placeholder": "Search by code or name..."
+		},
+		"filter": {
+			"status": "Filter by Status"
+		},
+		"messages": {
+			"no_models": "No models found",
+			"create_success": "Kiosk model has been created successfully",
+			"update_success": "Kiosk model has been updated successfully",
+			"delete_success": "Kiosk model has been deleted successfully",
+			"not_found": {
+				"title": "Kiosk Model Not Found",
+				"message": "The kiosk model you are looking for does not exist or has been removed."
+			},
+			"delete_confirm": "Are you sure you want to delete model <strong>{{name}}</strong>? This action cannot be undone.",
+			"archive_modal_title": "Archive confirmation",
+			"restore_modal_title": "Restore confirmation",
+			"archive_confirm": "Archive model <strong>{{name}}</strong>? You can restore it later.",
+			"restore_confirm": "Restore model <strong>{{name}}</strong>?",
+			"archive_success": "Kiosk model has been archived successfully",
+			"restore_success": "Kiosk model has been restored successfully",
+			"no_slideshow": "No slideshow",
+			"no_trays": "No trays yet. Click 'Add Row' button to add a tray."
+		},
+		"actions": {
+			"addTray": "Add Row"
+		}
+	},
+	"orders": {
+		"search": {
+			"placeholder": "Search by order id, gateway ref, or content..."
+		},
+		"filter": {
+			"orderStatus": "Order status",
+			"paymentMethod": "Payment method",
+			"createdFrom": "Created from",
+			"createdTo": "Created to"
+		},
+		"orderStatus": {
+			"idle": "Idle",
+			"delivery": "Delivery",
+			"failed": "Failed",
+			"cancelled": "Cancelled",
+			"completed": "Completed"
+		},
+		"paymentMethod": {
+			"momo": "MoMo",
+			"vietqr": "VietQR",
+			"mpos": "mPOS",
+			"mbbank": "MB Bank"
+		},
+		"txStatus": {
+			"pending": "Pending",
+			"success": "Success",
+			"failed": "Failed",
+			"cancelled": "Cancelled"
+		},
+		"fields": {
+			"id": "Order id",
+			"orderCode": "Order code",
+			"parentOrderRef": "Parent order reference",
+			"rootOrderRef": "Root order reference",
+			"createdAt": "Created at",
+			"updatedAt": "Updated at",
+			"kiosk": "Kiosk",
+			"paymentMethod": "Payment method",
+			"amount": "Total",
+			"orderStatus": "Order status",
+			"paymentStatus": "Payment status",
+			"refundAmount": "Refund amount",
+			"refund": "Refund",
+			"refundStatus": "Refund status",
+			"gatewayRef": "Gateway reference",
+			"content": "Transaction content"
+		},
+		"actions": {
+			"refund": "Refund",
+			"invoice": "Get invoice",
+			"history": "Order history"
+		},
+		"messages": {
+			"not_found": {
+				"title": "Order not found",
+				"message": "This order does not exist or was removed."
+			}
+		},
+		"detail": {
+			"title": "Order details: <strong>{{id}}</strong>",
+			"subtitle": "Created: {{created}}",
+			"tab": "Overview"
+		},
+		"sections": {
+			"items": "Line items",
+			"order_discount": "Order discount",
+			"chain_group": "Orders in this chain"
+		},
+		"chain_group": {
+			"empty": "No orders found for this chain.",
+			"current": "Current"
+		},
+		"order_discount": {
+			"hint": "No order-level discount field in the current schema; amount shown is from the order total only."
+		},
+		"items": {
+			"product": "Product",
+			"productRef": "Product ref",
+			"quantity": "Quantity",
+			"quantityOut": "Dispensed",
+			"sellPrice": "Unit price",
+			"line_total": "Line total",
+			"empty": "No line items"
+		},
+		"refund": {
+			"title": "Confirm refund",
+			"select_all": "Refund all items",
+			"manual_toggle": "Manual refund (bank details)",
+			"total": "Refund total",
+			"submit": "Confirm refund",
+			"reason": "Reason",
+			"bank_code": "Bank code",
+			"account_name": "Account holder",
+			"select_items": "Select items to refund",
+			"evidence": "Proof document",
+			"evidence_browse": "Drag proof document here or click to browse",
+			"evidence_accept": "Drop document to attach",
+			"evidence_reject": "Invalid document or file too large (max 10 MB)",
+			"evidence_empty": "No file selected",
+			"validation_title": "Missing information",
+			"validation_bank": "Enter bank code and account name for manual refund.",
+			"validation_items": "Select at least one item to refund.",
+			"success_title": "Refund submitted",
+			"success_message": "The refund request was processed successfully.",
+			"error_title": "Refund failed",
+			"error_message": "Could not process the refund. Try again or contact support."
+		},
+		"history": {
+			"title": "Order history",
+			"tab_updates": "Order updates (JSON)",
+			"tab_stocks": "Vending machine log",
+			"empty_stocks": "No stock log entries",
+			"table": {
+				"index": "#",
+				"content": "Content"
+			}
+		},
+		"invoice": {
+			"pending_title": "Invoice",
+			"pending_message": "Invoice download for order {{id}} will be available when the API is connected."
+		}
+	},
+	"payment": {
+		"title": "Payment Methods",
+		"title_create": "Create payment method",
+		"detail": {
+			"title": "Payment Method Details"
+		},
+		"fields": {
+			"id": "ID",
+			"code": "Code",
+			"name": "Name",
+			"image": "Image",
+			"status": "Status",
+			"description": "Description",
+			"minTransactionValue": "Min Transaction Value",
+			"maxTransactionValue": "Max Transaction Value",
+			"transactionRange": "Transaction Range",
+			"customFields": "Custom Fields",
+			"customFieldKey": "Key",
+			"customFieldValue": "Value",
+			"customFieldType": "Type",
+			"createdAt": "Created At"
+		},
+		"customFieldTypes": {
+			"string": "String",
+			"number": "Number",
+			"password": "Password",
+			"email": "Email",
+			"url": "URL",
+			"date": "Date"
+		},
+		"search": {
+			"placeholder": "Search by code or name..."
+		},
+		"filter": {
+			"status": "Filter by Status"
+		},
+		"messages": {
+			"no_payments": "No payment methods found",
+			"no_custom_fields": "No custom fields",
+			"create_success": "Payment method created successfully",
+			"update_success": "Payment method updated successfully",
+			"delete_success": "Payment method deleted successfully",
+			"delete_confirm": "Delete payment method <strong>{{name}}</strong>?",
+			"not_found": {
+				"title": "Payment method not found",
+				"message": "This payment method may have been removed or the link is invalid."
+			},
+			"archive_success": "Payment method has been archived successfully",
+			"restore_success": "Payment method has been restored successfully",
+			"archive_modal_title": "Archive confirmation",
+			"restore_modal_title": "Restore confirmation",
+			"archive_confirm": "Archive payment method <strong>{{name}}</strong>?",
+			"restore_confirm": "Restore payment method <strong>{{name}}</strong>?"
+		}
+	},
+	"games": {
+		"title": "Game Management",
+		"detail": {
+			"title": "Game Details",
+			"info": "Information",
+			"versions": "Versions",
+			"preview": "Preview"
+		},
+		"fields": {
+			"id": "ID",
+			"code": "Game Code",
+			"name": "Game Name",
+			"description": "Description",
+			"status": "Status",
+			"versions": "Version Count",
+			"latestVersion": "Latest Version",
+			"versionCode": "Version Code",
+			"versionDescription": "Version Description",
+			"source": "Source Code",
+			"source_placeholder": "Enter HTML/JS source code of the game...",
+			"uploadDate": "Upload Date",
+			"minAppVersion": "Minimum App Version",
+			"createdAt": "Created At",
+			"latest": "Latest",
+			"selectVersion": "Select Version"
+		},
+		"tabs": {
+			"info": "Information",
+			"versions": "Versions",
+			"preview": "Preview"
+		},
+		"actions": {
+			"play": "Play",
+			"add_version": "Add Version",
+			"upload_source": "Upload Source",
+			"reload": "Reload"
+		},
+		"search": {
+			"placeholder": "Search by game code or name..."
+		},
+		"filter": {
+			"status": "Filter by Status"
+		},
+		"messages": {
+			"no_games": "No games found",
+			"no_version": "No version available",
+			"no_versions": "No versions",
+			"source_loaded": "Source loaded",
+			"preview_hint": "Click to play the game",
+			"delete_version_confirm": "Are you sure you want to delete this version?"
+		}
+	},
+	"themes": {
+		"detail": {
+			"title": "Theme Details"
+		},
+		"fields": {
+			"id": "ID",
+			"code": "Code",
+			"name": "Name",
+			"description": "Description",
+			"status": "Status",
+			"primaryColor": "Primary Color",
+			"productCardStyle": "Product Card Style",
+			"appBackground": "App Background",
+			"fontStyle": "Font Style",
+			"mascotImage": "Mascot Image",
+			"createdAt": "Created At"
+		},
+		"productCardStyle": {
+			"default": "Default",
+			"rounded": "Rounded",
+			"minimal": "Minimal",
+			"elegant": "Elegant",
+			"modern": "Modern"
+		},
+		"appBackground": {
+			"none": "None",
+			"snow": "Snow",
+			"fireworks": "Fireworks",
+			"particles": "Particles",
+			"gradient": "Gradient",
+			"custom": "Custom"
+		},
+		"fontStyle": {
+			"default": "Default",
+			"roboto": "Roboto",
+			"inter": "Inter",
+			"poppins": "Poppins",
+			"montserrat": "Montserrat",
+			"custom": "Custom"
+		},
+		"search": {
+			"placeholder": "Search by code or name..."
+		},
+		"filter": {
+			"status": "Filter by Status"
+		},
+		"messages": {
+			"no_themes": "No themes found"
+		},
+		"preview": {
+			"title": "Preview"
+		}
+	},
+	"device": {
+		"title": "Devices",
+		"detail": {
+			"title": "Device Details"
+		},
+		"tabs": {
+			"basicInfo": "Basic Information",
+			"specifications": "Specifications"
+		},
+		"fields": {
+			"id": "ID",
+			"code": "Code",
+			"name": "Name",
+			"description": "Description",
+			"status": "Status",
+			"deviceType": "Device Type",
+			"specifications": "Specifications",
+			"specKey": "Key",
+			"specValue": "Value",
+			"createdAt": "Created At"
+		},
+		"deviceType": {
+			"motor": "Motor (Product Pusher)",
+			"pos": "POS",
+			"screen": "Screen",
+			"cpu": "CPU",
+			"router": "WiFi Router"
+		},
+		"search": {
+			"placeholder": "Search by code or name..."
+		},
+		"filter": {
+			"status": "Filter by Status",
+			"deviceType": "Filter by Device Type"
+		},
+		"messages": {
+			"no_devices": "No devices found",
+			"no_specifications": "No specifications",
+			"create_success": "Device has been created successfully",
+			"update_success": "Device has been updated successfully",
+			"delete_success": "Device has been deleted successfully",
+			"delete_confirm": "Are you sure you want to delete device <strong>{{name}}</strong>? This action cannot be undone.",
+			"not_found": {
+				"title": "Device Not Found",
+				"message": "The device you are looking for does not exist or has been removed."
+			}
+		}
+	},
+	"reports": {
+		"title": "Reports",
+		"business": {
+			"title": "Business Report",
+			"overview": "Business Overview",
+			"generated": "Business Generated",
+			"orders": "Orders by Business",
+			"welcomeCard": {
+				"updatesFromYesterday": "Updates from yesterday.",
+				"greeting": "Good {{timeOfDay}}, Captain!",
+				"updatesFromToday": "Updates from today.",
+				"earnings": "Earnings",
+				"orders": "Orders",
+				"visitors": "Visitors",
+				"averageRevenue": "Average Revenue",
+				"averageRevenuePerOrder": "Average revenue per order",
+				"itemsSold": "Items Sold",
+				"itemsErrored": "Items Errored",
+				"errorRate": "Error rate (%)",
+				"refundedAmount": "Refunded Amount",
+				"refundedOrders": "Refunded Orders",
+				"refundRate": "Refund rate (%)",
+				"itemsCount": "{{count}} items",
+				"ordersCount": "{{count}} orders",
+				"viewAllReports": "View all reports >"
+			}
+		},
+		"revenue": {
+			"title": "Revenue",
+			"overview": "Revenue Overview",
+			"generated": "Revenue Generated",
+			"orders": "Orders"
+		},
+		"revenueByKiosk": {
+			"title": "Revenue by Kiosk",
+			"topKiosks": "Top Revenue by Kiosk",
+			"topKiosksDescription": "Summary of points of sale with the highest revenue",
+			"overview": "Revenue by Kiosk Overview",
+			"generated": "Revenue by Kiosk Generated",
+			"orders": "Orders by Kiosk"
+		},
+		"revenueByProduct": {
+			"title": "Revenue by Product",
+			"tableTitle": "Revenue by Product",
+			"tableDescription": "Table summarizing revenue by product",
+			"topProductsTableTitle": "Top Products",
+			"topProductsTableDescription": "Table summarizing the top products by revenue",
+			"overview": "Revenue by Product Overview",
+			"generated": "Revenue by Product Generated",
+			"orders": "Orders by Product"
+		},
+		"revenueByPaymentMethod": {
+			"title": "Revenue by Payment Method",
+			"overview": "Revenue by Payment Method Overview",
+			"stackedBarChartDescription": "Revenue distribution by payment methods",
+			"generated": "Revenue by Payment Method Generated",
+			"orders": "Orders by Payment Method"
+		},
+		"refunds": {
+			"title": "Refunds",
+			"overview": "Refunds Overview",
+			"generated": "Refunds Generated",
+			"orders": "Orders by Refunds"
+		},
+		"orders": {
+			"title": "Orders",
+			"overview": "Orders Overview",
+			"generated": "Orders Generated",
+			"orders": "Orders by Orders"
+		},
+		"inventory": {
+			"title": "Inventory",
+			"overview": "Inventory Overview",
+			"generated": "Inventory Generated",
+			"orders": "Orders by Inventory"
+		},
+		"operations": {
+			"title": "Operations",
+			"overview": "Operations Overview",
+			"generated": "Operations Generated",
+			"orders": "Orders by Operations"
+		},
+		"revenueReport": {
+			"reportType": "Report type",
+			"typeOverview": "Revenue overview",
+			"typeByKiosk": "Revenue by kiosk",
+			"typeByPayment": "Revenue by payment method",
+			"typeByProduct": "Product report",
+			"timeFromPlaceholder": "From",
+			"timeToPlaceholder": "To",
+			"view": "View",
+			"export": "Export",
+			"columnFilter": "Filter…",
+			"tableTotal": "Total {{count}}",
+			"rowDateLabel": "{{shortDate}}",
+			"paymentFallback": "Payment method {{index}}",
+			"detailTable": "Detail",
+			"summary": {
+				"totalOrders": "Total orders",
+				"totalItemsSold": "Total items sold",
+				"totalRevenue": "Total revenue",
+				"totalRefund": "Total refund",
+				"averageRevenue": "Average revenue",
+				"maximumRevenue": "Maximum revenue",
+				"minimumRevenue": "Minimum revenue"
+			},
+			"chart": {
+				"revenueOverview": "Revenue overview",
+				"revenueOverviewHint": "Monitor revenue performance across days, months, and years.",
+				"totalRevenue": "Total revenue",
+				"dailyOverview": "Revenue overview",
+				"dailyOverviewHint": "Daily revenue and orders",
+				"byHour": "Revenue by hour",
+				"radioRevenue": "Revenue",
+				"radioOrders": "Order Number",
+				"revenueAxisLabel": "Revenue (VND)",
+				"ordersAxisLabel": "Order Number",
+				"tooltipRevenueValue": "Revenue: {{value}}",
+				"tooltipOrdersValue": "Orders: {{value}}",
+				"byKiosk": "Revenue by kiosk",
+				"byPayment": "Revenue by payment method",
+				"revenueShareByPayment": "Share of revenue by payment method",
+				"topProductsByRevenue": "Top products by revenue",
+				"revenueAxisShort": "Revenue",
+				"byCategory": "Sales by category",
+				"categoryDoughnutTitle": "Revenue by product category",
+				"categoryDoughnutDescription": "Top product categories by revenue",
+				"otherKiosks": "Other kiosks"
+			},
+			"columns": {
+				"date": "Date",
+				"orders": "Total orders",
+				"orderTime": "Time",
+				"orderCount": "Orders",
+				"cancelledOrderCount": "Cancelled orders",
+				"refundedOrderCount": "Refunded orders",
+				"totalItemCount": "Items sold",
+				"totalSuccessItemCount": "Successful items",
+				"totalRevenue": "Revenue",
+				"averageRevenue": "Avg revenue",
+				"totalRefund": "Refund",
+				"productsSold": "Products sold",
+				"refund": "Refund",
+				"discount": "Discount",
+				"revenue": "Revenue",
+				"kiosk": "Kiosk",
+				"paymentMethod": "Payment method",
+				"product": "Product",
+				"category": "Category",
+				"quantity": "Quantity"
+			},
+			"exportPendingTitle": "Export",
+			"exportPendingMessage": "Export will be available when the API is connected.",
+			"missingDateRange": "Choose a date range and click Apply to load data.",
+			"exportSuccess": "Download finished.",
+			"exportFailed": "{{message}}",
+			"kioskRevenueDetail": {
+				"backToRevenueReport": "Back to revenue report",
+				"kioskHeading": "Kiosk {{name}}",
+				"pageTitle": "Kiosk {{name}} — revenue report",
+				"ordersSection": "Orders",
+				"productRevenueSection": "Product revenue"
+			}
+		},
+		"refundReport": {
+			"title": "Refunds report",
+			"heading": "Refunds report",
+			"footerSummary": "Total {{count}} ({{selected}} selected)",
+			"pageOfTotal": "Page {{page}} / {{total}}",
+			"summary": {
+				"totalRefundAmount": "Total refund amount",
+				"refundOrderCount": "Refund orders",
+				"orderRefundRate": "Order refund rate",
+				"refundedProductQty": "Refunded product units",
+				"productRefundRate": "Product refund rate"
+			},
+			"charts": {
+				"topKiosks": "Kiosks with the most refunds",
+				"refundRateByMethod": "Share of refund amount by payment method",
+				"topProducts": "Most refunded products",
+				"otherKiosks": "Other kiosks",
+				"otherProducts": "Other products",
+				"refundAmountAxis": "Refund amount",
+				"refundOrderAxis": "Refund orders",
+				"productQtyAxis": "Units refunded",
+				"refundRatePercent": "Refund % of revenue",
+				"tooltipRefund": "Refund",
+				"tooltipOrders": "Orders",
+				"tooltipRate": "Rate",
+				"tooltipRevenue": "Revenue",
+				"methodRateHint": "Each segment is that method’s share of total refund amount in the filtered period.",
+				"radioRefundAmount": "Refund amount",
+				"radioRefundOrders": "Refund orders",
+				"radioProductQty": "Units"
+			},
+			"methods": {
+				"momo": "MoMo refund",
+				"vietqr": "VietQR refund",
+				"manual": "Manual refund"
+			},
+			"columns": {
+				"date": "Date",
+				"reference": "Reference",
+				"kiosk": "Kiosk",
+				"createdBy": "Created by",
+				"refundMethod": "Refund method",
+				"amount": "Amount",
+				"refundedBy": "Refunded by",
+				"reason": "Reason"
+			},
+			"table": {
+				"title": "Refund orders"
+			}
+		},
+		"inventoryReport": {
+			"title": "Current inventory report",
+			"heading": "Current inventory report",
+			"footerSummary": "Total {{count}} ({{selected}} selected)",
+			"pageOfTotal": "Page {{page}} / {{total}}",
+			"chart": {
+				"stockByProduct": "Stock by product",
+				"shareByCategory": "Inventory share by category"
+			},
+			"categories": {
+				"softDrink": "Soft drink",
+				"purifiedWater": "Purified water",
+				"tea": "Tea",
+				"milk": "Milk",
+				"coffee": "Coffee",
+				"beer": "Beer",
+				"coconut": "Coconut",
+				"food": "Food",
+				"unknown": "Unknown",
+				"organic": "Organic"
+			},
+			"columns": {
+				"productName": "Product",
+				"totalQty": "Total quantity",
+				"sellingQty": "Selling quantity",
+				"warningQty": "Warning quantity",
+				"maxQty": "Maximum quantity"
+			}
+		},
+		"pnlReport": {
+			"documentTitle": "Profit & Loss",
+			"periodUnset": "Select a period and click View",
+			"hintManualEntry": "Enter amounts in your reporting currency for the selected period (values are local to this worksheet until APIs are linked). Click View after changing filters.",
+			"salesRevenue": "Sales revenue",
+			"revenueDeductions": "Revenue deductions",
+			"refunds": "Refunds",
+			"promotions": "Promotions / discounts",
+			"netRevenue": "Net revenue",
+			"formulaNetRevenue": "Net revenue = Sales revenue − (Refunds + Promotions)",
+			"cogs": "Cost of goods sold",
+			"cogsAmount": "COGS amount",
+			"cogsChangedTitle": "Cost of goods has been adjusted",
+			"cogsChangedBody": "If you revised COGS versus the baseline saved when filters were applied, cross-check totals using the revenue and inventory reports.",
+			"linkRevenueReport": "Open revenue report",
+			"linkInventoryReport": "Open inventory report",
+			"grossProfit": "Gross profit",
+			"formulaGrossProfit": "Gross profit = Net revenue − COGS",
+			"financialRevenue": "Financial income",
+			"financialExpense": "Financial expenses",
+			"sellingExpenses": "Point-of-sale (selling) expenses",
+			"fixedCosts": "Fixed costs",
+			"electricity": "Electricity",
+			"internet": "Internet",
+			"rent": "Rent / premises",
+			"fixedOther": "Other fixed costs",
+			"variableCosts": "Variable costs",
+			"partnerDiscount": "Partner discounts",
+			"gatewayFees": "Payment gateway fees",
+			"gatewayMomo": "MoMo",
+			"gatewayVietqr": "VietQR",
+			"gatewayMpos": "mPOS",
+			"expiredGoods": "Spoilage / expired goods",
+			"variableOther": "Other variable costs",
+			"sellingExpenseSubtotal": "Subtotal — point-of-sale expenses",
+			"adminExpense": "General & administrative expenses",
+			"netOperatingProfit": "Net operating profit",
+			"formulaNetOperating": "Net operating profit = Gross profit + Financial income − Financial expenses − Point-of-sale expenses − G&A expenses",
+			"otherIncome": "Other income",
+			"otherExpense": "Other expenses",
+			"otherProfit": "Other profit (loss)",
+			"formulaOtherProfit": "Other profit = Other income − Other expenses",
+			"profitBeforeTax": "Profit before tax",
+			"formulaBeforeTax": "Profit before tax = Net operating profit + Other profit",
+			"taxes": "Taxes and fees",
+			"vatRateLabel": "VAT rate applied to (Net revenue − COGS)",
+			"vatFormulaHint": "VAT amount uses this rate × (Net revenue − COGS). Adjust the rate if settings differ.",
+			"vatAmount": "VAT (output − input assumption)",
+			"citRateLabel": "Corporate income tax rate (% of profit before tax)",
+			"citFormulaHint": "Default 20%. Applied only when profit before tax is positive; update if your accounting policy differs.",
+			"citAmount": "Corporate income tax",
+			"totalTax": "Total taxes",
+			"profitAfterTax": "Profit after tax",
+			"formulaAfterTax": "Profit after tax = Profit before tax − Total taxes",
+			"manualWorksheetTitle": "Detailed worksheet (manual)",
+			"dashboard": {
+				"mockDataBanner": "Charts and KPIs below use sample data for layout preview. Connect APIs to substitute live figures.",
+				"kpiTotalRevenue": "Total revenue",
+				"kpiTotalGrossProfit": "Total gross profit",
+				"kpiReturnOnAssets": "Return on assets",
+				"kpiOperatingProfit": "Total operating profit (loss)",
+				"kpiReturnOnEquity": "Return on equity",
+				"kpiNetProfit": "Total net profit (loss)",
+				"chartOperating": "Operating revenue & expenses — last 12 months",
+				"chartGrossTrend": "Gross profit — last 12 months",
+				"chartOperatingTrend": "Operating profit — last 12 months",
+				"chartNetTrend": "Net profit — last 12 months",
+				"expenseToday": "Expenses by category (today)",
+				"expenseLastMonth": "Expenses by category (end of last month)",
+				"stackedRevenue": "Revenue — last 12 months",
+				"stackedExpenseType": "Expenses by type — last 12 months",
+				"stackedRevenueAccount": "Revenue by channel — last 12 months",
+				"stackedExpenseAccount": "Expenses breakdown — last 12 months",
+				"dsRevenue": "Revenue",
+				"dsExpenses": "Expenses",
+				"dsOperatingMarginPct": "Operating margin %",
+				"dsAmount": "Amount",
+				"dsGrossMarginPct": "Gross margin %",
+				"dsOperatingProfit": "Operating profit",
+				"dsOperatingMargin": "Operating margin %",
+				"dsNetProfit": "Net profit",
+				"dsNetMarginPct": "Net margin %",
+				"dsDirectCosts": "Direct costs",
+				"dsGrossProfit": "Gross profit",
+				"dsOperatingExpense": "Operating expense",
+				"dsSales": "Retail sales",
+				"dsService": "Service / surcharge",
+				"dsRent": "Rent / premises",
+				"dsUtils": "Electricity / utilities",
+				"dsGateway": "Payment gateway & bank",
+				"dsPartnerDisc": "Partner discounts",
+				"dsExpired": "Spoilage / expiry",
+				"dsAdminHr": "Payroll / admin",
+				"dsMisc": "Other",
+				"statementTitle": "Income statement snapshot",
+				"colAccount": "Account",
+				"colMtd": "Month to date",
+				"colLastMonth": "Last month",
+				"colYtd": "Year to date",
+				"rowRevenue": "Revenue",
+				"rowDirectCosts": "Direct costs",
+				"rowGrossProfit": "Gross profit",
+				"rowExpenseLine": "Expense",
+				"rowOperatingProfit": "Operating profit (loss)",
+				"rowOtherIncome": "Other income (expense)",
+				"rowDepreciation": "Depreciation",
+				"rowOverheads": "Overheads",
+				"rowNetProfit": "Net profit (loss)",
+				"expenseSlices": {
+					"rent": "Rent premises",
+					"electricity": "Electricity",
+					"gatewayFees": "Payment gateway fees",
+					"waste": "Expired / waste goods",
+					"marketing": "Marketing",
+					"payrollTax": "Payroll tax",
+					"otherExpense": "Other"
+				}
+			}
+		},
+		"filterBar": {
+			"title": "Report filters",
+			"expand": "Show filters",
+			"collapse": "Hide filters",
+			"dateRange": "Date range",
+			"kiosk": "Kiosks",
+			"kioskPlaceholder": "Select kiosks",
+			"reportSections": "Visible report sections",
+			"toggleSection": "Toggle section visibility",
+			"sectionLabels": {
+				"summaryCards": "Welcome & quarterly revenue",
+				"hourlyKiosk": "Hourly revenue & top kiosks",
+				"trendsCategory": "Revenue trends & categories",
+				"productsPayment": "Products, payments & activity",
+				"regionMap": "Regional map",
+				"revenueSummary": "Executive summary",
+				"revenueTables": "Detail tables",
+				"revenueCharts": "Charts & breakdowns"
+			}
+		}
+	}
+}

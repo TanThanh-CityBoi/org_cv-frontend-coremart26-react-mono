@@ -1,27 +1,78 @@
+/* eslint-disable max-lines-per-function */
 import { useUIState } from '@nikkierp/shell/contexts';
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
-import { useCallback, useState } from 'react';
+import { ReduxActionState } from '@nikkierp/ui/appState';
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
+import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { useMutationOutcome } from '../../../common/hooks/useMutationOutcome';
-import { kioskStockService } from '../kioskStockService';
-
-import type { KioskStock } from '../components/KioskDetail/KioskStockGrid/kioskStock.types';
-import type { Kiosk } from '../types';
+import {
+	kioskActions,
+	selectKioskStockDelete,
+	VendingMachineDispatch,
+} from '@/appState';
+import { KioskStock } from '@/features/kiosks/components/KioskDetail/KioskStockGrid/kioskStock.types';
+import { Kiosk } from '@/features/kiosks/types';
+import { RestDeleteResponse } from '@/types';
 
 
 export type UseKioskStockDeleteArgs = {
-	kiosk: Kiosk,
-	onSuccess?: () => void,
-	onError?: () => void,
+	kiosk: Kiosk;
+	onSuccess?: () => void;
+	onError?: () => void;
 };
 
+function useKioskStockDeleteOutcomeSync(
+	deleteState: ReduxActionState<RestDeleteResponse>,
+	dispatchedRequestIdRef: React.RefObject<string | null>,
+	dispatch: VendingMachineDispatch,
+	notification: ReturnType<typeof useUIState>['notification'],
+	translate: ReturnType<typeof useTranslation>['t'],
+	onClose: () => void,
+	onDeleteSuccess?: () => void,
+	onDeleteError?: () => void,
+) {
+	React.useEffect(() => {
+		const requestId = deleteState.requestId;
+		const matchesDispatch = requestId != null && dispatchedRequestIdRef.current === requestId;
+		if (!matchesDispatch) {
+			return;
+		}
+		if (deleteState.status === 'success') {
+			dispatchedRequestIdRef.current = null;
+			notification.showInfo(
+				translate('coremart.vendingMachine.kioskStock.delete.success', {
+					defaultValue: 'Kiosk product line removed',
+				}),
+				translate('nikki.general.messages.success'),
+			);
+			onClose();
+			onDeleteSuccess?.();
+			dispatch(kioskActions.resetKioskStockDelete());
+			return;
+		}
+		if (deleteState.status === 'error') {
+			dispatchedRequestIdRef.current = null;
+			notification.showError(
+				deleteState.error ?? translate('nikki.general.errors.delete_failed'),
+				translate('nikki.general.messages.error'),
+			);
+			onDeleteError?.();
+			dispatch(kioskActions.resetKioskStockDelete());
+		}
+	}, [
+		deleteState, dispatch, notification, translate, onClose, onDeleteSuccess, onDeleteError,
+		dispatchedRequestIdRef,
+	]);
+}
+
 export function useKioskStockDelete(
-	{ kiosk, onSuccess = () => {}, onError = () => {} }: UseKioskStockDeleteArgs,
+	{ kiosk, onSuccess, onError = () => {} }: UseKioskStockDeleteArgs,
 ) {
 	const { notification } = useUIState();
-	const { t: translate } = useTranslation('vending_machine');
-	const { dispatchMethod, result } = useServiceLayer(kioskStockService.delete);
+	const { t: translate } = useTranslation();
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
+	const deleteState = useMicroAppSelector(selectKioskStockDelete);
+	const dispatchedRequestIdRef = React.useRef<string | null>(null);
 	const [deleteStock, setDeleteStock] = useState<KioskStock | null>(null);
 	const [isOpenDeleteModal, setIsOpenDeleteModal] = useState<boolean>(false);
 
@@ -29,7 +80,6 @@ export function useKioskStockDelete(
 		setDeleteStock(null);
 		setIsOpenDeleteModal(false);
 	}, []);
-
 	const openDeleteModal = useCallback((stock: KioskStock) => {
 		setDeleteStock(stock);
 		setIsOpenDeleteModal(true);
@@ -38,21 +88,38 @@ export function useKioskStockDelete(
 	const confirmDelete = useCallback(() => {
 		if (!kiosk.id || !deleteStock?.id) {
 			notification.showError(
-				translate('errors.deleteFailed'),
-				translate('messages.error'),
+				translate('nikki.general.errors.delete_failed'),
+				translate('nikki.general.messages.error'),
 			);
 			return;
 		}
-		// Nested resource — `[request, kioskId]`, not a bare object.
-		dispatchMethod([{ id: deleteStock.id }, kiosk.id]);
-	}, [deleteStock, dispatchMethod, kiosk.id, notification, translate]);
+		const pending = dispatch(
+			kioskActions.deleteKioskStock({ kioskId: kiosk.id, stockId: deleteStock.id }),
+		);
+		dispatchedRequestIdRef.current = pending.requestId;
+	}, [deleteStock, dispatch, kiosk.id, notification, translate]);
 
-	useMutationOutcome(result, {
-		successKey: () => 'kiosk_stock.delete.success',
-		errorKey: 'errors.deleteFailed',
-		onSuccess: () => { closeDeleteModal(); onSuccess(); },
-		onError: () => { closeDeleteModal(); onError(); },
-	});
+
+	const onDeleteSuccess = useCallback(() => {
+		closeDeleteModal();
+		onSuccess?.();
+	}, [closeDeleteModal, onSuccess]);
+
+	const onDeleteError = useCallback(() => {
+		closeDeleteModal();
+		onError?.();
+	}, [closeDeleteModal, onError]);
+
+	useKioskStockDeleteOutcomeSync(
+		deleteState,
+		dispatchedRequestIdRef,
+		dispatch,
+		notification,
+		translate,
+		closeDeleteModal,
+		onDeleteSuccess,
+		onDeleteError,
+	);
 
 	return {
 		deleteStock,
@@ -60,6 +127,6 @@ export function useKioskStockDelete(
 		openDeleteModal,
 		closeDeleteModal,
 		confirmDelete,
-		isDeleting: result.isPending,
+		isDeleting: deleteState.status === 'pending',
 	};
 }

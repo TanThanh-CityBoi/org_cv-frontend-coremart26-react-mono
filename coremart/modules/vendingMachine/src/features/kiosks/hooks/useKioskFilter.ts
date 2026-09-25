@@ -2,13 +2,14 @@
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { controlPanelToSearchGraph, type ControlPanelFilterConfig } from '../../../components';
-import { ArchivedStatus, SearchNode, SearchOperator } from '../../../types';
+import { controlPanelToSearchGraph, type ControlPanelFilterConfig } from '@/components';
+import { ArchivedStatus, SearchNode, SearchOperator } from '@/types';
+
 import { ConnectionStatus, KioskMode } from '../types';
 
 
 export function useKioskFilter() {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const [searchValue, setSearchValue] = useState('');
 	const [statusFilter, setStatusFilter] = useState<ArchivedStatus[]>([ArchivedStatus.ACTIVE]);
 	const [connectionFilter, setConnectionFilter] = useState<ConnectionStatus[]>([]);
@@ -62,7 +63,7 @@ export function useKioskFilter() {
 			type: 'search' as const,
 			value: searchValue,
 			onChange: setSearchValue,
-			placeholder: translate('kiosk.search.placeholder'),
+			placeholder: translate('coremart.vendingMachine.kiosk.search.placeholder'),
 		},
 		{
 			key: 'isArchived',
@@ -70,10 +71,10 @@ export function useKioskFilter() {
 			value: statusFilter,
 			onChange: setStatusFilter,
 			options: [
-				{ value: ArchivedStatus.ACTIVE, label: translate('status.active') },
-				{ value: ArchivedStatus.ARCHIVED, label: translate('status.archived') },
+				{ value: ArchivedStatus.ACTIVE, label: translate('nikki.general.status.active') },
+				{ value: ArchivedStatus.ARCHIVED, label: translate('nikki.general.status.archived') },
 			],
-			placeholder: translate('kiosk.filter.status'),
+			placeholder: translate('coremart.vendingMachine.kiosk.filter.status'),
 			getGraphValue: (value: ArchivedStatus[]) => value.map((v) => v === ArchivedStatus.ARCHIVED),
 		},
 		{
@@ -82,11 +83,11 @@ export function useKioskFilter() {
 			value: connectionFilter,
 			onChange: (value: ConnectionStatus[]) => setConnectionFilter(value),
 			options: [
-				{ value: ConnectionStatus.FAST, label: translate('kiosk.connection_status.fast') },
-				{ value: ConnectionStatus.SLOW, label: translate('kiosk.connection_status.slow') },
-				{ value: ConnectionStatus.LOST, label: translate('kiosk.connection_status.lost') },
+				{ value: ConnectionStatus.FAST, label: translate('coremart.vendingMachine.kiosk.connectionStatus.fast') },
+				{ value: ConnectionStatus.SLOW, label: translate('coremart.vendingMachine.kiosk.connectionStatus.slow') },
+				{ value: ConnectionStatus.LOST, label: translate('coremart.vendingMachine.kiosk.connectionStatus.lost') },
 			],
-			placeholder: translate('kiosk.filter.connection'),
+			placeholder: translate('coremart.vendingMachine.kiosk.filter.connection'),
 			getCondition: buildConnectionCondition,
 		},
 		{
@@ -95,11 +96,11 @@ export function useKioskFilter() {
 			value: modeFilter,
 			onChange: setModeFilter,
 			options: [
-				{ value: KioskMode.PENDING, label: translate('kiosk.mode.pending') },
-				{ value: KioskMode.SELLING, label: translate('kiosk.mode.selling') },
-				{ value: KioskMode.SLIDESHOW_ONLY, label: translate('kiosk.mode.slideshow_only') },
+				{ value: KioskMode.PENDING, label: translate('coremart.vendingMachine.kiosk.mode.pending') },
+				{ value: KioskMode.SELLING, label: translate('coremart.vendingMachine.kiosk.mode.selling') },
+				{ value: KioskMode.SLIDESHOW_ONLY, label: translate('coremart.vendingMachine.kiosk.mode.slideshowOnly') },
 			],
-			placeholder: translate('kiosk.filter.mode'),
+			placeholder: translate('coremart.vendingMachine.kiosk.filter.mode'),
 		},
 	], [searchValue, statusFilter, connectionFilter, modeFilter, translate]);
 

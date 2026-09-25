@@ -6,8 +6,9 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
-import { ArchivedStatusBadge } from '../../../../components/ArchivedStatusBadge';
-import { PreviewDrawer } from '../../../../components/PreviewDrawer';
+import { ArchivedStatusBadge } from '@/components/ArchivedStatusBadge';
+import { PreviewDrawer } from '@/components/PreviewDrawer';
+
 import { CustomFieldValueType, PaymentMethod, PaymentMethodConfigValue } from '../../types';
 
 
@@ -25,7 +26,7 @@ export const PaymentDetailDrawer: React.FC<PaymentDetailDrawerProps> = ({
 	payment,
 	isLoading = false,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const navigate = useNavigate();
 	const [customFields, setCustomFields] =
 		useState<PaymentMethodConfigValue[]>(Object.values(payment?.config || {}) || []);
@@ -60,13 +61,13 @@ export const PaymentDetailDrawer: React.FC<PaymentDetailDrawerProps> = ({
 		}
 	};
 
-	const valueTypeOptions: Array<{ value: CustomFieldValueType, label: string }> = [
-		{ value: 'string', label: translate('payment.custom_field_types.string') },
-		{ value: 'number', label: translate('payment.custom_field_types.number') },
-		{ value: 'password', label: translate('payment.custom_field_types.password') },
-		{ value: 'email', label: translate('payment.custom_field_types.email') },
-		{ value: 'url', label: translate('payment.custom_field_types.url') },
-		{ value: 'date', label: translate('payment.custom_field_types.date') },
+	const valueTypeOptions: Array<{ value: CustomFieldValueType; label: string }> = [
+		{ value: 'string', label: translate('coremart.vendingMachine.payment.customFieldTypes.string') },
+		{ value: 'number', label: translate('coremart.vendingMachine.payment.customFieldTypes.number') },
+		{ value: 'password', label: translate('coremart.vendingMachine.payment.customFieldTypes.password') },
+		{ value: 'email', label: translate('coremart.vendingMachine.payment.customFieldTypes.email') },
+		{ value: 'url', label: translate('coremart.vendingMachine.payment.customFieldTypes.url') },
+		{ value: 'date', label: translate('coremart.vendingMachine.payment.customFieldTypes.date') },
 	];
 
 	return (
@@ -104,7 +105,7 @@ export const PaymentDetailDrawer: React.FC<PaymentDetailDrawerProps> = ({
 			<Stack gap='md'>
 				<Box>
 					<Text size='sm' c='dimmed' mb={3} fw={500}>
-						{translate('payment.fields.code')}
+						{translate('coremart.vendingMachine.payment.fields.code')}
 					</Text>
 					<Text size='sm' fw={500}>{payment?.method}</Text>
 				</Box>
@@ -113,7 +114,7 @@ export const PaymentDetailDrawer: React.FC<PaymentDetailDrawerProps> = ({
 
 				<Box>
 					<Text size='sm' c='dimmed' mb={3} fw={500}>
-						{translate('payment.fields.name')}
+						{translate('coremart.vendingMachine.payment.fields.name')}
 					</Text>
 					<Text size='sm'>{payment?.name}</Text>
 				</Box>
@@ -123,7 +124,7 @@ export const PaymentDetailDrawer: React.FC<PaymentDetailDrawerProps> = ({
 						<Divider />
 						<div>
 							<Text size='sm' c='dimmed' mb={3} fw={500}>
-								{translate('payment.fields.image')}
+								{translate('coremart.vendingMachine.payment.fields.image')}
 							</Text>
 							<Box w={64} h={64}>
 								<Image
@@ -143,7 +144,7 @@ export const PaymentDetailDrawer: React.FC<PaymentDetailDrawerProps> = ({
 
 				<Box>
 					<Text size='sm' c='dimmed' mb={3} fw={500}>
-						{translate('payment.fields.status')}
+						{translate('coremart.vendingMachine.payment.fields.status')}
 					</Text>
 					{payment ? <ArchivedStatusBadge isArchived={payment.isArchived} /> : null}
 				</Box>
@@ -152,15 +153,15 @@ export const PaymentDetailDrawer: React.FC<PaymentDetailDrawerProps> = ({
 
 				<Box>
 					<Text size='sm' c='dimmed' mb='xs' fw={500}>
-						{translate('payment.fields.custom_fields')}
+						{translate('coremart.vendingMachine.payment.fields.customFields')}
 					</Text>
 					{customFields.length > 0 && (
 						<Table striped highlightOnHover>
 							<Table.Thead>
 								<Table.Tr>
-									<Table.Th>{translate('payment.fields.custom_field_key')}</Table.Th>
-									<Table.Th>{translate('payment.fields.custom_field_value')}</Table.Th>
-									<Table.Th>{translate('payment.fields.custom_field_type')}</Table.Th>
+									<Table.Th>{translate('coremart.vendingMachine.payment.fields.customFieldKey')}</Table.Th>
+									<Table.Th>{translate('coremart.vendingMachine.payment.fields.customFieldValue')}</Table.Th>
+									<Table.Th>{translate('coremart.vendingMachine.payment.fields.customFieldType')}</Table.Th>
 									<Table.Th style={{ width: 50 }}></Table.Th>
 								</Table.Tr>
 							</Table.Thead>
@@ -194,13 +195,13 @@ export const PaymentDetailDrawer: React.FC<PaymentDetailDrawerProps> = ({
 					<Stack gap='xs' mt='md'>
 						<Group gap='xs' align='flex-end'>
 							<TextInput
-								placeholder={translate('payment.fields.custom_field_key')}
+								placeholder={translate('coremart.vendingMachine.payment.fields.customFieldKey')}
 								value={newFieldKey}
 								onChange={(e) => setNewFieldKey(e.currentTarget.value)}
 								style={{ flex: 1 }}
 							/>
 							<Select
-								placeholder={translate('payment.fields.custom_field_type')}
+								placeholder={translate('coremart.vendingMachine.payment.fields.customFieldType')}
 								value={newFieldType}
 								onChange={(value) => setNewFieldType(value as CustomFieldValueType)}
 								data={valueTypeOptions}
@@ -209,7 +210,7 @@ export const PaymentDetailDrawer: React.FC<PaymentDetailDrawerProps> = ({
 						</Group>
 						<Group gap='xs' align='flex-end'>
 							<TextInput
-								placeholder={translate('payment.fields.custom_field_value')}
+								placeholder={translate('coremart.vendingMachine.payment.fields.customFieldValue')}
 								value={newFieldValue}
 								onChange={(e) => setNewFieldValue(e.currentTarget.value)}
 								type={newFieldType === 'password' ? 'password' : newFieldType === 'number' ? 'number' : 'text'}
@@ -220,7 +221,7 @@ export const PaymentDetailDrawer: React.FC<PaymentDetailDrawerProps> = ({
 								onClick={handleAddCustomField}
 								disabled={!newFieldKey.trim() || !newFieldValue.trim()}
 							>
-								{translate('action.add')}
+								{translate('nikki.general.actions.add')}
 							</Button>
 						</Group>
 					</Stack>
@@ -230,7 +231,7 @@ export const PaymentDetailDrawer: React.FC<PaymentDetailDrawerProps> = ({
 
 				<Box>
 					<Text size='sm' c='dimmed' mb='xs'>
-						{translate('payment.fields.created_at')}
+						{translate('coremart.vendingMachine.payment.fields.createdAt')}
 					</Text>
 					<Text size='sm'>{payment?.createdAt ? new Date(payment.createdAt).toLocaleString() : '—'}</Text>
 				</Box>

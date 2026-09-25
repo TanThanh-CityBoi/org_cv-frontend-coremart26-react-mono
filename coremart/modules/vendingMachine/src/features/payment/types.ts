@@ -1,9 +1,9 @@
 export type CustomFieldValueType = 'string' | 'number' | 'password' | 'email' | 'url' | 'date';
 
 export type PaymentMethodConfigValue = {
-	key: string,
-	value: string,
-	valueType: CustomFieldValueType,
+	key: string;
+	value: string;
+	valueType: CustomFieldValueType;
 };
 
 export interface PaymentMethodConfig {

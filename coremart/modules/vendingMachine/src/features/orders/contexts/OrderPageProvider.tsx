@@ -4,25 +4,26 @@ import dayjs from 'dayjs';
 import React, { createContext, useContext, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { appendSearchGraphAndCondition } from '../../../common/helpers';
-import { BreadcrumbItem } from '../../../components/BreadCrumbs';
-import { ControlPanelActionItem } from '../../../components/ControlPanel';
-import { SearchGraph, SearchOperator } from '../../../types';
+import { appendSearchGraphAndCondition } from '@/common/helpers';
+import { BreadcrumbItem } from '@/components/BreadCrumbs';
+import { ControlPanelActionItem } from '@/components/ControlPanel';
+import { SearchGraph, SearchOperator } from '@/types';
+
 import { useOrderFilter, useOrderList } from '../hooks';
 
 
 type OrderPageContextValue = {
-	filter: ReturnType<typeof useOrderFilter>,
-	list: ReturnType<typeof useOrderList>,
+	filter: ReturnType<typeof useOrderFilter>;
+	list: ReturnType<typeof useOrderList>;
 };
 
 const OrderPageContext = createContext<OrderPageContextValue | null>(null);
 
 export type OrderPageProviderProps = React.PropsWithChildren<{
 	/** Restricts orders to this kiosk_ref (API id). */
-	kioskRefFilter?: string | null,
+	kioskRefFilter?: string | null;
 	/** Applied once at parent level (e.g. revenue kiosk detail); AND with user filters. */
-	appliedDateRange?: DatesRangeValue<DateValue> | undefined,
+	appliedDateRange?: DatesRangeValue<DateValue> | undefined;
 }>;
 
 function mergeOrderListGraph(
@@ -75,19 +76,19 @@ export function useOrderPageContext() {
 	return ctx;
 }
 
-export function useOrderPageConfig(): { breadcrumbs: BreadcrumbItem[], actions: ControlPanelActionItem[] } {
+export function useOrderPageConfig(): { breadcrumbs: BreadcrumbItem[]; actions: ControlPanelActionItem[] } {
 	const { list: { handleRefresh } } = useOrderPageContext();
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	return useMemo(
 		() => ({
 			breadcrumbs: [
-				{ title: translate('title'), href: '../overview' },
-				{ title: translate('menu.orders'), href: '#' },
+				{ title: translate('coremart.vendingMachine.title'), href: '../overview' },
+				{ title: translate('coremart.vendingMachine.menu.orders'), href: '#' },
 			],
 			actions: [
 				{
-					label: translate('action.refresh'),
+					label: translate('nikki.general.actions.refresh'),
 					leftSection: <IconRefresh size={16} />,
 					onClick: handleRefresh,
 					variant: 'outline' as const,

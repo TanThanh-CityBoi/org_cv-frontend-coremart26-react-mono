@@ -4,16 +4,15 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
+import type { DriveFileFilterState } from '@/features/files/components/Filters/DriveFileFilterBar';
 
-import { driveFileActions, selectSearchDriveFile } from '../../appState/file';
-import { DriveFileStatus, DriveFileType } from '../../features/files';
-import { DriveFileTitle } from '../../features/files/components/DriveFileTitle';
-import { DriveFileView, type DriveFileUIViewMode } from '../../features/files/components/DriveFileView';
-import { DriveFileFilterBar } from '../../features/files/components/Filters/DriveFileFilterBar';
-import { useDriveFileFilters } from '../../features/files/hooks/useDriveFileFilters';
-import { useLocalStorage } from '../../features/files/hooks/useLocalStorage';
-
-import type { DriveFileFilterState } from '../../features/files/components/Filters/DriveFileFilterBar';
+import { driveFileActions, selectSearchDriveFile } from '@/appState/file';
+import { DriveFileStatus, DriveFileType } from '@/features/files';
+import { DriveFileTitle } from '@/features/files/components/DriveFileTitle';
+import { DriveFileView, type DriveFileUIViewMode } from '@/features/files/components/DriveFileView';
+import { DriveFileFilterBar } from '@/features/files/components/Filters/DriveFileFilterBar';
+import { useDriveFileFilters } from '@/features/files/hooks/useDriveFileFilters';
+import { useLocalStorage } from '@/features/files/hooks/useLocalStorage';
 
 
 
@@ -34,11 +33,11 @@ function useSearchPageFiltersFromUrl({
 	enabled,
 	onApplied,
 }: {
-	searchParams: URLSearchParams,
-	filters: DriveFileFilterState,
-	setFilters: (next: DriveFileFilterState) => void,
-	enabled: boolean,
-	onApplied: () => void,
+	searchParams: URLSearchParams;
+	filters: DriveFileFilterState;
+	setFilters: (next: DriveFileFilterState) => void;
+	enabled: boolean;
+	onApplied: () => void;
 }) {
 	useEffect(() => {
 		if (!enabled) return;
@@ -90,11 +89,11 @@ function useDriveSearchPageInit({
 	applyRef,
 	onAfterResetRef,
 }: {
-	dispatch: ReturnType<typeof useMicroAppDispatch>,
-	navigate: ReturnType<typeof useNavigate>,
-	q: string,
-	applyRef: React.RefObject<() => void>,
-	onAfterResetRef: React.RefObject<() => void>,
+	dispatch: ReturnType<typeof useMicroAppDispatch>;
+	navigate: ReturnType<typeof useNavigate>;
+	q: string;
+	applyRef: React.RefObject<() => void>;
+	onAfterResetRef: React.RefObject<() => void>;
 }) {
 	useEffect(() => {
 		onAfterResetRef.current?.();
@@ -118,10 +117,10 @@ function useDriveSearchPagePagination({
 	page,
 	lastGraph,
 }: {
-	dispatch: ReturnType<typeof useMicroAppDispatch>,
-	q: string,
-	page: number,
-	lastGraph: Record<string, unknown> | null,
+	dispatch: ReturnType<typeof useMicroAppDispatch>;
+	q: string;
+	page: number;
+	lastGraph: Record<string, unknown> | null;
 }) {
 	useEffect(() => {
 		if (!q.trim() || !lastGraph) return;
@@ -140,14 +139,14 @@ function useDriveSearchPagePagination({
 }
 
 type DriveSearchPageLayoutProps = {
-	viewMode: DriveFileUIViewMode,
-	onViewModeChange: (mode: DriveFileUIViewMode) => void,
-	filters: ReturnType<typeof useDriveFileFilters>['filters'],
-	setFilters: ReturnType<typeof useDriveFileFilters>['setFilters'],
-	onApplyFilters: () => void,
-	totalItems: number,
-	page: number,
-	onPageChange: (page: number) => void,
+	viewMode: DriveFileUIViewMode;
+	onViewModeChange: (mode: DriveFileUIViewMode) => void;
+	filters: ReturnType<typeof useDriveFileFilters>['filters'];
+	setFilters: ReturnType<typeof useDriveFileFilters>['setFilters'];
+	onApplyFilters: () => void;
+	totalItems: number;
+	page: number;
+	onPageChange: (page: number) => void;
 };
 
 function DriveSearchPageLayout({

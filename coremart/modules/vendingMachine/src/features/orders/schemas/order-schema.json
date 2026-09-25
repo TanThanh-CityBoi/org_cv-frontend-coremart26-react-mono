@@ -3,55 +3,55 @@
 	"fields": {
 		"id": {
 			"type": "string",
-			"label": "{ \"$ref\": 'orders.fields.id' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.orders.fields.id' }"
 		},
 		"chainKey": {
 			"type": "string",
-			"label": "{ \"$ref\": 'orders.fields.root_order_ref' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.orders.fields.rootOrderRef' }"
 		},
 		"orderCode": {
 			"type": "string",
-			"label": "{ \"$ref\": 'orders.fields.order_code' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.orders.fields.orderCode' }"
 		},
 		"parentOrderCode": {
 			"type": "string",
-			"label": "{ \"$ref\": 'orders.fields.parent_order_ref' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.orders.fields.parentOrderRef' }"
 		},
 		"createdAt": {
 			"type": "date",
-			"label": "{ \"$ref\": 'orders.fields.created_at' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.orders.fields.createdAt' }"
 		},
 		"kioskRef": {
 			"type": "string",
-			"label": "{ \"$ref\": 'orders.fields.kiosk' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.orders.fields.kiosk' }"
 		},
 		"paymentMethod": {
 			"type": "string",
-			"label": "{ \"$ref\": 'orders.fields.payment_method' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.orders.fields.paymentMethod' }"
 		},
 		"amount": {
 			"type": "string",
-			"label": "{ \"$ref\": 'orders.fields.amount' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.orders.fields.amount' }"
 		},
 		"status": {
 			"type": "string",
-			"label": "{ \"$ref\": 'orders.fields.order_status' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.orders.fields.orderStatus' }"
 		},
 		"paymentStatus": {
 			"type": "string",
-			"label": "{ \"$ref\": 'orders.fields.payment_status' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.orders.fields.paymentStatus' }"
 		},
 		"refundAmount": {
 			"type": "string",
-			"label": "{ \"$ref\": 'orders.fields.refund_amount' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.orders.fields.refundAmount' }"
 		},
 		"refundStatus": {
 			"type": "string",
-			"label": "{ \"$ref\": 'orders.fields.refund_status' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.orders.fields.refundStatus' }"
 		},
 		"actions": {
 			"type": "string",
-			"label": "{ \"$ref\": 'action.title' }"
+			"label": "{ \"$ref\": 'nikki.general.actions.title' }"
 		}
 	}
 }

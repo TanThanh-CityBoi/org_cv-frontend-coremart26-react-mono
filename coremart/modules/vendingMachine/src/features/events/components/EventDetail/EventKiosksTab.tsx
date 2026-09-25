@@ -1,5 +1,11 @@
 import { Stack } from '@mantine/core';
+import { ModelSchema } from '@nikkierp/ui/model';
 import React from 'react';
+
+import { KioskSelectModal } from '@/components/KioskSelectModal';
+import { RemoveKioskFromEventModal } from '@/features/events/components/EventConfirmModals';
+import { KioskTable } from '@/features/kiosks';
+import { kioskSchema } from '@/features/kiosks/schemas';
 
 import {
 	useEventKiosksTab,
@@ -7,14 +13,8 @@ import {
 	useQueryKioskNotInEventGraph,
 } from './hooks/useEventKiosksTab';
 import { useAssignKiosksToEvent, useRemoveKioskFromEvent } from './hooks/useManageKiosks';
-import { asLegacyModelSchema } from '../../../../common/helpers';
-import { KioskSelectModal } from '../../../../components/KioskSelectModal';
-import { KioskTable } from '../../../kiosks';
-import { kioskSchema } from '../../../kiosks/schemas';
-import { RemoveKioskFromEventModal } from '../EventConfirmModals';
 
-
-import type { Event } from '../../types';
+import type { Event } from '@/features/events/types';
 
 
 const EVENT_KIOSK_DETAIL_COLUMNS = [
@@ -59,7 +59,7 @@ export const EventKiosksTab: React.FC<EventKiosksTabProps> = ({ event }) => {
 			<KioskTable
 				columns={[...EVENT_KIOSK_DETAIL_COLUMNS]}
 				data={kiosks as unknown as Record<string, unknown>[]}
-				schema={asLegacyModelSchema(kioskSchema)}
+				schema={kioskSchema as ModelSchema}
 				isLoading={isLoading}
 				actions={{
 					delete: (kiosk) => openRemoveModal(kiosk),

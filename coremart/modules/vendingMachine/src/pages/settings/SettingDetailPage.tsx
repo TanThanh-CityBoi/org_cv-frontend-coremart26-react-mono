@@ -4,26 +4,26 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
 
-import { ControlPanel } from '../../components';
-import { DetailLayout } from '../../components/DetailLayout';
-import { PageContainer } from '../../components/PageContainer';
-import { useSettingDetail } from '../../features/settings';
+import { ControlPanel } from '@/components';
+import { DetailLayout } from '@/components/DetailLayout';
+import { PageContainer } from '@/components/PageContainer';
+import { useSettingDetail } from '@/features/settings';
 import {
 	SettingBasicInfo,
 	SettingNotFound,
 	useSettingDetailPageConfig,
-} from '../../features/settings/components/SettingDetail';
-import { Setting } from '../../features/settings/types';
+} from '@/features/settings/components/SettingDetail';
+import { Setting } from '@/features/settings/types';
 
 
-function SettingDetailHeader({ setting, translate }: { setting: Setting, translate: (key: string) => string }) {
+function SettingDetailHeader({ setting, translate }: { setting: Setting; translate: (key: string) => string }) {
 	return (
 		<Group gap='xs' align='center'>
 			<Text fw={600} size='lg' lh={1}>{setting.name}</Text>
 			<Badge color={setting.isArchived ? 'gray' : 'green'} variant='light' size='sm'>
 				{setting.isArchived
-					? translate('status.archived')
-					: translate('status.active')}
+					? translate('nikki.general.status.archived')
+					: translate('nikki.general.status.active')}
 			</Badge>
 		</Group>
 	);
@@ -31,13 +31,13 @@ function SettingDetailHeader({ setting, translate }: { setting: Setting, transla
 
 export const SettingDetailPage: React.FC = () => {
 	const { id } = useParams<{ id: string }>();
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const { setting, isLoading } = useSettingDetail(id);
 	const { breadcrumbs, actions, formProps } = useSettingDetailPageConfig({ setting });
 
 	return (
 		<PageContainer
-			documentTitle={setting?.name ?? translate('settings.detail.title')}
+			documentTitle={setting?.name ?? translate('coremart.vendingMachine.settings.detail.title')}
 			breadcrumbs={breadcrumbs}
 			sections={[<ControlPanel actions={actions} />]}
 			isLoading={isLoading && !setting}

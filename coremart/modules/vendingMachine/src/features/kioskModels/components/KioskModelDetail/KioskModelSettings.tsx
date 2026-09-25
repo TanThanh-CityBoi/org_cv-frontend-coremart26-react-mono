@@ -15,14 +15,14 @@ export interface KioskModelSettingsProps {
 export function getKioskTypeLabel(type: KioskType | undefined, translate: (key: string) => string) {
 	if (!type) return '-';
 	const labelMap: Record<KioskType, string> = {
-		'elevator': translate('kiosk_models.kiosk_type.elevator'),
-		'non-elevator': translate('kiosk_models.kiosk_type.non_elevator'),
+		'elevator': translate('coremart.vendingMachine.kioskModels.kioskType.elevator'),
+		'non-elevator': translate('coremart.vendingMachine.kioskModels.kioskType.nonElevator'),
 	};
 	return labelMap[type] || type;
 };
 
 export const KioskModelSettings: React.FC<KioskModelSettingsProps> = ({ model }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const {
 		isEditing, selectedGoodsCollectorType, setSelectedGoodsCollectorType,
 		shelvesNumber, setShelvesNumber, shelvesConfigRows, setShelvesConfigRows,
@@ -32,16 +32,16 @@ export const KioskModelSettings: React.FC<KioskModelSettingsProps> = ({ model })
 		<Stack gap='lg'>
 			<Box>
 				<Text size='sm' c='dimmed' mb={2} fw={500}>
-					{translate('kiosk_models.fields.kiosk_type')}
+					{translate('coremart.vendingMachine.kioskModels.fields.kioskType')}
 				</Text>
 				{isEditing ? (
 					<Select
 						value={selectedGoodsCollectorType || null}
 						onChange={(value) => setSelectedGoodsCollectorType(value as KioskType | undefined)}
-						placeholder={translate('kiosk_models.fields.kiosk_type')}
+						placeholder={translate('coremart.vendingMachine.kioskModels.fields.kioskType')}
 						data={[
-							{ value: 'non-elevator', label: translate('kiosk_models.kiosk_type.non_elevator') },
-							{ value: 'elevator', label: translate('kiosk_models.kiosk_type.elevator') },
+							{ value: 'non-elevator', label: translate('coremart.vendingMachine.kioskModels.kioskType.nonElevator') },
+							{ value: 'elevator', label: translate('coremart.vendingMachine.kioskModels.kioskType.elevator') },
 						]}
 						clearable
 					/>

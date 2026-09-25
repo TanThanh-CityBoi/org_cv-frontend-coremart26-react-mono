@@ -1,12 +1,12 @@
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { controlPanelToSearchGraph, type ControlPanelFilterConfig } from '../../../components';
-import { ArchivedStatus } from '../../../types';
+import { controlPanelToSearchGraph, type ControlPanelFilterConfig } from '@/components';
+import { ArchivedStatus } from '@/types';
 
 
 export function usePaymentFilter() {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const [searchValue, setSearchValue] = useState('');
 	const [statusFilter, setStatusFilter] = useState<ArchivedStatus[]>([ArchivedStatus.ACTIVE]);
 
@@ -18,7 +18,7 @@ export function usePaymentFilter() {
 				value: searchValue,
 				onChange: setSearchValue,
 				searchFields: ['name', 'method'],
-				placeholder: translate('payment.search.placeholder'),
+				placeholder: translate('coremart.vendingMachine.payment.search.placeholder'),
 			},
 			{
 				key: 'isArchived',
@@ -26,10 +26,10 @@ export function usePaymentFilter() {
 				value: statusFilter,
 				onChange: setStatusFilter,
 				options: [
-					{ value: ArchivedStatus.ACTIVE, label: translate('status.active') },
-					{ value: ArchivedStatus.ARCHIVED, label: translate('status.archived') },
+					{ value: ArchivedStatus.ACTIVE, label: translate('nikki.general.status.active') },
+					{ value: ArchivedStatus.ARCHIVED, label: translate('nikki.general.status.archived') },
 				],
-				placeholder: translate('payment.filter.status'),
+				placeholder: translate('coremart.vendingMachine.payment.filter.status'),
 				getGraphValue: (value: ArchivedStatus[]) => value.map((v) => v === ArchivedStatus.ARCHIVED),
 			},
 		],

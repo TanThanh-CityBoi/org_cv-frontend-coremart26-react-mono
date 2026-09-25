@@ -3,34 +3,34 @@ import { IconWifi, IconWifiOff } from '@tabler/icons-react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { formatRelativeTime, getCurrentConnectionStatus } from '../../common/helpers';
-import { ConnectionHistory, ConnectionStatus } from '../../features/kiosks';
+import { formatRelativeTime, getCurrentConnectionStatus } from '@/common/helpers';
+import { ConnectionHistory, ConnectionStatus } from '@/features/kiosks';
 
 
 export type KioskConnectionStatusTranslate = (key: string, options?: { count?: number }) => string;
 
 export type KioskConnectionStatusProps = {
-	connections?: ConnectionHistory[] | null,
+	connections?: ConnectionHistory[] | null;
 };
 
 
 export const KioskConnectionStatus: React.FC<KioskConnectionStatusProps> = ({ connections }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const connectionHistory = connections ?? [];
 	const lastConnection = connectionHistory[0];
 	const currentStatus = getCurrentConnectionStatus(lastConnection);
 
 	const statusMap = {
 		[ConnectionStatus.FAST]: {
-			label: translate('kiosk.connection_status.fast'),
+			label: translate('coremart.vendingMachine.kiosk.connectionStatus.fast'),
 			icon: <IconWifi size={20} color='#51cf66' />,
 		},
 		[ConnectionStatus.SLOW]: {
-			label: translate('kiosk.connection_status.slow'),
+			label: translate('coremart.vendingMachine.kiosk.connectionStatus.slow'),
 			icon: <IconWifi size={20} color='#ffd43b' />,
 		},
 		[ConnectionStatus.LOST]: {
-			label: translate('kiosk.connection_status.disconnected'),
+			label: translate('coremart.vendingMachine.kiosk.connectionStatus.disconnected'),
 			icon: <IconWifiOff size={20} color='#ff6b6b' />,
 		},
 	};
@@ -40,7 +40,7 @@ export const KioskConnectionStatus: React.FC<KioskConnectionStatusProps> = ({ co
 	const tooltipContent = connectionHistory.length > 0 ? (
 		<Stack gap='xs' style={{ maxWidth: 300 }}>
 			<Text size='sm' fw={500}>
-				{translate('kiosk.connection_history.title')}
+				{translate('coremart.vendingMachine.kiosk.connectionHistory.title')}
 			</Text>
 			{connectionHistory.slice(0, 5).map((history, index) => {
 				const historyStatus = statusMap[history.status];
@@ -57,7 +57,7 @@ export const KioskConnectionStatus: React.FC<KioskConnectionStatusProps> = ({ co
 			})}
 		</Stack>
 	) : (
-		<Text size='sm'>{translate('kiosk.connection_history.no_history')}</Text>
+		<Text size='sm'>{translate('coremart.vendingMachine.kiosk.connectionHistory.no_history')}</Text>
 	);
 
 	return (

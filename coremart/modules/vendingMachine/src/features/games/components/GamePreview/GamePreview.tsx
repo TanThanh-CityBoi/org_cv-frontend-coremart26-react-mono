@@ -13,7 +13,7 @@ export interface GamePreviewProps {
 }
 
 export const GamePreview: React.FC<GamePreviewProps> = ({ game, version }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const [opened, setOpened] = useState(false);
 	const iframeRef = useRef<HTMLIFrameElement>(null);
 
@@ -26,7 +26,7 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ game, version }) => {
 	if (!gameVersion) {
 		return (
 			<Box p='md'>
-				<Text c='dimmed'>{translate('games.messages.no_version')}</Text>
+				<Text c='dimmed'>{translate('coremart.vendingMachine.games.messages.no_version')}</Text>
 			</Box>
 		);
 	}
@@ -107,10 +107,10 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ game, version }) => {
 					color='blue'
 					fullWidth
 				>
-					{translate('games.actions.play')}
+					{translate('coremart.vendingMachine.games.actions.play')}
 				</Button>
 				<Text size='xs' c='dimmed' ta='center'>
-					{translate('games.messages.preview_hint')}
+					{translate('coremart.vendingMachine.games.messages.preview_hint')}
 				</Text>
 			</Stack>
 
@@ -147,7 +147,7 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ game, version }) => {
 							zIndex: 10,
 						}}
 					>
-						{translate('games.actions.reload')}
+						{translate('coremart.vendingMachine.games.actions.reload')}
 					</Button>
 					<iframe
 						ref={iframeRef}

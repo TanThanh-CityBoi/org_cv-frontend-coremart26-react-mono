@@ -2,7 +2,7 @@ import { Box, Select, Text } from '@mantine/core';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { UIMode } from '../../features/kiosks/types';
+import type { UIMode } from '@/features/kiosks/types';
 
 
 export interface UIModeSelectProps {
@@ -18,20 +18,20 @@ export const UIModeSelect: React.FC<UIModeSelectProps> = ({
 	isEditing,
 	disabled,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	return (
 		<Box>
 			<Text size='sm' c='dimmed' mb={3} fw={500}>
-				{translate('kiosk_models.fields.interface_mode')}
+				{translate('coremart.vendingMachine.kioskModels.fields.interfaceMode')}
 			</Text>
 			<Select
 				value={value ?? null}
 				onChange={(v) => onChange(v === null ? undefined : (v as UIMode))}
-				placeholder={translate('kiosk_models.fields.interface_mode')}
+				placeholder={translate('coremart.vendingMachine.kioskModels.fields.interfaceMode')}
 				data={[
-					{ value: UIMode.NORMAL, label: translate('kiosk_models.interface_mode.normal') },
-					{ value: UIMode.FOCUS, label: translate('kiosk_models.interface_mode.focus') },
+					{ value: 'normal', label: translate('coremart.vendingMachine.kioskModels.interfaceMode.normal') },
+					{ value: 'focus', label: translate('coremart.vendingMachine.kioskModels.interfaceMode.focus') },
 				]}
 				clearable
 				readOnly={!isEditing}

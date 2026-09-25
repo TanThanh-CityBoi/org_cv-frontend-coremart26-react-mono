@@ -1,7 +1,7 @@
 import { camelToSnakeCase } from '@nikkierp/common/utils';
 import { SearchParamsOption } from 'ky';
 
-import { SearchParams } from '../../types';
+import { SearchParams } from '@/types';
 
 
 export const buildFieldsQuery = <T extends object>(fields: Array<keyof T> = []): Array<['fields', string]> => {

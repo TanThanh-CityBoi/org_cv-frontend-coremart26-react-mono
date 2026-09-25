@@ -4,7 +4,8 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
-import { PreviewDrawer } from '../../../../components/PreviewDrawer';
+import { PreviewDrawer } from '@/components/PreviewDrawer';
+
 import { Theme } from '../../types';
 import { ThemePreview } from '../ThemePreview';
 
@@ -23,42 +24,42 @@ export const ThemeDetailDrawer: React.FC<ThemeDetailDrawerProps> = ({
 	theme,
 	isLoading = false,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const navigate = useNavigate();
 
 	const getStatusBadge = (status: string) => {
-		const statusMap: Record<string, { color: string, label: string }> = {
-			active: { color: 'green', label: translate('status.active') },
-			inactive: { color: 'gray', label: translate('status.inactive') },
+		const statusMap: Record<string, { color: string; label: string }> = {
+			active: { color: 'green', label: translate('nikki.general.status.active') },
+			inactive: { color: 'gray', label: translate('nikki.general.status.inactive') },
 		};
 		const statusInfo = statusMap[status] || { color: 'gray', label: status };
 		return <Badge color={statusInfo.color}>{statusInfo.label}</Badge>;
 	};
 
 	const productCardStyleOptions = [
-		{ value: 'default', label: translate('themes.product_card_style.default') },
-		{ value: 'rounded', label: translate('themes.product_card_style.rounded') },
-		{ value: 'minimal', label: translate('themes.product_card_style.minimal') },
-		{ value: 'elegant', label: translate('themes.product_card_style.elegant') },
-		{ value: 'modern', label: translate('themes.product_card_style.modern') },
+		{ value: 'default', label: translate('coremart.vendingMachine.themes.productCardStyle.default') },
+		{ value: 'rounded', label: translate('coremart.vendingMachine.themes.productCardStyle.rounded') },
+		{ value: 'minimal', label: translate('coremart.vendingMachine.themes.productCardStyle.minimal') },
+		{ value: 'elegant', label: translate('coremart.vendingMachine.themes.productCardStyle.elegant') },
+		{ value: 'modern', label: translate('coremart.vendingMachine.themes.productCardStyle.modern') },
 	];
 
 	const appBackgroundOptions = [
-		{ value: 'none', label: translate('themes.app_background.none') },
-		{ value: 'snow', label: translate('themes.app_background.snow') },
-		{ value: 'fireworks', label: translate('themes.app_background.fireworks') },
-		{ value: 'particles', label: translate('themes.app_background.particles') },
-		{ value: 'gradient', label: translate('themes.app_background.gradient') },
-		{ value: 'custom', label: translate('themes.app_background.custom') },
+		{ value: 'none', label: translate('coremart.vendingMachine.themes.appBackground.none') },
+		{ value: 'snow', label: translate('coremart.vendingMachine.themes.appBackground.snow') },
+		{ value: 'fireworks', label: translate('coremart.vendingMachine.themes.appBackground.fireworks') },
+		{ value: 'particles', label: translate('coremart.vendingMachine.themes.appBackground.particles') },
+		{ value: 'gradient', label: translate('coremart.vendingMachine.themes.appBackground.gradient') },
+		{ value: 'custom', label: translate('coremart.vendingMachine.themes.appBackground.custom') },
 	];
 
 	const fontStyleOptions = [
-		{ value: 'default', label: translate('themes.font_style.default') },
-		{ value: 'roboto', label: translate('themes.font_style.roboto') },
-		{ value: 'inter', label: translate('themes.font_style.inter') },
-		{ value: 'poppins', label: translate('themes.font_style.poppins') },
-		{ value: 'montserrat', label: translate('themes.font_style.montserrat') },
-		{ value: 'custom', label: translate('themes.font_style.custom') },
+		{ value: 'default', label: translate('coremart.vendingMachine.themes.fontStyle.default') },
+		{ value: 'roboto', label: translate('coremart.vendingMachine.themes.fontStyle.roboto') },
+		{ value: 'inter', label: translate('coremart.vendingMachine.themes.fontStyle.inter') },
+		{ value: 'poppins', label: translate('coremart.vendingMachine.themes.fontStyle.poppins') },
+		{ value: 'montserrat', label: translate('coremart.vendingMachine.themes.fontStyle.montserrat') },
+		{ value: 'custom', label: translate('coremart.vendingMachine.themes.fontStyle.custom') },
 	];
 
 	return (
@@ -84,7 +85,7 @@ export const ThemeDetailDrawer: React.FC<ThemeDetailDrawerProps> = ({
 				{/* Basic Info */}
 				<div>
 					<Text size='sm' c='dimmed' mb='xs'>
-						{translate('themes.fields.code')}
+						{translate('coremart.vendingMachine.themes.fields.code')}
 					</Text>
 					<Text size='sm' fw={500}>{theme?.code}</Text>
 				</div>
@@ -93,7 +94,7 @@ export const ThemeDetailDrawer: React.FC<ThemeDetailDrawerProps> = ({
 
 				<div>
 					<Text size='sm' c='dimmed' mb='xs'>
-						{translate('themes.fields.name')}
+						{translate('coremart.vendingMachine.themes.fields.name')}
 					</Text>
 					<Text size='sm'>{theme?.name}</Text>
 				</div>
@@ -103,7 +104,7 @@ export const ThemeDetailDrawer: React.FC<ThemeDetailDrawerProps> = ({
 						<Divider />
 						<div>
 							<Text size='sm' c='dimmed' mb='xs'>
-								{translate('themes.fields.description')}
+								{translate('coremart.vendingMachine.themes.fields.description')}
 							</Text>
 							<Text size='sm'>{theme.description}</Text>
 						</div>
@@ -114,7 +115,7 @@ export const ThemeDetailDrawer: React.FC<ThemeDetailDrawerProps> = ({
 
 				<div>
 					<Text size='sm' c='dimmed' mb='xs'>
-						{translate('themes.fields.status')}
+						{translate('coremart.vendingMachine.themes.fields.status')}
 					</Text>
 					{theme?.status ? getStatusBadge(theme.status) : null}
 				</div>
@@ -124,7 +125,7 @@ export const ThemeDetailDrawer: React.FC<ThemeDetailDrawerProps> = ({
 				{/* Theme Configuration */}
 				<div>
 					<Text size='sm' c='dimmed' mb='xs'>
-						{translate('themes.fields.primary_color')}
+						{translate('coremart.vendingMachine.themes.fields.primaryColor')}
 					</Text>
 					<Group gap='xs'>
 						<Box
@@ -144,7 +145,7 @@ export const ThemeDetailDrawer: React.FC<ThemeDetailDrawerProps> = ({
 
 				<div>
 					<Text size='sm' c='dimmed' mb='xs'>
-						{translate('themes.fields.product_card_style')}
+						{translate('coremart.vendingMachine.themes.fields.productCardStyle')}
 					</Text>
 					<Text size='sm'>
 						{productCardStyleOptions.find(
@@ -156,7 +157,7 @@ export const ThemeDetailDrawer: React.FC<ThemeDetailDrawerProps> = ({
 
 				<div>
 					<Text size='sm' c='dimmed' mb='xs'>
-						{translate('themes.fields.app_background')}
+						{translate('coremart.vendingMachine.themes.fields.appBackground')}
 					</Text>
 					<Text size='sm'>
 						{appBackgroundOptions.find(
@@ -168,7 +169,7 @@ export const ThemeDetailDrawer: React.FC<ThemeDetailDrawerProps> = ({
 
 				<div>
 					<Text size='sm' c='dimmed' mb='xs'>
-						{translate('themes.fields.font_style')}
+						{translate('coremart.vendingMachine.themes.fields.fontStyle')}
 					</Text>
 					<Text size='sm'>
 						{fontStyleOptions.find((opt) => opt.value === theme?.fontStyle)?.label || theme?.fontStyle}
@@ -180,7 +181,7 @@ export const ThemeDetailDrawer: React.FC<ThemeDetailDrawerProps> = ({
 						<Divider />
 						<div>
 							<Text size='sm' c='dimmed' mb='xs'>
-								{translate('themes.fields.mascot_image')}
+								{translate('coremart.vendingMachine.themes.fields.mascotImage')}
 							</Text>
 							<Box
 								style={{
@@ -210,7 +211,7 @@ export const ThemeDetailDrawer: React.FC<ThemeDetailDrawerProps> = ({
 
 				<div>
 					<Text size='sm' c='dimmed' mb='xs'>
-						{translate('themes.fields.created_at')}
+						{translate('coremart.vendingMachine.themes.fields.createdAt')}
 					</Text>
 					<Text size='sm'>{theme?.createdAt ? new Date(theme.createdAt).toLocaleString() : '—'}</Text>
 				</div>
@@ -220,7 +221,7 @@ export const ThemeDetailDrawer: React.FC<ThemeDetailDrawerProps> = ({
 				{/* Preview */}
 				<Stack bg='var(--nikki-color-white)' p={16} justify='center' align='center'>
 					<Text size='xs' c='dimmed'>
-						{translate('themes.preview.title')}
+						{translate('coremart.vendingMachine.themes.preview.title')}
 					</Text>
 					{theme ? <ThemePreview theme={theme} /> : null}
 				</Stack>

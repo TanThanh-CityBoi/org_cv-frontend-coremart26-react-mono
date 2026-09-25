@@ -1,9 +1,7 @@
 import { Button, ButtonProps, Group, Menu } from '@mantine/core';
-import { testAttrs } from '@nikkierp/common/utils';
-import { useShellMenu } from '@nikkierp/shell/microApp';
-import { useActiveOrgModule } from '@nikkierp/shell/routing';
-import { TranslateFn, useTranslate } from '@nikkierp/ui/i18n';
-import { MenuItem } from '@nikkierp/ui/menu';
+import { GLOBAL_CONTEXT_SLUG } from '@nikkierp/shell/constants';
+import { MenuBarItem, useMenuBarItems } from '@nikkierp/ui/appState';
+import { useActiveOrgModule } from '@nikkierp/ui/appState/routingSlice';
 import { IconChevronDown, IconDots } from '@tabler/icons-react';
 import clsx from 'clsx';
 import React from 'react';
@@ -13,7 +11,6 @@ import {
 	getPathWithPrefix,
 	hasActiveNestedItemWithPrefix,
 	isPathActiveWithPrefix,
-	MENU_BAR_TEST_ID,
 } from './helper';
 import classes from './MenuBar.module.css';
 import { VerticalMenuBar } from './VerticalMenuBar';
@@ -24,57 +21,48 @@ const MAX_VISIBLE_HORIZONTAL_ITEMS = 5;
 export type MenuBarMode = 'horizontal' | 'vertical';
 
 export type MenuBarProps = {
-	mode?: MenuBarMode,
+	mode?: MenuBarMode;
+	onItemClick?: (link?: string) => void;
 };
 
 
-/**
- * Renders the menu the *active* micro-app registered with the host menu registry.
- *
- * Items carry i18n keys rather than labels (registration happens in `init`, outside
- * React), so every leaf is translated here at render time. Do not pre-map the tree:
- * that allocates a new array per render for no benefit.
- */
 export function MenuBar({ mode = 'horizontal' }: MenuBarProps): React.ReactNode {
+	const menuBarItems = useMenuBarItems();
 	const location = useLocation();
 	const { orgSlug, moduleSlug } = useActiveOrgModule();
-	const menu = useShellMenu(moduleSlug);
-	const t = useTranslate(menu?.translationNs ?? 'common');
-	const pathPrefix = `/${orgSlug}/${moduleSlug}`;
+	const activeOrgSlug = orgSlug ?? GLOBAL_CONTEXT_SLUG;
+	const pathPrefix = `/${activeOrgSlug}/${moduleSlug}`;
 
 	const getPath = (link: string): string => getPathWithPrefix(link, pathPrefix);
-
-	// The active module has not registered a menu (not loaded yet, or contributes none).
-	if (!menu || menu.items.length === 0) {
-		return null;
-	}
 
 	if (mode === 'vertical') {
 		return (
 			<VerticalMenuBar
-				items={menu.items}
+				items={menuBarItems}
 				pathPrefix={pathPrefix}
 				currentPath={location.pathname}
-				t={t}
 			/>
 		);
 	}
 
+	// Horizontal mode (default)
+	const visibleItems = menuBarItems.slice(0, MAX_VISIBLE_HORIZONTAL_ITEMS);
+	const overflowItems = menuBarItems.slice(MAX_VISIBLE_HORIZONTAL_ITEMS);
+
 	return (
 		<Group gap='xs'>
-			{menu.items.slice(0, MAX_VISIBLE_HORIZONTAL_ITEMS).map((item: MenuItem) => (
+			{visibleItems.map((item: MenuBarItem) => (
 				item.items ? (
 					<NavMenu
-						key={item.labelKey}
+						key={item.label}
 						item={item}
 						currentPath={location.pathname}
 						pathPrefix={pathPrefix}
 						getPath={getPath}
-						t={t}
 					/>
 				) : (
 					<Button
-						key={item.labelKey}
+						key={item.label}
 						size='md'
 						px={'xs'}
 						{...buttonProps(
@@ -83,22 +71,20 @@ export function MenuBar({ mode = 'horizontal' }: MenuBarProps): React.ReactNode 
 								location.pathname,
 								pathPrefix,
 							),
-							item.labelKey,
 						)}
 						component={Link}
 						to={getPath(item.link ?? '/')}
 					>
-						{t(item.labelKey)}
+						{item.label}
 					</Button>
 				)
 			))}
-			{menu.items.length > MAX_VISIBLE_HORIZONTAL_ITEMS && (
+			{overflowItems.length > 0 && (
 				<OverflowMenu
-					items={menu.items.slice(MAX_VISIBLE_HORIZONTAL_ITEMS)}
+					items={overflowItems}
 					currentPath={location.pathname}
 					pathPrefix={pathPrefix}
 					getPath={getPath}
-					t={t}
 				/>
 			)}
 		</Group>
@@ -107,11 +93,10 @@ export function MenuBar({ mode = 'horizontal' }: MenuBarProps): React.ReactNode 
 
 // Horizontal Menu Components
 type OverflowMenuProps = {
-	items: MenuItem[],
-	currentPath: string,
-	pathPrefix: string,
-	getPath: (link: string) => string,
-	t: TranslateFn,
+	items: MenuBarItem[];
+	currentPath: string;
+	pathPrefix: string;
+	getPath: (link: string) => string;
 };
 
 function OverflowMenu({
@@ -119,7 +104,6 @@ function OverflowMenu({
 	currentPath,
 	pathPrefix,
 	getPath,
-	t,
 }: OverflowMenuProps): React.ReactNode {
 	const hasActiveChild = items.some(subItem =>
 		hasActiveNestedItemWithPrefix(subItem, currentPath, pathPrefix),
@@ -128,7 +112,7 @@ function OverflowMenu({
 	return (
 		<Menu position='bottom-start' trigger='click-hover'>
 			<Menu.Target>
-				<Button {...buttonProps(hasActiveChild, 'overflow')} rightSection={<IconChevronDown size={14} />}>
+				<Button {...buttonProps(hasActiveChild)} rightSection={<IconChevronDown size={14} />}>
 					<IconDots size={16} />
 				</Button>
 			</Menu.Target>
@@ -140,7 +124,6 @@ function OverflowMenu({
 						currentPath={currentPath}
 						pathPrefix={pathPrefix}
 						getPath={getPath}
-						t={t}
 					/>
 				))}
 			</Menu.Dropdown>
@@ -149,11 +132,10 @@ function OverflowMenu({
 }
 
 type NavMenuProps = {
-	item: MenuItem,
-	currentPath: string,
-	pathPrefix: string,
-	getPath: (link: string) => string,
-	t: TranslateFn,
+	item: MenuBarItem;
+	currentPath: string;
+	pathPrefix: string;
+	getPath: (link: string) => string;
 };
 
 function NavMenu({
@@ -161,7 +143,6 @@ function NavMenu({
 	currentPath,
 	pathPrefix,
 	getPath,
-	t,
 }: NavMenuProps): React.ReactNode {
 	const hasActiveChild = item.items
 		? item.items.some(subItem =>
@@ -172,8 +153,8 @@ function NavMenu({
 	return (
 		<Menu position='bottom-start' trigger='click-hover'>
 			<Menu.Target>
-				<Button {...buttonProps(hasActiveChild, item.labelKey)} rightSection={<IconChevronDown size={14} />} >
-					{t(item.labelKey)}
+				<Button {...buttonProps(hasActiveChild)} rightSection={<IconChevronDown size={14} />} >
+					{item.label}
 				</Button>
 			</Menu.Target>
 
@@ -185,7 +166,6 @@ function NavMenu({
 						currentPath={currentPath}
 						pathPrefix={pathPrefix}
 						getPath={getPath}
-						t={t}
 					/>
 				))}
 			</Menu.Dropdown>
@@ -198,7 +178,6 @@ function MenuItemRenderer({
 	currentPath,
 	pathPrefix,
 	getPath,
-	t,
 }: NavMenuProps): React.ReactNode {
 	const isActive = item.link
 		? isPathActiveWithPrefix(item.link, currentPath, pathPrefix)
@@ -218,15 +197,15 @@ function MenuItemRenderer({
 						<Menu.Sub.Item
 							component={Link}
 							to={getPath(item.link)}
-							{...itemProps(isActive || hasActiveChild, item.labelKey)}
+							{...itemProps(isActive || hasActiveChild)}
 						>
-							{t(item.labelKey)}
+							{item.label}
 						</Menu.Sub.Item>
 					) : (
 						<Menu.Sub.Item
-							{...itemProps(hasActiveChild, item.labelKey)}
+							{...itemProps(hasActiveChild)}
 						>
-							{t(item.labelKey)}
+							{item.label}
 						</Menu.Sub.Item>
 					)}
 				</Menu.Sub.Target>
@@ -239,7 +218,6 @@ function MenuItemRenderer({
 							currentPath={currentPath}
 							pathPrefix={pathPrefix}
 							getPath={getPath}
-							t={t}
 						/>
 					))}
 				</Menu.Sub.Dropdown>
@@ -253,25 +231,21 @@ function MenuItemRenderer({
 			<Menu.Item
 				component={Link}
 				to={getPath(item.link)}
-				{...itemProps(isActive, item.labelKey)}
+				{...itemProps(isActive)}
 			>
-				{t(item.labelKey)}
+				{item.label}
 			</Menu.Item>
 		);
 	}
 
 	return (
-		<Menu.Item {...itemProps(isActive, item.labelKey)}>
-			{t(item.labelKey)}
+		<Menu.Item {...itemProps(isActive)}>
+			{item.label}
 		</Menu.Item>
 	);
 }
 
-/**
- * `labelKey` names each entry rather than its translated label: it is the menu contribution's own
- * stable key (already what React keys off here) and does not move with the active locale.
- */
-function buttonProps(isActive: boolean, labelKey?: string): ButtonProps {
+function buttonProps(isActive: boolean): ButtonProps {
 	return {
 		variant: 'subtle',
 		c: 'var(--text-color)',
@@ -282,13 +256,12 @@ function buttonProps(isActive: boolean, labelKey?: string): ButtonProps {
 		className: clsx({
 			[classes.activeMenuItem]: isActive,
 		}),
-		...testAttrs(MENU_BAR_TEST_ID, 'item', labelKey),
 	};
 }
 
 type MenuSubItemProps = React.ComponentProps<typeof Menu.Sub.Item>;
 
-function itemProps(isActive: boolean, labelKey?: string): MenuSubItemProps {
+function itemProps(isActive: boolean): MenuSubItemProps {
 	return {
 		className: clsx({
 			[classes.activeMenuItem]: isActive,
@@ -298,6 +271,5 @@ function itemProps(isActive: boolean, labelKey?: string): MenuSubItemProps {
 				fontSize: 'var(--mantine-font-size-sm)',
 			},
 		},
-		...testAttrs(MENU_BAR_TEST_ID, 'item', labelKey),
 	};
 }

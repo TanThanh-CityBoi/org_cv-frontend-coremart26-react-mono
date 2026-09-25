@@ -1,39 +1,42 @@
+import { useMicroAppSelector } from '@nikkierp/ui/microApp';
 import React, { useMemo } from 'react';
 
-import type { SearchGraph } from '../../types';
+import type { SearchGraph } from '@/types';
 
 
+/** Selector chỉ cần `total` — page/size là UI state, không đọc từ store. */
+export type ListPaginationSelector<TState> = (state: TState) => {
+	total: number;
+};
 
 export type UsePaginationOptions = {
-	graph?: SearchGraph,
+	graph?: SearchGraph;
 	/** Default page size khi component mount. */
-	fallbackPageSize?: number,
+	fallbackPageSize?: number;
 	/** When this identity changes, page resets to 1 (e.g. parent entity id) */
-	resetPageKey?: string | number,
+	resetPageKey?: string | number;
 };
 
 export type PaginationConfig = {
-	page: number,
-	pageSize: number,
-	totalPages: number,
-	totalItems: number,
-	onPageChange: (page: number) => void,
-	onPageSizeChange: (pageSize: number | string | null) => void,
+	page: number;
+	pageSize: number;
+	totalPages: number;
+	totalItems: number;
+	onPageChange: (page: number) => void;
+	onPageSizeChange: (pageSize: number | string | null) => void;
 };
 
 
 /**
- * Local page / pageSize with the server `total` supplied by the caller.
- *
- * `pageSize` is deliberately component-local rather than shared state, to avoid cross-page
- * contamination. A `useServiceLayer` result carries `total` directly, so no selector and no
- * Shell-store access is needed.
+ * Local page / pageSize + server `total` từ Redux.
+ * pageSize KHÔNG đọc từ store để tránh cross-page contamination.
  */
-export function usePaginationWithTotal(
+export function usePagination<TState>(
 	fetchList: (page: number, size: number, graph?: SearchGraph) => void,
-	total: number,
+	paginationSelector: ListPaginationSelector<TState>,
 	options?: UsePaginationOptions,
 ): PaginationConfig {
+	const { total } = useMicroAppSelector(paginationSelector);
 	const graph = options?.graph;
 	const fallback = options?.fallbackPageSize ?? 10;
 	const resetPageKey = options?.resetPageKey;

@@ -3,15 +3,15 @@
 	"fields": {
 		"id": {
 			"type": "string",
-			"label": "{ \"$ref\": 'kiosk_models.fields.id' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.kioskModels.fields.id' }"
 		},
 		"etag": {
 			"type": "string",
-			"label": "{ \"$ref\": 'kiosk_models.fields.etag' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.kioskModels.fields.etag' }"
 		},
 		"referenceCode": {
 			"type": "string",
-			"label": "{ \"$ref\": 'kiosk_models.fields.model_id' }",
+			"label": "{ \"$ref\": 'coremart.vendingMachine.kioskModels.fields.modelId' }",
 			"required": {
 				"create": true,
 				"update": true
@@ -19,19 +19,19 @@
 			"constraints": [
 				{
 					"type": "required",
-					"message": "{ \"$ref\": 'errors.required' }"
+					"message": "{ \"$ref\": 'nikki.general.errors.required' }"
 				},
 				{
 					"type": "length",
 					"min": 1,
 					"max": 128,
-					"message": "{ \"$ref\": 'errors.length' }"
+					"message": "{ \"$ref\": 'nikki.general.errors.length' }"
 				}
 			]
 		},
 		"name": {
 			"type": "string",
-			"label": "{ \"$ref\": 'kiosk_models.fields.name' }",
+			"label": "{ \"$ref\": 'coremart.vendingMachine.kioskModels.fields.name' }",
 			"required": {
 				"create": true,
 				"update": true
@@ -39,31 +39,31 @@
 			"constraints": [
 				{
 					"type": "required",
-					"message": "{ \"$ref\": 'errors.required' }"
+					"message": "{ \"$ref\": 'nikki.general.errors.required' }"
 				},
 				{
 					"type": "length",
 					"min": 1,
 					"max": 128,
-					"message": "{ \"$ref\": 'errors.length' }"
+					"message": "{ \"$ref\": 'nikki.general.errors.length' }"
 				}
 			]
 		},
 		"description": {
 			"type": "string",
-			"label": "{ \"$ref\": 'kiosk_models.fields.description' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.kioskModels.fields.description' }"
 		},
 		"goodsCollectorType": {
 			"type": "enum",
-			"label": "{ \"$ref\": 'kiosk_models.fields.kiosk_type' }",
+			"label": "{ \"$ref\": 'coremart.vendingMachine.kioskModels.fields.kioskType' }",
 			"enum": [
-				{ "value": "elevator", "label": "{ \"$ref\": 'kiosk_models.kiosk_type.elevator' }" },
-				{ "value": "non-elevator", "label": "{ \"$ref\": 'kiosk_models.kiosk_type.non_elevator' }" }
+				{ "value": "elevator", "label": "{ \"$ref\": 'coremart.vendingMachine.kioskModels.kioskType.elevator' }" },
+				{ "value": "non-elevator", "label": "{ \"$ref\": 'coremart.vendingMachine.kioskModels.kioskType.nonElevator' }" }
 			]
 		},
 		"shelvesNumber": {
 			"type": "integer",
-			"label": "{ \"$ref\": 'kiosk_models.fields.shelves_number' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.kioskModels.fields.shelvesNumber' }"
 		}
 	}
 }

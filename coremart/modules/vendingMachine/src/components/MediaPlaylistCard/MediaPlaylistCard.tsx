@@ -4,7 +4,7 @@ import { IconEdit, IconTrash, IconPhoto } from '@tabler/icons-react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import type { Playlist } from '../../features/mediaPlaylist/types';
+import type { Playlist } from '@/features/mediaPlaylist/types';
 
 
 export interface MediaPlaylistCardProps {
@@ -24,11 +24,11 @@ export const MediaPlaylistCard: React.FC<MediaPlaylistCardProps> = ({
 	onDelete,
 	cardProps = {},
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const archived = !!playlist.isArchived;
 
 	if (isLoading) {
-		return <Text c='dimmed'>{translate('messages.loading')}</Text>;
+		return <Text c='dimmed'>{translate('nikki.general.messages.loading')}</Text>;
 	}
 
 	return (
@@ -50,14 +50,14 @@ export const MediaPlaylistCard: React.FC<MediaPlaylistCardProps> = ({
 					</Group>
 					<Group gap='xs' onClick={(e) => e.stopPropagation()}>
 						{onEdit && (
-							<Tooltip label={translate('action.edit')}>
+							<Tooltip label={translate('nikki.general.actions.edit')}>
 								<ActionIcon variant='subtle' color='gray' size='sm' onClick={() => onEdit(playlist.id)}>
 									<IconEdit size={14} />
 								</ActionIcon>
 							</Tooltip>
 						)}
 						{onDelete && (
-							<Tooltip label={translate('action.delete')}>
+							<Tooltip label={translate('nikki.general.actions.delete')}>
 								<ActionIcon variant='subtle' color='red' size='sm' onClick={() => onDelete(playlist.id)}>
 									<IconTrash size={14} />
 								</ActionIcon>
@@ -75,13 +75,13 @@ export const MediaPlaylistCard: React.FC<MediaPlaylistCardProps> = ({
 				<Group gap='xs' wrap='nowrap'>
 					<Badge color={archived ? 'gray' : 'green'} size='sm'>
 						{archived
-							? translate('media_playlist.archived.yes')
-							: translate('media_playlist.archived.no')}
+							? translate('coremart.vendingMachine.mediaPlaylist.archived.yes')
+							: translate('coremart.vendingMachine.mediaPlaylist.archived.no')}
 					</Badge>
 				</Group>
 
 				<Text size='xs' c='dimmed'>
-					{translate('media_playlist.fields.created_at')}: {new Date(playlist.createdAt).toLocaleDateString()}
+					{translate('coremart.vendingMachine.mediaPlaylist.fields.createdAt')}: {new Date(playlist.createdAt).toLocaleDateString()}
 				</Text>
 			</Stack>
 		</Card>

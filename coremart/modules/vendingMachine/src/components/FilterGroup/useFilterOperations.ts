@@ -24,7 +24,7 @@ export interface UseFilterOperationsOptions {
  */
 export function useFilterOperations(options: UseFilterOperationsOptions) {
 	const { state, updateState, config } = options;
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const handleSearchChange = useCallback((fieldKey: string, value: string) => {
 		const newState = updateSearchInState(state, fieldKey, value, config);

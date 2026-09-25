@@ -3,38 +3,38 @@
 	"fields": {
 		"id": {
 			"type": "string",
-			"label": "{ \"$ref\": 'kiosk_models.fields.id' }",
+			"label": "{ \"$ref\": 'coremart.vendingMachine.kioskModels.fields.id' }",
 			"hidden": true
 		},
 		"referenceCode": {
 			"type": "string",
-			"label": "{ \"$ref\": 'kiosk_models.fields.reference_code' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.kioskModels.fields.referenceCode' }"
 		},
 		"name": {
 			"type": "string",
-			"label": "{ \"$ref\": 'kiosk_models.fields.name' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.kioskModels.fields.name' }"
 		},
 		"description": {
 			"type": "string",
-			"label": "{ \"$ref\": 'kiosk_models.fields.description' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.kioskModels.fields.description' }"
 		},
 		"status": {
 			"type": "enum",
-			"label": "{ \"$ref\": 'kiosk_models.fields.status' }",
+			"label": "{ \"$ref\": 'coremart.vendingMachine.kioskModels.fields.status' }",
 			"enum": [
 				{
 					"value": "active",
-					"label": "{ \"$ref\": 'status.active' }"
+					"label": "{ \"$ref\": 'nikki.general.status.active' }"
 				},
 				{
 					"value": "inactive",
-					"label": "{ \"$ref\": 'status.inactive' }"
+					"label": "{ \"$ref\": 'nikki.general.status.inactive' }"
 				}
 			]
 		},
 		"createdAt": {
 			"type": "date",
-			"label": "{ \"$ref\": 'kiosk_models.fields.created_at' }",
+			"label": "{ \"$ref\": 'coremart.vendingMachine.kioskModels.fields.createdAt' }",
 			"hidden": true
 		}
 	}

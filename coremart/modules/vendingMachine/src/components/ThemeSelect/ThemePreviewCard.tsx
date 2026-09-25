@@ -5,7 +5,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 
-import { Theme } from '../../features/themes/types';
+import { Theme } from '@/features/themes/types';
 
 
 export interface ThemePreviewCardProps {
@@ -15,33 +15,33 @@ export interface ThemePreviewCardProps {
 }
 
 export const ThemePreviewCard: React.FC<ThemePreviewCardProps> = ({ theme, isEditing = false, onRemove }) => {
-	const { t: translate } = useTranslation('vending_machine');
-	const detailLabel = translate('action.viewDetails');
+	const { t: translate } = useTranslation();
+	const detailLabel = translate('nikki.general.actions.viewDetail');
 
 	const productCardStyleOptions = [
-		{ value: 'default', label: translate('themes.product_card_style.default') },
-		{ value: 'rounded', label: translate('themes.product_card_style.rounded') },
-		{ value: 'minimal', label: translate('themes.product_card_style.minimal') },
-		{ value: 'elegant', label: translate('themes.product_card_style.elegant') },
-		{ value: 'modern', label: translate('themes.product_card_style.modern') },
+		{ value: 'default', label: translate('coremart.vendingMachine.themes.productCardStyle.default') },
+		{ value: 'rounded', label: translate('coremart.vendingMachine.themes.productCardStyle.rounded') },
+		{ value: 'minimal', label: translate('coremart.vendingMachine.themes.productCardStyle.minimal') },
+		{ value: 'elegant', label: translate('coremart.vendingMachine.themes.productCardStyle.elegant') },
+		{ value: 'modern', label: translate('coremart.vendingMachine.themes.productCardStyle.modern') },
 	];
 
 	const appBackgroundOptions = [
-		{ value: 'none', label: translate('themes.app_background.none') },
-		{ value: 'snow', label: translate('themes.app_background.snow') },
-		{ value: 'fireworks', label: translate('themes.app_background.fireworks') },
-		{ value: 'particles', label: translate('themes.app_background.particles') },
-		{ value: 'gradient', label: translate('themes.app_background.gradient') },
-		{ value: 'custom', label: translate('themes.app_background.custom') },
+		{ value: 'none', label: translate('coremart.vendingMachine.themes.appBackground.none') },
+		{ value: 'snow', label: translate('coremart.vendingMachine.themes.appBackground.snow') },
+		{ value: 'fireworks', label: translate('coremart.vendingMachine.themes.appBackground.fireworks') },
+		{ value: 'particles', label: translate('coremart.vendingMachine.themes.appBackground.particles') },
+		{ value: 'gradient', label: translate('coremart.vendingMachine.themes.appBackground.gradient') },
+		{ value: 'custom', label: translate('coremart.vendingMachine.themes.appBackground.custom') },
 	];
 
 	const fontStyleOptions = [
-		{ value: 'default', label: translate('themes.font_style.default') },
-		{ value: 'roboto', label: translate('themes.font_style.roboto') },
-		{ value: 'inter', label: translate('themes.font_style.inter') },
-		{ value: 'poppins', label: translate('themes.font_style.poppins') },
-		{ value: 'montserrat', label: translate('themes.font_style.montserrat') },
-		{ value: 'custom', label: translate('themes.font_style.custom') },
+		{ value: 'default', label: translate('coremart.vendingMachine.themes.fontStyle.default') },
+		{ value: 'roboto', label: translate('coremart.vendingMachine.themes.fontStyle.roboto') },
+		{ value: 'inter', label: translate('coremart.vendingMachine.themes.fontStyle.inter') },
+		{ value: 'poppins', label: translate('coremart.vendingMachine.themes.fontStyle.poppins') },
+		{ value: 'montserrat', label: translate('coremart.vendingMachine.themes.fontStyle.montserrat') },
+		{ value: 'custom', label: translate('coremart.vendingMachine.themes.fontStyle.custom') },
 	];
 
 	return (
@@ -71,7 +71,7 @@ export const ThemePreviewCard: React.FC<ThemePreviewCardProps> = ({ theme, isEdi
 							</Tooltip>
 						) : null}
 						{isEditing && onRemove ? (
-							<Tooltip label={translate('action.delete')}>
+							<Tooltip label={translate('nikki.general.actions.delete')}>
 								<ActionIcon variant='subtle' color='red' size='sm' onClick={onRemove}>
 									<IconTrash size={16} />
 								</ActionIcon>
@@ -91,7 +91,7 @@ export const ThemePreviewCard: React.FC<ThemePreviewCardProps> = ({ theme, isEdi
 						{theme.status}
 					</Badge>
 					<Group gap={4}>
-						<Text size='xs' c='dimmed'>{translate('themes.fields.primary_color')}:</Text>
+						<Text size='xs' c='dimmed'>{translate('coremart.vendingMachine.themes.fields.primaryColor')}:</Text>
 						<Box
 							w={20}
 							h={20}
@@ -106,7 +106,7 @@ export const ThemePreviewCard: React.FC<ThemePreviewCardProps> = ({ theme, isEdi
 
 				<Group gap='xs' wrap='wrap'>
 					<Text size='xs' c='dimmed'>
-						{translate('themes.fields.product_card_style')}:
+						{translate('coremart.vendingMachine.themes.fields.productCardStyle')}:
 					</Text>
 					<Badge size='xs' variant='filled'>
 						{productCardStyleOptions.find(
@@ -116,7 +116,7 @@ export const ThemePreviewCard: React.FC<ThemePreviewCardProps> = ({ theme, isEdi
 
 				<Group gap='xs' wrap='wrap'>
 					<Text size='xs' c='dimmed'>
-						{translate('themes.fields.app_background')}:
+						{translate('coremart.vendingMachine.themes.fields.appBackground')}:
 					</Text>
 					<Badge size='xs' variant='filled'>
 						{appBackgroundOptions.find(
@@ -126,7 +126,7 @@ export const ThemePreviewCard: React.FC<ThemePreviewCardProps> = ({ theme, isEdi
 
 				<Group gap='xs' wrap='wrap'>
 					<Text size='xs' c='dimmed'>
-						{translate('themes.fields.font_style')}:
+						{translate('coremart.vendingMachine.themes.fields.fontStyle')}:
 					</Text>
 					<Badge size='xs' variant='filled'>
 						{fontStyleOptions.find((opt) => opt.value === theme.fontStyle)?.label || theme.fontStyle}

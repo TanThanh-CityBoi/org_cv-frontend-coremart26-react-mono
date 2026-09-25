@@ -1,4 +1,4 @@
-import { FilterGroupConfig } from '../../../../components/FilterGroup';
+import { FilterGroupConfig } from '@/components/FilterGroup';
 
 
 export const filterConfig: FilterGroupConfig = {

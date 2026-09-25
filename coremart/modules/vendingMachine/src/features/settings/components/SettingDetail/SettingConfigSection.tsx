@@ -11,7 +11,7 @@ import { IconTrash } from '@tabler/icons-react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import type { SettingConfigRow } from '../../utils/settingConfigRows';
+import type { SettingConfigRow } from '@/features/settings/utils/settingConfigRows';
 
 
 export interface SettingConfigSectionProps {
@@ -25,7 +25,7 @@ export const SettingConfigSection: React.FC<SettingConfigSectionProps> = ({
 	configRows,
 	onConfigRowsChange,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const isReadOnly = mode === 'view';
 
 	const [newKey, setNewKey] = React.useState('');
@@ -63,7 +63,7 @@ export const SettingConfigSection: React.FC<SettingConfigSectionProps> = ({
 	return (
 		<Box>
 			<Text size='sm' c='dimmed' mb={4} fw={500}>
-				{translate('settings.fields.config')}
+				{translate('coremart.vendingMachine.settings.fields.config')}
 			</Text>
 
 			{configRows.length > 0 ? (
@@ -71,10 +71,10 @@ export const SettingConfigSection: React.FC<SettingConfigSectionProps> = ({
 					<Table.Thead>
 						<Table.Tr>
 							<Table.Th style={{ width: '40%' }}>
-								{translate('settings.config.key')}
+								{translate('coremart.vendingMachine.settings.config.key')}
 							</Table.Th>
 							<Table.Th>
-								{translate('settings.config.value')}
+								{translate('coremart.vendingMachine.settings.config.value')}
 							</Table.Th>
 							{!isReadOnly && <Table.Th style={{ width: 50 }} />}
 						</Table.Tr>
@@ -107,7 +107,7 @@ export const SettingConfigSection: React.FC<SettingConfigSectionProps> = ({
 											color='red'
 											size='xs'
 											onClick={() => handleRemoveRow(index)}
-											aria-label={translate('action.delete')}
+											aria-label={translate('nikki.general.actions.delete')}
 										>
 											<IconTrash size={14} />
 										</Button>
@@ -119,7 +119,7 @@ export const SettingConfigSection: React.FC<SettingConfigSectionProps> = ({
 				</Table>
 			) : (
 				<Text size='sm' c='dimmed' mb='sm'>
-					{/* {translate('settings.config.no_entries')} */}
+					{/* {translate('coremart.vendingMachine.settings.config.no_entries')} */}
 				</Text>
 			)}
 
@@ -127,7 +127,7 @@ export const SettingConfigSection: React.FC<SettingConfigSectionProps> = ({
 				<Stack gap='xs'>
 					<Group gap='xs' align='flex-end'>
 						<TextInput
-							placeholder={translate('settings.config.key')}
+							placeholder={translate('coremart.vendingMachine.settings.config.key')}
 							value={newKey}
 							onChange={(e) => setNewKey(e.currentTarget.value)}
 							onKeyDown={handleKeyDown}
@@ -135,7 +135,7 @@ export const SettingConfigSection: React.FC<SettingConfigSectionProps> = ({
 							size='sm'
 						/>
 						<TextInput
-							placeholder={translate('settings.config.value')}
+							placeholder={translate('coremart.vendingMachine.settings.config.value')}
 							value={newValue}
 							onChange={(e) => setNewValue(e.currentTarget.value)}
 							onKeyDown={handleKeyDown}
@@ -147,7 +147,7 @@ export const SettingConfigSection: React.FC<SettingConfigSectionProps> = ({
 							disabled={!newKey.trim()}
 							size='sm'
 						>
-							{translate('action.add')}
+							{translate('nikki.general.actions.add')}
 						</Button>
 					</Group>
 				</Stack>

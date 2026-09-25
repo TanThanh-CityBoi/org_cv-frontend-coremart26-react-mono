@@ -1,12 +1,12 @@
 import { TablePaginationProps } from '@nikkierp/ui/components';
+import { ModelSchema } from '@nikkierp/ui/model';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
-import { asLegacyModelSchema } from '../../common/helpers';
-import { ControlPanel } from '../../components';
-import { ControlPanelViewModeProps } from '../../components/ControlPanel/ControlPanelViewMode';
-import { PageContainer } from '../../components/PageContainer';
+import { ControlPanel } from '@/components';
+import { ControlPanelViewModeProps } from '@/components/ControlPanel/ControlPanelViewMode';
+import { PageContainer } from '@/components/PageContainer';
 import {
 	ArchiveKioskModelModal,
 	DeleteKioskModelModal,
@@ -21,7 +21,7 @@ import {
 	useKioskModelPageActions,
 	useKioskModelPageConfig,
 	useKioskModelPageContext,
-} from '../../features/kioskModels';
+} from '@/features/kioskModels';
 
 
 export const KioskModelPage: React.FC = () => {
@@ -33,7 +33,7 @@ export const KioskModelPage: React.FC = () => {
 };
 
 const KioskModelPageContent: React.FC = () => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const { filter: { filters }, list: { models, pagination, isLoading, isEmpty } } = useKioskModelPageContext();
 	const { breadcrumbs, actions, viewModeConfig } = useKioskModelPageConfig();
@@ -62,7 +62,7 @@ const KioskModelPageContent: React.FC = () => {
 						viewMode={viewModeConfig as ControlPanelViewModeProps}
 					/>,
 				]}
-				documentTitle={translate('kiosk_models.title')}
+				documentTitle={translate('coremart.vendingMachine.kioskModels.title')}
 			>
 				<KioskModelList
 					isLoading={isLoading}
@@ -104,11 +104,11 @@ const KioskModelPreviewDrawer: React.FC = () => {
 };
 
 type KioskModelListProps = {
-	models: KioskModel[],
-	viewMode: KioskModelViewMode,
-	isLoading: boolean,
-	pagination: TablePaginationProps,
-	actions: KioskModelTableActions,
+	models: KioskModel[];
+	viewMode: KioskModelViewMode;
+	isLoading: boolean;
+	pagination: TablePaginationProps;
+	actions: KioskModelTableActions;
 };
 
 function KioskModelList({
@@ -136,7 +136,7 @@ function KioskModelList({
 				<KioskModelTable
 					columns={KIOSK_MODEL_COLUMNS}
 					data={models as unknown as Record<string, unknown>[]}
-					schema={asLegacyModelSchema(kioskModelSchema)}
+					schema={kioskModelSchema as ModelSchema}
 					actions={actions}
 					isLoading={isLoading}
 					pagination={pagination}

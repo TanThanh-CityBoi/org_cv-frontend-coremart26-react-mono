@@ -3,8 +3,9 @@ import { FormFieldProvider, FormStyleProvider } from '@nikkierp/ui/components';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { AuditDate } from '../../../../components';
-import { Event } from '../../types';
+import { AuditDate } from '@/components';
+import { Event } from '@/features/events/types';
+
 import { ArchiveEventModal, DeleteEventModal } from '../EventConfirmModals';
 import { EventFormFields } from '../EventFormFields';
 import { useEventBasicInfoTab } from './hooks/useEventBasicInfoTab';
@@ -15,7 +16,7 @@ export interface EventBasicInfoProps {
 }
 
 export const EventBasicInfo: React.FC<EventBasicInfoProps> = ({ event }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const {
 		formId, isEditing, isSubmitting, modelSchema, formValues, onFormSubmit,
 		closeDeleteModal, confirmDelete, isOpenDeleteModal,
@@ -48,7 +49,7 @@ export const EventBasicInfo: React.FC<EventBasicInfoProps> = ({ event }) => {
 
 				<AuditDate
 					date={event.createdAt}
-					label={translate('events.fields.created_at')}
+					label={translate('coremart.vendingMachine.events.fields.createdAt')}
 				/>
 			</Stack>
 

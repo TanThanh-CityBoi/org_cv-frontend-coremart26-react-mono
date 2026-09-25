@@ -1,10 +1,10 @@
 import { SimpleGrid } from '@mantine/core';
 import React from 'react';
 
-import { KioskStats } from '../../type';
 import { ConnectionStatusChart } from '../ConnectionStatusChart';
 import { MachineTypeChart } from '../MachineTypeChart';
 import { OperationStatusChart } from '../OperationStatusChart';
+import { KioskStats } from '../../type';
 
 
 interface OverviewChartsProps {

@@ -8,14 +8,14 @@ import {
 	Title,
 } from '@mantine/core';
 import { AutoTable } from '@nikkierp/ui/components';
+import { ModelSchema } from '@nikkierp/ui/model';
 import { IconHeadset, IconArrowRight } from '@tabler/icons-react';
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 
-import { asLegacyModelSchema } from '../../../../../common/helpers';
-import { TableContainer } from '../../../../../components/Table';
-import { type SupportRequest } from '../../../../kiosks/types';
+import { TableContainer } from '@/components/Table';
+import { type SupportRequest } from '@/features/kiosks/types';
 
 
 interface CustomerSupportRequestProps {
@@ -23,17 +23,17 @@ interface CustomerSupportRequestProps {
 	detailLink?: string;
 }
 
-const supportRequestSchema = asLegacyModelSchema({
+const supportRequestSchema: ModelSchema = {
 	name: 'supportRequest',
 	fields: {
 		id: { type: 'string', label: '', hidden: true },
-		kioskCode: { type: 'string', label: 'overview.support.kiosk_code' },
-		kioskName: { type: 'string', label: 'overview.support.kiosk_name' },
-		customer: { type: 'string', label: 'overview.support.customer' },
-		description: { type: 'string', label: 'overview.support.description' },
-		status: { type: 'string', label: 'overview.support.status' },
+		kioskCode: { type: 'string', label: 'coremart.vendingMachine.overview.support.kioskCode' },
+		kioskName: { type: 'string', label: 'coremart.vendingMachine.overview.support.kioskName' },
+		customer: { type: 'string', label: 'coremart.vendingMachine.overview.support.customer' },
+		description: { type: 'string', label: 'coremart.vendingMachine.overview.support.description' },
+		status: { type: 'string', label: 'coremart.vendingMachine.overview.support.status' },
 	},
-});
+};
 
 const getStatusColor = (status: string) => {
 	switch (status) {
@@ -87,14 +87,14 @@ function renderStatusColumn(
 	const status = String(row.status || '');
 	return (
 		<Badge color={getStatusColor(status)} variant='light' size='sm'>
-			{translate(`overview.support.status_labels.${status}`)}
+			{translate(`coremart.vendingMachine.overview.support.statusLabels.${status}`)}
 		</Badge>
 	);
 }
 
 
 export function CustomerSupportRequest({ requests, detailLink }: CustomerSupportRequestProps): React.ReactElement {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const pendingCount = requests.filter((r) => r.status === 'pending').length;
 	const inProgressCount = requests.filter((r) => r.status === 'in_progress').length;
@@ -118,17 +118,17 @@ export function CustomerSupportRequest({ requests, detailLink }: CustomerSupport
 			<Stack gap='md'>
 				<Group justify='space-between' align='flex-start'>
 					<Title order={4}>
-						{translate('overview.support.title')}
+						{translate('coremart.vendingMachine.overview.support.title')}
 					</Title>
 					<Group gap='xs'>
 						<Badge color='orange' variant='light'>
-							{pendingCount} {translate('overview.support.pending')}
+							{pendingCount} {translate('coremart.vendingMachine.overview.support.pending')}
 						</Badge>
 						<Badge color='blue' variant='light'>
-							{inProgressCount} {translate('overview.support.in_progress')}
+							{inProgressCount} {translate('coremart.vendingMachine.overview.support.inProgress')}
 						</Badge>
 						<Badge color='green' variant='light'>
-							{resolvedCount} {translate('overview.support.resolved')}
+							{resolvedCount} {translate('coremart.vendingMachine.overview.support.resolved')}
 						</Badge>
 						{detailLink && (
 							<Button
@@ -138,7 +138,7 @@ export function CustomerSupportRequest({ requests, detailLink }: CustomerSupport
 								size='xs'
 								rightSection={<IconArrowRight size={16} />}
 							>
-								{translate('overview.support.view_details')}
+								{translate('coremart.vendingMachine.overview.support.viewDetails')}
 							</Button>
 						)}
 					</Group>
@@ -147,7 +147,6 @@ export function CustomerSupportRequest({ requests, detailLink }: CustomerSupport
 				{tableData.length > 0 ? (
 					<TableContainer>
 						<AutoTable
-							translationNs='vending_machine'
 							columns={['kioskCode', 'kioskName', 'customer', 'description', 'status']}
 							data={tableData}
 							schema={supportRequestSchema}
@@ -164,7 +163,7 @@ export function CustomerSupportRequest({ requests, detailLink }: CustomerSupport
 					</TableContainer>
 				) : (
 					<Text c='dimmed' ta='center' py='xl'>
-						{translate('overview.support.no_requests')}
+						{translate('coremart.vendingMachine.overview.support.noRequests')}
 					</Text>
 				)}
 			</Stack>

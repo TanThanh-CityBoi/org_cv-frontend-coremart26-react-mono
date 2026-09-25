@@ -1,15 +1,19 @@
 import { useDebouncedValue } from '@mantine/hooks';
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
 import { useEffect, useMemo } from 'react';
 
-import { buildSimpleSearchGraph, type SimpleFilter } from '../../../../common/helpers';
-import { ArchivedStatus } from '../../../../types';
-import { kioskCrudService } from '../../../kiosks/kioskService';
+import {
+	type VendingMachineDispatch,
+	kioskActions,
+	selectKioskList,
+} from '@/appState';
+import { buildSimpleSearchGraph, type SimpleFilter } from '@/common/helpers';
+import { ArchivedStatus } from '@/types';
 
-import type { Kiosk } from '../../../kiosks/types';
+import type { Kiosk } from '@/features/kiosks/types';
 
 
-/** Giống cột GET trong `KioskService.search` — chỉ cần id/code/name cho dropdown. */
+/** Giống cột GET trong {@link kioskActions.listKiosks} — chỉ cần id/code/name cho dropdown. */
 const KIOSK_REPORT_PICKER_COLUMNS: Array<keyof Kiosk> = [
 	'id',
 	'etag',
@@ -27,8 +31,9 @@ const KIOSK_REPORT_PICKER_COLUMNS: Array<keyof Kiosk> = [
 
 /** Giống trang kiosk: chỉ kiosk đang active (không archive). */
 
-export function useRevenueReportKioskOptions(searchQuery: string): Array<{ value: string, label: string }> {
-	const { dispatchMethod, result } = useServiceLayer<{ items: Kiosk[] }>(kioskCrudService.search);
+export function useRevenueReportKioskOptions(searchQuery: string): Array<{ value: string; label: string }> {
+	const dispatch = useMicroAppDispatch() as VendingMachineDispatch;
+	const list = useMicroAppSelector(selectKioskList);
 	const [debounced] = useDebouncedValue(searchQuery.trim(), 300);
 
 	useEffect(() => {
@@ -48,20 +53,20 @@ export function useRevenueReportKioskOptions(searchQuery: string): Array<{ value
 			getGraphValue: (value: ArchivedStatus[]) => value.map((v) => v === ArchivedStatus.ARCHIVED),
 		});
 
-		dispatchMethod({
+		dispatch(kioskActions.listKiosks({
 			fields: KIOSK_REPORT_PICKER_COLUMNS,
 			page: 0,
 			size: 20,
 			graph: buildSimpleSearchGraph(filters),
-		});
-	}, [dispatchMethod, debounced]);
+		}));
+	}, [dispatch, debounced]);
 
 	return useMemo(
 		() =>
-			(result.data?.items ?? []).map((k: Kiosk) => ({
+			(list.items ?? []).map((k: Kiosk) => ({
 				value: k.id,
 				label: k.name || k.code || k.id,
 			})),
-		[result.data?.items],
+		[list.items],
 	);
 }

@@ -4,9 +4,9 @@ import { useTranslation } from 'react-i18next';
 
 
 
-import { filterConfig } from './filterConfig';
-import { FilterGroup, SearchGraph, useFilterState } from '../../../../components/FilterGroup';
+import { FilterGroup, SearchGraph, useFilterState } from '@/components/FilterGroup';
 
+import { filterConfig } from './filterConfig';
 
 
 
@@ -18,7 +18,7 @@ export interface KioskModelFilterProps {
 export const KioskModelFilter: React.FC<KioskModelFilterProps> = ({
 	onSearchGraphChange,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const { state, updateState, resetState } = useFilterState({
 		config: filterConfig,
 		onSearchGraphChange,
@@ -30,7 +30,7 @@ export const KioskModelFilter: React.FC<KioskModelFilterProps> = ({
 			state={state}
 			updateState={updateState}
 			resetState={resetState}
-			placeholder={translate('kiosk_models.search.placeholder')}
+			placeholder={translate('coremart.vendingMachine.kioskModels.search.placeholder')}
 		/>
 	);
 };

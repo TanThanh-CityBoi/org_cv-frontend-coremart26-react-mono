@@ -1,10 +1,18 @@
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+import { useUIState } from '@nikkierp/shell/contexts';
+import { ReduxActionState } from '@nikkierp/ui/appState';
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
 import React from 'react';
-
-import { useMutationOutcome } from '../../../common/hooks/useMutationOutcome';
-import { mediaPlaylistCrudService } from '../mediaPlaylistCrudService';
+import { useTranslation } from 'react-i18next';
 
 import type { Playlist } from '../types';
+
+import {
+	mediaPlaylistActions,
+	selectDeleteMediaPlaylist,
+	VendingMachineDispatch,
+} from '@/appState';
+
+
 
 
 export interface UsePlaylistDeleteProps {
@@ -12,6 +20,44 @@ export interface UsePlaylistDeleteProps {
 	onDeleteError?: () => void;
 }
 
+function useDeleteOutcomeSync(
+	deleteState: ReduxActionState<void>,
+	dispatchedRequestIdRef: React.RefObject<string | null>,
+	dispatch: VendingMachineDispatch,
+	notification: ReturnType<typeof useUIState>['notification'],
+	translate: ReturnType<typeof useTranslation>['t'],
+	handleCloseDeleteModal: () => void,
+	onDeleteSuccess: () => void,
+	onDeleteError: () => void,
+) {
+	React.useEffect(() => {
+		const requestId = deleteState.requestId;
+		const matchesDispatch = requestId != null && dispatchedRequestIdRef.current === requestId;
+		if (!matchesDispatch) return;
+
+		if (deleteState.status === 'success') {
+			dispatchedRequestIdRef.current = null;
+			notification.showInfo(
+				translate('coremart.vendingMachine.mediaPlaylist.messages.delete_success'),
+				translate('nikki.general.messages.success'),
+			);
+			handleCloseDeleteModal();
+			onDeleteSuccess();
+			dispatch(mediaPlaylistActions.resetDeleteMediaPlaylist());
+			return;
+		}
+		if (deleteState.status === 'error') {
+			dispatchedRequestIdRef.current = null;
+			notification.showError(
+				deleteState.error ?? translate('nikki.general.errors.delete_failed'),
+				translate('nikki.general.messages.error'),
+			);
+			handleCloseDeleteModal();
+			onDeleteError();
+			dispatch(mediaPlaylistActions.resetDeleteMediaPlaylist());
+		}
+	}, [deleteState, dispatch, notification, translate, handleCloseDeleteModal, onDeleteSuccess, onDeleteError]);
+}
 
 export const usePlaylistDelete = ({
 	onDeleteSuccess = () => {},
@@ -20,7 +66,12 @@ export const usePlaylistDelete = ({
 	onDeleteSuccess: () => {},
 	onDeleteError: () => {},
 }) => {
-	const { dispatchMethod, result } = useServiceLayer(mediaPlaylistCrudService.delete);
+	const { notification } = useUIState();
+	const { t: translate } = useTranslation();
+
+	const dispatchedDeleteRequestIdRef = React.useRef<string | null>(null);
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
+	const deleteState = useMicroAppSelector(selectDeleteMediaPlaylist);
 
 	const [isOpenDeleteModal, setIsOpenDeleteModal] = React.useState(false);
 	const [playlistToDelete, setPlaylistToDelete] = React.useState<Playlist | null>(null);
@@ -36,15 +87,20 @@ export const usePlaylistDelete = ({
 	}, []);
 
 	const handleDelete = React.useCallback((playlistId: string) => {
-		dispatchMethod({ id: playlistId });
-	}, [dispatchMethod]);
+		const pendingAction = dispatch(mediaPlaylistActions.deleteMediaPlaylist({ id: playlistId }));
+		dispatchedDeleteRequestIdRef.current = pendingAction.requestId;
+	}, [dispatch]);
 
-	useMutationOutcome(result, {
-		successKey: () => 'media_playlist.messages.delete_success',
-		errorKey: 'errors.deleteFailed',
-		onSuccess: () => { handleCloseDeleteModal(); onDeleteSuccess(); },
-		onError: () => { handleCloseDeleteModal(); onDeleteError(); },
-	});
+	useDeleteOutcomeSync(
+		deleteState,
+		dispatchedDeleteRequestIdRef,
+		dispatch,
+		notification,
+		translate,
+		handleCloseDeleteModal,
+		onDeleteSuccess,
+		onDeleteError,
+	);
 
 	return {
 		handleDelete,

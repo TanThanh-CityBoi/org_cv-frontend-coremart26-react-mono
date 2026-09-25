@@ -1,25 +1,25 @@
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
 import React from 'react';
 
-import { gameCrudService } from '../gameService';
+import { VendingMachineDispatch, gameActions, selectGameList } from '@/appState';
 
-import type { Game } from '../types';
-
-
-type SearchResponse = { items: Game[], total: number };
 
 export function useGameList() {
-	const { dispatchMethod, result } = useServiceLayer<SearchResponse>(gameCrudService.search);
-
-	const handleRefresh = React.useCallback(() => dispatchMethod({}), [dispatchMethod]);
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
+	const list = useMicroAppSelector(selectGameList);
 
 	React.useEffect(() => {
-		handleRefresh();
-	}, [handleRefresh]);
+		if (list.status === 'idle') {
+			dispatch(gameActions.listGames());
+		}
+	}, [dispatch, list]);
+
+
+	const handleRefresh = () => dispatch(gameActions.listGames());
 
 	return {
-		games: result.data?.items ?? [],
-		isLoadingList: result.isPending || result.doneAt == null,
+		games: list.data,
+		isLoadingList: list.status === 'pending' || list.status === 'idle',
 		handleRefresh,
 	};
 }

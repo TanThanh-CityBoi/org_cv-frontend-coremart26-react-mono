@@ -1,7 +1,8 @@
 import maplibregl from 'maplibre-gl';
 import { useEffect, RefObject } from 'react';
 
-import { Kiosk } from '../../../types';
+import { Kiosk } from '@/features/kiosks/types';
+
 import { createBoundsFromKiosks, filterKiosksWithCoordinates } from '../helper';
 
 

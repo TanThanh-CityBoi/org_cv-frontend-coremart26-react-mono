@@ -3,25 +3,25 @@ import React, { createContext, useContext, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
-import { BreadcrumbItem } from '../../../components/BreadCrumbs';
-import { ControlPanelActionItem } from '../../../components/ControlPanel';
+import { BreadcrumbItem } from '@/components/BreadCrumbs';
+import { ControlPanelActionItem } from '@/components/ControlPanel';
 import {
 	useEventArchive,
 	useEventDelete,
 	useEventFilter,
 	useEventList,
 	useEventPreview,
-} from '../hooks';
+} from '@/features/events/hooks';
 
 
 export type EventListViewMode = 'list' | 'grid' | 'kanban' | 'gantt' | 'calendar';
 
 type EventListPageContextValue = {
-	filter: ReturnType<typeof useEventFilter>,
-	list: ReturnType<typeof useEventList>,
-	deleteEvent: ReturnType<typeof useEventDelete>,
-	archiveEvent: ReturnType<typeof useEventArchive>,
-	previewEvent: ReturnType<typeof useEventPreview>,
+	filter: ReturnType<typeof useEventFilter>;
+	list: ReturnType<typeof useEventList>;
+	deleteEvent: ReturnType<typeof useEventDelete>;
+	archiveEvent: ReturnType<typeof useEventArchive>;
+	previewEvent: ReturnType<typeof useEventPreview>;
 };
 
 const EventListPageContext = createContext<EventListPageContextValue | null>(null);
@@ -59,15 +59,15 @@ export interface UseEventListPageConfigReturn {
 	breadcrumbs: BreadcrumbItem[];
 	actions: ControlPanelActionItem[];
 	viewModeConfig: {
-		value: EventListViewMode,
-		onChange: (mode: EventListViewMode) => void,
-		segments: EventListViewMode[],
+		value: EventListViewMode;
+		onChange: (mode: EventListViewMode) => void;
+		segments: EventListViewMode[];
 	};
 }
 
 export function useEventListPageConfig(): UseEventListPageConfigReturn {
 	const navigate = useNavigate();
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const [viewMode, setViewMode] = useState<EventListViewMode>('list');
 
 	const { list } = useEventListPageContext();
@@ -76,18 +76,18 @@ export function useEventListPageConfig(): UseEventListPageConfigReturn {
 	const handleCreate = () => navigate('../events/create');
 
 	const breadcrumbs = useMemo(() => [
-		{ title: translate('title'), href: '../overview' },
-		{ title: translate('menu.events'), href: '#' },
+		{ title: translate('coremart.vendingMachine.title'), href: '../overview' },
+		{ title: translate('coremart.vendingMachine.menu.events'), href: '#' },
 	], [translate]);
 
 	const actions = useMemo(() => [
 		{
-			label: translate('action.create'),
+			label: translate('nikki.general.actions.create'),
 			leftSection: <IconPlus size={16} />,
 			onClick: handleCreate,
 		},
 		{
-			label: translate('action.refresh'),
+			label: translate('nikki.general.actions.refresh'),
 			leftSection: <IconRefresh size={16} />,
 			onClick: handleRefresh,
 			variant: 'outline' as const,

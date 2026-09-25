@@ -1,44 +1,51 @@
+
 import { notifications } from '@mantine/notifications';
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
 import dayjs from 'dayjs';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { triggerBlobDownload } from '../../../../common/helpers';
-import { usePaginationWithTotal } from '../../../../common/hooks';
 import {
-	INVENTORY_REPORT_DEFAULT_PAGE_SIZE,
+	inventoryReportActions,
+	selectInventoryChartProducts,
+	selectInventoryProducts,
+	type VendingMachineDispatch,
+} from '@/appState';
+import { triggerBlobDownload } from '@/common/helpers';
+import { usePagination } from '@/common/hooks';
+
+import {
 	inventoryReportService,
+	INVENTORY_REPORT_DEFAULT_PAGE_SIZE,
 } from '../inventoryReportService';
 
-import type { InventoryReportAppliedFilters, ProductInventoryReport } from '../components/InventoryReport/type';
+import type { InventoryReportAppliedFilters } from '../components/InventoryReport/type';
 
 
 const CHART_PAGE_SIZE = 50;
 
-type SearchResponse = { items: ProductInventoryReport[], total: number };
-
 export function useInventoryProducts(applied: InventoryReportAppliedFilters) {
-	const { t: translate } = useTranslation('vending_machine');
-	const { dispatchMethod, result } = useServiceLayer<SearchResponse>(
-		inventoryReportService.getProducts,
-	);
+	const dispatch = useMicroAppDispatch() as VendingMachineDispatch;
+	const { t: translate } = useTranslation();
+	const slice = useMicroAppSelector(selectInventoryProducts);
 
-	const fetchList = useCallback((page: number, size: number) => {
-		dispatchMethod({ kioskIds: applied.kioskIds ?? [], page: page - 1, size });
-	}, [dispatchMethod, applied.kioskIds]);
+	const fetchList = useCallback(async (page: number, size: number) => {
+		return dispatch(inventoryReportActions.fetchInventoryProducts({
+			kioskIds: applied.kioskIds ?? [],
+			page: page - 1,
+			size,
+		}));
+	}, [dispatch, applied.kioskIds]);
 
-	const pagination = usePaginationWithTotal(fetchList, result.data?.total ?? 0, {
+	const pagination = usePagination(fetchList, selectInventoryProducts, {
 		fallbackPageSize: INVENTORY_REPORT_DEFAULT_PAGE_SIZE,
 		resetPageKey: `${applied.kioskIds?.join(',') ?? ''}`,
 	});
-	const { page, pageSize } = pagination;
 
 	useEffect(() => {
-		fetchList(page, pageSize);
-	}, [fetchList, page, pageSize]);
+		fetchList(pagination.page, pagination.pageSize);
+	}, [fetchList]);
 
-	// `exportProducts` is not a `@storeAsyncMethod`: a Blob is not state, so it is called directly.
 	const handleExport = useCallback(async () => {
 		try {
 			const blob = await inventoryReportService.exportProducts({
@@ -49,24 +56,24 @@ export function useInventoryProducts(applied: InventoryReportAppliedFilters) {
 			triggerBlobDownload(blob, `Inventory-${dayjs().format('YYYYMMDD-HHmm')}.xlsx`);
 			notifications.show({
 				color: 'green',
-				title: translate('reports.revenue_report.export'),
-				message: translate('reports.revenue_report.export_success'),
+				title: translate('coremart.vendingMachine.reports.revenueReport.export'),
+				message: translate('coremart.vendingMachine.reports.revenueReport.exportSuccess'),
 			});
 		}
 		catch (err) {
 			const message = err instanceof Error ? err.message : String(err);
 			notifications.show({
 				color: 'red',
-				title: translate('reports.revenue_report.export'),
-				message: translate('reports.revenue_report.export_failed', { message }),
+				title: translate('coremart.vendingMachine.reports.revenueReport.export'),
+				message: translate('coremart.vendingMachine.reports.revenueReport.exportFailed', { message }),
 			});
 		}
 	}, [applied.kioskIds, translate]);
 
 	return {
-		items: result.data?.items,
-		isLoading: (result.isPending || result.doneAt == null) && !result.data?.items?.length,
-		error: result.error,
+		items: slice.items,
+		isLoading: (slice.status === 'pending' || slice.status === 'idle') && !slice?.items?.length,
+		error: slice.error,
 		pagination,
 		handleExport,
 	};
@@ -74,21 +81,22 @@ export function useInventoryProducts(applied: InventoryReportAppliedFilters) {
 
 
 export function useInventoryChartProducts(applied: InventoryReportAppliedFilters) {
-	// `getChartProducts`, not `getProducts` — service-layer state is keyed by method name, so
-	// sharing the method would make the chart and the table clobber each other's results.
-	const { dispatchMethod, result } = useServiceLayer<SearchResponse>(
-		inventoryReportService.getChartProducts,
-	);
+	const dispatch = useMicroAppDispatch() as VendingMachineDispatch;
+	const slice = useMicroAppSelector(selectInventoryChartProducts);
 
 	const kioskIds = useMemo(() => applied.kioskIds, [applied.kioskIds]);
 
 	useEffect(() => {
-		dispatchMethod({ kioskIds: kioskIds ?? [], page: 0, size: CHART_PAGE_SIZE });
-	}, [dispatchMethod, kioskIds]);
+		dispatch(inventoryReportActions.fetchInventoryChartProducts({
+			kioskIds: kioskIds ?? [],
+			page: 0,
+			size: CHART_PAGE_SIZE,
+		}));
+	}, [dispatch, kioskIds]);
 
 	return {
-		items: result.data?.items,
-		isLoading: result.isPending || result.doneAt == null,
-		error: result.error,
+		items: slice.items,
+		isLoading: slice.status === 'pending' || slice.status === 'idle',
+		error: slice.error,
 	};
 }

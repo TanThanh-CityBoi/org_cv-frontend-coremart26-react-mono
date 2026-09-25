@@ -5,7 +5,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
-import { TableContainer } from '../../../../components/Table';
+import { TableContainer } from '@/components/Table';
 
 
 export interface GameTableProps extends AutoTableProps {
@@ -60,9 +60,9 @@ function renderStatusColumn(
 	translate: (key: string) => string,
 ) {
 	const status = row.status as string;
-	const statusMap: Record<string, { color: string, label: string }> = {
-		active: { color: 'green', label: translate('status.active') },
-		inactive: { color: 'gray', label: translate('status.inactive') },
+	const statusMap: Record<string, { color: string; label: string }> = {
+		active: { color: 'green', label: translate('nikki.general.status.active') },
+		inactive: { color: 'gray', label: translate('nikki.general.status.inactive') },
 	};
 	const statusInfo = statusMap[status] || { color: 'gray', label: status };
 	return <Badge color={statusInfo.color} size='sm'>{statusInfo.label}</Badge>;
@@ -92,21 +92,21 @@ function renderActionsColumn(
 		<Box style={{ minWidth: 120 }}>
 			<Group gap='xs' justify='flex-end' onClick={(e) => e.stopPropagation()}>
 				{onView && (
-					<Tooltip label={translate('action.view')}>
+					<Tooltip label={translate('nikki.general.actions.view')}>
 						<ActionIcon variant='subtle' color='blue' onClick={() => onView(gameId)}>
 							<IconEye size={16} />
 						</ActionIcon>
 					</Tooltip>
 				)}
 				{onEdit && (
-					<Tooltip label={translate('action.edit')}>
+					<Tooltip label={translate('nikki.general.actions.edit')}>
 						<ActionIcon variant='subtle' color='gray' onClick={() => onEdit(gameId)}>
 							<IconEdit size={16} />
 						</ActionIcon>
 					</Tooltip>
 				)}
 				{onDelete && (
-					<Tooltip label={translate('action.delete')}>
+					<Tooltip label={translate('nikki.general.actions.delete')}>
 						<ActionIcon variant='subtle' color='red' onClick={() => onDelete(gameId)}>
 							<IconTrash size={16} />
 						</ActionIcon>
@@ -122,7 +122,7 @@ function renderActionsHeader(
 	_schema: unknown,
 	translate: (key: string) => string,
 ) {
-	return <Text fw={600} fz='sm' ta={'end'}>{translate('action.title')}</Text>;
+	return <Text fw={600} fz='sm' ta={'end'}>{translate('nikki.general.actions.title')}</Text>;
 }
 
 export const GameTable: React.FC<GameTableProps> = ({
@@ -134,7 +134,7 @@ export const GameTable: React.FC<GameTableProps> = ({
 	onEdit,
 	onDelete,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	return (
 		<div style={{ position: 'relative' }}>
@@ -149,7 +149,6 @@ export const GameTable: React.FC<GameTableProps> = ({
 			</style>
 			<TableContainer>
 				<AutoTable
-					translationNs='vending_machine'
 					columns={columns}
 					data={data}
 					schema={schema}

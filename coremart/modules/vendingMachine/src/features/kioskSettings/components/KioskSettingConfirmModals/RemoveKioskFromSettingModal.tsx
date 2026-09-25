@@ -4,12 +4,12 @@ import { Trans, useTranslation } from 'react-i18next';
 
 
 export type RemoveKioskFromSettingModalProps = {
-	opened: boolean,
-	onClose: () => void,
-	onConfirm: () => void,
-	kioskName: string,
-	settingName: string,
-	confirmLoading?: boolean,
+	opened: boolean;
+	onClose: () => void;
+	onConfirm: () => void;
+	kioskName: string;
+	settingName: string;
+	confirmLoading?: boolean;
 };
 
 export const RemoveKioskFromSettingModal: React.FC<RemoveKioskFromSettingModalProps> = ({
@@ -20,7 +20,7 @@ export const RemoveKioskFromSettingModal: React.FC<RemoveKioskFromSettingModalPr
 	settingName,
 	confirmLoading = false,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	return (
 		<Modal
@@ -28,7 +28,7 @@ export const RemoveKioskFromSettingModal: React.FC<RemoveKioskFromSettingModalPr
 			onClose={() => {
 				if (!confirmLoading) onClose();
 			}}
-			title={<Text fw={700} fz='lg'>{translate('kiosk_settings.messages.remove_kiosk_from_setting_title')}</Text>}
+			title={<Text fw={700} fz='lg'>{translate('coremart.vendingMachine.kioskSettings.messages.remove_kiosk_from_setting_title')}</Text>}
 			size='md'
 			centered
 			closeOnClickOutside={!confirmLoading}
@@ -37,7 +37,7 @@ export const RemoveKioskFromSettingModal: React.FC<RemoveKioskFromSettingModalPr
 			<Stack gap='md'>
 				<Text>
 					<Trans
-						i18nKey='kiosk_settings.messages.remove_kiosk_from_setting_confirm'
+						i18nKey='coremart.vendingMachine.kioskSettings.messages.remove_kiosk_from_setting_confirm'
 						values={{ kioskName, settingName }}
 						components={{ strong: <strong /> }}
 					/>
@@ -49,14 +49,14 @@ export const RemoveKioskFromSettingModal: React.FC<RemoveKioskFromSettingModalPr
 						color='gray'
 						disabled={confirmLoading}
 					>
-						{translate('action.cancel')}
+						{translate('nikki.general.actions.cancel')}
 					</Button>
 					<Button
 						color='red'
 						onClick={onConfirm}
 						loading={confirmLoading}
 					>
-						{translate('action.remove')}
+						{translate('nikki.general.actions.remove')}
 					</Button>
 				</Group>
 			</Stack>

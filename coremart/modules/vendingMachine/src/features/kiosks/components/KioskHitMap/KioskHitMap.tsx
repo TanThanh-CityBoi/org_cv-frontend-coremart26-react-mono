@@ -23,7 +23,7 @@ export const getMapStyle = (colorScheme: MantineColorScheme, maplibreGlApiKey: s
 export function KioskHitMap({ kiosks }: { kiosks: Kiosk[] }): React.ReactElement {
 	const mapContainerRef = useRef<HTMLDivElement | null>(null);
 	const { colorScheme } = useMantineColorScheme();
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const mapRef = useMapInitialization({
 		mapContainerRef,

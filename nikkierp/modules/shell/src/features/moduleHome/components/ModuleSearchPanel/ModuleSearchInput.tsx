@@ -1,13 +1,9 @@
 import { createTheme, Input, MantineProvider, Stack, TextInput } from '@mantine/core';
-import { testAttrs } from '@nikkierp/common/utils';
 import { IconSearch } from '@tabler/icons-react';
 import { FC } from 'react';
 
 import classes from './ModuleSearchPanel.module.css';
 import { useModuleSearchInput } from '../../hooks/useModuleSearchInput';
-
-
-const TEST_ID = 'shell.moduleSearch';
 
 
 type ModuleSearchInputProps = {
@@ -47,10 +43,7 @@ export const ModuleSearchInput: FC<ModuleSearchInputProps> = ({
 
 	const ClearButtonWrapper = () => (
 		<Stack justify='center' align='center'>
-			<Input.ClearButton
-				onMouseDown={(e) => e.preventDefault()} onClick={handleClear}
-				{...testAttrs(TEST_ID, 'clear')}
-			/>
+			<Input.ClearButton onMouseDown={(e) => e.preventDefault()} onClick={handleClear} />
 		</Stack>
 	);
 
@@ -67,7 +60,6 @@ export const ModuleSearchInput: FC<ModuleSearchInputProps> = ({
 				onChange={handleChange}
 				onFocus={handleFocus}
 				onBlur={handleBlur}
-				{...testAttrs(TEST_ID, 'input')}
 				classNames={{
 					wrapper: `${classes.searchInputWrapper} ${isFocused ? classes.searchInputWrapperFocused : ''}`,
 				}}

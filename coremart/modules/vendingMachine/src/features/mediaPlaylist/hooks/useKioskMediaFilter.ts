@@ -1,14 +1,14 @@
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { controlPanelToSearchGraph, type ControlPanelFilterConfig } from '../../../components';
-import { ArchivedStatus } from '../../../types';
+import { controlPanelToSearchGraph, type ControlPanelFilterConfig } from '@/components';
+import { ArchivedStatus } from '@/types';
 
 
 
 /** Filter + graph cho API search kiosk media (`name` + `is_archived`). */
 export function useKioskMediaFilter() {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const [searchValue, setSearchValue] = useState('');
 	const [statusFilter, setStatusFilter] = useState<ArchivedStatus[]>([ArchivedStatus.ACTIVE]);
 
@@ -25,7 +25,7 @@ export function useKioskMediaFilter() {
 					type: 'search' as const,
 					value: searchValue,
 					onChange: setSearchValue,
-					placeholder: translate('kiosk_media.search.placeholder'),
+					placeholder: translate('coremart.vendingMachine.kioskMedia.search.placeholder'),
 				},
 				{
 					key: 'isArchived',
@@ -33,10 +33,10 @@ export function useKioskMediaFilter() {
 					value: statusFilter,
 					onChange: setStatusFilter,
 					options: [
-						{ value: ArchivedStatus.ACTIVE, label: translate('status.active') },
-						{ value: ArchivedStatus.ARCHIVED, label: translate('status.archived') },
+						{ value: ArchivedStatus.ACTIVE, label: translate('nikki.general.status.active') },
+						{ value: ArchivedStatus.ARCHIVED, label: translate('nikki.general.status.archived') },
 					],
-					placeholder: translate('kiosk_media.filter.status'),
+					placeholder: translate('coremart.vendingMachine.kioskMedia.filter.status'),
 					getGraphValue: (value: ArchivedStatus[]) => value.map((v) => v === ArchivedStatus.ARCHIVED),
 				},
 			];

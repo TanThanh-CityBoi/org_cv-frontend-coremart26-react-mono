@@ -1,28 +1,38 @@
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
 import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { usePaginationWithTotal } from '../../../common/hooks';
+
+import {
+	VendingMachineDispatch,
+	kioskModelActions,
+	selectKioskModelList,
+} from '@/appState';
+import { usePagination } from '@/common/hooks';
 import {
 	controlPanelToSearchGraph,
 	type ControlPanelFilterConfig,
-} from '../../../components';
-import { ArchivedStatus, SearchGraph } from '../../../types';
-import { kioskModelCrudService } from '../kioskModelService';
+} from '@/components';
+import { ArchivedStatus, SearchGraph, SearchParams } from '@/types';
+
 import { KioskModel } from '../types';
 
 
-type SearchResponse = { items: KioskModel[], total: number };
-
-
 export function useKioskModelList(graph?: SearchGraph) {
-	const { dispatchMethod, result } = useServiceLayer<SearchResponse>(kioskModelCrudService.search);
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
+	const list = useMicroAppSelector(selectKioskModelList);
 
 	const fetchList = React.useCallback((targetPage: number, size: number, searchGraph?: SearchGraph) => {
-		dispatchMethod({ page: targetPage - 1, size, graph: searchGraph });
-	}, [dispatchMethod]);
+		const params: SearchParams<KioskModel> = {
+			page: targetPage - 1,
+			size,
+			graph: searchGraph,
+		};
+		dispatch(kioskModelActions.listKioskModels(params));
+	}, [dispatch]);
 
-	const pagination = usePaginationWithTotal(fetchList, result.data?.total ?? 0, { graph });
+	const pagination = usePagination(fetchList, selectKioskModelList, { graph });
 	const { page, pageSize } = pagination;
 
 	React.useEffect(() => {
@@ -33,13 +43,14 @@ export function useKioskModelList(graph?: SearchGraph) {
 		fetchList(page, pageSize, graph);
 	}, [fetchList, page, pageSize, graph]);
 
-	const models = result.data?.items ?? [];
-	const isLoading = !models.length && result.isPending;
-	const isEmpty = !models.length && !result.isPending && result.doneAt != null;
+	const models = list.items ?? [];
+	const status = list.status;
+	const isLoading = !models?.length && (status === 'pending' || status === 'idle');
+	const isEmpty = !models?.length && status !== 'idle' && status !== 'pending';
 
 	return {
 		models,
-		status: result.isPending ? 'pending' : 'success',
+		status,
 		isLoading,
 		isEmpty,
 		handleRefresh,
@@ -49,7 +60,7 @@ export function useKioskModelList(graph?: SearchGraph) {
 
 
 export const useKioskModelFilter = () => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const [searchValue, setSearchValue] = useState('');
 	const [statusFilter, setStatusFilter] = useState<string[]>([ArchivedStatus.ACTIVE]);
 
@@ -60,7 +71,7 @@ export const useKioskModelFilter = () => {
 			type: 'search' as const,
 			value: searchValue,
 			onChange: setSearchValue,
-			placeholder: translate('kiosk_models.search.placeholder'),
+			placeholder: translate('coremart.vendingMachine.kioskModels.search.placeholder'),
 		},
 		{
 			key: 'isArchived',
@@ -68,10 +79,10 @@ export const useKioskModelFilter = () => {
 			value: statusFilter,
 			onChange: setStatusFilter,
 			options: [
-				{ value: ArchivedStatus.ACTIVE, label: translate('status.active') },
-				{ value: ArchivedStatus.ARCHIVED, label: translate('status.archived') },
+				{ value: ArchivedStatus.ACTIVE, label: translate('nikki.general.status.active') },
+				{ value: ArchivedStatus.ARCHIVED, label: translate('nikki.general.status.archived') },
 			],
-			placeholder: translate('kiosk_models.filter.status'),
+			placeholder: translate('coremart.vendingMachine.kioskModels.filter.status'),
 			getGraphValue: (value: ArchivedStatus[]) => value.map((value) => value === ArchivedStatus.ARCHIVED),
 		},
 	], [searchValue, statusFilter, translate]);

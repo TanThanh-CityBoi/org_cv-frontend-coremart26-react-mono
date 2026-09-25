@@ -29,6 +29,10 @@ import React, { useMemo } from 'react';
 import { Bar, Chart, Doughnut, Line } from 'react-chartjs-2';
 import { useTranslation } from 'react-i18next';
 
+import {
+	REPORT_PALETTE_BORDERS,
+	REPORT_PALETTE_FILLS,
+} from '@/components/reportChartTheme';
 
 import { PNL_CHART_COLORS } from './helper';
 import {
@@ -50,10 +54,6 @@ import {
 	MOCK_REVENUE_STACKED_12M,
 	PNL_DASH_MONTHS,
 } from './mocks';
-import {
-	REPORT_PALETTE_BORDERS,
-	REPORT_PALETTE_FILLS,
-} from '../../../../../components/reportChartTheme';
 
 
 import type { DonutDatasetPack, PnlExpenseSlice } from './type';
@@ -118,10 +118,10 @@ function chartBox(chart: React.ReactNode): React.ReactElement {
 }
 
 export const PnlReportDashboard: React.FC = () => {
-	const { t: translate } = useTranslation('vending_machine');
-	const td = (k: string) => translate(`reports.pnl_report.dashboard.${k}`);
+	const { t: translate } = useTranslation();
+	const td = (k: string) => translate(`coremart.vendingMachine.reports.pnlReport.dashboard.${k}`);
 	const tSlice = (key: string) =>
-		translate(`reports.pnl_report.dashboard.expense_slices.${key}`);
+		translate(`coremart.vendingMachine.reports.pnlReport.dashboard.expenseSlices.${key}`);
 
 	const operatingData = useMemo(() => ({
 		labels: [...PNL_DASH_MONTHS],
@@ -439,7 +439,7 @@ export const PnlReportDashboard: React.FC = () => {
 				<Text size='sm'>{td('mockDataBanner')}</Text>
 			</Alert>
 
-			<Grid gap='md'>
+			<Grid gutter='md'>
 				<Grid.Col span={{ base: 12, lg: 4 }}>
 					<SimpleGrid cols={{ base: 2, xs: 2, sm: 2 }} spacing='sm' h='100%'>
 						{kpiItems.map((kpi) => (
@@ -466,7 +466,7 @@ export const PnlReportDashboard: React.FC = () => {
 				{chartBox(<Bar data={revenueStackData} options={stackedOpts} />)}
 			</Paper>
 
-			<Grid gap='md'>
+			<Grid gutter='md'>
 				<Grid.Col span={{ base: 12, md: 6 }}>
 					<Paper p='md' radius='sm' withBorder shadow='xs' h='100%'>
 						{chartCardTitle(td('stackedExpenseType'))}
@@ -497,7 +497,7 @@ export const PnlReportDashboard: React.FC = () => {
 				</Grid.Col>
 			</Grid>
 
-			<Grid gap='md'>
+			<Grid gutter='md'>
 				<Grid.Col span={{ base: 12, lg: 6 }}>
 					<Paper p='md' radius='sm' withBorder shadow='xs' h='100%'>
 						{chartCardTitle(td('chartGrossTrend'))}

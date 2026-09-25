@@ -9,7 +9,6 @@ import {
 	Text,
 	useCombobox,
 } from '@mantine/core';
-import { testAttrs } from '@nikkierp/common/utils';
 import { IconChevronDown } from '@tabler/icons-react';
 import { FC, JSX, useEffect, useState } from 'react';
 
@@ -30,8 +29,6 @@ export type SearchableSelectProps = {
 	unselectedPlaceholder?: string;
 	value?: string | null;
 	onChange?: (value: string) => void;
-	/** `{module}.{component}` prefix for the trigger, search box and options. */
-	testId?: string;
 };
 
 
@@ -61,7 +58,6 @@ export const SearchableSelect: FC<SearchableSelectProps> = (rawProps) => {
 				value={item.value}
 				key={item.value}
 				active={item.value === activeValue}
-				{...testAttrs(props.testId, 'option', item.value)}
 			>
 				{item.label || item.value}
 			</Combobox.Option>
@@ -86,11 +82,9 @@ export const SearchableSelect: FC<SearchableSelectProps> = (rawProps) => {
 				combobox={combobox}
 				triggerComponent={props.triggerComponent}
 				unselectedPlaceholder={props.unselectedPlaceholder}
-				testId={props.testId}
 			/>
 			<ComboboxDropdown
 				actionOptionLabel={props.actionOptionLabel}
-				testId={props.testId}
 				search={search}
 				searchBoxEnabledAt={props.searchBoxEnabledAt}
 				searchPlaceholder={props.searchPlaceholder}
@@ -140,7 +134,6 @@ type ComboboxTargetProps = {
 	combobox: ComboboxStore;
 	triggerComponent?: typeof Button;
 	unselectedPlaceholder?: string;
-	testId?: string;
 };
 
 const ComboboxTarget: FC<ComboboxTargetProps> = (props) => {
@@ -153,7 +146,6 @@ const ComboboxTarget: FC<ComboboxTargetProps> = (props) => {
 				px={'xs'}
 				rightSection={<IconChevronDown size={14}/>}
 				onClick={() => combobox.toggleDropdown()}
-				{...testAttrs(props.testId, 'trigger')}
 			>
 				{value
 					? <Text ta={'left'} fz={'h5'} fw={'bolder'} miw={20}>{value}</Text>
@@ -167,7 +159,6 @@ const ComboboxTarget: FC<ComboboxTargetProps> = (props) => {
 
 type ComboboxDropdownProps = {
 	actionOptionLabel?: string;
-	testId?: string;
 	search: string;
 	searchBoxEnabledAt?: number; // Show search box when there are more than this number of items
 	searchPlaceholder?: string;
@@ -185,7 +176,6 @@ const ComboboxDropdown: FC<ComboboxDropdownProps> = (props) => {
 					value={props.search}
 					onChange={(event) => props.setSearch(event.currentTarget.value)}
 					placeholder={props.searchPlaceholder}
-					{...testAttrs(props.testId, 'search')}
 				/>
 			)}
 			<Combobox.Options>
@@ -194,7 +184,7 @@ const ComboboxDropdown: FC<ComboboxDropdownProps> = (props) => {
 					mah={props.scrollAreaHeight ?? '50vh'}
 				>
 					{props.actionOptionLabel && (
-						<Combobox.Option value='$$action$$' {...testAttrs(props.testId, 'actionOption')}>
+						<Combobox.Option value='$$action$$'>
 							{props.actionOptionLabel}
 						</Combobox.Option>
 					)}

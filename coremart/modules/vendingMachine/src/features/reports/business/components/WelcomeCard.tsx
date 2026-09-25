@@ -20,7 +20,7 @@ interface WelcomeCardProps {
 	refundedOrderCount: number;
 }
 
-const WELCOME_CARD_I18N = 'reports.business.welcome_card';
+const WELCOME_CARD_I18N = 'coremart.vendingMachine.reports.business.welcomeCard';
 
 export function WelcomeCard({
 	date,
@@ -35,7 +35,7 @@ export function WelcomeCard({
 	totalRefund,
 	refundedOrderCount,
 }: WelcomeCardProps): React.ReactElement {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const errorRate = useMemo(() => {
 		if (totalItemCount <= 0) return '0.00';

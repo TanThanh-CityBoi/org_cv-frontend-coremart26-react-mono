@@ -1,3 +1,4 @@
+import { AuthorizeDispatch, resourceActions, selectUpdateResource } from '@/appState';
 import { cleanFormData } from '@nikkierp/common/utils';
 import { useUIState } from '@nikkierp/shell/contexts';
 import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
@@ -6,10 +7,9 @@ import { UseFormReturn } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import { Resource } from '..';
-import { AuthorizeDispatch, resourceActions, selectUpdateResource } from '../../../appState';
-import { handleGoBack } from '../../../utils';
-import { validateResourceForm } from '../helpers';
+import { Resource } from '@/features/resources';
+import { validateResourceForm } from '@/features/resources/helpers';
+import { handleGoBack } from '@/utils';
 
 
 

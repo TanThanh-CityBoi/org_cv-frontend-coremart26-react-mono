@@ -21,23 +21,23 @@ export const ThemeGridView: React.FC<ThemeGridViewProps> = ({
 	onEdit,
 	onDelete,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const getStatusBadge = (status: 'active' | 'inactive') => {
 		const statusMap = {
-			active: { color: 'green', label: translate('status.active') },
-			inactive: { color: 'gray', label: translate('status.inactive') },
+			active: { color: 'green', label: translate('nikki.general.status.active') },
+			inactive: { color: 'gray', label: translate('nikki.general.status.inactive') },
 		};
 		const statusInfo = statusMap[status];
 		return <Badge color={statusInfo.color} size='sm'>{statusInfo.label}</Badge>;
 	};
 
 	if (isLoading) {
-		return <Text c='dimmed'>{translate('messages.loading')}</Text>;
+		return <Text c='dimmed'>{translate('nikki.general.messages.loading')}</Text>;
 	}
 
 	if (themes.length === 0) {
-		return <Text c='dimmed'>{translate('themes.messages.no_themes')}</Text>;
+		return <Text c='dimmed'>{translate('coremart.vendingMachine.themes.messages.no_themes')}</Text>;
 	}
 
 	return (
@@ -68,14 +68,14 @@ export const ThemeGridView: React.FC<ThemeGridViewProps> = ({
 							</Group>
 							<Group gap='xs' onClick={(e) => e.stopPropagation()}>
 								{onEdit && (
-									<Tooltip label={translate('action.edit')}>
+									<Tooltip label={translate('nikki.general.actions.edit')}>
 										<ActionIcon variant='subtle' color='gray' size='sm' onClick={() => onEdit(theme.id)}>
 											<IconEdit size={14} />
 										</ActionIcon>
 									</Tooltip>
 								)}
 								{onDelete && (
-									<Tooltip label={translate('action.delete')}>
+									<Tooltip label={translate('nikki.general.actions.delete')}>
 										<ActionIcon variant='subtle' color='red' size='sm' onClick={() => onDelete(theme.id)}>
 											<IconTrash size={14} />
 										</ActionIcon>
@@ -106,7 +106,7 @@ export const ThemeGridView: React.FC<ThemeGridViewProps> = ({
 						</Group>
 
 						<Text size='xs' c='dimmed'>
-							{translate('themes.fields.created_at')}: {new Date(theme.createdAt).toLocaleDateString()}
+							{translate('coremart.vendingMachine.themes.fields.createdAt')}: {new Date(theme.createdAt).toLocaleDateString()}
 						</Text>
 					</Stack>
 				</Card>

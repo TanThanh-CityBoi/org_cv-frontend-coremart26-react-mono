@@ -4,10 +4,10 @@ import React, { useCallback, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
 
-import { ControlPanel } from '../../components';
-import { DetailLayout } from '../../components/DetailLayout';
-import { PageContainer } from '../../components/PageContainer';
-import { TextCopyable } from '../../components/Text';
+import { ControlPanel } from '@/components';
+import { DetailLayout } from '@/components/DetailLayout';
+import { PageContainer } from '@/components/PageContainer';
+import { TextCopyable } from '@/components/Text';
 import {
 	OrderDetailContent,
 	OrderHistoryModal,
@@ -15,12 +15,12 @@ import {
 	OrderRefundModal,
 	useOrderDetail,
 	useOrderDetailPageConfig,
-} from '../../features/orders';
+} from '@/features/orders';
 
 
 export const OrderDetailPage: React.FC = () => {
 	const { orderCode } = useParams<{ orderCode: string }>();
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const { order, isLoading } = useOrderDetail(orderCode ? { orderCode } : {});
 
 	const [refundOpen, setRefundOpen] = useState(false);
@@ -30,8 +30,8 @@ export const OrderDetailPage: React.FC = () => {
 		if (!order) return;
 		notifications.show({
 			color: 'blue',
-			title: translate('orders.invoice.pending_title'),
-			message: translate('orders.invoice.pending_message', { id: order.orderCode }),
+			title: translate('coremart.vendingMachine.orders.invoice.pending_title'),
+			message: translate('coremart.vendingMachine.orders.invoice.pending_message', { id: order.orderCode }),
 		});
 	}, [order, translate]);
 
@@ -43,11 +43,11 @@ export const OrderDetailPage: React.FC = () => {
 	});
 
 	const title = <TextCopyable value={order?.orderCode ?? ''} copyable fw={500}>
-		<Trans i18nKey={'orders.detail.title'} values={{ id: order?.orderCode }} />
+		<Trans i18nKey={'coremart.vendingMachine.orders.detail.title'} values={{ id: order?.orderCode }} />
 	</TextCopyable>;
 
 	const subtitle = order
-		? translate('orders.detail.subtitle', {
+		? translate('coremart.vendingMachine.orders.detail.subtitle', {
 			created: new Date(order.createdAt).toLocaleString(),
 		})
 		: '';

@@ -1,24 +1,25 @@
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
 import React from 'react';
 
-import { KIOSK_SETTING_DETAIL_FIELDS, kioskSettingCrudService } from '../kioskSettingService';
-import { KioskSetting } from '../types';
-
-
-type GetOneResponse = { item: KioskSetting };
+import { VendingMachineDispatch, kioskSettingActions, selectKioskSettingDetail } from '@/appState';
+import { KIOSK_SETTING_DETAIL_FIELDS } from '@/features/kioskSettings/kioskSettingSlice';
 
 
 export function useKioskSettingDetail(settingId?: string) {
-	const { dispatchMethod, result } = useServiceLayer<GetOneResponse>(kioskSettingCrudService.getById);
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
+	const detail = useMicroAppSelector(selectKioskSettingDetail);
 
 	React.useEffect(() => {
 		if (settingId) {
-			dispatchMethod({ id: settingId, fields: KIOSK_SETTING_DETAIL_FIELDS });
+			dispatch(kioskSettingActions.getKioskSetting({
+				id: settingId,
+				fields: KIOSK_SETTING_DETAIL_FIELDS,
+			}));
 		}
-	}, [settingId, dispatchMethod]);
+	}, [settingId, dispatch]);
 
 	return {
-		setting: result.data?.item,
-		isLoading: Boolean(settingId) && result.isPending,
+		setting: detail.data,
+		isLoading: Boolean(settingId) && (detail.status === 'pending' || detail.status === 'idle'),
 	};
 }

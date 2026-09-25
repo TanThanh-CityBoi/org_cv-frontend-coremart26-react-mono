@@ -12,8 +12,8 @@ import {
 import React, { useMemo } from 'react';
 import { Bar } from 'react-chartjs-2';
 
-import { fmtNumber, fmtShortNumber } from '../../../../../common/helpers';
-import { REPORT_PALETTE_BORDERS, REPORT_PALETTE_FILLS } from '../../../../../components/reportChartTheme';
+import { fmtNumber, fmtShortNumber } from '@/common/helpers';
+import { REPORT_PALETTE_BORDERS, REPORT_PALETTE_FILLS } from '@/components/reportChartTheme';
 
 import type { InventorySourceRow } from './type';
 
@@ -23,8 +23,8 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 const CHART_MAX_BARS = 10;
 
 type InventoryStockBarChartProps = {
-	title: string,
-	rows: InventorySourceRow[],
+	title: string;
+	rows: InventorySourceRow[];
 };
 
 export function InventoryStockBarChart({ title, rows }: InventoryStockBarChartProps): React.ReactElement {

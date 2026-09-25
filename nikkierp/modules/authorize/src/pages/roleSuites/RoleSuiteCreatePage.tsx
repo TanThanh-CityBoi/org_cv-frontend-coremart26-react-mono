@@ -1,7 +1,7 @@
 import { Stack } from '@mantine/core';
 import { GLOBAL_CONTEXT_SLUG } from '@nikkierp/shell/constants';
-import { useActiveOrgModule } from '@nikkierp/shell/routing';
 import { useActiveOrgWithDetails, useMyOrgs } from '@nikkierp/shell/userContext';
+import { useActiveOrgModule } from '@nikkierp/ui/appState/routingSlice';
 import {
 	BreadcrumbsHeader,
 	FormFieldProvider,
@@ -18,15 +18,15 @@ import {
 	identityActions,
 	selectGroupList,
 	selectUserList,
-} from '../../appState';
+} from '@/appState';
 import {
 	RolesSelector,
 	RoleSuiteChangesSummary,
 	RoleSuiteFormFields,
 	roleSuiteSchema,
 	useRoleSuiteCreate,
-} from '../../features/roleSuites';
-import { useAuthorizePermissions } from '../../hooks/useAuthorizePermissions';
+} from '@/features/roleSuites';
+import { useAuthorizePermissions } from '@/hooks/useAuthorizePermissions';
 
 
 // eslint-disable-next-line max-lines-per-function

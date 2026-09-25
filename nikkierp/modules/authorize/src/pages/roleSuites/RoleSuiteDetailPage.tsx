@@ -1,7 +1,7 @@
 import { Stack } from '@mantine/core';
 import { GLOBAL_CONTEXT_SLUG } from '@nikkierp/shell/constants';
-import { useActiveOrgModule } from '@nikkierp/shell/routing';
 import { useActiveOrgWithDetails } from '@nikkierp/shell/userContext';
+import { useActiveOrgModule } from '@nikkierp/ui/appState/routingSlice';
 import {
 	BreadcrumbsHeader,
 	ConfirmModal,
@@ -17,6 +17,7 @@ import { ModelSchema } from '@nikkierp/ui/model';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
+import type { Group, Org, User } from '@/features/identities';
 
 import {
 	AuthorizeDispatch,
@@ -24,17 +25,15 @@ import {
 	selectGroupList,
 	selectOrgList,
 	selectUserList,
-} from '../../appState';
+} from '@/appState';
 import {
 	RolesSelector,
 	RoleSuiteChangesSummary,
 	RoleSuiteFormFields,
 	roleSuiteSchema,
 	useRoleSuiteDetail,
-} from '../../features/roleSuites';
-import { useAuthorizePermissions } from '../../hooks/useAuthorizePermissions';
-
-import type { Group, Org, User } from '../../features/identities';
+} from '@/features/roleSuites';
+import { useAuthorizePermissions } from '@/hooks/useAuthorizePermissions';
 
 
 function RoleSuiteDetailForm({
@@ -48,15 +47,15 @@ function RoleSuiteDetailForm({
 	groups,
 	canUpdate,
 }: {
-	roleSuite: NonNullable<ReturnType<typeof useRoleSuiteDetail.detail>['roleSuite']>,
-	handlers: ReturnType<typeof useRoleSuiteDetail.handlers>,
-	availableRoles: ReturnType<typeof useRoleSuiteDetail.detail>['availableRoles'],
-	roles: ReturnType<typeof useRoleSuiteDetail.detail>['roles'],
-	formDataRef: React.MutableRefObject<unknown>,
-	orgs: Org[],
-	users: User[],
-	groups: Group[],
-	canUpdate: boolean,
+	roleSuite: NonNullable<ReturnType<typeof useRoleSuiteDetail.detail>['roleSuite']>;
+	handlers: ReturnType<typeof useRoleSuiteDetail.handlers>;
+	availableRoles: ReturnType<typeof useRoleSuiteDetail.detail>['availableRoles'];
+	roles: ReturnType<typeof useRoleSuiteDetail.detail>['roles'];
+	formDataRef: React.MutableRefObject<unknown>;
+	orgs: Org[];
+	users: User[];
+	groups: Group[];
+	canUpdate: boolean;
 }) {
 	const schema = roleSuiteSchema as ModelSchema;
 
@@ -114,10 +113,10 @@ function RoleSuiteConfirmModal({
 	formDataRef,
 	canUpdate,
 }: {
-	roleSuite: NonNullable<ReturnType<typeof useRoleSuiteDetail.detail>['roleSuite']>,
-	handlers: ReturnType<typeof useRoleSuiteDetail.handlers>,
-	formDataRef: React.MutableRefObject<unknown>,
-	canUpdate: boolean,
+	roleSuite: NonNullable<ReturnType<typeof useRoleSuiteDetail.detail>['roleSuite']>;
+	handlers: ReturnType<typeof useRoleSuiteDetail.handlers>;
+	formDataRef: React.MutableRefObject<unknown>;
+	canUpdate: boolean;
 }) {
 	const { t: translate } = useTranslation();
 
@@ -153,15 +152,15 @@ function RoleSuiteDetailFormContent({
 	groups,
 	canUpdate,
 }: {
-	roleSuite: NonNullable<ReturnType<typeof useRoleSuiteDetail.detail>['roleSuite']>,
-	handlers: ReturnType<typeof useRoleSuiteDetail.handlers>,
-	availableRoles: ReturnType<typeof useRoleSuiteDetail.detail>['availableRoles'],
-	roles: ReturnType<typeof useRoleSuiteDetail.detail>['roles'],
-	formDataRef: React.MutableRefObject<unknown>,
-	orgs: Org[],
-	users: User[],
-	groups: Group[],
-	canUpdate: boolean,
+	roleSuite: NonNullable<ReturnType<typeof useRoleSuiteDetail.detail>['roleSuite']>;
+	handlers: ReturnType<typeof useRoleSuiteDetail.handlers>;
+	availableRoles: ReturnType<typeof useRoleSuiteDetail.detail>['availableRoles'];
+	roles: ReturnType<typeof useRoleSuiteDetail.detail>['roles'];
+	formDataRef: React.MutableRefObject<unknown>;
+	orgs: Org[];
+	users: User[];
+	groups: Group[];
+	canUpdate: boolean;
 }) {
 	return (
 		<>

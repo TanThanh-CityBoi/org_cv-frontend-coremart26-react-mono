@@ -3,8 +3,6 @@ import { useShellEnvVars } from '@nikkierp/shell/config';
 import maplibregl from 'maplibre-gl';
 import { useEffect } from 'react';
 
-import { getMaplibreGlApiKey } from '../../../../../common/helpers';
-
 
 const lightThemeColors = {
 	background: '#e3f2fd',
@@ -17,8 +15,8 @@ const darkThemeColors = {
 };
 
 type MapThemeColors = {
-	background: string,
-	water: string,
+	background: string;
+	water: string;
 };
 
 const mapThemeColors: Record<MantineColorScheme, MapThemeColors> = {
@@ -81,7 +79,7 @@ export function useMapTheme({
 	onThemeUpdated,
 }: UseMapThemeProps) {
 	const envVars = useShellEnvVars();
-	const maplibreGlApiKey = getMaplibreGlApiKey(envVars);
+	const maplibreGlApiKey = envVars.MAPLIBRE_GL_API_KEY || 'get_your_own_OpIi9ZULNHzrESv6T2vL';
 
 	useEffect(() => {
 		if (!mapRef.current) return;

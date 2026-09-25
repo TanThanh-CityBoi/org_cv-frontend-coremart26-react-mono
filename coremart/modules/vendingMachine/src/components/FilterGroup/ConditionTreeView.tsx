@@ -16,12 +16,12 @@ import { FilterConditionNode, FilterConfig, FilterState } from './types';
  * Component hiển thị checkbox filter
  */
 const ConditionCheckbox: React.FC<{
-	nodeId: string,
-	nodeWithId: FilterConditionNode | FilterConfig,
-	operatorValue: any,
-	parentKey?: string,
-	existingFilterValue: FilterState['filter'][0] | undefined,
-	onFilterChange: (nodeId: string, value: any) => void,
+	nodeId: string;
+	nodeWithId: FilterConditionNode | FilterConfig;
+	operatorValue: any;
+	parentKey?: string;
+	existingFilterValue: FilterState['filter'][0] | undefined;
+	onFilterChange: (nodeId: string, value: any) => void;
 }> = ({ nodeId, nodeWithId, operatorValue, parentKey, existingFilterValue, onFilterChange }) => {
 	const isArrayValue = Array.isArray(operatorValue);
 	const filterValue = operatorValue;
@@ -55,11 +55,11 @@ const ConditionCheckbox: React.FC<{
  * Component hiển thị range slider filter
  */
 const ConditionRangeSlider: React.FC<{
-	nodeId: string,
-	displayLabel: string,
-	filterComponent: NonNullable<FilterConditionNode['component']>,
-	currentValue: any,
-	onFilterChange: (nodeId: string, value: any) => void,
+	nodeId: string;
+	displayLabel: string;
+	filterComponent: NonNullable<FilterConditionNode['component']>;
+	currentValue: any;
+	onFilterChange: (nodeId: string, value: any) => void;
 }> = ({ nodeId, displayLabel, filterComponent, currentValue, onFilterChange }) => {
 	const min = filterComponent.min ?? 0;
 	const max = filterComponent.max ?? 100;
@@ -123,17 +123,17 @@ export interface ConditionTreeViewProps {
  * Nếu condition là operator đơn giản, sẽ render dưới dạng checkbox
  */
 const ConditionNode: React.FC<{
-	node: FilterConditionNode | FilterConfig,
-	filterState: FilterState['filter'],
-	onFilterChange: (nodeId: string, value: any) => void,
-	depth?: number,
+	node: FilterConditionNode | FilterConfig;
+	filterState: FilterState['filter'];
+	onFilterChange: (nodeId: string, value: any) => void;
+	depth?: number;
 	parentNode?: {
-		path: string,
-		label: string,
-		operator: string,
-		key: string,
-	},
-	index?: number, // Index của node trong parent
+		path: string;
+		label: string;
+		operator: string;
+		key: string;
+	}
+	index?: number; // Index của node trong parent
 }> = ({ node, filterState, onFilterChange, depth = 0, parentNode, index }) => {
 	if (!node) return null;
 	const [operator, conditionValue] = node.condition;

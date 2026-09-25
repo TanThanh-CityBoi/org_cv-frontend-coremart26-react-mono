@@ -48,7 +48,7 @@ function MediaItemActionsCell({
 	const openPreview = () => onPreview(item);
 	if (readOnly) {
 		return (
-			<Tooltip label={translate('media_playlist.media.preview_modal_title')}>
+			<Tooltip label={translate('coremart.vendingMachine.mediaPlaylist.media.preview_modal_title')}>
 				<ActionIcon
 					variant='subtle'
 					size='sm'
@@ -57,7 +57,7 @@ function MediaItemActionsCell({
 						// onPreviewMediaSelect?.(item);
 						openPreview();
 					}}
-					aria-label={translate('media_playlist.media.preview')}
+					aria-label={translate('coremart.vendingMachine.mediaPlaylist.media.preview')}
 				>
 					<IconEye size={16} />
 				</ActionIcon>
@@ -66,7 +66,7 @@ function MediaItemActionsCell({
 	}
 	return (
 		<Group gap={4} wrap='nowrap'>
-			<Tooltip label={translate('media_playlist.media.edit')}>
+			<Tooltip label={translate('coremart.vendingMachine.mediaPlaylist.media.edit')}>
 				<ActionIcon
 					variant='subtle'
 					size='sm'
@@ -79,7 +79,7 @@ function MediaItemActionsCell({
 					<IconEdit size={16} />
 				</ActionIcon>
 			</Tooltip>
-			<Tooltip label={translate('action.delete')}>
+			<Tooltip label={translate('nikki.general.actions.delete')}>
 				<ActionIcon
 					variant='subtle'
 					color='red'
@@ -159,7 +159,7 @@ export function MediaItem({
 						{...attributes}
 						{...listeners}
 						style={{ cursor: 'grab', touchAction: 'none', display: 'inline-flex' }}
-						aria-label={translate('media_playlist.media.drag_hint')}
+						aria-label={translate('coremart.vendingMachine.mediaPlaylist.media.drag_hint')}
 					>
 						<IconGripVertical size={18} />
 					</div>
@@ -176,8 +176,8 @@ export function MediaItem({
 				<Box style={{ display: 'flex', alignItems: 'center' }}>
 					<Badge color={item.type === 'image' ? 'blue' : 'red'} size='sm'>
 						{item.type === 'image'
-							? translate('media_playlist.media.type.image')
-							: translate('media_playlist.media.type.video')}
+							? translate('coremart.vendingMachine.mediaPlaylist.media.type.image')
+							: translate('coremart.vendingMachine.mediaPlaylist.media.type.video')}
 					</Badge>
 				</Box>
 				<Flex align='center' justify='flex-end' w={40}>

@@ -1,25 +1,22 @@
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
 import React from 'react';
 
-import { eventCrudService } from '../eventService';
-
-import type { Event } from '../types';
-
-
-type GetOneResponse = { item: Event };
+import { VendingMachineDispatch, eventActions, selectEventDetail } from '@/appState';
 
 
 export function useEventDetail(eventId?: string) {
-	const { dispatchMethod, result } = useServiceLayer<GetOneResponse>(eventCrudService.getById);
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
+	const detail = useMicroAppSelector(selectEventDetail);
 
 	React.useEffect(() => {
 		if (eventId) {
-			dispatchMethod({ id: eventId });
+			dispatch(eventActions.getEvent(eventId));
 		}
-	}, [eventId, dispatchMethod]);
+	}, [eventId, dispatch]);
 
 	return {
-		event: result.data?.item,
-		isLoading: result.isPending,
+		event: detail.data,
+		isLoading: detail.status === 'pending' || detail.status === 'idle',
 	};
 }
+

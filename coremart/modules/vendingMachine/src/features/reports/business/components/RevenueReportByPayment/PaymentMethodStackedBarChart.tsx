@@ -3,13 +3,14 @@ import { Card, Group, Progress, Stack, Text, Title } from '@mantine/core';
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { fmtCurrency } from '../../../../../common/helpers';
-import { PaginationConfig } from '../../../../../common/hooks/usePagination';
+import { fmtCurrency } from '@/common/helpers';
+import { PaginationConfig } from '@/common/hooks/usePagination';
 import {
 	TimeRangeSelect,
 	type TimeRangePreset,
 	type TimeRangePresetRange,
-} from '../../../../../components/RangePicker';
+} from '@/components/RangePicker';
+
 import { RevenueReportByPaymentMethod } from '../../type';
 
 
@@ -43,7 +44,7 @@ export function PaymentMethodStackedBarChart({
 	items, totalRevenue,
 	showFilter = false, activePreset, defaultPreset = 'this_month', onFilterChange,
 }: ChartProps): React.ReactElement {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const paymentMethodData = useMemo(() => {
 		return items.slice(0, MAX_DISPLAY).map((item, index) => {
 			return {
@@ -73,24 +74,24 @@ export function PaymentMethodStackedBarChart({
 
 	return (
 		<Card shadow='sm' padding='md' radius='md' withBorder h='max-content' mih={300}>
-			<Stack gap='md'>
-				<Group justify='space-between' align='flex-start'>
-					<Stack gap={4}>
-						<Title order={4} fw={600}>
-							{translate('reports.revenue_by_payment_method.title')}
-						</Title>
-						<Text size='xs' c='dimmed'>
-							{translate('reports.revenue_by_payment_method.stacked_bar_chart_description')}
-						</Text>
-					</Stack>
-					{showFilter && (
-						<TimeRangeSelect
-							value={activePreset}
-							defaultValue={defaultPreset}
-							onChange={onFilterChange}
-						/>
-					)}
-				</Group>
+		<Stack gap='md'>
+			<Group justify='space-between' align='flex-start'>
+				<Stack gap={4}>
+					<Title order={4} fw={600}>
+						{translate('coremart.vendingMachine.reports.revenueByPaymentMethod.title')}
+					</Title>
+					<Text size='xs' c='dimmed'>
+						{translate('coremart.vendingMachine.reports.revenueByPaymentMethod.stackedBarChartDescription')}
+					</Text>
+				</Stack>
+				{showFilter && (
+					<TimeRangeSelect
+						value={activePreset}
+						defaultValue={defaultPreset}
+						onChange={onFilterChange}
+					/>
+				)}
+			</Group>
 				<Stack gap='xs'>
 					{paymentMethodData.map((item, pIndex) => (
 						<Group key={pIndex} justify='space-between' align='center'>
@@ -127,7 +128,7 @@ export function PaymentMethodStackedBarChart({
 				</Progress.Root>
 				{totalRevenue > 0 && (
 					<Text size='xs' c='dimmed' ta='right'>
-						{translate('reports.revenue_report.summary.total_revenue')}: {fmtCurrency(totalRevenue)}
+						{translate('coremart.vendingMachine.reports.revenueReport.summary.totalRevenue')}: {fmtCurrency(totalRevenue)}
 					</Text>
 				)}
 			</Stack>

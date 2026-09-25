@@ -12,12 +12,13 @@ import React, { useMemo, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { useTranslation } from 'react-i18next';
 
-import { fmtCurrency, fmtShortNumber } from '../../../../common/helpers/formartNumber';
+import { fmtCurrency, fmtShortNumber } from '@/common/helpers/formartNumber';
 import {
 	TimeRangeSelect,
 	type TimeRangePreset,
 	type TimeRangePresetRange,
-} from '../../../../components/RangePicker';
+} from '@/components/RangePicker';
+
 import { RevenueReportByHour } from '../type';
 
 
@@ -33,10 +34,10 @@ interface RevenueByHourProps {
 }
 
 function useChartOptions(activeTab: 'revenue' | 'orders') {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
-	const revenueAxisLabel = translate('reports.revenue_report.chart.revenue_axis_label');
-	const ordersAxisLabel = translate('reports.revenue_report.chart.orders_axis_label');
+	const revenueAxisLabel = translate('coremart.vendingMachine.reports.revenueReport.chart.revenueAxisLabel');
+	const ordersAxisLabel = translate('coremart.vendingMachine.reports.revenueReport.chart.ordersAxisLabel');
 
 	const options = useMemo(() => ({
 		responsive: true,
@@ -56,11 +57,11 @@ function useChartOptions(activeTab: 'revenue' | 'orders') {
 						const value = context.parsed.y ?? 0;
 						const formatted = fmtCurrency(value ?? 0);
 						if (activeTab === 'revenue') {
-							return translate('reports.revenue_report.chart.tooltip_revenue_value', {
+							return translate('coremart.vendingMachine.reports.revenueReport.chart.tooltipRevenueValue', {
 								value: formatted,
 							});
 						}
-						return translate('reports.revenue_report.chart.tooltip_orders_value', {
+						return translate('coremart.vendingMachine.reports.revenueReport.chart.tooltipOrdersValue', {
 							value: formatted,
 						});
 					},
@@ -94,13 +95,13 @@ function useChartOptions(activeTab: 'revenue' | 'orders') {
 }
 
 function useChartData(data: RevenueReportByHour[], activeTab: 'revenue' | 'orders') {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const hours = Array.from({ length: 24 }, (_, i) => i);
 	const hourlyDataMap = new Map(data.map((d) => [d.hour, d]));
 
-	const revenueLabel = translate('reports.revenue_report.chart.radio_revenue');
-	const ordersLabel = translate('reports.revenue_report.chart.radio_orders');
+	const revenueLabel = translate('coremart.vendingMachine.reports.revenueReport.chart.radioRevenue');
+	const ordersLabel = translate('coremart.vendingMachine.reports.revenueReport.chart.radioOrders');
 
 	const revenueData = hours.map((hour) => Number(hourlyDataMap.get(hour)?.totalRevenue || 0));
 	const ordersData = hours.map((hour) => Number(hourlyDataMap.get(hour)?.orderCount || 0));
@@ -129,7 +130,7 @@ export function RevenueByHourChart({
 	data, title,
 	showFilter = false, activePreset, defaultPreset = 'this_month', onFilterChange,
 }: RevenueByHourProps): React.ReactElement {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const [activeTab, setActiveTab] = useState<'revenue' | 'orders'>('revenue');
 
 	const chartOptions = useChartOptions(activeTab);
@@ -140,16 +141,16 @@ export function RevenueByHourChart({
 			<Stack gap='md'>
 				<Group justify='space-between' align='center'>
 					<Title order={4} fw={600}>
-						{title ?? translate('reports.revenue_report.chart.by_hour')}
+						{title ?? translate('coremart.vendingMachine.reports.revenueReport.chart.byHour')}
 					</Title>
 					<Group gap='md' align='center'>
 						<Radio.Group value={activeTab} onChange={(value) => setActiveTab(value as 'revenue' | 'orders')}>
 							<Group gap='md'>
 								<Radio value='revenue' label={
-									translate('reports.revenue_report.chart.radio_revenue')
+									translate('coremart.vendingMachine.reports.revenueReport.chart.radioRevenue')
 								} size='xs' />
 								<Radio value='orders' label={
-									translate('reports.revenue_report.chart.radio_orders')
+									translate('coremart.vendingMachine.reports.revenueReport.chart.radioOrders')
 								} size='xs' />
 							</Group>
 						</Radio.Group>

@@ -3,15 +3,15 @@
 	"fields": {
 		"name": {
 			"type": "string",
-			"label": "{ \"$ref\": 'kiosk.fields.name' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.kiosk.fields.name' }"
 		},
 		"code": {
 			"type": "string",
-			"label": "{ \"$ref\": 'kiosk.fields.code' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.kiosk.fields.code' }"
 		},
 		"screenAssignment": {
 			"type": "string",
-			"label": "{ \"$ref\": 'media_playlist.kiosk_list.column_usage' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.mediaPlaylist.kioskList.columnUsage' }"
 		}
 	}
 }

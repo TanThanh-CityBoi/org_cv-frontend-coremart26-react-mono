@@ -6,17 +6,17 @@ import { useTranslation } from 'react-i18next';
 
 export type PreviewDrawerProps = {
 	header?: {
-		title?: React.ReactNode,
-		subtitle?: React.ReactNode,
-		avatar?: React.ReactNode,
-	},
-	opened: boolean,
-	onClose: () => void,
-	onViewDetails?: () => void,
-	drawerProps?: DrawerProps,
-	children: React.ReactNode,
-	isLoading?: boolean,
-	isNotFound?: boolean,
+		title?: React.ReactNode;
+		subtitle?: React.ReactNode;
+		avatar?: React.ReactNode;
+	};
+	opened: boolean;
+	onClose: () => void;
+	onViewDetails?: () => void;
+	drawerProps?: DrawerProps;
+	children: React.ReactNode;
+	isLoading?: boolean;
+	isNotFound?: boolean;
 };
 
 export const PreviewDrawer: React.FC<PreviewDrawerProps> = ({
@@ -29,7 +29,7 @@ export const PreviewDrawer: React.FC<PreviewDrawerProps> = ({
 	isLoading = false,
 	isNotFound = false,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	return (
 		<Drawer.Root
@@ -50,8 +50,8 @@ export const PreviewDrawer: React.FC<PreviewDrawerProps> = ({
 				</Drawer.Header>
 				<Drawer.Body p={{ base: 'md', lg: 'lg' }}>
 					{
-						isLoading ? <Text c='dimmed'>{translate('messages.loading')}</Text> :
-							isNotFound ? <Text c='dimmed'>{translate('messages.not.found')}</Text> :
+						isLoading ? <Text c='dimmed'>{translate('nikki.general.messages.loading')}</Text> :
+							isNotFound ? <Text c='dimmed'>{translate('nikki.general.messages.not_found')}</Text> :
 								children
 					}
 				</Drawer.Body>
@@ -61,13 +61,13 @@ export const PreviewDrawer: React.FC<PreviewDrawerProps> = ({
 };
 
 const Header: React.FC<{
-	title?: React.ReactNode,
-	subtitle?: React.ReactNode,
-	avatar?: React.ReactNode,
+	title?: React.ReactNode;
+	subtitle?: React.ReactNode;
+	avatar?: React.ReactNode;
 	onViewDetails?: () => void,
-	onClose?: () => void,
+	onClose?: () => void
 }> = ({ title = '', subtitle = '', avatar, onViewDetails, onClose }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	return (
 		<Flex gap='md' justify='space-between' wrap='wrap' w={'100%'}>
@@ -102,7 +102,7 @@ const Header: React.FC<{
 						leftSection={<IconExternalLink size={16} />}
 						onClick={onViewDetails}
 					>
-						{translate('action.viewDetails')}
+						{translate('nikki.general.actions.viewDetails')}
 					</Button>
 				)}
 				<Button

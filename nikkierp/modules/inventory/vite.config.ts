@@ -1,5 +1,4 @@
 /// <reference types="vite/client" />
-/// <reference types="vitest" />
 
 import path from 'path';
 

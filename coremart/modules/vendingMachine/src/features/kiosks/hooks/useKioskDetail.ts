@@ -1,23 +1,22 @@
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
 import React from 'react';
 
-import { kioskCrudService } from '../kioskService';
-
-import type { Kiosk } from '../types';
+import { VendingMachineDispatch, kioskActions, selectKioskDetail } from '@/appState';
 
 
 export function useKioskDetail(kioskId?: string) {
-	const { dispatchMethod, result } = useServiceLayer<Kiosk>(kioskCrudService.getById);
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
+	const detail = useMicroAppSelector(selectKioskDetail);
 
 	React.useEffect(() => {
 		if (kioskId) {
-			dispatchMethod({ id: kioskId });
+			dispatch(kioskActions.getKiosk(kioskId));
 		}
-	}, [kioskId, dispatchMethod]);
+	}, [kioskId, dispatch]);
 
 	return {
-		// `useServiceLayer` yields `null` before the first call; consumers expect `undefined`.
-		kiosk: result.data ?? undefined,
-		isLoading: result.isPending || result.doneAt == null,
+		kiosk: detail.data,
+		isLoading: detail.status === 'pending' || detail.status === 'idle',
 	};
 }
+

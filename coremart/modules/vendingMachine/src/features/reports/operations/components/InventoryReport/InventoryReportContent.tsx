@@ -8,7 +8,7 @@ import type { InventoryReportAppliedFilters } from './type';
 
 
 type InventoryReportContentProps = {
-	applied: InventoryReportAppliedFilters,
+	applied: InventoryReportAppliedFilters;
 };
 
 export function InventoryReportContent({ applied }: InventoryReportContentProps): React.ReactElement {

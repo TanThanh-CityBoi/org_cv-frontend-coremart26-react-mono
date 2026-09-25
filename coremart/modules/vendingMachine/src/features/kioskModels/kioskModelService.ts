@@ -1,25 +1,64 @@
-import { storeService } from '@nikkierp/ui/appState/store';
+import * as request from '@nikkierp/common/request';
+import { snakeToCamelObject, camelToSnakeObject, cleanEmptyString } from '@nikkierp/common/utils';
 
-import { OrgScopedCrudService } from '../../common/service';
-import { KIOSK_MODEL_SCHEMA_NAME, VENDING_MACHINE_MODULE } from '../../constants';
-import { vendingMachineStore } from '../../store';
+import { buildFieldsQuery, buildSearchParams } from '@/common/helpers';
+import { KioskModel } from '@/features/kioskModels/types';
+
+import { KioskModelCreatePayload } from './hooks/useKioskModelCreate';
+import { KioskModelUpdatePayload } from './hooks/useKioskModelEdit';
+
+import type {
+	RestCreateResponse,
+	RestUpdateResponse,
+	RestDeleteResponse,
+	PagedSearchResponse,
+	SearchParams,
+	RestArchiveResponse,
+} from '@/types';
 
 
-/**
- * CRUD over `vending_machine_kiosk_model`.
- *
- * A flat resource with no custom endpoints, so all ten operations come from
- * {@link OrgScopedCrudService} by inheritance and nothing needs declaring.
- *
- * Named `kioskModelCrudService` for the duration of the migration: the legacy object literal
- * in `kioskModelService.ts` still owns the plain name while other call sites depend on it.
- * Rename once that file is gone.
- */
-@storeService('KioskModelService', vendingMachineStore)
-export class KioskModelService extends OrgScopedCrudService {
-	public constructor() {
-		super({ moduleName: VENDING_MACHINE_MODULE, schemaName: KIOSK_MODEL_SCHEMA_NAME });
-	}
-}
+const BASE_PATH = 'vending-machine/kiosk-models';
 
-export const kioskModelCrudService = new KioskModelService();
+
+export const kioskModelService = {
+	async searchKioskModels(params?: SearchParams<KioskModel>): Promise<PagedSearchResponse<KioskModel>> {
+		const result = await request.get<any>(BASE_PATH, {
+			searchParams: buildSearchParams<KioskModel>(params),
+		});
+		return snakeToCamelObject(result) as PagedSearchResponse<KioskModel>;
+	},
+
+	async getKioskModel(id: string, fields?: Array<keyof KioskModel>): Promise<KioskModel> {
+		const result = await request.get<any>(`${BASE_PATH}/${id}`, {
+			searchParams: buildFieldsQuery<KioskModel>(fields ?? []),
+		});
+		return snakeToCamelObject(result) as KioskModel;
+	},
+
+	async createKioskModel(body: KioskModelCreatePayload): Promise<RestCreateResponse> {
+		const cleanedBody = cleanEmptyString(body);
+		const snakeBody = camelToSnakeObject(cleanedBody);
+
+		const result = await request.post<any>(BASE_PATH, { json: snakeBody });
+		return snakeToCamelObject(result) as RestCreateResponse;
+	},
+
+	async updateKioskModel({ id, body }: KioskModelUpdatePayload): Promise<RestUpdateResponse> {
+		const cleanedBody = cleanEmptyString(body);
+		const snakeBody = camelToSnakeObject(cleanedBody);
+
+		const result = await request.put<any>(`${BASE_PATH}/${id}`, { json: snakeBody });
+		return snakeToCamelObject(result) as RestUpdateResponse;
+	},
+
+	async setArchivedKioskModel(id: string, body: { etag: string, isArchived: boolean }): Promise<RestArchiveResponse> {
+		const snakeBody = camelToSnakeObject(body);
+		const result = await request.post<any>(`${BASE_PATH}/${id}/archived`, { json: snakeBody });
+		return snakeToCamelObject(result) as RestArchiveResponse;
+	},
+
+	async deleteKioskModel(id: string): Promise<RestDeleteResponse> {
+		const result = await request.del<any>(`${BASE_PATH}/${id}`);
+		return snakeToCamelObject(result) as RestDeleteResponse;
+	},
+};

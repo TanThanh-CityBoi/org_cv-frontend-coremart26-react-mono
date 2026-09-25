@@ -1,23 +1,32 @@
 import {
-	Box, Button, Divider, Flex, Group,
+	Box,
+	Button,
+	Divider,
+	Flex, Group,
+	useMantineColorScheme, useMantineTheme,
 } from '@mantine/core';
-import { useActiveOrgModule } from '@nikkierp/shell/routing';
-import { usePaperBgColor } from '@nikkierp/ui/theme';
+import { useActiveOrgModule } from '@nikkierp/ui/appState/routingSlice';
 import { IconCategoryFilled } from '@tabler/icons-react';
 import clsx from 'clsx';
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router';
 
+
+
+import { MenuBar, MenuBarDrawer } from '@/components/MenuBar';
+import { ModuleSwitchDropdown } from '@/components/ModuleSwitch';
+import { NotificationDropdown } from '@/components/NotificationDropdown';
+import { OrgSwitchDropdown } from '@/components/OrgSwitch';
+import { ProfileMenuDrawer, ProfileMenuDropdown } from '@/components/ProfileMenu';
+
 import classes from './PrivateLayout.module.css';
-import { MenuBar, MenuBarDrawer } from '../../components/MenuBar';
-import { ModuleSwitchDropdown } from '../../components/ModuleSwitch';
-import { NotificationDropdown } from '../../components/NotificationDropdown';
-import { OrgSwitchDropdown } from '../../components/OrgSwitch';
-import { ProfileMenuDrawer, ProfileMenuDropdown } from '../../components/ProfileMenu';
+
 
 
 export const Header: React.FC = () => {
-	const bg = usePaperBgColor();
+	const { colorScheme } = useMantineColorScheme();
+	const theme = useMantineTheme();
+	const bg = colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0];
 
 	const { pathname } = useLocation();
 	const { orgSlug } = useActiveOrgModule();

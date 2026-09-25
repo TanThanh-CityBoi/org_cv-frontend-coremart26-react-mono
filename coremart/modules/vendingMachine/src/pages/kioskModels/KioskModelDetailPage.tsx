@@ -3,16 +3,16 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
 
-import { ControlPanel } from '../../components';
-import { DetailLayout } from '../../components/DetailLayout';
-import { PageContainer } from '../../components/PageContainer';
-import { useKioskModelDetail } from '../../features/kioskModels';
+import { ControlPanel } from '@/components';
+import { DetailLayout } from '@/components/DetailLayout';
+import { PageContainer } from '@/components/PageContainer';
+import { useKioskModelDetail } from '@/features/kioskModels';
 import {
 	KioskModelDetailTabId,
 	useKioskModelDetailPageConfig,
 	KioskModelDetailTabControlProvider,
-} from '../../features/kioskModels/components/KioskModelDetail';
-import { KioskModelNotFound } from '../../features/kioskModels/components/KioskModelNotFound';
+} from '@/features/kioskModels/components/KioskModelDetail';
+import { KioskModelNotFound } from '@/features/kioskModels/components/KioskModelNotFound';
 
 
 export const KioskModelDetailPage: React.FC = () => {
@@ -25,13 +25,13 @@ export const KioskModelDetailPage: React.FC = () => {
 
 const KioskModelDetailPageContent: React.FC = () => {
 	const { id } = useParams<{ id: string }>();
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const { model, isLoading } = useKioskModelDetail(id);
 	const { breadcrumbs, actions, tabs, activeTab, onTabChange } = useKioskModelDetailPageConfig({ model });
 
 	return (
 		<PageContainer
-			documentTitle={model?.name ?? translate('kiosk_models.detail.title')}
+			documentTitle={model?.name ?? translate('coremart.vendingMachine.kioskModels.detail.title')}
 			breadcrumbs={breadcrumbs}
 			sections={[<ControlPanel actions={actions} />]}
 			isLoading={isLoading && !model}

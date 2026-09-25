@@ -2,27 +2,30 @@
 import { Space } from '@mantine/core';
 import { DateValue, DatesRangeValue } from '@mantine/dates';
 import { notifications } from '@mantine/notifications';
+import { useMicroAppDispatch } from '@nikkierp/ui/microApp';
 import { IconAlertCircle } from '@tabler/icons-react';
 import dayjs from 'dayjs';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router';
 
-import { getOutermostVerticalScrollParent } from '../../common/helpers';
-import { StickyFilterBar, type ControlPanelFilterConfig } from '../../components';
-import { PageContainer } from '../../components/PageContainer';
-import { useRevenueReportKioskOptions } from '../../features/reports/business';
-import { RevenueReportSwitcher } from '../../features/reports/business/components';
+import { type VendingMachineDispatch, revenueReportActions } from '@/appState';
+import { getOutermostVerticalScrollParent } from '@/common/helpers';
+import { StickyFilterBar, type ControlPanelFilterConfig } from '@/components';
+import { PageContainer } from '@/components/PageContainer';
+import { useRevenueReportKioskOptions } from '@/features/reports/business';
+import { RevenueReportSwitcher } from '@/features/reports/business/components';
 import {
 	parseRevenueReportTypeFromUrl,
 	REVENUE_REPORT_TYPE,
 	type RevenueReportFilters,
 	type RevenueReportTypeKey,
-} from '../../features/reports/business/components/RevenueReportSwitcher';
+} from '@/features/reports/business/components/RevenueReportSwitcher';
 
 
 export const RevenueReportPage: React.FC = () => {
-	const { t: translate } = useTranslation('vending_machine');
+	const dispatch = useMicroAppDispatch() as VendingMachineDispatch;
+	const { t: translate } = useTranslation();
 	const [searchParams, setSearchParams] = useSearchParams();
 
 	const reportSectionRef = useRef<HTMLDivElement>(null);
@@ -60,7 +63,7 @@ export const RevenueReportPage: React.FC = () => {
 	const [draftReportType, setDraftReportType] = useState<RevenueReportTypeKey>(urlReportType);
 	const [draftDateRange, setDraftDateRange] = useState<DatesRangeValue<DateValue> | undefined>(defaultRange);
 	const [draftKioskIds, setDraftKioskIds] = useState<string[]>([]);
-	const [draftTimeSlot, setDraftTimeSlot] = useState<{ from: string | null, to: string | null }>({
+	const [draftTimeSlot, setDraftTimeSlot] = useState<{ from: string | null; to: string | null }>({
 		from: null,
 		to: null,
 	});
@@ -78,12 +81,12 @@ export const RevenueReportPage: React.FC = () => {
 				setDraftReportType(next ?? REVENUE_REPORT_TYPE.OVERVIEW);
 			},
 			options: [
-				{ value: REVENUE_REPORT_TYPE.OVERVIEW, label: translate('reports.revenue_report.type_overview') },
-				{ value: REVENUE_REPORT_TYPE.BY_KIOSK, label: translate('reports.revenue_report.type_by_kiosk') },
-				{ value: REVENUE_REPORT_TYPE.BY_PAYMENT, label: translate('reports.revenue_report.type_by_payment') },
-				{ value: REVENUE_REPORT_TYPE.BY_PRODUCT, label: translate('reports.revenue_report.type_by_product') },
+				{ value: REVENUE_REPORT_TYPE.OVERVIEW, label: translate('coremart.vendingMachine.reports.revenueReport.typeOverview') },
+				{ value: REVENUE_REPORT_TYPE.BY_KIOSK, label: translate('coremart.vendingMachine.reports.revenueReport.typeByKiosk') },
+				{ value: REVENUE_REPORT_TYPE.BY_PAYMENT, label: translate('coremart.vendingMachine.reports.revenueReport.typeByPayment') },
+				{ value: REVENUE_REPORT_TYPE.BY_PRODUCT, label: translate('coremart.vendingMachine.reports.revenueReport.typeByProduct') },
 			],
-			placeholder: translate('reports.revenue_report.report_type'),
+			placeholder: translate('coremart.vendingMachine.reports.revenueReport.reportType'),
 			clearable: false,
 			includeInActiveSummary: false,
 			clearWithClearAll: false,
@@ -97,7 +100,7 @@ export const RevenueReportPage: React.FC = () => {
 			searchValue: kioskSearch,
 			onSearchChange: setKioskSearch,
 			options: kioskOptions,
-			placeholder: translate('reports.filter_bar.kiosk_placeholder'),
+			placeholder: translate('coremart.vendingMachine.reports.filterBar.kioskPlaceholder'),
 			clearable: true,
 			minWidth: 280,
 		},
@@ -106,7 +109,7 @@ export const RevenueReportPage: React.FC = () => {
 			type: 'dateRange',
 			value: draftDateRange,
 			onChange: setDraftDateRange,
-			placeholder: translate('common.date_picker.select_date_range'),
+			placeholder: translate('coremart.vendingMachine.common.datePicker.selectDateRange'),
 			clearable: true,
 		},
 		{
@@ -150,14 +153,12 @@ export const RevenueReportPage: React.FC = () => {
 	const handleApply = React.useCallback(() => {
 		scrollAfterApplyRef.current = true;
 		const kioskIds = [...new Set(draftKioskIds.filter(Boolean))];
-		// The old `revenueReportActions.setReportKioskIds` dispatch is gone with the slice —
-		// nothing ever read `reportKioskIds`. The deduped ids still go into `filters` below,
-		// which is what each report hook actually reads.
+		dispatch(revenueReportActions.setReportKioskIds(kioskIds));
 
 		if(!draftDateRange || !draftDateRange[0] || !draftDateRange[1]) {
 			notifications.show({
-				title: translate('common.date_picker.select_date_range'),
-				message: translate('common.date_picker.select_date_range_hint'),
+				title: translate('coremart.vendingMachine.common.datePicker.selectDateRange'),
+				message: translate('coremart.vendingMachine.common.datePicker.selectDateRangeHint'),
 				color: 'yellow',
 				icon: <IconAlertCircle size={16} />,
 				loading: false,
@@ -176,12 +177,12 @@ export const RevenueReportPage: React.FC = () => {
 			next.set('type', draftReportType);
 			return next;
 		}, { replace: true });
-	}, [draftReportType, draftDateRange, draftKioskIds, draftTimeSlot, setSearchParams]);
+	}, [dispatch, draftReportType, draftDateRange, draftKioskIds, draftTimeSlot, setSearchParams]);
 
 	return (
-		<PageContainer documentTitle={translate('reports.revenue.title')}>
+		<PageContainer documentTitle={translate('coremart.vendingMachine.reports.revenue.title')}>
 			<StickyFilterBar
-				title={translate('menu.revenue_report')}
+				title={translate('coremart.vendingMachine.menu.revenue_report')}
 				filters={filterConfigs} handleApply={handleApply}
 			/>
 			<Space h='md' />

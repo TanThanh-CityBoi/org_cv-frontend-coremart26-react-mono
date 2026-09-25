@@ -1,3 +1,2 @@
-export * from './types';
-export * from './userService';
-export * from './commands';
+export { actions, reducer } from './userSlice';
+

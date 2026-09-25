@@ -14,7 +14,7 @@ import {
 	REPORT_PALETTE_BORDERS,
 	REPORT_PALETTE_FILLS,
 	reportPaletteKeyAt,
-} from '../../../../../components/reportChartTheme';
+} from '@/components/reportChartTheme';
 
 import type { MethodRefundRateRow } from './type';
 
@@ -22,12 +22,12 @@ import type { MethodRefundRateRow } from './type';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 type RefundMethodRateChartProps = {
-	rows: MethodRefundRateRow[],
-	title?: string,
+	rows: MethodRefundRateRow[];
+	title?: string;
 };
 
 export function RefundMethodRateChart({ rows, title }: RefundMethodRateChartProps): React.ReactElement {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const nf = useMemo(() => new Intl.NumberFormat('vi-VN'), []);
 
@@ -89,7 +89,7 @@ export function RefundMethodRateChart({ rows, title }: RefundMethodRateChartProp
 						{title ?? ''}
 					</Title>
 					<Text size='xs' c='dimmed' maw={360}>
-						{translate('reports.refund_report.charts.method_rate_hint')}
+						{translate('coremart.vendingMachine.reports.refundReport.charts.methodRateHint')}
 					</Text>
 				</Group>
 				<div style={{ height: 300, position: 'relative' }}>

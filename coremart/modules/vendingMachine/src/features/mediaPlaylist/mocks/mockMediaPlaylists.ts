@@ -88,9 +88,9 @@ export const mockMediaPlaylists = {
 		return mockMediaPlaylistsData.find((s) => s.id === id);
 	},
 	async createMediaPlaylist(playlist: {
-		name: string,
-		scopeType: ResourceScopeType,
-		scopeRef?: string | null,
+		name: string;
+		scopeType: ResourceScopeType;
+		scopeRef?: string | null;
 	}): Promise<Playlist> {
 		await delay(500);
 		const newPlaylist: Playlist = {

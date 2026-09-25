@@ -1,23 +1,26 @@
 import { Card, Title } from '@mantine/core';
+import { Chart } from 'react-chartjs-2';
 import {
-	Chart as ChartJS,
-	CategoryScale,
-	LinearScale,
-	BarElement,
-	LineElement,
-	PointElement,
-	BarController,
-	LineController,
-	Tooltip,
-	Legend,
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  LineElement,
+  PointElement,
+  BarController,
+  LineController,
+  Tooltip,
+  Legend,
 } from 'chart.js';
+
+
 import { TFunction } from 'i18next';
 import React, { useMemo } from 'react';
-import { Chart } from 'react-chartjs-2';
 import { Line } from 'react-chartjs-2';
 import { useTranslation } from 'react-i18next';
 
-import { GroupTime } from '../../../../../types';
+import { GroupTime } from '@/types';
+
 import { type KioskStateAnalytic } from '../../type';
 
 
@@ -31,8 +34,8 @@ ChartJS.register(
 	BarController,
 	LineController,
 	Tooltip,
-	Legend,
-);
+	Legend
+  );
 
 interface KioskAnalyticsChartProps {
 	analytics: KioskStateAnalytic[];
@@ -53,12 +56,12 @@ function createDataset(
 	backgroundColor: string,
 	yAxisID: string,
 ): {
-	label: string,
-	data: number[],
-	borderColor: string,
-	backgroundColor: string,
-	yAxisID: string,
-	tension: number,
+	label: string;
+	data: number[];
+	borderColor: string;
+	backgroundColor: string;
+	yAxisID: string;
+	tension: number;
 } {
 	return { label, data, borderColor, backgroundColor, yAxisID, tension: 0.4 };
 }
@@ -68,25 +71,25 @@ const convertToDataset = (analytics: KioskStateAnalytic[], translate: TFunction)
 	const labels = analytics.map(a => formatBucketLabel(a.bucketTime, bucketType));
 
 	const y1Dataset = createDataset(
-		translate('overview.operation_params.energy'),
+		translate('coremart.vendingMachine.overview.operationParams.energy'),
 		analytics.map(a => a.energyDelta),
 		'rgba(34, 197, 94, 1)',
 		'rgba(34, 197, 94, 0.6)',
 		'y1',
 	);
-
+	
 	return {
 		labels,
 		datasets: [
 			createDataset(
-				translate('overview.operation_params.temperature'),
+				translate('coremart.vendingMachine.overview.operationParams.temperature'),
 				analytics.map(a => a.temperature),
 				'rgba(239, 68, 68, 1)',
 				'rgba(239, 68, 68, 0.1)',
 				'y',
 			),
 			createDataset(
-				translate('overview.operation_params.humidity'),
+				translate('coremart.vendingMachine.overview.operationParams.humidity'),
 				analytics.map(a => a.humidity),
 				'rgba(59, 130, 246, 1)',
 				'rgba(59, 130, 246, 0.1)',
@@ -116,7 +119,7 @@ const getChartOptions = (translate: TFunction) => ({
 			position: 'left' as const,
 			title: {
 				display: true,
-				text: translate('overview.operation_params.temperature_humidity'),
+				text: translate('coremart.vendingMachine.overview.operationParams.temperatureHumidity'),
 			},
 		},
 		y1: {
@@ -126,14 +129,14 @@ const getChartOptions = (translate: TFunction) => ({
 			grid: { drawOnChartArea: false },
 			title: {
 				display: true,
-				text: translate('overview.operation_params.energy'),
+				text: translate('coremart.vendingMachine.overview.operationParams.energy'),
 			},
 		},
 	},
 });
 
 export function KioskAnalyticsChart({ analytics }: KioskAnalyticsChartProps): React.ReactElement {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const data = useMemo(() => convertToDataset(analytics, translate), [analytics, translate]);
 	const options = getChartOptions(translate);
@@ -141,7 +144,7 @@ export function KioskAnalyticsChart({ analytics }: KioskAnalyticsChartProps): Re
 	return (
 		<Card shadow='sm' padding='lg' radius='md' withBorder>
 			<Title order={4} mb='md'>
-				{translate('overview.operation_params.title')}
+				{translate('coremart.vendingMachine.overview.operationParams.title')}
 			</Title>
 			<div style={{ height: '350px', position: 'relative' }}>
 				<Chart type='line' data={data} options={options} />

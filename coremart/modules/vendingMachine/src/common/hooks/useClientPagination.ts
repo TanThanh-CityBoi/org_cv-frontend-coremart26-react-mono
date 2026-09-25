@@ -2,18 +2,18 @@ import React, { useMemo } from 'react';
 
 
 export type ClientPaginationConfig = {
-	page: number,
-	pageSize: number,
-	totalPages: number,
-	totalItems: number,
-	onPageChange: (page: number) => void,
-	onPageSizeChange: (value: string | null) => void,
+	page: number;
+	pageSize: number;
+	totalPages: number;
+	totalItems: number;
+	onPageChange: (page: number) => void;
+	onPageSizeChange: (value: string | null) => void;
 };
 
 export type UseClientPaginationOptions = {
-	fallbackPageSize?: number,
+	fallbackPageSize?: number;
 	/** When this value changes, page resets to 1. */
-	resetKey?: unknown,
+	resetKey?: unknown;
 };
 
 /**

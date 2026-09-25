@@ -12,21 +12,21 @@ import React, { useMemo } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { useTranslation } from 'react-i18next';
 
-import { fmtCurrency, fmtShortNumber } from '../../../../../common/helpers';
+import { fmtCurrency, fmtShortNumber } from '@/common/helpers';
 
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 export type ProductRevenueRow = {
-	productLabel: string,
-	revenue: number,
+	productLabel: string;
+	revenue: number;
 };
 
 type ProductRevenueBarChartProps = {
-	data: readonly ProductRevenueRow[],
+	data: readonly ProductRevenueRow[];
 	/** Highest-ranked products shown (extra rows are ignored). Default 15. */
-	maxItems?: number,
-	title?: string,
+	maxItems?: number;
+	title?: string;
 };
 
 export function ProductRevenueBarChart({
@@ -34,7 +34,7 @@ export function ProductRevenueBarChart({
 	maxItems = 15,
 	title,
 }: ProductRevenueBarChartProps): React.ReactElement {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const chartRows = useMemo(() => {
 		return [...data]
@@ -42,8 +42,8 @@ export function ProductRevenueBarChart({
 			.slice(0, maxItems);
 	}, [data, maxItems]);
 
-	const tooltipRevenueAxis = translate('reports.revenue_report.chart.revenue_axis_short');
-	const revenueAxisLabel = translate('reports.revenue_report.chart.revenue_axis_label');
+	const tooltipRevenueAxis = translate('coremart.vendingMachine.reports.revenueReport.chart.revenueAxisShort');
+	const revenueAxisLabel = translate('coremart.vendingMachine.reports.revenueReport.chart.revenueAxisLabel');
 
 	const chartData = useMemo(() => ({
 		labels: chartRows.map((d) =>

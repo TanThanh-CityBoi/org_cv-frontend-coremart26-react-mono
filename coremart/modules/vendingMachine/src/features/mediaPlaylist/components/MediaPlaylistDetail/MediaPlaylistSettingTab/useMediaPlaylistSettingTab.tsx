@@ -1,5 +1,5 @@
 /* eslint-disable max-lines-per-function */
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
+import { useMicroAppDispatch } from '@nikkierp/ui/microApp';
 import {
 	IconArchive,
 	IconDeviceFloppy,
@@ -12,13 +12,14 @@ import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
-import { ControlPanelProps } from '../../../../../components/ControlPanel/ControlPanel';
-import { usePlaylistArchive } from '../../../hooks/usePlaylistArchive';
-import { usePlaylistDelete } from '../../../hooks/usePlaylistDelete';
-import { mediaPlaylistCrudService } from '../../../mediaPlaylistCrudService';
+import { mediaPlaylistActions, VendingMachineDispatch } from '@/appState';
+import { ControlPanelProps } from '@/components/ControlPanel/ControlPanel';
+import { usePlaylistArchive } from '@/features/mediaPlaylist/hooks/usePlaylistArchive';
+import { usePlaylistDelete } from '@/features/mediaPlaylist/hooks/usePlaylistDelete';
+
 import { useRegisterMediaPlaylistDetailTab } from '../mediaPlaylistDetailTabControl';
 
-import type { Playlist } from '../../../types';
+import type { Playlist } from '@/features/mediaPlaylist/types';
 
 
 
@@ -36,14 +37,14 @@ function buildToolbarActions(
 ): ControlPanelProps['actions'] {
 	const primary = !isEditing
 		? [{
-			label: translate('action.edit'),
+			label: translate('nikki.general.actions.edit'),
 			leftSection: <IconEdit size={16} />,
 			onClick: onEdit,
 			type: 'button' as const,
 			variant: 'filled' as const,
 		}]
 		: [{
-			label: translate('action.save'),
+			label: translate('nikki.general.actions.save'),
 			leftSection: <IconDeviceFloppy size={16} />,
 			onClick: onSave,
 			type: 'button' as const,
@@ -51,7 +52,7 @@ function buildToolbarActions(
 			disabled: isSubmitting,
 			loading: isSubmitting,
 		}, {
-			label: translate('action.cancel'),
+			label: translate('nikki.general.actions.cancel'),
 			leftSection: <IconX size={16} />,
 			onClick: onCancel,
 			type: 'button' as const,
@@ -61,7 +62,7 @@ function buildToolbarActions(
 
 	const archiveAction = playlist.isArchived
 		? {
-			label: translate('action.restore'),
+			label: translate('nikki.general.actions.restore'),
 			leftSection: <IconRestore size={16} />,
 			onClick: onRestore,
 			type: 'button' as const,
@@ -69,7 +70,7 @@ function buildToolbarActions(
 			disabled: isSubmitting || isEditing,
 		}
 		: {
-			label: translate('action.archive'),
+			label: translate('nikki.general.actions.archive'),
 			leftSection: <IconArchive size={16} />,
 			onClick: onArchive,
 			type: 'button' as const,
@@ -82,7 +83,7 @@ function buildToolbarActions(
 		...primary,
 		archiveAction,
 		{
-			label: translate('action.delete'),
+			label: translate('nikki.general.actions.delete'),
 			leftSection: <IconTrash size={16} />,
 			onClick: onDelete,
 			type: 'button' as const,
@@ -94,25 +95,25 @@ function buildToolbarActions(
 }
 
 export type useMediaPlaylistSettingTabParams = {
-	playlist?: Playlist,
-	onSave: () => void | Promise<void>,
-	isSubmitting: boolean,
+	playlist?: Playlist;
+	onSave: () => void | Promise<void>;
+	isSubmitting: boolean;
 };
 
 export type useMediaPlaylistSettingTabReturn = {
-	isEditing: boolean,
-	setIsEditing: (value: boolean) => void,
-	formResetNonce: number,
-	isSubmitting: boolean,
-	onSaveClick: () => void,
-	closeDeleteModal: () => void,
-	confirmDelete: () => void,
-	isOpenDeleteModal: boolean,
-	isOpenArchiveModal: boolean,
-	pendingArchive: { playlist: Playlist, targetArchived: boolean } | null,
-	handleConfirmArchive: () => void,
-	handleCloseArchiveModal: () => void,
-	playlistForDelete: Playlist | null,
+	isEditing: boolean;
+	setIsEditing: (value: boolean) => void;
+	formResetNonce: number;
+	isSubmitting: boolean;
+	onSaveClick: () => void;
+	closeDeleteModal: () => void;
+	confirmDelete: () => void;
+	isOpenDeleteModal: boolean;
+	isOpenArchiveModal: boolean;
+	pendingArchive: { playlist: Playlist; targetArchived: boolean } | null;
+	handleConfirmArchive: () => void;
+	handleCloseArchiveModal: () => void;
+	playlistForDelete: Playlist | null;
 };
 
 export function useMediaPlaylistSettingTab({
@@ -120,18 +121,18 @@ export function useMediaPlaylistSettingTab({
 	onSave,
 	isSubmitting,
 }: useMediaPlaylistSettingTabParams): useMediaPlaylistSettingTabReturn {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const navigate = useNavigate();
 	const [isEditing, setIsEditing] = useState(false);
-	const { dispatchMethod: refetchPlaylist } = useServiceLayer(mediaPlaylistCrudService.getById);
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
 
 	const [formResetNonce, setFormResetNonce] = useState(0);
 
 	const onArchiveSuccess = useCallback(() => {
 		if (playlist?.id) {
-			refetchPlaylist({ id: playlist.id });
+			dispatch(mediaPlaylistActions.getMediaPlaylist(playlist.id));
 		}
-	}, [playlist?.id, refetchPlaylist]);
+	}, [playlist?.id, dispatch]);
 
 	const {
 		handleConfirmArchive,

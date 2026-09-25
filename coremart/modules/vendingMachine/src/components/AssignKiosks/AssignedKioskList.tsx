@@ -4,27 +4,27 @@ import { IconDeviceDesktop, IconMapPin, IconPlus, IconTrash } from '@tabler/icon
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Kiosk, KioskMode } from '../../features/kiosks/types';
-import { ArchivedStatusBadge } from '../ArchivedStatusBadge';
+import { ArchivedStatusBadge } from '@/components/ArchivedStatusBadge';
+import { Kiosk, KioskMode } from '@/features/kiosks/types';
 
 
 const DEFAULT_I18N = {
-	addKiosks: 'assigned_kiosk_list.add_kiosks',
-	empty: 'assigned_kiosk_list.empty',
+	addKiosks: 'coremart.vendingMachine.assignedKioskList.addKiosks',
+	empty: 'coremart.vendingMachine.assignedKioskList.empty',
 } as const;
 
 export type AssignedKioskListTranslationKeys = {
-	addKiosks: string,
-	empty: string,
+	addKiosks: string;
+	empty: string;
 };
 
 /** Danh sách kiosk gán cho một đối tượng (sự kiện, cài đặt kiosk, …). */
 export type AssignedKioskListProps = {
-	kiosks: Kiosk[],
-	onAddKiosks?: () => void,
-	onRemoveKiosk?: (kioskId: string) => void,
+	kiosks: Kiosk[];
+	onAddKiosks?: () => void;
+	onRemoveKiosk?: (kioskId: string) => void;
 	/** Mặc định dùng `assignedKioskList.*`; có thể override (ví dụ events dùng `events.selectKiosks.addKiosks`). */
-	translationKeys?: Partial<AssignedKioskListTranslationKeys>,
+	translationKeys?: Partial<AssignedKioskListTranslationKeys>;
 };
 
 export const AssignedKioskList: React.FC<AssignedKioskListProps> = ({
@@ -33,15 +33,15 @@ export const AssignedKioskList: React.FC<AssignedKioskListProps> = ({
 	onRemoveKiosk,
 	translationKeys,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const keys = { ...DEFAULT_I18N, ...translationKeys };
 
 	const getModeBadge = (mode: KioskMode | null | undefined) => {
 		if (mode == null) return <Badge color='gray' size='sm'>—</Badge>;
-		const modeMap: Partial<Record<KioskMode, { color: string, label: string }>> = {
-			[KioskMode.PENDING]: { color: 'yellow', label: translate('kiosk.mode.pending') },
-			[KioskMode.SELLING]: { color: 'blue', label: translate('kiosk.mode.selling') },
-			[KioskMode.SLIDESHOW_ONLY]: { color: 'purple', label: translate('kiosk.mode.slideshow_only') },
+		const modeMap: Partial<Record<KioskMode, { color: string; label: string }>> = {
+			[KioskMode.PENDING]: { color: 'yellow', label: translate('coremart.vendingMachine.kiosk.mode.pending') },
+			[KioskMode.SELLING]: { color: 'blue', label: translate('coremart.vendingMachine.kiosk.mode.selling') },
+			[KioskMode.SLIDESHOW_ONLY]: { color: 'purple', label: translate('coremart.vendingMachine.kiosk.mode.slideshowOnly') },
 		};
 		const modeInfo = modeMap[mode] ?? { color: 'gray', label: String(mode) };
 		return <Badge color={modeInfo.color} size='sm' variant='light'>{modeInfo.label}</Badge>;
@@ -68,11 +68,11 @@ export const AssignedKioskList: React.FC<AssignedKioskListProps> = ({
 				<Table striped highlightOnHover>
 					<Table.Thead>
 						<Table.Tr>
-							<Table.Th>{translate('kiosk.fields.code')}</Table.Th>
-							<Table.Th>{translate('kiosk.fields.name')}</Table.Th>
-							<Table.Th>{translate('kiosk.fields.address')}</Table.Th>
-							<Table.Th>{translate('kiosk.fields.status')}</Table.Th>
-							<Table.Th>{translate('kiosk.fields.mode')}</Table.Th>
+							<Table.Th>{translate('coremart.vendingMachine.kiosk.fields.code')}</Table.Th>
+							<Table.Th>{translate('coremart.vendingMachine.kiosk.fields.name')}</Table.Th>
+							<Table.Th>{translate('coremart.vendingMachine.kiosk.fields.address')}</Table.Th>
+							<Table.Th>{translate('coremart.vendingMachine.kiosk.fields.status')}</Table.Th>
+							<Table.Th>{translate('coremart.vendingMachine.kiosk.fields.mode')}</Table.Th>
 							{onRemoveKiosk && <Table.Th style={{ width: 50 }}></Table.Th>}
 						</Table.Tr>
 					</Table.Thead>

@@ -6,15 +6,15 @@ import { TFunction } from 'i18next';
 import React, { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { catalogById } from './eventStock.helpers';
-import { asLegacyModelSchema, getLocalizedName } from '../../../../../common/helpers';
-import { PaginationConfig } from '../../../../../common/hooks';
-import { TableAction, TableContainer, TablePagination, type TableActionItem } from '../../../../../components/Table';
-import { MOCK_EVENT_STOCK_CREATE_PRODUCTS } from '../../../mocks/mockEventStockCreateProducts';
+import { getLocalizedName } from '@/common/helpers';
+import { PaginationConfig } from '@/common/hooks';
+import { TableAction, TableContainer, TablePagination, type TableActionItem } from '@/components/Table';
+import { MOCK_EVENT_STOCK_CREATE_PRODUCTS } from '@/features/events/mocks/mockEventStockCreateProducts';
 
+import { catalogById } from './eventStock.helpers';
 
 import type { EventStockCatalogProduct } from './eventStock.types';
-import type { EventStock } from '../../../types';
+import type { EventStock } from '@/features/events/types';
 
 
 export interface EventStockListProps {
@@ -29,16 +29,16 @@ export interface EventStockListProps {
 
 const EVENT_STOCK_LIST_COLUMNS = ['image', 'name', 'sku', 'price', 'actions'] as const;
 
-const eventStockListSchema = asLegacyModelSchema({
+const eventStockListSchema: ModelSchema = {
 	name: 'EventStockList',
 	fields: {
 		image: { type: 'string', label: 'image' },
-		sku: { type: 'string', label: 'kiosk.stocks.fields.sku' },
-		name: { type: 'string', label: 'kiosk.stocks.fields.name' },
-		price: { type: 'string', label: 'kiosk.stocks.fields.price' },
-		actions: { type: 'string', label: 'kiosk.stocks.fields.actions' },
+		sku: { type: 'string', label: 'coremart.vendingMachine.kiosk.stocks.fields.sku' },
+		name: { type: 'string', label: 'coremart.vendingMachine.kiosk.stocks.fields.name' },
+		price: { type: 'string', label: 'coremart.vendingMachine.kiosk.stocks.fields.price' },
+		actions: { type: 'string', label: 'coremart.vendingMachine.kiosk.stocks.fields.actions' },
 	},
-});
+};
 
 // ─── helpers ─────────────────────────────────────────────────────────────────
 
@@ -70,13 +70,13 @@ function buildRowActions(
 	return [
 		{
 			key: 'edit',
-			label: translate('action.edit'),
+			label: translate('nikki.general.actions.edit'),
 			icon: <IconEdit size={16} />,
 			onClick: () => onEdit(stock),
 		},
 		{
 			key: 'delete',
-			label: translate('action.delete'),
+			label: translate('nikki.general.actions.delete'),
 			icon: <IconTrash size={16} />,
 			color: 'red',
 			onClick: () => onDelete(stock),
@@ -91,7 +91,7 @@ function useEventStockRenderers(
 	onEdit: (s: EventStock) => void,
 	onDelete: (s: EventStock) => void,
 ) {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const stocksById = useMemo(() => {
 		const m = new Map<string, EventStock>();
@@ -116,7 +116,7 @@ function useEventStockRenderers(
 		return (
 			<TableAction
 				actions={buildRowActions(stock, onEdit, onDelete, translate)}
-				overflowMenuLabel={translate('action.title')}
+				overflowMenuLabel={translate('nikki.general.actions.title')}
 			/>
 		);
 	}, [stocksById, onEdit, onDelete, translate]);
@@ -135,7 +135,7 @@ function useEventStockRenderers(
 		image: () => '',
 		actions: () => (
 			<Text size='sm' fw={600} fz='sm' ta='end'>
-				{translate('action.title')}
+				{translate('nikki.general.actions.title')}
 			</Text>
 		),
 	}), [translate]);
@@ -152,7 +152,7 @@ export const EventStockList: React.FC<EventStockListProps> = ({
 	onEdit,
 	onDelete,
 }) => {
-	const { i18n } = useTranslation('vending_machine');
+	const { i18n } = useTranslation();
 
 	const tableData = useMemo(
 		() => mapStocksToTableData(stocks, i18n.language, CATALOG_MAP),
@@ -175,7 +175,6 @@ export const EventStockList: React.FC<EventStockListProps> = ({
 			}
 		>
 			<AutoTable
-				translationNs='vending_machine'
 				schema={eventStockListSchema}
 				columns={[...EVENT_STOCK_LIST_COLUMNS]}
 				data={tableData}

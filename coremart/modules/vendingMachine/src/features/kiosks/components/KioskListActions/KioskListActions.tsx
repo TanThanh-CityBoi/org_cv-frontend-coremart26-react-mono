@@ -3,8 +3,9 @@ import { IconPlus, IconRefresh, IconList, IconLayoutGrid, IconMapPin, IconSearch
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { ViewMode } from '../../../../components/ControlPanel';
-import { ArchivedStatus } from '../../../../types';
+import { ViewMode } from '@/components/ControlPanel';
+import { ArchivedStatus } from '@/types';
+
 import { ConnectionStatus, KioskMode } from '../../types';
 
 
@@ -40,7 +41,7 @@ export const KioskListActions: React.FC<KioskListActionsProps> = ({
 	modeFilter,
 	onModeFilterChange,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const viewModeSegments = [
 		{
@@ -70,23 +71,23 @@ export const KioskListActions: React.FC<KioskListActionsProps> = ({
 	];
 
 	const statusOptions = [
-		{ value: 'all', label: translate('search.filterAll') },
-		{ value: ArchivedStatus.ACTIVE, label: translate('status.active') },
-		{ value: ArchivedStatus.ARCHIVED, label: translate('status.archived') },
+		{ value: 'all', label: translate('nikki.general.filters.all') },
+		{ value: ArchivedStatus.ACTIVE, label: translate('nikki.general.status.active') },
+		{ value: ArchivedStatus.ARCHIVED, label: translate('nikki.general.status.archived') },
 	];
 
 	const connectionOptions = [
-		{ value: 'all', label: translate('search.filterAll') },
-		{ value: ConnectionStatus.FAST, label: translate('kiosk.connection_status.fast') },
-		{ value: ConnectionStatus.SLOW, label: translate('kiosk.connection_status.slow') },
-		{ value: ConnectionStatus.LOST, label: translate('kiosk.connection_status.lost') },
+		{ value: 'all', label: translate('nikki.general.filters.all') },
+		{ value: ConnectionStatus.FAST, label: translate('coremart.vendingMachine.kiosk.connectionStatus.fast') },
+		{ value: ConnectionStatus.SLOW, label: translate('coremart.vendingMachine.kiosk.connectionStatus.slow') },
+		{ value: ConnectionStatus.LOST, label: translate('coremart.vendingMachine.kiosk.connectionStatus.lost') },
 	];
 
 	const modeOptions = [
-		{ value: 'all', label: translate('search.filterAll') },
-		{ value: KioskMode.PENDING, label: translate('kiosk.mode.pending') },
-		{ value: KioskMode.SELLING, label: translate('kiosk.mode.selling') },
-		{ value: KioskMode.SLIDESHOW_ONLY, label: translate('kiosk.mode.slideshow_only') },
+		{ value: 'all', label: translate('nikki.general.filters.all') },
+		{ value: KioskMode.PENDING, label: translate('coremart.vendingMachine.kiosk.mode.pending') },
+		{ value: KioskMode.SELLING, label: translate('coremart.vendingMachine.kiosk.mode.selling') },
+		{ value: KioskMode.SLIDESHOW_ONLY, label: translate('coremart.vendingMachine.kiosk.mode.slideshowOnly') },
 	];
 
 	const hasActiveFilters = statusFilter !== 'all' || connectionFilter !== 'all' || modeFilter !== 'all' || searchValue.trim() !== '';
@@ -105,14 +106,14 @@ export const KioskListActions: React.FC<KioskListActionsProps> = ({
 					leftSection={<IconPlus size={16} />}
 					onClick={onCreate}
 				>
-					{translate('action.create')}
+					{translate('nikki.general.actions.create')}
 				</Button>
 				<Button
 					variant='outline'
 					leftSection={<IconRefresh size={16} />}
 					onClick={onRefresh}
 				>
-					{translate('action.refresh')}
+					{translate('nikki.general.actions.refresh')}
 				</Button>
 			</Group>
 
@@ -124,15 +125,15 @@ export const KioskListActions: React.FC<KioskListActionsProps> = ({
 						leftSection={<IconX size={16} />}
 						onClick={handleClearFilters}
 					>
-						{translate('action.clearFilters')}
+						{translate('nikki.general.actions.clear_filters')}
 					</Button>
 				)}
 				<Stack gap={4}>
 					<Text size='xs' fw={400} c='dimmed'>
-						{translate('kiosk.search.placeholder')}
+						{translate('coremart.vendingMachine.kiosk.search.placeholder')}
 					</Text>
 					<TextInput
-						placeholder={translate('kiosk.search.placeholder')}
+						placeholder={translate('coremart.vendingMachine.kiosk.search.placeholder')}
 						leftSection={<IconSearch size={16} />}
 						value={searchValue}
 						onChange={(e) => onSearchChange(e.currentTarget.value)}
@@ -141,10 +142,10 @@ export const KioskListActions: React.FC<KioskListActionsProps> = ({
 				</Stack>
 				<Stack gap={4}>
 					<Text size='xs' fw={400} c='dimmed'>
-						{translate('kiosk.filter.status')}
+						{translate('coremart.vendingMachine.kiosk.filter.status')}
 					</Text>
 					<Select
-						placeholder={translate('kiosk.filter.status')}
+						placeholder={translate('coremart.vendingMachine.kiosk.filter.status')}
 						data={statusOptions}
 						value={statusFilter}
 						onChange={(value) => onStatusFilterChange((value || 'all') as ArchivedStatus | 'all')}
@@ -154,10 +155,10 @@ export const KioskListActions: React.FC<KioskListActionsProps> = ({
 				</Stack>
 				<Stack gap={4}>
 					<Text size='xs' fw={400} c='dimmed'>
-						{translate('kiosk.filter.connection')}
+						{translate('coremart.vendingMachine.kiosk.filter.connection')}
 					</Text>
 					<Select
-						placeholder={translate('kiosk.filter.connection')}
+						placeholder={translate('coremart.vendingMachine.kiosk.filter.connection')}
 						data={connectionOptions}
 						value={connectionFilter}
 						onChange={(value) => onConnectionFilterChange((value || 'all') as ConnectionStatus | 'all')}
@@ -167,10 +168,10 @@ export const KioskListActions: React.FC<KioskListActionsProps> = ({
 				</Stack>
 				<Stack gap={4}>
 					<Text size='xs' fw={400} c='dimmed'>
-						{translate('kiosk.filter.mode')}
+						{translate('coremart.vendingMachine.kiosk.filter.mode')}
 					</Text>
 					<Select
-						placeholder={translate('kiosk.filter.mode')}
+						placeholder={translate('coremart.vendingMachine.kiosk.filter.mode')}
 						data={modeOptions}
 						value={modeFilter}
 						onChange={(value) => onModeFilterChange((value || 'all') as KioskMode | 'all')}

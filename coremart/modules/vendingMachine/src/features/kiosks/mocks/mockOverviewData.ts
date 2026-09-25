@@ -2,10 +2,11 @@ import {
 	CustomerUsage,
 	ErrorStatus,
 	ErrorType,
+	LowStockAlert,
 	MachineType,
 	OperationParameter,
 	SupportRequest,
-} from '../types';
+} from '@/features/kiosks/types';
 
 // Mock errors data
 export const mockKioskErrors = [
@@ -87,6 +88,47 @@ export const mockKioskErrors = [
 		description: 'Cảnh báo: Độ ẩm cao: 75% (ngưỡng: 70%)',
 		reportedAt: new Date(Date.now() - 45 * 60000).toISOString(),
 		severity: 'low' as const,
+	},
+];
+
+// Mock low stock alerts
+export const mockLowStockAlerts: LowStockAlert[] = [
+	{
+		id: 'stock-001',
+		kioskId: '1',
+		kioskCode: 'KIOSK-001',
+		kioskName: 'Kiosk Trung Tâm Thành Phố',
+		stockRatio: 0.15,
+		requestedAt: new Date(Date.now() - 2 * 3600000).toISOString(),
+		items: [
+			{ productId: 'p1', productName: 'Coca Cola 330ml', currentStock: 5, maxStock: 50 },
+			{ productId: 'p2', productName: 'Pepsi 330ml', currentStock: 3, maxStock: 50 },
+			{ productId: 'p3', productName: 'Snack khoai tây', currentStock: 2, maxStock: 30 },
+		],
+	},
+	{
+		id: 'stock-002',
+		kioskId: '2',
+		kioskCode: 'KIOSK-002',
+		kioskName: 'Kiosk Sân Bay Tân Sơn Nhất',
+		stockRatio: 0.08,
+		requestedAt: new Date(Date.now() - 1 * 3600000).toISOString(),
+		items: [
+			{ productId: 'p1', productName: 'Coca Cola 330ml', currentStock: 2, maxStock: 50 },
+			{ productId: 'p4', productName: 'Nước suối 500ml', currentStock: 1, maxStock: 40 },
+		],
+	},
+	{
+		id: 'stock-003',
+		kioskId: '5',
+		kioskCode: 'KIOSK-005',
+		kioskName: 'Kiosk Landmark 81',
+		stockRatio: 0.12,
+		requestedAt: new Date(Date.now() - 3 * 3600000).toISOString(),
+		restockedAt: new Date(Date.now() - 1 * 3600000).toISOString(),
+		items: [
+			{ productId: 'p2', productName: 'Pepsi 330ml', currentStock: 4, maxStock: 50 },
+		],
 	},
 ];
 

@@ -4,12 +4,12 @@ import { Trans, useTranslation } from 'react-i18next';
 
 
 export type RemoveKioskFromEventModalProps = {
-	opened: boolean,
-	onClose: () => void,
-	onConfirm: () => void,
-	kioskName: string,
-	eventName: string,
-	confirmLoading?: boolean,
+	opened: boolean;
+	onClose: () => void;
+	onConfirm: () => void;
+	kioskName: string;
+	eventName: string;
+	confirmLoading?: boolean;
 };
 
 export const RemoveKioskFromEventModal: React.FC<RemoveKioskFromEventModalProps> = ({
@@ -20,7 +20,7 @@ export const RemoveKioskFromEventModal: React.FC<RemoveKioskFromEventModalProps>
 	eventName,
 	confirmLoading = false,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	return (
 		<Modal
@@ -30,7 +30,7 @@ export const RemoveKioskFromEventModal: React.FC<RemoveKioskFromEventModalProps>
 			}}
 			title={(
 				<Text fw={700} fz='lg'>
-					{translate('events.messages.remove_kiosk_from_event_title', {
+					{translate('coremart.vendingMachine.events.messages.remove_kiosk_from_event_title', {
 						defaultValue: 'Remove kiosk from event',
 					})}
 				</Text>
@@ -43,17 +43,17 @@ export const RemoveKioskFromEventModal: React.FC<RemoveKioskFromEventModalProps>
 			<Stack gap='md'>
 				<Text>
 					<Trans
-						i18nKey='events.messages.remove_kiosk_from_event_confirm'
+						i18nKey='coremart.vendingMachine.events.messages.remove_kiosk_from_event_confirm'
 						values={{ kioskName, eventName }}
 						components={{ strong: <strong /> }}
 					/>
 				</Text>
 				<Group justify='flex-end'>
 					<Button variant='outline' onClick={onClose} color='gray' disabled={confirmLoading}>
-						{translate('action.cancel')}
+						{translate('nikki.general.actions.cancel')}
 					</Button>
 					<Button color='red' onClick={onConfirm} loading={confirmLoading}>
-						{translate('action.remove')}
+						{translate('nikki.general.actions.remove')}
 					</Button>
 				</Group>
 			</Stack>

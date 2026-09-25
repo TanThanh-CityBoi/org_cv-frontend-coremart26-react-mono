@@ -1,4 +1,4 @@
-import { del, get, post, unwrapResult, Options, put } from '@nikkierp/common/request';
+import { del, get, post, Options, put } from '@nikkierp/common/request';
 
 import {
 	ResolvedDriveFileShareRequest,
@@ -24,31 +24,31 @@ const buildBaseEndpoint = (fileId: string): string => {
 
 export const fileShareService = {
 	async createFileShare(fileId: string, req: CreateDriveFileShareRequest): Promise<CreateDriveFileShareResponse> {
-		return unwrapResult(await post<CreateDriveFileShareResponse>(buildBaseEndpoint(fileId), {
+		return post<CreateDriveFileShareResponse>(buildBaseEndpoint(fileId), {
 			json: req,
-		}));
+		});
 	},
 
 	async createFileShareBulk(fileId: string,
 		req: CreateDriveFileShareBulkRequest): Promise<CreateDriveFileShareBulkResponse> {
-		return unwrapResult(await post<CreateDriveFileShareBulkResponse>(`${buildBaseEndpoint(fileId)}/bulk`, {
+		return post<CreateDriveFileShareBulkResponse>(`${buildBaseEndpoint(fileId)}/bulk`, {
 			json: req,
-		}));
+		});
 	},
 
 	async updateFileShare(fileId: string, shareId: string,
 		req: UpdateDriveFileShareRequest): Promise<UpdateDriveFileShareResponse> {
-		return unwrapResult(await put<UpdateDriveFileShareResponse>(`${buildBaseEndpoint(fileId)}/${shareId}`, {
+		return put<UpdateDriveFileShareResponse>(`${buildBaseEndpoint(fileId)}/${shareId}`, {
 			json: req,
-		}));
+		});
 	},
 
 	async deleteFileShare(fileId: string, shareId: string): Promise<DeleteDriveFileShareResponse> {
-		return unwrapResult(await del<DeleteDriveFileShareResponse>(`${buildBaseEndpoint(fileId)}/${shareId}`));
+		return del<DeleteDriveFileShareResponse>(`${buildBaseEndpoint(fileId)}/${shareId}`);
 	},
 
 	async getFileShare(fileId: string, shareId: string): Promise<GetDriveFileShareResponse> {
-		return unwrapResult(await get<GetDriveFileShareResponse>(`${buildBaseEndpoint(fileId)}/${shareId}`));
+		return get<GetDriveFileShareResponse>(`${buildBaseEndpoint(fileId)}/${shareId}`);
 	},
 
 	async searchFileShares(fileId: string,
@@ -67,11 +67,11 @@ export const fileShareService = {
 
 			options.searchParams = searchParams;
 		}
-		return unwrapResult(await get<SearchDriveFileShareResponse>(buildBaseEndpoint(fileId), options));
+		return get<SearchDriveFileShareResponse>(buildBaseEndpoint(fileId), options);
 	},
 
 	async getFileShareAncestors(fileId: string): Promise<GetDriveFileShareAncestorsResponse> {
-		return unwrapResult(await get<GetDriveFileShareAncestorsResponse>(`${buildBaseEndpoint(fileId)}/ancestors`));
+		return get<GetDriveFileShareAncestorsResponse>(`${buildBaseEndpoint(fileId)}/ancestors`);
 	},
 
 	async getResolvedFileShares(
@@ -92,10 +92,10 @@ export const fileShareService = {
 
 			options.searchParams = searchParams;
 		}
-		return unwrapResult(await get<ResolvedDriveFileShareResponse>(`${buildBaseEndpoint(fileId)}/resolved`, options));
+		return get<ResolvedDriveFileShareResponse>(`${buildBaseEndpoint(fileId)}/resolved`, options);
 	},
 
 	async getFileSharesByUser(fileId: string, userId: string): Promise<GetDriveFileSharesByUserResponse> {
-		return unwrapResult(await get<GetDriveFileSharesByUserResponse>(`${buildBaseEndpoint(fileId)}/users/${userId}`));
+		return get<GetDriveFileSharesByUserResponse>(`${buildBaseEndpoint(fileId)}/users/${userId}`);
 	},
 };

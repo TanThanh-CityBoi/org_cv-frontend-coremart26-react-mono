@@ -1,20 +1,20 @@
 
 import { snakeToCamelCase } from '@nikkierp/common/utils';
 
+import { SearchOperator } from '@/types';
 
 import { mockProducts } from './mockProducts';
 import { deriveEventRunPhase } from './types';
-import { SearchOperator } from '../../types';
 
 import type { Event, EventCreateFormData, EventStock, EventUpdatePatch } from './types';
+import type { Kiosk } from '@/features/kiosks/types';
 import type {
 	PagedSearchResponse,
 	RestArchiveResponse,
 	SearchGraph,
 	SearchNode,
 	SearchParams,
-} from '../../types';
-import type { Kiosk } from '../kiosks/types';
+} from '@/types';
 
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -267,7 +267,7 @@ export const mockEvents = {
 
 	async setArchivedEvent(
 		id: string,
-		payload: { etag: string, isArchived: boolean },
+		payload: { etag: string; isArchived: boolean },
 	): Promise<RestArchiveResponse> {
 		await delay(400);
 		const index = mockEventsData.findIndex((e) => e.id === id);

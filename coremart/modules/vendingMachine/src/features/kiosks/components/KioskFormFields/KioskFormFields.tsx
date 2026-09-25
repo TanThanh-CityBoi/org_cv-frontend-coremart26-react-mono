@@ -5,9 +5,9 @@ import React from 'react';
 
 
 import classes from './KioskFormFields.module.css';
-import { PaymentMethodSelectField, KioskModelSelectField } from '../../../../components/Form';
 import { Kiosk } from '../../types';
 
+import { PaymentMethodSelectField, KioskModelSelectField } from '@/components/Form';
 
 
 export type KioskFormFieldsMode = 'view' | 'create' | 'edit';

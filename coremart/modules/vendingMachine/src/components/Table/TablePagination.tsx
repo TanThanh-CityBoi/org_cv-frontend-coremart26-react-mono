@@ -5,7 +5,7 @@ import React, { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 
-export type PageSizeOption = { value: string, label: string };
+export type PageSizeOption = { value: string; label: string };
 
 export interface TablePaginationProps extends GroupProps {
 	totalItems?: number;
@@ -22,11 +22,11 @@ const DEFAULT_TOTAL_PAGES = 1;
 
 
 const PaginationButton = ({ page, type, icon, disabled, onPageChange }: {
-	page: number,
-	type: 'back' | 'forward',
-	icon?: React.ComponentType<IconProps>,
-	disabled?: boolean,
-	onPageChange?: (page: number) => void,
+	page: number;
+	type: 'back' | 'forward';
+	icon?: React.ComponentType<IconProps>;
+	disabled?: boolean;
+	onPageChange?: (page: number) => void;
 }) => {
 	const nextPage = type === 'back' ? page - 1 : page + 1;
 	const handleClick = () => {
@@ -48,10 +48,10 @@ const PaginationButton = ({ page, type, icon, disabled, onPageChange }: {
 
 
 const PageInput = ({ totalPages, value, onPageChange, onBlur }: {
-	value: string | number | undefined,
-	totalPages: number,
-	onPageChange: (value: string | number | undefined) => void,
-	onBlur?: () => void,
+	value: string | number | undefined;
+	totalPages: number;
+	onPageChange: (value: string | number | undefined) => void;
+	onBlur?: () => void;
 }) => {
 	return (
 		<Group
@@ -95,12 +95,12 @@ export const TablePagination: React.FC<TablePaginationProps> = ({
 	onPageSizeChange,
 	...rest
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const defaultPageSizeOptions = useMemo(() => [
-		{ value: '5', label: translate('datatable.pageSize', { count: 5 }) },
-		{ value: '10', label: translate('datatable.pageSize', { count: 10 }) },
-		{ value: '20', label: translate('datatable.pageSize', { count: 20 }) },
-		{ value: '50', label: translate('datatable.pageSize', { count: 50 }) },
+		{ value: '5', label: translate('nikki.general.pagination.page_size', { count: 5 }) },
+		{ value: '10', label: translate('nikki.general.pagination.page_size', { count: 10 }) },
+		{ value: '20', label: translate('nikki.general.pagination.page_size', { count: 20 }) },
+		{ value: '50', label: translate('nikki.general.pagination.page_size', { count: 50 }) },
 	], []);
 
 	const [pageInputValue, setPageInputValue] = React.useState<number | string | undefined>(page);
@@ -143,7 +143,7 @@ export const TablePagination: React.FC<TablePaginationProps> = ({
 					<Text size='sm'
 						c='light-dark(var(--mantine-color-gray-8), var(--mantine-color-gray-3))'
 					>
-						{translate('pagination.itemsFound', { count: totalItems })}
+						{translate('nikki.general.pagination.items_found', { count: totalItems })}
 					</Text>
 				)}
 			</Box>

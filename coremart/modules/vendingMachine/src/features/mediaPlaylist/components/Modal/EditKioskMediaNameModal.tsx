@@ -4,12 +4,12 @@ import { useTranslation } from 'react-i18next';
 
 
 export type EditKioskMediaNameModalProps = {
-	opened: boolean,
-	onClose: () => void,
-	name: string,
-	onNameChange: (value: string) => void,
-	onSubmit: () => void,
-	isSubmitting: boolean,
+	opened: boolean;
+	onClose: () => void;
+	name: string;
+	onNameChange: (value: string) => void;
+	onSubmit: () => void;
+	isSubmitting: boolean;
 };
 
 export const EditKioskMediaNameModal: React.FC<EditKioskMediaNameModalProps> = ({
@@ -20,13 +20,13 @@ export const EditKioskMediaNameModal: React.FC<EditKioskMediaNameModalProps> = (
 	onSubmit,
 	isSubmitting,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	return (
 		<Modal
 			opened={opened}
 			onClose={onClose}
-			title={translate('kiosk_media.edit.title')}
+			title={translate('coremart.vendingMachine.kioskMedia.edit.title')}
 			centered
 			size='md'
 		>
@@ -41,10 +41,10 @@ export const EditKioskMediaNameModal: React.FC<EditKioskMediaNameModalProps> = (
 				/>
 				<Group justify='flex-end' gap='sm'>
 					<Button variant='default' onClick={onClose} disabled={isSubmitting}>
-						{translate('action.cancel')}
+						{translate('nikki.general.actions.cancel')}
 					</Button>
 					<Button onClick={onSubmit} loading={isSubmitting}>
-						{translate('action.save')}
+						{translate('nikki.general.actions.save')}
 					</Button>
 				</Group>
 			</Stack>

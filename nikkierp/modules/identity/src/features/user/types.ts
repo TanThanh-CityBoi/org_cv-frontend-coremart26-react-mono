@@ -1,15 +1,54 @@
-export type User = {
-	id: string,
-	avatar_url?: string,
-	display_name?: string,
-	email?: string,
-	status?: UserStatus,
-	etag?: string,
-	created_at?: string,
-	updated_at?: string,
+import {
+	CreateResponse,
+	DeleteResponse,
+	SearchResponse,
+	UpdateResponse,
+} from '@nikkierp/common';
 
-	groups?: any[],
-	orgUnit?: any,
+
+export type User = {
+	id: string;
+	email: string;
+	displayName: string;
+	avatarUrl?: string;
+	etag: string;
+	status: string;
+	createdAt: Date;
+	updatedAt?: Date;
+	groups?: Array<{
+		id: string;
+		name: string;
+		description?: string;
+	}>;
+	hierarchy?: {
+		id: string;
+		name: string;
+	};
+	orgs?: Array<{
+		id: string;
+		name: string;
+	}>;
 };
 
-export type UserStatus = 'draft' | 'invited' | 'active' | 'suspended';
+export type CreateUserRequest = {
+	email: string;
+	displayName: string;
+	password: string;
+	orgId: string;
+};
+
+export type UpdateUserRequest = {
+	id: string;
+	avatarUrl?: string;
+	displayName?: string;
+	etag: string;
+	status?: string;
+};
+
+export type SearchUserResponse = SearchResponse<User>;
+
+export type CreateUserResponse = CreateResponse;
+
+export type UpdateUserResponse = UpdateResponse;
+
+export type DeleteUserResponse = DeleteResponse;

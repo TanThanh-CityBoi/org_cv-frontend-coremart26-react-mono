@@ -1,19 +1,13 @@
-import * as dyn from '@nikkierp/common/dynamicModel';
-/**
- * @deprecated Use ModelSchema instead
- */
+
 export type ModelSchema = {
 	name: string;
 	fields: Record<string, FieldDefinition>;
 	constraints?: FieldConstraint[];
 };
 
-/**
- * @deprecated Use ModelSchemaField instead
- */
 export type FieldDefinition = {
 	type: 'string' | 'email' | 'password' | 'date' | 'integer' | 'enum' | 'boolean' | 'object' | 'array';
-	label: dyn.ModelSchemaLangJson;
+	label: string;
 	description?: string;
 	placeholder?: string;
 	required?: {

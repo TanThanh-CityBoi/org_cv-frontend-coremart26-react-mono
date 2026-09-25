@@ -5,11 +5,10 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useLocation, resolvePath } from 'react-router';
 
+import type { CreateRevokeRequestInput } from '@/features/revokeRequests/revokeRequestService';
 
-import { AuthorizeDispatch, revokeRequestActions, selectCreateRevokeRequest } from '../../../appState';
-import { handleGoBack } from '../../../utils';
-
-import type { CreateRevokeRequestInput } from '../revokeRequestService';
+import { AuthorizeDispatch, revokeRequestActions, selectCreateRevokeRequest } from '@/appState';
+import { handleGoBack } from '@/utils';
 
 
 function prepareCreateData(data: any, userId: string): CreateRevokeRequestInput {

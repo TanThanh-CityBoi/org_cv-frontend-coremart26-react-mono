@@ -3,29 +3,29 @@
 	"fields": {
 		"id": {
 			"type": "string",
-			"label": "{ \"$ref\": 'kiosk_settings.fields.id' }",
+			"label": "{ \"$ref\": 'coremart.vendingMachine.kioskSettings.fields.id' }",
 			"hidden": true
 		},
 		"code": {
 			"type": "string",
-			"label": "{ \"$ref\": 'kiosk_settings.fields.code' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.kioskSettings.fields.code' }"
 		},
 		"name": {
 			"type": "string",
-			"label": "{ \"$ref\": 'kiosk_settings.fields.name' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.kioskSettings.fields.name' }"
 		},
 		"description": {
 			"type": "string",
-			"label": "{ \"$ref\": 'kiosk_settings.fields.description' }"
+			"label": "{ \"$ref\": 'coremart.vendingMachine.kioskSettings.fields.description' }"
 		},
 		"isArchived": {
 			"type": "boolean",
-			"label": "{ \"$ref\": 'kiosk_settings.fields.is_archived' }",
+			"label": "{ \"$ref\": 'coremart.vendingMachine.kioskSettings.fields.isArchived' }",
 			"optional": true
 		},
 		"createdAt": {
 			"type": "date",
-			"label": "{ \"$ref\": 'kiosk_settings.fields.created_at' }",
+			"label": "{ \"$ref\": 'coremart.vendingMachine.kioskSettings.fields.createdAt' }",
 			"hidden": true
 		}
 	}

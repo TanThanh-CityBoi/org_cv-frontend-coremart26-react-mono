@@ -2,11 +2,11 @@ import { Alert, Grid, Skeleton, Stack } from '@mantine/core';
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { getLocalizedName } from '@/common/helpers';
 
 import { mapCategoryRowsToBarChart, ProductCategoryBarChart } from './ProductCategoryBarChart';
 import { ProductRevenueBarChart } from './ProductRevenueBarChart';
 import { ProductRevenueTable } from './ProductRevenueTable';
-import { getLocalizedName } from '../../../../../common/helpers';
 import {
 	useRevenueReportByCategoryChart,
 	useRevenueReportByProduct,
@@ -14,8 +14,8 @@ import {
 } from '../../hooks';
 
 import type { ProductRevenueRow } from './ProductRevenueBarChart';
-import type { RevenueReportByProduct as RevenueReportByProductRow } from '../../type';
 import type { RevenueReportFilters } from '../RevenueReportSwitcher/type';
+import type { RevenueReportByProduct as RevenueReportByProductRow } from '@/features/reports/business/type';
 
 
 function mapProductRowsToBarChart(
@@ -30,7 +30,7 @@ function mapProductRowsToBarChart(
 
 
 export function RevenueReportByProduct({ filters }: { filters: RevenueReportFilters }): React.ReactElement {
-	const { t: translate, i18n } = useTranslation('vending_machine');
+	const { t: translate, i18n } = useTranslation();
 
 	const {
 		items: tableItems,
@@ -71,31 +71,31 @@ export function RevenueReportByProduct({ filters }: { filters: RevenueReportFilt
 				<Skeleton height={360} radius='md' />
 			) : chartsError ? (
 				<Alert color='red.4' bg='red.0' mih={200}
-					title={translate('reports.revenue_report.chart.top_products_by_revenue')}>
+					title={translate('coremart.vendingMachine.reports.revenueReport.chart.topProductsByRevenue')}>
 					{chartsError}
 				</Alert>
 			) : (
-				<Grid gap='md'>
+				<Grid gutter='md'>
 					<Grid.Col span={{ base: 12, lg: 6 }}>
 						<ProductRevenueBarChart
 							data={barChartData}
 							maxItems={10}
-							title={translate('reports.revenue_report.chart.top_products_by_revenue')}
+							title={translate('coremart.vendingMachine.reports.revenueReport.chart.topProductsByRevenue')}
 						/>
 					</Grid.Col>
 					<Grid.Col span={{ base: 12, lg: 6 }}>
 						<ProductCategoryBarChart
 							data={categoryBarData}
 							maxCategories={10}
-							title={translate('reports.revenue_report.chart.by_category')}
+							title={translate('coremart.vendingMachine.reports.revenueReport.chart.byCategory')}
 						/>
 					</Grid.Col>
 				</Grid>
 			)}
 
 			<ProductRevenueTable
-				title={translate('reports.revenue_by_product.table_title')}
-				description={translate('reports.revenue_by_product.table_description')}
+				title={translate('coremart.vendingMachine.reports.revenueByProduct.tableTitle')}
+				description={translate('coremart.vendingMachine.reports.revenueByProduct.tableDescription')}
 				items={tableItems}
 				pagination={pagination}
 				isLoading={tableIsLoading}

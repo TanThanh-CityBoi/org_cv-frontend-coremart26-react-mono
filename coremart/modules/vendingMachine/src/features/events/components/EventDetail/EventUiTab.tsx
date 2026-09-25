@@ -1,13 +1,13 @@
 import { Stack } from '@mantine/core';
 import React from 'react';
 
+import { GameSelect } from '@/components/GameSelect';
+import { MediaPlaylistSelect } from '@/components/MediaPlaylistSelect';
+import { ThemeSelect } from '@/components/ThemeSelect';
+
 import { useEventUiTab } from './hooks/useEventUiTab';
-import { GameSelect } from '../../../../components/GameSelect';
-import { MediaPlaylistSelect } from '../../../../components/MediaPlaylistSelect';
-import { ThemeSelect } from '../../../../components/ThemeSelect';
 
-
-import type { Event } from '../../types';
+import type { Event } from '@/features/events/types';
 
 
 export interface EventUiTabProps {

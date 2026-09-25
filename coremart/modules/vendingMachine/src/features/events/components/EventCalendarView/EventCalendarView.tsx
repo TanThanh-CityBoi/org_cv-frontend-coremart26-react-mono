@@ -27,7 +27,7 @@ export const EventCalendarView: React.FC<EventCalendarViewProps> = ({
 	onEdit: _onEdit,
 	onDelete: _onDelete,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 
 	const eventsData = useMemo(() => events.map((ev) => ({
 		id: ev.id,
@@ -47,11 +47,11 @@ export const EventCalendarView: React.FC<EventCalendarViewProps> = ({
 
 	const renderEventContent = useCallback((eventInfo: {
 		event: {
-			title: string,
-			start: Date | null,
-			end: Date | null,
-			extendedProps?: { ev: Event },
-		},
+			title: string;
+			start: Date | null;
+			end: Date | null;
+			extendedProps?: { ev: Event };
+		};
 	}) => {
 		const ext = eventInfo.event.extendedProps;
 		const startTime = eventInfo.event.start
@@ -71,11 +71,11 @@ export const EventCalendarView: React.FC<EventCalendarViewProps> = ({
 	}, []);
 
 	const buttonText = useMemo(() => ({
-		today: translate('action.today') || 'Today',
-		month: translate('events.calendar.view.month') || 'Month',
-		week: translate('events.calendar.view.week') || 'Week',
-		day: translate('events.calendar.view.day') || 'Day',
-		list: translate('events.calendar.view.list') || 'List',
+		today: translate('nikki.general.actions.today') || 'Today',
+		month: translate('coremart.vendingMachine.events.calendar.view.month') || 'Month',
+		week: translate('coremart.vendingMachine.events.calendar.view.week') || 'Week',
+		day: translate('coremart.vendingMachine.events.calendar.view.day') || 'Day',
+		list: translate('coremart.vendingMachine.events.calendar.view.list') || 'List',
 	}), [translate]);
 
 	return (

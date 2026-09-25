@@ -5,6 +5,8 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useLocation, resolvePath } from 'react-router';
 
+import type { Group, Org, User } from '@/features/identities';
+
 import {
 	AuthorizeDispatch,
 	grantRequestActions,
@@ -16,10 +18,7 @@ import {
 	selectRoleList,
 	selectRoleSuiteList,
 	selectUserList,
-} from '../../../appState';
-
-import type { Group, Org, User } from '../../identities';
-
+} from '@/appState';
 
 
 function useCancelHandler(navigate: ReturnType<typeof useNavigate>, location: ReturnType<typeof useLocation>) {

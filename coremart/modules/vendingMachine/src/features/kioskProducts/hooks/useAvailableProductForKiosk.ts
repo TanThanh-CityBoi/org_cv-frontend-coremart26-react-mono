@@ -1,20 +1,19 @@
 /* eslint-disable max-lines-per-function */
-import { useServiceLayer } from '@nikkierp/ui/appState/store';
 import { type TablePaginationProps } from '@nikkierp/ui/components';
+import { useMicroAppDispatch, useMicroAppSelector } from '@nikkierp/ui/microApp';
 import { TFunction } from 'i18next';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { usePaginationWithTotal } from '../../../common/hooks';
-import { SearchGraph } from '../../../types';
-import { kioskAvailableProductStoreService } from '../kioskAvailableProductStoreService';
+import {
+	VendingMachineDispatch,
+	kioskAvailableProductActions,
+	selectKioskAvailableProductList,
+} from '@/appState';
+import { usePagination } from '@/common/hooks';
+import { SearchGraph } from '@/types';
 
-import type { KioskProduct } from '../type';
-
-
-export const DEFAULT_AVAILABLE_PAGE_SIZE = 5;
-
-type SearchResponse = { items: KioskProduct[], total: number };
+import { DEFAULT_AVAILABLE_PAGE_SIZE } from '../kioskAvailableProductSlice';
 
 
 const KIOSK_PRODUCT_PAGE_SIZES = [5, 10, 15] as const;
@@ -24,17 +23,16 @@ function usePageSizeOptions(translate: TFunction): TablePaginationProps['pageSiz
 		() =>
 			KIOSK_PRODUCT_PAGE_SIZES.map((n) => ({
 				value: String(n),
-				label: translate('datatable.pageSize', { count: n }),
+				label: translate('nikki.general.pagination.page_size', { count: n }),
 			})),
 		[translate],
 	);
 }
 
 export function useAvailableProductForKiosk(kioskId: string | undefined, graph?: SearchGraph) {
-	const { dispatchMethod, result } = useServiceLayer<SearchResponse>(
-		kioskAvailableProductStoreService.search,
-	);
-	const { t: translate } = useTranslation('vending_machine');
+	const dispatch: VendingMachineDispatch = useMicroAppDispatch();
+	const list = useMicroAppSelector(selectKioskAvailableProductList);
+	const { t: translate } = useTranslation();
 	const pageSizeOptions = usePageSizeOptions(translate);
 
 	const fetchList = useCallback(
@@ -42,9 +40,16 @@ export function useAvailableProductForKiosk(kioskId: string | undefined, graph?:
 			if (!kioskId) {
 				return;
 			}
-			dispatchMethod({ kioskId, page: targetPage - 1, size, graph: searchGraph });
+			dispatch(
+				kioskAvailableProductActions.searchKioskAvailableProducts({
+					kioskId,
+					page: targetPage - 1,
+					size,
+					graph: searchGraph,
+				}),
+			);
 		},
-		[dispatchMethod, kioskId],
+		[dispatch, kioskId],
 	);
 
 	const resetKey = useMemo(
@@ -52,7 +57,7 @@ export function useAvailableProductForKiosk(kioskId: string | undefined, graph?:
 		[kioskId, graph],
 	);
 
-	const paginationCtrl = usePaginationWithTotal(fetchList, result.data?.total ?? 0, {
+	const paginationCtrl = usePagination(fetchList, selectKioskAvailableProductList, {
 		graph,
 		fallbackPageSize: DEFAULT_AVAILABLE_PAGE_SIZE,
 		resetPageKey: resetKey,
@@ -83,15 +88,14 @@ export function useAvailableProductForKiosk(kioskId: string | undefined, graph?:
 		[paginationCtrl, pageSizeOptions],
 	);
 
-	const products = result.data?.items ?? [];
-	const status = result.isPending ? 'pending' : 'success';
-	const isLoading = Boolean(kioskId)
-		&& (result.isPending || (result.doneAt == null && !products.length));
+	const products = list.items ?? [];
+	const status = list.status;
+	const isLoading = Boolean(kioskId) && (status === 'pending' || (status === 'idle' && !products.length));
 
 	return {
 		products,
 		status,
-		listError: result.error,
+		listError: list.error,
 		isLoading,
 		handleRefresh,
 		pagination,

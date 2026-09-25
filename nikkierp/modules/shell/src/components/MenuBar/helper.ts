@@ -1,11 +1,4 @@
-import { MenuItem } from '@nikkierp/ui/menu';
-
-
-/**
- * Test-id prefix shared by the horizontal, vertical and drawer menu bars. It lives here rather than
- * in `MenuBar.tsx` because those files already import this module, and the reverse would be a cycle.
- */
-export const MENU_BAR_TEST_ID = 'shell.menuBar';
+import { MenuBarItem } from '@nikkierp/ui/appState';
 
 // Normalize a path (ensure it starts with /)
 export function normalizePath(path: string): string {
@@ -31,7 +24,7 @@ export function isPathActive(link: string, currentPath: string): boolean {
 }
 
 // Check if any nested item is active
-export function hasActiveNestedItem(item: MenuItem, currentPath: string): boolean {
+export function hasActiveNestedItem(item: MenuBarItem, currentPath: string): boolean {
 	if (item.link && isPathActive(item.link, currentPath)) {
 		return true;
 	}
@@ -62,7 +55,7 @@ export function isPathActiveWithPrefix(
 
 // Check if any nested item is active, considering the path prefix
 export function hasActiveNestedItemWithPrefix(
-	item: MenuItem,
+	item: MenuBarItem,
 	currentPath: string,
 	pathPrefix: string,
 ): boolean {

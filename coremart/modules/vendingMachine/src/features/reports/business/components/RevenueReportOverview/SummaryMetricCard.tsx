@@ -2,8 +2,8 @@ import { Card, Text } from '@mantine/core';
 
 
 type SummaryMetricCardProps = {
-	label: string,
-	value: string,
+	label: string;
+	value: string;
 };
 
 export function SummaryMetricCard({ label, value }: SummaryMetricCardProps): React.ReactElement {

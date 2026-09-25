@@ -5,11 +5,11 @@ import { useTranslation } from 'react-i18next';
 
 
 
+import { FilterGroup, SearchGraph, useFilterState } from '@/components/FilterGroup';
+
 import { kioskFilterConfig } from './filterConfig';
-import { FilterGroup, SearchGraph, useFilterState } from '../../../../components/FilterGroup';
 
-
-import type { ViewMode } from '../../../../components/ControlPanel';
+import type { ViewMode } from '@/components/ControlPanel';
 
 
 
@@ -30,7 +30,7 @@ export const KioskListActionsWithFilter: React.FC<KioskListActionsWithFilterProp
 	onRefresh,
 	onSearchGraphChange,
 }) => {
-	const { t: translate } = useTranslation('vending_machine');
+	const { t: translate } = useTranslation();
 	const { state, updateState, resetState } = useFilterState({
 		config: kioskFilterConfig,
 		onSearchGraphChange,
@@ -44,7 +44,7 @@ export const KioskListActionsWithFilter: React.FC<KioskListActionsWithFilterProp
 					onClick={onCreate}
 					size='sm'
 				>
-					{translate('action.create')}
+					{translate('nikki.general.actions.create')}
 				</Button>
 				<Button
 					variant='outline'
@@ -52,7 +52,7 @@ export const KioskListActionsWithFilter: React.FC<KioskListActionsWithFilterProp
 					onClick={onRefresh}
 					size='sm'
 				>
-					{translate('action.refresh')}
+					{translate('nikki.general.actions.refresh')}
 				</Button>
 			</Group>
 
@@ -62,7 +62,7 @@ export const KioskListActionsWithFilter: React.FC<KioskListActionsWithFilterProp
 					state={state}
 					updateState={updateState}
 					resetState={resetState}
-					placeholder={translate('kiosk.search.placeholder')}
+					placeholder={translate('coremart.vendingMachine.kiosk.search.placeholder')}
 				/>
 
 				<KioskSegmentedControl
@@ -76,8 +76,8 @@ export const KioskListActionsWithFilter: React.FC<KioskListActionsWithFilterProp
 
 
 const KioskSegmentedControl: React.FC<{
-	viewMode: ViewMode,
-	onViewModeChange: (mode: ViewMode) => void,
+	viewMode: ViewMode;
+	onViewModeChange: (mode: ViewMode) => void;
 }> = ({ viewMode, onViewModeChange }) => {
 	const viewModeSegments = [
 		{
